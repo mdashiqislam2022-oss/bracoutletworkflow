@@ -729,6 +729,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         };
 
         setUsers((prev) => prev.map((u) => (u.id === existingUser.id ? updatedUser : u)));
+        SupabaseService.saveUserProfile(updatedUser);
 
         if (autoLogin) {
           setCurrentUser(updatedUser);
@@ -778,6 +779,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     };
 
     setUsers((prev) => [newUser, ...prev]);
+    SupabaseService.saveUserProfile(newUser);
 
     if (autoLogin) {
       setCurrentUser(newUser);
@@ -994,6 +996,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       };
       setUsers((prev) => [updatedTargetUser, ...prev]);
     }
+    SupabaseService.saveUserProfile(updatedTargetUser);
 
     const updatedRequest: PasswordResetRequest = {
       ...req,
@@ -1119,6 +1122,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     const newUsers = [...users];
     newUsers[userIndex] = updatedUser;
     setUsers(newUsers);
+    SupabaseService.saveUserProfile(updatedUser);
 
     // If currently logged in as this user, update session
     if (currentUser?.id === userId) {
@@ -1369,6 +1373,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     };
     setCurrentUser(updated);
     setUsers((prev) => prev.map((u) => (u.id === updated.id ? updated : u)));
+    SupabaseService.saveUserProfile(updated);
     addAuditEntry('PROFILE_UPDATED', `AFO ${currentUser.fullName} updated profile personal information`, currentUser.outletName);
     showToast({ message: 'Banking profile updated successfully!', type: 'success' });
   };
@@ -1396,6 +1401,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     };
 
     setSubmissions((prev) => [newSubmission, ...prev]);
+    SupabaseService.saveSubmission(newSubmission);
     addAuditEntry(
       'WORK_DATA_SUBMITTED',
       `Registered ${newSubmission.serviceCategory} for customer ${newSubmission.customerName} (Track: ${newSubmission.trackingNo})`,
@@ -1430,6 +1436,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
             `Status of ${sub.trackingNo} changed to ${status} by ${actorName}`,
             sub.outletName
           );
+          SupabaseService.saveSubmission(updated);
           return updated;
         }
         return sub;
@@ -1444,7 +1451,9 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       prev.map((u) => {
         if (u.id === userId) {
           addAuditEntry('USER_STATUS_CHANGE', `Admin changed ${u.fullName} status to ${status}`);
-          return { ...u, status };
+          const updated = { ...u, status };
+          SupabaseService.saveUserProfile(updated);
+          return updated;
         }
         return u;
       })
@@ -1460,13 +1469,15 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       prev.map((u) => {
         if (u.id === userId) {
           addAuditEntry('OUTLET_REASSIGNED', `AFO ${u.fullName} transferred to outlet: ${outlet.name}`);
-          return {
+          const updated = {
             ...u,
             outletId: outlet.id,
             outletName: outlet.name,
             outletLocation: outlet.address,
             supervisorName: outlet.managerName
           };
+          SupabaseService.saveUserProfile(updated);
+          return updated;
         }
         return u;
       })
@@ -1901,6 +1912,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     };
 
     setUsers((prev) => [newOfficer, ...prev]);
+    SupabaseService.saveUserProfile(newOfficer);
     addAuditEntry(
       'AFO_CREATED_BY_ADMIN',
       `Admin enrolled new officer: ${newOfficer.fullName} (${newOfficer.employeeId}) at ${assignedOutlet.name}`,
@@ -1914,6 +1926,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     const target = users.find((u) => u.id === userId);
     if (!target) return;
     setUsers((prev) => prev.filter((u) => u.id !== userId));
+    SupabaseService.deleteUserProfile(userId);
     addAuditEntry('USER_DELETED', `Admin deleted AFO account: ${target.fullName} (${target.employeeId})`);
     showToast({ message: `AFO account "${target.fullName}" removed.`, type: 'info' });
   };
