@@ -698,6 +698,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         isActive: true
       };
       setOutlets((prev) => [outlet!, ...prev]);
+      SupabaseService.saveOutlet(outlet);
     } else if (!outlet) {
       outlet = outlets[0];
     }
@@ -1577,6 +1578,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       id: createUniqueId('OUT-CUSTOM')
     };
     setOutlets((prev) => [...prev, newOutlet]);
+    SupabaseService.saveOutlet(newOutlet);
     addAuditEntry('OUTLET_CREATED', `Added new BRAC Bank outlet: ${newOutlet.name} (${newOutlet.code})`);
     showToast({ message: `Outlet "${newOutlet.name}" registered successfully!`, type: 'success' });
   };
@@ -1596,21 +1598,23 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     const newOutlets = [...outlets];
     newOutlets[outletIndex] = updatedOutlet;
     setOutlets(newOutlets);
+    SupabaseService.saveOutlet(updatedOutlet);
 
     // Also update any users or submissions stationed at this outlet if name/code/location changed
     if (updates.name || updates.address || updates.code || updates.managerName) {
       setUsers((prev) =>
-        prev.map((u) =>
-          u.outletId === outletId
-            ? {
-                ...u,
-                outletName: updates.name || u.outletName,
-                outletCode: updates.code || u.outletCode,
-                outletLocation: updates.address || u.outletLocation,
-                supervisorName: updates.managerName || u.supervisorName
-              }
-            : u
-        )
+        prev.map((u) => {
+          if (u.outletId !== outletId) return u;
+          const updatedUser = {
+            ...u,
+            outletName: updates.name || u.outletName,
+            outletCode: updates.code || u.outletCode,
+            outletLocation: updates.address || u.outletLocation,
+            supervisorName: updates.managerName || u.supervisorName
+          };
+          SupabaseService.saveUserProfile(updatedUser);
+          return updatedUser;
+        })
       );
     }
 
@@ -1627,21 +1631,18 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     if (!target) return;
 
     const suspendReason = reason || 'Temporarily suspended by Central Administrator';
+    const suspendedOutlet: BRACBankOutlet = {
+      ...target,
+      isActive: false,
+      isSuspended: true,
+      status: 'SUSPENDED',
+      suspendedAt: new Date().toISOString(),
+      suspendedReason: suspendReason
+    };
     setOutlets((prev) =>
-      prev.map((o) => {
-        if (o.id === outletId) {
-          return {
-            ...o,
-            isActive: false,
-            isSuspended: true,
-            status: 'SUSPENDED',
-            suspendedAt: new Date().toISOString(),
-            suspendedReason: suspendReason
-          };
-        }
-        return o;
-      })
+      prev.map((o) => (o.id === outletId ? suspendedOutlet : o))
     );
+    SupabaseService.saveOutlet(suspendedOutlet);
 
     addAuditEntry(
       'OUTLET_SUSPENDED',
@@ -1655,21 +1656,18 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     const target = outlets.find((o) => o.id === outletId);
     if (!target) return;
 
+    const reactivatedOutlet: BRACBankOutlet = {
+      ...target,
+      isActive: true,
+      isSuspended: false,
+      status: 'ACTIVE',
+      suspendedAt: undefined,
+      suspendedReason: undefined
+    };
     setOutlets((prev) =>
-      prev.map((o) => {
-        if (o.id === outletId) {
-          return {
-            ...o,
-            isActive: true,
-            isSuspended: false,
-            status: 'ACTIVE',
-            suspendedAt: undefined,
-            suspendedReason: undefined
-          };
-        }
-        return o;
-      })
+      prev.map((o) => (o.id === outletId ? reactivatedOutlet : o))
     );
+    SupabaseService.saveOutlet(reactivatedOutlet);
 
     addAuditEntry(
       'OUTLET_REACTIVATED',
@@ -1698,6 +1696,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
     // Remove from active outlets array
     setOutlets((prev) => prev.filter((o) => o.id !== outletId));
+    SupabaseService.deleteOutlet(outletId);
 
     if (purgeData) {
       // Remove or unlink submissions for this deleted outlet
@@ -1745,6 +1744,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
     setDeletedOutlets((prev) => prev.filter((d) => d.id !== outletId));
     setOutlets((prev) => [restoredOutlet, ...prev]);
+    SupabaseService.saveOutlet(restoredOutlet);
 
     addAuditEntry('OUTLET_RESTORED', `Admin restored previously deleted outlet: ${target.name} (${target.code})`, target.name);
     showToast({ message: `Outlet "${target.name}" restored to active directory!`, type: 'success' });
