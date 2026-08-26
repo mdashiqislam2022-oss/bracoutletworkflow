@@ -1,0 +1,6 @@
+{
+  "name": "Outlet Work Data",
+  "description": "BRAC Bank outlet data collection, AFO activity tracking, and administrative control management portal.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
