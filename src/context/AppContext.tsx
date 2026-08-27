@@ -1012,6 +1012,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     const newReqs = [...passwordResetRequests];
     newReqs[requestIndex] = updatedRequest;
     setPasswordResetRequests(newReqs);
+    SupabaseService.savePasswordResetRequest(updatedRequest);
 
     addAuditEntry(
       'PASSWORD_RESET_RESOLVED',
