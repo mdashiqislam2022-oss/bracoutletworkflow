@@ -2200,16 +2200,19 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     showToast({ message: 'Broadcast note sent to station notifications!', type: 'success' });
   };
 
-  const markNotificationAsRead = (id: string) => {
-    setNotifications((prev) =>
-      prev.map((n) => (n.id === id ? { ...n, isRead: true } : n))
-    );
+    const markNotificationAsRead = (id: string) => {
+    setNotifications((prev) => {
+      const updated = prev.map((n) => (n.id === id ? { ...n, isRead: true } : n));
+      const target = updated.find((n) => n.id === id);
+      if (target) SupabaseService.saveNotification(target);
+      return updated;
+    });
   };
 
-  const markAllNotificationsAsRead = () => {
+    const markAllNotificationsAsRead = () => {
     if (authMode === 'USER' && currentUser) {
-      setNotifications((prev) =>
-        prev.map((n) => {
+      setNotifications((prev) => {
+        const updated = prev.map((n) => {
           if (n.targetAudience === 'ADMIN_ONLY') return n;
           if (n.targetUserId && n.targetUserId !== 'ALL') {
             const isUserMatch =
@@ -2224,18 +2227,28 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
             return n;
           }
           return { ...n, isRead: true };
-        })
-      );
+        });
+        updated.forEach((n, idx) => {
+          if (n.isRead && !prev[idx].isRead) SupabaseService.saveNotification(n);
+        });
+        return updated;
+      });
     } else {
-      setNotifications((prev) => prev.map((n) => ({ ...n, isRead: true })));
+      setNotifications((prev) => {
+        const updated = prev.map((n) => ({ ...n, isRead: true }));
+        updated.forEach((n, idx) => {
+          if (!prev[idx].isRead) SupabaseService.saveNotification(n);
+        });
+        return updated;
+      });
     }
     showToast({ message: 'All notifications marked as read.', type: 'info' });
   };
 
-  const clearNotifications = () => {
+    const clearNotifications = () => {
     if (authMode === 'USER' && currentUser) {
-      setNotifications((prev) =>
-        prev.filter((n) => {
+      setNotifications((prev) => {
+        const remaining = prev.filter((n) => {
           if (n.targetAudience === 'ADMIN_ONLY') return true;
           if (n.targetUserId && n.targetUserId !== 'ALL') {
             const isUserMatch =
@@ -2248,10 +2261,18 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
             return n.targetOutletId !== currentUser.outletId;
           }
           return false;
-        })
-      );
+        });
+        const removedIds = new Set(remaining.map((n) => n.id));
+        prev.forEach((n) => {
+          if (!removedIds.has(n.id)) SupabaseService.deleteNotification(n.id);
+        });
+        return remaining;
+      });
     } else {
-      setNotifications([]);
+      setNotifications((prev) => {
+        prev.forEach((n) => SupabaseService.deleteNotification(n.id));
+        return [];
+      });
     }
     showToast({ message: 'Cleared notification center.', type: 'info' });
   };
