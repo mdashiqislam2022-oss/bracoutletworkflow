@@ -650,15 +650,17 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       };
     }
 
-    const hasPendingResetNotice = !!existingUser.needsResetLoginNotice;
+        const hasPendingResetNotice = !!existingUser.needsResetLoginNotice;
 
     const updatedUser: UserProfile = {
       ...existingUser,
       needsResetLoginNotice: false,
-      lastLoginAt: new Date().toISOString()
+      lastLoginAt: new Date().toISOString(),
+      isOnline: true
     };
 
     setUsers((prev) => prev.map((u) => (u.id === updatedUser.id ? updatedUser : u)));
+    SupabaseService.saveUserProfile(updatedUser);
     setCurrentUser(updatedUser);
     setCurrentAdmin(null);
     setAuthMode('USER');
@@ -1417,9 +1419,12 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     return { success: true };
   };
 
-  const logout = () => {
+    const logout = () => {
     if (currentUser) {
       addAuditEntry('USER_LOGOUT', `AFO ${currentUser.fullName} logged out.`);
+      const offlineUser = { ...currentUser, isOnline: false };
+      setUsers((prev) => prev.map((u) => (u.id === offlineUser.id ? offlineUser : u)));
+      SupabaseService.saveUserProfile(offlineUser);
     } else if (currentAdmin) {
       addAuditEntry('ADMIN_LOGOUT', `Admin ${currentAdmin.fullName} logged out.`);
     }
