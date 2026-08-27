@@ -73,6 +73,13 @@ export const SupportModal: React.FC<SupportModalProps> = ({ isOpen, onClose }) =
   )}&body=${encodeURIComponent(
     'Hi Ashiq,\n\nI need technical / operational assistance with the Outlet Workflow portal.\n\nOutlet Name:\nIssue Details:\n'
   )}`;
+    const gmailWebUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(
+    supportEmail
+  )}&su=${encodeURIComponent(
+    'Outlet Workflow - Direct Support Request'
+  )}&body=${encodeURIComponent(
+    'Hi Ashiq,\n\nI need technical / operational assistance with the Outlet Workflow portal.\n\nOutlet Name:\nIssue Details:\n'
+  )}`;
 
   const modalContent = (
     <div 
@@ -232,7 +239,10 @@ export const SupportModal: React.FC<SupportModalProps> = ({ isOpen, onClose }) =
 
             <div className="mt-3.5 flex items-center gap-2">
               <a
-                href={mailtoUrl}
+                              
+                href={gmailWebUrl}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-sky-600 hover:bg-sky-500 active:scale-[0.99] text-white text-xs sm:text-sm font-bold shadow-md transition-all cursor-pointer select-none"
               >
                 <Mail className="w-4 h-4 shrink-0" />
