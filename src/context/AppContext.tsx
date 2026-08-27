@@ -550,14 +550,14 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   // User Credential Login (Username / Gmail and Password)
   const loginUserWithCredentials = (usernameOrEmail: string, password?: string) => {
-    const cleanIdentifier = (usernameOrEmail || '').trim().toLowerCase();
+     const rawIdentifier = (usernameOrEmail || '').trim(); const cleanIdentifier = rawIdentifier.toLowerCase();
     if (!cleanIdentifier) {
       return { success: false, message: 'Please enter your username or Gmail address.' };
     }
 
     const existingUser = users.find(
       (u) =>
-        (u.username && u.username.toLowerCase() === cleanIdentifier) ||
+        (u.username && u.username === rawIdentifier) ||
         u.email.toLowerCase() === cleanIdentifier ||
         u.phone.replace(/[\s-]/g, '') === cleanIdentifier.replace(/[\s-]/g, '')
     );
