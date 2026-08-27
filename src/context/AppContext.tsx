@@ -1546,9 +1546,11 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   };
 
   const updateAdminProfile = (updates: Partial<AdminAccount>) => {
-    setCurrentAdmin((prev) => {
+        setCurrentAdmin((prev) => {
       if (!prev) return prev;
-      return { ...prev, ...updates };
+      const updatedAdmin = { ...prev, ...updates };
+      SupabaseService.saveAdminAccount(updatedAdmin);
+      return updatedAdmin;
     });
 
     setAdmins((prev) =>
