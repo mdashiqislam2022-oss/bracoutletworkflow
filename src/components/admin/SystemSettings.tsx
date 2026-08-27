@@ -18,6 +18,7 @@ import {
   Image as ImageIcon
 } from 'lucide-react';
 import { t } from '../../utils/translations';
+   import { SupabaseService } from '../../services/supabaseService';
 
 const PRESET_AVATARS = [
   'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
@@ -64,7 +65,7 @@ export const SystemSettings: React.FC = () => {
   const [newOutletAddress, setNewOutletAddress] = useState('');
   const [isAddingOutlet, setIsAddingOutlet] = useState(false);
 
-  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
@@ -73,14 +74,15 @@ export const SystemSettings: React.FC = () => {
       return;
     }
 
-    const reader = new FileReader();
-    reader.onload = () => {
-      if (typeof reader.result === 'string') {
-        setAdminAvatarUrl(reader.result);
-        showToast({ message: 'Photo preview loaded! Click Save to apply.', type: 'info' });
-      }
-    };
-    reader.readAsDataURL(file);
+    const ownerId = currentAdmin?.id || currentUser?.id || 'admin';
+    showToast({ message: 'Uploading photo...', type: 'info' });
+    const uploadedUrl = await SupabaseService.uploadAvatar(file, ownerId);
+    if (uploadedUrl) {
+      setAdminAvatarUrl(uploadedUrl);
+      showToast({ message: 'Photo uploaded! Click Save to apply.', type: 'success' });
+    } else {
+      showToast({ message: 'Photo upload failed. Please try again.', type: 'error' });
+    }
   };
 
   const handleApplyCustomUrl = (e: React.FormEvent) => {
