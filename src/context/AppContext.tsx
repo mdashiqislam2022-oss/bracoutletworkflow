@@ -485,6 +485,47 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
           setSubmissions((prev) => prev.filter((s) => s.id !== payload.old.id));
         }
       },
+            onUserChange: (payload) => {
+        if (payload.eventType === 'INSERT' && payload.new) {
+          const u = payload.new;
+          const mappedUser = {
+            id: u.id,
+            email: u.email,
+            username: u.username,
+            password: u.password,
+            fullName: u.full_name,
+            phone: u.phone,
+            avatarUrl: u.avatar_url,
+            outletId: u.outlet_id,
+            outletName: u.outlet_name,
+            outletCode: u.outlet_code,
+            outletLocation: u.outlet_location,
+            employeeId: u.employee_id,
+            designation: u.designation,
+            yearsOfService: Number(u.years_of_service || 0),
+            bio: u.bio,
+            bloodGroup: u.blood_group,
+            emergencyContact: u.emergency_contact,
+            supervisorName: u.supervisor_name,
+            role: u.role || 'USER',
+            status: u.status || 'ACTIVE',
+            needsResetLoginNotice: u.needs_reset_login_notice || false,
+            createdAt: u.created_at,
+            lastLoginAt: u.last_login_at,
+            isOnline: u.is_online || false
+          };
+          setUsers((prev) => [mappedUser, ...prev.filter((x) => x.id !== mappedUser.id)]);
+        } else if (payload.eventType === 'UPDATE' && payload.new) {
+          const u = payload.new;
+          setUsers((prev) =>
+            prev.map((x) =>
+              x.id === u.id
+                ? { ...x, status: u.status, isOnline: u.is_online || false, lastLoginAt: u.last_login_at }
+                : x
+            )
+          );
+        }
+      },
       onNotificationChange: (payload) => {
         if (payload.eventType === 'INSERT' && payload.new) {
           const n = payload.new;
