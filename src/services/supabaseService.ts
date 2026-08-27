@@ -351,7 +351,7 @@ export const SupabaseService = {
           previousOutletAccessRevoked: u.previous_outlet_access_revoked || false,
           needsResetLoginNotice: u.needs_reset_login_notice || false,
           createdAt: u.created_at,
-          lastLoginAt: u.last_login_at
+          lastLoginAt: u.last_login_at,
           isOnline: u.is_online || false
         })),
         admins: (adminsRes.data || []).map((a: any) => ({
@@ -574,7 +574,7 @@ export const SupabaseService = {
         previous_outlet_access_revoked: user.previousOutletAccessRevoked || false,
         needs_reset_login_notice: user.needsResetLoginNotice || false,
         updated_at: new Date().toISOString(),
-        last_login_at: user.lastLoginAt
+        last_login_at: user.lastLoginAt,
         is_online: user.isOnline || false
       };
       await supabase.from('user_profiles').upsert(dbRow);
