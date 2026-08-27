@@ -474,7 +474,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
           setLoanRecords((prev) => prev.filter((r) => r.id !== payload.old.id));
         }
       },
-      onSubmissionChange: (payload) => {
+            onSubmissionChange: (payload) => {
         if (payload.eventType === 'INSERT' && payload.new) {
           const sub = mapDbToSubmission(payload.new);
           setSubmissions((prev) => [sub, ...prev.filter((s) => s.id !== sub.id)]);
@@ -483,6 +483,66 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
           setSubmissions((prev) => prev.map((s) => (s.id === sub.id ? sub : s)));
         } else if (payload.eventType === 'DELETE' && payload.old) {
           setSubmissions((prev) => prev.filter((s) => s.id !== payload.old.id));
+        }
+      },
+      onNotificationChange: (payload) => {
+        if (payload.eventType === 'INSERT' && payload.new) {
+          const n = payload.new;
+          const notif = {
+            id: n.id,
+            title: n.title || '',
+            message: n.message || '',
+            type: n.type || 'INFO',
+            priority: n.priority || 'MEDIUM',
+            targetUserId: n.target_user_id || 'ALL',
+            targetOutletId: n.target_outlet_id || 'ALL',
+            targetAudience: n.target_audience || 'ALL',
+            linkTab: n.link_tab || 'dashboard',
+            isRead: n.is_read || false,
+            timestamp: n.created_at || new Date().toISOString()
+          };
+          setNotifications((prev) => [notif, ...prev.filter((x) => x.id !== notif.id)]);
+        } else if (payload.eventType === 'UPDATE' && payload.new) {
+          const n = payload.new;
+          setNotifications((prev) =>
+            prev.map((x) => (x.id === n.id ? { ...x, isRead: n.is_read || false } : x))
+          );
+        }
+      },
+      onResetRequestChange: (payload) => {
+        if (payload.eventType === 'INSERT' && payload.new) {
+          const r = payload.new;
+          const req = {
+            id: r.id,
+            userId: r.user_id,
+            fullName: r.full_name,
+            emailOrPhone: r.email_or_phone,
+            outletId: r.outlet_id,
+            outletName: r.outlet_name,
+            outletCode: r.outlet_code,
+            userNote: r.user_note,
+            requestedAt: r.requested_at,
+            status: r.status,
+            resolvedAt: r.resolved_at,
+            resolvedBy: r.resolved_by,
+            adminNote: r.admin_note
+          };
+          setPasswordResetRequests((prev) => [req, ...prev.filter((x) => x.id !== req.id)]);
+        } else if (payload.eventType === 'UPDATE' && payload.new) {
+          const r = payload.new;
+          setPasswordResetRequests((prev) =>
+            prev.map((x) =>
+              x.id === r.id
+                ? {
+                    ...x,
+                    status: r.status,
+                    resolvedAt: r.resolved_at,
+                    resolvedBy: r.resolved_by,
+                    adminNote: r.admin_note
+                  }
+                : x
+            )
+          );
         }
       }
     });
@@ -1050,6 +1110,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     const newReqs = [...passwordResetRequests];
     newReqs[requestIndex] = updatedRequest;
     setPasswordResetRequests(newReqs);
+    SupabaseService.savePasswordResetRequest(updatedRequest);
 
     addAuditEntry('PASSWORD_RESET_REJECTED', `Admin rejected reset request for ${req.fullName}`);
     showToast({ message: `Reset request for ${req.fullName} rejected.`, type: 'info' });
@@ -1076,6 +1137,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     const newReqs = [...passwordResetRequests];
     newReqs[requestIndex] = updatedRequest;
     setPasswordResetRequests(newReqs);
+    SupabaseService.savePasswordResetRequest(updatedRequest);
 
     addAuditEntry('PASSWORD_RESET_CANCELLED', `Admin cancelled reset request for ${req.fullName}`);
     showToast({ message: `Reset request for ${req.fullName} cancelled.`, type: 'info' });
@@ -1102,6 +1164,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     const newReqs = [...passwordResetRequests];
     newReqs[requestIndex] = updatedRequest;
     setPasswordResetRequests(newReqs);
+    SupabaseService.savePasswordResetRequest(updatedRequest);
 
     addAuditEntry('PASSWORD_RESET_REOPENED', `Admin retrieved and re-opened reset request for ${req.fullName}`);
     showToast({ message: `Reset request for ${req.fullName} retrieved and moved back to Pending!`, type: 'success' });
