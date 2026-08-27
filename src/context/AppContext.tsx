@@ -2084,6 +2084,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     };
 
     setNotifications((prev) => [newNotification, ...prev]);
+    SupabaseService.saveNotification(newNotification);
     addAuditEntry('NOTIFICATION_BROADCAST', `Admin Note broadcasted: "${note.title}"`);
     showToast({ message: 'Broadcast note sent to station notifications!', type: 'success' });
   };
