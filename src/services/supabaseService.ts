@@ -706,6 +706,15 @@ export const SupabaseService = {
       console.warn('Error saving notification to Supabase:', err);
     }
   },
+    // Delete Station Notification
+  async deleteNotification(id: string) {
+    if (!this.isAvailable() || !supabase) return;
+    try {
+      await supabase.from('station_notifications').delete().eq('id', id);
+    } catch (err) {
+      console.warn('Error deleting notification from Supabase:', err);
+    }
+  },
 
   // Save Password Reset Request
   async savePasswordResetRequest(req: PasswordResetRequest) {
