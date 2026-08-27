@@ -18,6 +18,7 @@ import {
   Trash2
 } from 'lucide-react';
 import { t } from '../../utils/translations';
+   import { SupabaseService } from '../../services/supabaseService';
 
 export const UserProfileView: React.FC = () => {
   const { currentUser, updateCurrentUserProfile, userPreferences } = useApp();
@@ -53,7 +54,9 @@ export const UserProfileView: React.FC = () => {
     updateCurrentUserProfile(formData);
   };
 
-  const handleDeviceFileUpload = (file: File) => {
+    const [isUploadingAvatar, setIsUploadingAvatar] = useState(false);
+
+  const handleDeviceFileUpload = async (file: File) => {
     if (!file.type.startsWith('image/')) {
       alert('Please upload a valid image file (PNG, JPG, JPEG, WEBP).');
       return;
@@ -62,14 +65,16 @@ export const UserProfileView: React.FC = () => {
       alert('Image size exceeds 5MB limit. Please choose a smaller photo.');
       return;
     }
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      if (event.target?.result) {
-        setFormData((prev) => ({ ...prev, avatarUrl: event.target!.result as string }));
-        setShowAvatarPicker(false);
-      }
-    };
-    reader.readAsDataURL(file);
+    setIsUploadingAvatar(true);
+    const uploadedUrl = await SupabaseService.uploadAvatar(file, currentUser.id);
+    setIsUploadingAvatar(false);
+    if (uploadedUrl) {
+      setFormData((prev) => ({ ...prev, avatarUrl: uploadedUrl }));
+      updateCurrentUserProfile({ avatarUrl: uploadedUrl });
+      setShowAvatarPicker(false);
+    } else {
+      alert('Photo upload failed. Please check your internet connection and try again.');
+    }
   };
 
   const onFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
