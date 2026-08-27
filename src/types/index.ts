@@ -80,6 +80,7 @@ export interface UserProfile {
   transferHistory?: AfoTransferRecord[];
   createdAt: string;
   lastLoginAt: string;
+  isOnline?: boolean;
 }
 
 export interface PasswordResetRequest {
