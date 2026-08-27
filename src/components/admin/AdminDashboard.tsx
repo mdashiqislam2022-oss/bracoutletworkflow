@@ -593,9 +593,9 @@ export const AdminDashboard: React.FC = () => {
                                 (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80';
                               }}
                             />
-                            <span className={`absolute bottom-0 right-0 w-3 h-3 rounded-full border-2 ${
+                                                        <span className={`absolute bottom-0 right-0 w-3 h-3 rounded-full border-2 ${
                               isDark ? 'border-slate-900' : 'border-white'
-                            } ${user.status === 'ACTIVE' ? 'bg-emerald-500' : 'bg-red-500'}`} />
+                            } ${user.isOnline ? 'bg-emerald-500 animate-pulse' : 'bg-slate-400'}`} />
                           </div>
 
                           <div className="min-w-0">
