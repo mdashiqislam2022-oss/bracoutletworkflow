@@ -265,6 +265,28 @@ export const mapDbToOutlet = (row: any): BRACBankOutlet => {
 export const SupabaseService = {
   // Check availability
   isAvailable: () => isSupabaseConfigured && !!supabase,
+    // Upload a profile picture to Supabase Storage and return its public URL
+  async uploadAvatar(file: File, ownerId: string): Promise<string | null> {
+    if (!this.isAvailable() || !supabase) return null;
+    try {
+      const fileExt = file.name.split('.').pop() || 'jpg';
+      const fileName = `${ownerId}-${Date.now()}.${fileExt}`;
+      const { error: uploadError } = await supabase.storage
+        .from('avatars')
+        .upload(fileName, file, { upsert: true, cacheControl: '3600' });
+
+      if (uploadError) {
+        console.warn('Error uploading avatar to Supabase Storage:', uploadError);
+        return null;
+      }
+
+      const { data } = supabase.storage.from('avatars').getPublicUrl(fileName);
+      return data?.publicUrl || null;
+    } catch (err) {
+      console.warn('Error uploading avatar:', err);
+      return null;
+    }
+  },
 
   // Fetch all initial data
   async fetchAllData() {
