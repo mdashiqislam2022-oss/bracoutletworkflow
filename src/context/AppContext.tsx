@@ -896,6 +896,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     };
 
     setPasswordResetRequests((prev) => [newRequest, ...prev]);
+    SupabaseService.savePasswordResetRequest(newRequest);
 
     // Send a station notification to Admin ONLY (will not appear in user notification list)
     sendNotificationNote({
