@@ -191,13 +191,7 @@ export const UserManagement: React.FC = () => {
   const isAfoOnline = (user: UserProfile | null | undefined) => {
     if (!user) return false;
     if (user.status === 'SUSPENDED') return false;
-    return (
-      authMode === 'USER' &&
-      currentUser !== null &&
-      (currentUser.id === user.id ||
-        (Boolean(currentUser.email) && Boolean(user.email) && currentUser.email.toLowerCase() === user.email.toLowerCase()) ||
-        (Boolean(currentUser.username) && Boolean(user.username) && currentUser.username.toLowerCase() === user.username.toLowerCase()))
-    );
+    return user.isOnline === true;
   };
 
   // Counts for the 4 AFO Metric Summary Cards
@@ -2523,7 +2517,7 @@ export const UserManagement: React.FC = () => {
                             {selectedUser.lastLoginAt ? new Date(selectedUser.lastLoginAt).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' }) : 'Active recently'}
                           </span>
                         </div>
-                        <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                                                <span className={`w-2 h-2 rounded-full ${isAfoOnline(selectedUser) ? 'bg-emerald-500 animate-pulse' : 'bg-slate-400'}`}></span>
                       </div>
                     </div>
                   </div>
