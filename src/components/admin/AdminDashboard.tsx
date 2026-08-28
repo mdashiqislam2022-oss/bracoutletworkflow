@@ -93,6 +93,14 @@ export const AdminDashboard: React.FC = () => {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const quickFindInputRef = useRef<HTMLInputElement>(null);
   const quickFindContainerRef = useRef<HTMLDivElement>(null);
+  
+  const isAfoOnline = (user: UserProfile) => {
+    if (user.status === 'SUSPENDED') return false;
+    if (user.isOnline !== true) return false;
+    if (!user.lastSeenAt) return false;
+    const secondsSinceLastSeen = (Date.now() - new Date(user.lastSeenAt).getTime()) / 1000;
+    return secondsSinceLastSeen < 45;
+  };
 
   const handleRefreshDashboard = () => {
     setIsRefreshing(true);
@@ -595,7 +603,7 @@ export const AdminDashboard: React.FC = () => {
                             />
                                                         <span className={`absolute bottom-0 right-0 w-3 h-3 rounded-full border-2 ${
                               isDark ? 'border-slate-900' : 'border-white'
-                            } ${user.isOnline ? 'bg-emerald-500 animate-pulse' : 'bg-slate-400'}`} />
+                                                        } ${isAfoOnline(user) ? 'bg-emerald-500 animate-pulse' : 'bg-slate-400'}`} />
                           </div>
 
                           <div className="min-w-0">
@@ -1046,7 +1054,7 @@ export const AdminDashboard: React.FC = () => {
                           />
                                                     <span className={`absolute bottom-0 right-0 w-3.5 h-3.5 rounded-full border-2 ${
                             isDark ? 'border-slate-900' : 'border-white'
-                          } ${user.isOnline ? 'bg-emerald-500 animate-pulse' : 'bg-slate-400'}`} />
+                                                    } ${isAfoOnline(user) ? 'bg-emerald-500 animate-pulse' : 'bg-slate-400'}`} />
                         </div>
 
                         <div>
