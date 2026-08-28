@@ -2707,6 +2707,7 @@ export const UserManagement: React.FC = () => {
                       </div>
                     </div>
                   </div>
+                                  </div>
               )}
 
               {dossierTab === 'SEND_NOTE' && (
