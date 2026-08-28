@@ -170,8 +170,8 @@ export const AuthPage: React.FC = () => {
 
     setIsLoggingIn(true);
 
-    setTimeout(() => {
-      const res = loginUserWithCredentials(cleanId, cleanPass);
+        setTimeout(async () => {
+      const res = await loginUserWithCredentials(cleanId, cleanPass);
       setIsLoggingIn(false);
 
       if (!res.success) {
