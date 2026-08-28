@@ -111,7 +111,7 @@ export const UserManagement: React.FC = () => {
   const [noteMessage, setNoteMessage] = useState('');
   const [notePriority, setNotePriority] = useState<'LOW' | 'MEDIUM' | 'HIGH'>('HIGH');
   const [noteType, setNoteType] = useState<'ADMIN_NOTE' | 'ALERT' | 'INFO' | 'APPROVAL'>('ADMIN_NOTE');
-  const [sendAsMailAlso, setSendAsMailAlso] = useState(true);
+    const [sendAsMailAlso, setSendAsMailAlso] = useState(false);
   const [isSendingNote, setIsSendingNote] = useState(false);
   const [noteSuccessMsg, setNoteSuccessMsg] = useState<string | null>(null);
 
