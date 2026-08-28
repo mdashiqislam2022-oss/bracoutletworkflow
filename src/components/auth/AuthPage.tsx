@@ -87,6 +87,7 @@ export const AuthPage: React.FC = () => {
             if (payload.email && payload.email.toLowerCase().endsWith('@gmail.com')) {
               setSignupEmail(payload.email);
               setGoogleEmailVerified(true);
+                            google.accounts.id.cancel();
             } else {
               setGoogleEmailVerified(false);
               alert('Please select a valid Gmail (@gmail.com) account.');
