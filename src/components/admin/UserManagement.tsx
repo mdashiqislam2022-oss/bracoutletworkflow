@@ -187,6 +187,12 @@ export const UserManagement: React.FC = () => {
   const resolvedRequestsCount = passwordResetRequests.filter((r) => r.status === 'RESOLVED').length;
   const cancelledRequestsCount = passwordResetRequests.filter((r) => r.status === 'CANCELLED' || r.status === 'REJECTED').length;
 
+  const [, forceOnlineStatusRecheck] = useState(0);
+  useEffect(() => {
+    const tick = setInterval(() => forceOnlineStatusRecheck((n) => n + 1), 15000);
+    return () => clearInterval(tick);
+  }, []);
+  
   // Real-time active status analysis for AFOs
     const isAfoOnline = (user: UserProfile | null | undefined) => {
     if (!user) return false;
