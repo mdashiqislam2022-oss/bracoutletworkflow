@@ -2121,7 +2121,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   };
 
   // Mail & Messages logic
-  const sendMailMessage = (msg: {
+    const sendMailMessage = (msg: {
     recipientUserId?: string;
     recipientOutletId?: string;
     subject: string;
@@ -2149,23 +2149,34 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     };
 
     setMailMessages((prev) => [newMail, ...prev]);
+    SupabaseService.saveMailMessage(newMail);
     addAuditEntry('MAIL_DISPATCHED', `Sent message: "${msg.subject}"`);
     showToast({ message: 'Mail / Memo dispatched successfully!', type: 'success' });
   };
 
   const markMailAsRead = (id: string) => {
-    setMailMessages((prev) =>
-      prev.map((m) => (m.id === id ? { ...m, isRead: true } : m))
-    );
+    setMailMessages((prev) => {
+      const updated = prev.map((m) => (m.id === id ? { ...m, isRead: true } : m));
+      const target = updated.find((m) => m.id === id);
+      if (target) SupabaseService.saveMailMessage(target);
+      return updated;
+    });
   };
 
   const markAllMailAsRead = () => {
-    setMailMessages((prev) => prev.map((m) => ({ ...m, isRead: true })));
+    setMailMessages((prev) => {
+      const updated = prev.map((m) => ({ ...m, isRead: true }));
+      updated.forEach((m, idx) => {
+        if (!prev[idx].isRead) SupabaseService.saveMailMessage(m);
+      });
+      return updated;
+    });
     showToast({ message: 'All messages marked as read.', type: 'info' });
   };
 
   const deleteMailMessage = (id: string) => {
     setMailMessages((prev) => prev.filter((m) => m.id !== id));
+    SupabaseService.deleteMailMessage(id);
     showToast({ message: 'Message removed from inbox.', type: 'info' });
   };
 
