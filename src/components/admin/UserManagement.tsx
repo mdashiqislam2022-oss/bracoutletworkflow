@@ -260,6 +260,9 @@ export const UserManagement: React.FC = () => {
   const userSubmissions = selectedUser
     ? submissions.filter((s) => s.userId === selectedUser.id)
     : [];
+    const totalChequeCount = userSubmissions.filter((s) => s.serviceCategory === 'CHEQUE_BOOK_DISPATCH').length;
+  const totalCardCount = userSubmissions.filter((s) => s.serviceCategory === 'DEBIT_CREDIT_CARD').length;
+  const totalLoanCount = userSubmissions.filter((s) => s.serviceCategory === 'LOAN_KYC_VERIFICATION').length;
 
   const handleReassignOutlet = () => {
     if (!selectedUser) return;
@@ -2680,45 +2683,30 @@ export const UserManagement: React.FC = () => {
                     </div>
                   )}
 
-                  {/* 5. Submitted Work Activity Summary */}
+                                    {/* 5. Submitted Work Activity Summary */}
                   <div>
                     <h4 className={`font-bold uppercase tracking-wider text-[11px] mb-2 ${isDark ? 'text-slate-300' : 'text-slate-900'}`}>
-                      Submitted Work Activity ({userSubmissions.length} records)
+                      Submitted Work Activity Summary
                     </h4>
-                    <div className={`border rounded-2xl overflow-hidden max-h-48 overflow-y-auto ${
-                      isDark ? 'border-slate-800 bg-slate-950/50' : 'border-slate-100 bg-white'
-                    }`}>
-                      {userSubmissions.length > 0 ? (
-                        <table className="w-full text-left text-xs">
-                          <thead className={`sticky top-0 ${
-                            isDark ? 'bg-slate-900 text-slate-400' : 'bg-[#F8FAFC] text-slate-500'
-                          }`}>
-                            <tr>
-                              <th className="p-2.5">Tracking No</th>
-                              <th className="p-2.5">Customer</th>
-                              <th className="p-2.5">Status</th>
-                              <th className="p-2.5">Date</th>
-                            </tr>
-                          </thead>
-                          <tbody className={`divide-y ${isDark ? 'divide-slate-800/80 text-slate-300' : 'divide-slate-100 text-slate-700'}`}>
-                            {userSubmissions.map((sub, idx) => (
-                              <tr key={`${sub.id}-${idx}`}>
-                                <td className={`p-2.5 font-mono font-bold ${isDark ? 'text-emerald-400' : 'text-slate-900'}`}>{sub.trackingNo}</td>
-                                <td className="p-2.5 font-medium">{sub.customerName}</td>
-                                <td className="p-2.5 text-emerald-400 font-semibold">{sub.status.replace(/_/g, ' ')}</td>
-                                <td className="p-2.5 text-slate-400">{new Date(sub.submittedAt).toLocaleDateString()}</td>
-                              </tr>
-                            ))}
-                          </tbody>
-                        </table>
-                      ) : (
-                        <div className="p-6 text-center text-slate-400">
-                          No field data entries submitted yet.
-                        </div>
-                      )}
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                      <div className={`p-3.5 rounded-2xl border text-center ${isDark ? 'border-slate-800 bg-slate-950/50' : 'border-slate-100 bg-white'}`}>
+                        <span className="text-[10px] uppercase font-bold text-slate-400 block mb-1">Total Cheque</span>
+                        <span className={`text-2xl font-extrabold ${isDark ? 'text-emerald-400' : 'text-slate-900'}`}>{totalChequeCount}</span>
+                      </div>
+                      <div className={`p-3.5 rounded-2xl border text-center ${isDark ? 'border-slate-800 bg-slate-950/50' : 'border-slate-100 bg-white'}`}>
+                        <span className="text-[10px] uppercase font-bold text-slate-400 block mb-1">Total Card</span>
+                        <span className={`text-2xl font-extrabold ${isDark ? 'text-emerald-400' : 'text-slate-900'}`}>{totalCardCount}</span>
+                      </div>
+                      <div className={`p-3.5 rounded-2xl border text-center ${isDark ? 'border-slate-800 bg-slate-950/50' : 'border-slate-100 bg-white'}`}>
+                        <span className="text-[10px] uppercase font-bold text-slate-400 block mb-1">Total Loan</span>
+                        <span className={`text-2xl font-extrabold ${isDark ? 'text-emerald-400' : 'text-slate-900'}`}>{totalLoanCount}</span>
+                      </div>
+                      <div className={`p-3.5 rounded-2xl border text-center ${isDark ? 'border-slate-800 bg-slate-950/50' : 'border-slate-100 bg-white'}`}>
+                        <span className="text-[10px] uppercase font-bold text-slate-400 block mb-1">Total Submission</span>
+                        <span className={`text-2xl font-extrabold ${isDark ? 'text-emerald-400' : 'text-slate-900'}`}>{userSubmissions.length}</span>
+                      </div>
                     </div>
                   </div>
-                </div>
               )}
 
               {dossierTab === 'SEND_NOTE' && (
