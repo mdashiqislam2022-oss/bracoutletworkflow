@@ -593,6 +593,17 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       unsubscribe();
     };
   }, []);
+    // Heartbeat: AFO's tab open thakle proti 20 second por "still active" signal pathabe
+  useEffect(() => {
+    if (authMode !== 'USER' || !currentUser) return;
+
+    SupabaseService.updateHeartbeat(currentUser.id);
+    const heartbeatInterval = setInterval(() => {
+      SupabaseService.updateHeartbeat(currentUser.id);
+    }, 20000);
+
+    return () => clearInterval(heartbeatInterval);
+  }, [authMode, currentUser?.id]);
 
   // Toast auto-clear
   const showToast = (
