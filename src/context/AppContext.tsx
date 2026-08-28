@@ -185,10 +185,10 @@ export interface AppContextType {
   }) => { success: boolean; message?: string };
 
   // Auth methods & Aliases
-  loginUserWithCredentials: (usernameOrEmail: string, password?: string) => { success: boolean; needsSignup?: boolean; message?: string };
-  loginUser: (usernameOrEmail: string, password?: string) => { success: boolean; needsSignup?: boolean; message?: string };
-  loginUserByEmail: (email: string) => { success: boolean; needsSignup?: boolean; message?: string };
-  loginWithGoogle: (email: string) => { success: boolean; needsSignup?: boolean; message?: string };
+    loginUserWithCredentials: (usernameOrEmail: string, password?: string) => Promise<{ success: boolean; needsSignup?: boolean; message?: string }>;
+  loginUser: (usernameOrEmail: string, password?: string) => Promise<{ success: boolean; needsSignup?: boolean; message?: string }>;
+  loginUserByEmail: (email: string) => Promise<{ success: boolean; needsSignup?: boolean; message?: string }>;
+  loginWithGoogle: (email: string) => Promise<{ success: boolean; needsSignup?: boolean; message?: string }>;
   signUpUser: (data: { email: string; fullName: string; phone: string; outletId?: string; outletName?: string; outletCode?: string; username?: string; password?: string; avatarUrl?: string; autoLogin?: boolean }) => { success: boolean; message?: string; user?: UserProfile };
   signupWithGoogle: (data: { email: string; fullName: string; phone: string; outletId?: string; outletName?: string; outletCode?: string; username?: string; password?: string; avatarUrl?: string; autoLogin?: boolean }) => { success: boolean; message?: string; user?: UserProfile };
   resetUserCredentials: (
@@ -687,7 +687,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   };
 
   // User Credential Login (Username / Gmail and Password)
-  const loginUserWithCredentials = (usernameOrEmail: string, password?: string) => {
+    const loginUserWithCredentials = async (usernameOrEmail: string, password?: string) => {
      const rawIdentifier = (usernameOrEmail || '').trim(); const cleanIdentifier = rawIdentifier.toLowerCase();
     if (!cleanIdentifier) {
       return { success: false, message: 'Please enter your username or Gmail address.' };
@@ -720,11 +720,20 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       };
     }
 
-    // If a password was provided and the user has a password, check it
+        // If a password was provided and the user has a password, check it
     if (password && existingUser.password && existingUser.password !== password) {
       return { 
         success: false, 
         message: 'Incorrect password. Please verify your 4-digit password and try again.' 
+      };
+    }
+
+    // Real-time Single-Session Check: onno tab/browser e already active thakle login block
+    const sessionStatus = await SupabaseService.checkUserActiveSession(existingUser.id);
+    if (sessionStatus.isActive) {
+      return {
+        success: false,
+        message: `Already logged in: ${existingUser.fullName}, this AFO account is currently active on another browser/tab. Please log out there first, or wait a few seconds and try again.`
       };
     }
 
