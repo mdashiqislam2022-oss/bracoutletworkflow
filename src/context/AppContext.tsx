@@ -2277,7 +2277,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     showToast({ message: 'Cleared notification center.', type: 'info' });
   };
 
-  const unreadMailCount = useMemo(() => {
+    const unreadMailCount = useMemo(() => {
     return mailMessages.filter((m) => {
       if (m.isRead) return false;
       if (authMode === 'USER' && currentUser) {
@@ -2293,7 +2293,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         }
         return true;
       }
-      return true;
+      // Admin: only count mail actually sent TO the admin, matching MailModal's inbox filter.
+      return m.senderRole === 'USER';
     }).length;
   }, [mailMessages, authMode, currentUser]);
 
