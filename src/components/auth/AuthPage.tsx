@@ -676,7 +676,7 @@ export const AuthPage: React.FC = () => {
                     4. Gmail Address (Verify with Google) *
                   </label>
                   {googleEmailVerified && signupEmail ? (
-                    <div className={`flex items-center justify-between gap-2 px-3.5 py-2.5 rounded-xl border text-xs font-semibold ${
+                                        <div key="google-email-verified" className={`flex items-center justify-between gap-2 px-3.5 py-2.5 rounded-xl border text-xs font-semibold ${
                       isDark ? 'bg-emerald-500/10 border-emerald-500/40 text-emerald-400' : 'bg-emerald-50 border-emerald-200 text-emerald-700'
                     }`}>
                       <span className="flex items-center gap-1.5">
@@ -694,7 +694,7 @@ export const AuthPage: React.FC = () => {
                       </button>
                     </div>
                   ) : (
-                    <div id="google-signin-button" className="flex justify-start" />
+                                        <div key="google-signin-button-wrapper" id="google-signin-button" className="flex justify-start" />
                   )}
                 </div>
 
