@@ -81,6 +81,7 @@ export interface UserProfile {
   createdAt: string;
   lastLoginAt: string;
   isOnline?: boolean;
+    lastSeenAt?: string;
 }
 
 export interface PasswordResetRequest {
