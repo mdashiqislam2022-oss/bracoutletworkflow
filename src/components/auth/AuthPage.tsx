@@ -123,7 +123,7 @@ export const AuthPage: React.FC = () => {
     return () => {
       cancelled = true;
     };
-  }, [authView]);
+    }, [authView, googleEmailVerified]);
   // Simplified User Request Reset from Admin State (Single large note box)
   const [resetReqUserNote, setResetReqUserNote] = useState('');
   const [resetSuccessDetails, setResetSuccessDetails] = useState<{
