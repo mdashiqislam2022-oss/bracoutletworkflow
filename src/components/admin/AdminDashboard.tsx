@@ -93,6 +93,12 @@ export const AdminDashboard: React.FC = () => {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const quickFindInputRef = useRef<HTMLInputElement>(null);
   const quickFindContainerRef = useRef<HTMLDivElement>(null);
+
+    const [, forceOnlineStatusRecheck] = useState(0);
+  useEffect(() => {
+    const tick = setInterval(() => forceOnlineStatusRecheck((n) => n + 1), 15000);
+    return () => clearInterval(tick);
+  }, []);
   
   const isAfoOnline = (user: UserProfile) => {
     if (user.status === 'SUSPENDED') return false;
