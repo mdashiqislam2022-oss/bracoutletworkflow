@@ -512,7 +512,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
             needsResetLoginNotice: u.needs_reset_login_notice || false,
             createdAt: u.created_at,
             lastLoginAt: u.last_login_at,
-            isOnline: u.is_online || false
+                        isOnline: u.is_online || false,
+            lastSeenAt: u.last_seen_at
           };
           setUsers((prev) => [mappedUser, ...prev.filter((x) => x.id !== mappedUser.id)]);
         } else if (payload.eventType === 'UPDATE' && payload.new) {
@@ -520,7 +521,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
           setUsers((prev) =>
             prev.map((x) =>
               x.id === u.id
-                ? { ...x, status: u.status, isOnline: u.is_online || false, lastLoginAt: u.last_login_at }
+                                ? { ...x, status: u.status, isOnline: u.is_online || false, lastSeenAt: u.last_seen_at, lastLoginAt: u.last_login_at }
                 : x
             )
           );
@@ -603,6 +604,31 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     }, 20000);
 
     return () => clearInterval(heartbeatInterval);
+  }, [authMode, currentUser?.id]);
+    // Tab ba browser close hole sathe sathe AFO ke OFFLINE mark kora
+  useEffect(() => {
+    if (authMode !== 'USER' || !currentUser) return;
+    const presenceUserId = currentUser.id;
+
+    const markOfflineNow = () => {
+      SupabaseService.setUserOfflineBeacon(presenceUserId);
+    };
+
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible') {
+        SupabaseService.updateHeartbeat(presenceUserId);
+      }
+    };
+
+    window.addEventListener('pagehide', markOfflineNow);
+    window.addEventListener('beforeunload', markOfflineNow);
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    return () => {
+      window.removeEventListener('pagehide', markOfflineNow);
+      window.removeEventListener('beforeunload', markOfflineNow);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
   }, [authMode, currentUser?.id]);
 
   // Toast auto-clear
