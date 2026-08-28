@@ -194,13 +194,23 @@ export const UserManagement: React.FC = () => {
   }, []);
   
   // Real-time active status analysis for AFOs
-    const isAfoOnline = (user: UserProfile | null | undefined) => {
+      const parsePresenceTime = (raw?: string) => {
+    if (!raw) return NaN;
+    let s = String(raw).trim().replace(' ', 'T');
+    if (!/(Z|[+-]\d{2}:?\d{2})$/i.test(s)) s += 'Z';
+    return new Date(s).getTime();
+  };
+
+  const isAfoOnline = (user: UserProfile | null | undefined) => {
     if (!user) return false;
     if (user.status === 'SUSPENDED') return false;
     if (user.isOnline !== true) return false;
-    if (!user.lastSeenAt) return false;
-    const secondsSinceLastSeen = (Date.now() - new Date(user.lastSeenAt).getTime()) / 1000;
-    return secondsSinceLastSeen < 45;
+    const lastSeen = parsePresenceTime(user.lastSeenAt);
+    if (Number.isNaN(lastSeen)) return false;
+    const secondsSinceLastSeen = (Date.now() - lastSeen) / 1000;
+    if (secondsSinceLastSeen > 90) return false;
+    if (secondsSinceLastSeen < -120) return false;
+    return true;
   };
 
   // Counts for the 4 AFO Metric Summary Cards
@@ -905,12 +915,26 @@ export const UserManagement: React.FC = () => {
                         {/* AFO Profile & Avatar */}
                         <td className="py-3.5 pl-2">
                           <div className="flex items-center gap-3">
-                            <img
-                              src={user.avatarUrl || PRESET_AVATARS[0]}
-                              alt={user.fullName}
-                              className="w-10 h-10 rounded-full object-cover border border-emerald-500/40 shadow-xs shrink-0"
-                              referrerPolicy="no-referrer"
-                            />
+                                                        <div className="relative shrink-0">
+                              <img
+                                src={user.avatarUrl || PRESET_AVATARS[0]}
+                                alt={user.fullName}
+                                className="w-10 h-10 rounded-full object-cover border border-emerald-500/40 shadow-xs"
+                                referrerPolicy="no-referrer"
+                              />
+                              <span
+                                title={user.status === 'SUSPENDED' ? 'Suspended' : isAfoOnline(user) ? 'Online now' : 'Offline'}
+                                className={`absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 rounded-full border-2 ${
+                                  isDark ? 'border-slate-900' : 'border-white'
+                                } ${
+                                  user.status === 'SUSPENDED'
+                                    ? 'bg-rose-500'
+                                    : isAfoOnline(user)
+                                      ? 'bg-emerald-500 animate-pulse'
+                                      : isDark ? 'bg-slate-600' : 'bg-slate-300'
+                                }`}
+                              />
+                            </div>
                             <div>
                               <div className={`font-bold flex items-center gap-1.5 ${isDark ? 'text-white' : 'text-slate-900'}`}>
                                 <span>{user.fullName}</span>
