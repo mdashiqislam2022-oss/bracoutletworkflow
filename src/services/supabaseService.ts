@@ -609,6 +609,28 @@ export const SupabaseService = {
       console.warn('Error setting user offline:', err);
     }
   },
+    // Beacon-safe offline signal — fires reliably even when the tab/browser is closing
+  setUserOfflineBeacon(userId: string) {
+    try {
+      const supabaseUrl = (import.meta as any).env?.VITE_SUPABASE_URL || '';
+      const supabaseAnonKey = (import.meta as any).env?.VITE_SUPABASE_ANON_KEY || '';
+      if (!supabaseUrl || !supabaseAnonKey) return;
+
+      fetch(`${supabaseUrl}/rest/v1/user_profiles?id=eq.${userId}`, {
+        method: 'PATCH',
+        keepalive: true,
+        headers: {
+          'Content-Type': 'application/json',
+          apikey: supabaseAnonKey,
+          Authorization: `Bearer ${supabaseAnonKey}`,
+          Prefer: 'return=minimal'
+        },
+        body: JSON.stringify({ is_online: false })
+      }).catch(() => {});
+    } catch (err) {
+      console.warn('Error sending offline beacon:', err);
+    }
+  },
 
   // Delete User Profile
   async deleteUserProfile(id: string) {
