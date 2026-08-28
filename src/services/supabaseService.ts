@@ -597,6 +597,102 @@ export const SupabaseService = {
     }
   },
 
+  // =========================================================
+// AFO SINGLE ACTIVE SESSION FUNCTIONS
+// =========================================================
+
+/**
+ * Try to acquire the single active session for an AFO user.
+ * Returns false when another browser/tab already owns the session.
+ */
+async acquireAfoSession(userId: string, sessionId: string): Promise<{
+  success: boolean;
+  alreadyLoggedIn?: boolean;
+  message?: string;
+}> {
+  if (!this.isAvailable() || !supabase) {
+    return {
+      success: false,
+      message: 'Supabase is not available.'
+    };
+  }
+
+  try {
+    const { data, error } = await supabase.rpc('acquire_afo_session', {
+      p_user_id: userId,
+      p_session_id: sessionId
+    });
+
+    if (error) {
+      console.error('Error acquiring AFO session:', error);
+      return {
+        success: false,
+        message: 'Unable to verify the active session.'
+      };
+    }
+
+    return {
+      success: !!data?.success,
+      alreadyLoggedIn: !!data?.already_logged_in,
+      message: data?.message
+    };
+  } catch (err) {
+    console.error('Error acquiring AFO session:', err);
+
+    return {
+      success: false,
+      message: 'Unable to verify the active session.'
+    };
+  }
+},
+
+/**
+ * Keep the current AFO session alive.
+ */
+async heartbeatAfoSession(userId: string, sessionId: string): Promise<boolean> {
+  if (!this.isAvailable() || !supabase) return false;
+
+  try {
+    const { data, error } = await supabase.rpc('heartbeat_afo_session', {
+      p_user_id: userId,
+      p_session_id: sessionId
+    });
+
+    if (error) {
+      console.warn('Error sending AFO session heartbeat:', error);
+      return false;
+    }
+
+    return !!data;
+  } catch (err) {
+    console.warn('Error sending AFO session heartbeat:', err);
+    return false;
+  }
+},
+
+/**
+ * Release the active AFO session during logout.
+ */
+async releaseAfoSession(userId: string, sessionId: string): Promise<boolean> {
+  if (!this.isAvailable() || !supabase) return false;
+
+  try {
+    const { data, error } = await supabase.rpc('release_afo_session', {
+      p_user_id: userId,
+      p_session_id: sessionId
+    });
+
+    if (error) {
+      console.warn('Error releasing AFO session:', error);
+      return false;
+    }
+
+    return !!data;
+  } catch (err) {
+    console.warn('Error releasing AFO session:', err);
+    return false;
+  }
+},
   // Explicitly mark user offline (used on logout)
   async setUserOffline(userId: string) {
     if (!this.isAvailable() || !supabase) return;
