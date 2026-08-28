@@ -188,10 +188,13 @@ export const UserManagement: React.FC = () => {
   const cancelledRequestsCount = passwordResetRequests.filter((r) => r.status === 'CANCELLED' || r.status === 'REJECTED').length;
 
   // Real-time active status analysis for AFOs
-  const isAfoOnline = (user: UserProfile | null | undefined) => {
+    const isAfoOnline = (user: UserProfile | null | undefined) => {
     if (!user) return false;
     if (user.status === 'SUSPENDED') return false;
-    return user.isOnline === true;
+    if (user.isOnline !== true) return false;
+    if (!user.lastSeenAt) return false;
+    const secondsSinceLastSeen = (Date.now() - new Date(user.lastSeenAt).getTime()) / 1000;
+    return secondsSinceLastSeen < 45;
   };
 
   // Counts for the 4 AFO Metric Summary Cards
