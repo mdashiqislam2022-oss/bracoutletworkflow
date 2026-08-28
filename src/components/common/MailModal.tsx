@@ -6,7 +6,8 @@ import {
   Clock,
   Trash2,
   ChevronDown,
-  ChevronUp
+  ChevronUp,
+  Send
 } from 'lucide-react';
 import { StationMailMessage } from '../../types';
 
@@ -23,16 +24,21 @@ export const MailModal: React.FC<MailModalProps> = ({ isOpen, onClose }) => {
     markMailAsRead,
     markAllMailAsRead,
     deleteMailMessage,
+    sendMailMessage,
+    showToast,
     userPreferences
   } = useApp();
 
   const isDark = userPreferences.theme === 'dark';
   const [expandedMailId, setExpandedMailId] = useState<string | null>(null);
+  const [isComposing, setIsComposing] = useState(false);
+  const [composeSubject, setComposeSubject] = useState('');
+  const [composeContent, setComposeContent] = useState('');
 
   if (!isOpen) return null;
 
   // Filter messages relevant to current user
-    const relevantMessages = mailMessages.filter((m) => {
+  const relevantMessages = mailMessages.filter((m) => {
     if (authMode === 'USER' && currentUser) {
       return (
         m.recipientUserId === 'ALL' ||
@@ -69,6 +75,22 @@ export const MailModal: React.FC<MailModalProps> = ({ isOpen, onClose }) => {
     setExpandedMailId(expandedMailId === mail.id ? null : mail.id);
   };
 
+  const handleSendToAdmin = () => {
+    if (!composeSubject.trim() || !composeContent.trim()) {
+      showToast({ message: 'Please write both a subject and a message.', type: 'error' });
+      return;
+    }
+    sendMailMessage({
+      subject: composeSubject.trim(),
+      content: composeContent.trim(),
+      category: 'DIRECT_MEMO',
+      priority: 'NORMAL'
+    });
+    setComposeSubject('');
+    setComposeContent('');
+    setIsComposing(false);
+  };
+
   return (
     <div 
       className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-xs animate-in fade-in duration-150"
@@ -103,6 +125,16 @@ export const MailModal: React.FC<MailModalProps> = ({ isOpen, onClose }) => {
           </div>
 
           <div className="flex items-center gap-1.5">
+            {authMode === 'USER' && (
+              <button
+                onClick={() => setIsComposing((prev) => !prev)}
+                className={`text-[11px] font-semibold hover:underline px-2 py-1 cursor-pointer ${
+                  isDark ? 'text-emerald-400' : 'text-emerald-600'
+                }`}
+              >
+                {isComposing ? 'Cancel' : 'Message Admin'}
+              </button>
+            )}
             {relevantMessages.some((m) => !m.isRead) && (
               <button
                 onClick={markAllMailAsRead}
@@ -123,6 +155,43 @@ export const MailModal: React.FC<MailModalProps> = ({ isOpen, onClose }) => {
             </button>
           </div>
         </div>
+
+        {/* Compose message to Admin (AFO users only) */}
+        {authMode === 'USER' && isComposing && (
+          <div className={`p-4 border-b space-y-2.5 ${
+            isDark ? 'border-slate-800 bg-slate-900/40' : 'border-slate-100 bg-[#F8FAFC]'
+          }`}>
+            <input
+              type="text"
+              value={composeSubject}
+              onChange={(e) => setComposeSubject(e.target.value)}
+              placeholder="Subject"
+              className={`w-full px-3 py-2 rounded-xl text-xs border outline-none ${
+                isDark
+                  ? 'bg-slate-800 border-slate-700 text-white placeholder:text-slate-500'
+                  : 'bg-white border-slate-200 text-slate-900 placeholder:text-slate-400'
+              }`}
+            />
+            <textarea
+              value={composeContent}
+              onChange={(e) => setComposeContent(e.target.value)}
+              placeholder="Describe your issue or question for Admin..."
+              rows={3}
+              className={`w-full px-3 py-2 rounded-xl text-xs border outline-none resize-none ${
+                isDark
+                  ? 'bg-slate-800 border-slate-700 text-white placeholder:text-slate-500'
+                  : 'bg-white border-slate-200 text-slate-900 placeholder:text-slate-400'
+              }`}
+            />
+            <button
+              onClick={handleSendToAdmin}
+              className="w-full flex items-center justify-center gap-1.5 text-xs font-semibold py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white transition-colors cursor-pointer"
+            >
+              <Send className="w-3.5 h-3.5" />
+              Send to Admin
+            </button>
+          </div>
+        )}
 
         {/* Message Feed List */}
         <div className="p-4 overflow-y-auto space-y-3 flex-1">
