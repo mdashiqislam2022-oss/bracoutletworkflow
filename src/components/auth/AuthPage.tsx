@@ -62,6 +62,59 @@ export const AuthPage: React.FC = () => {
   const [saveOnSignup, setSaveOnSignup] = useState(false);
   const [isSigningUp, setIsSigningUp] = useState(false);
   const [signupSuccess, setSignupSuccess] = useState(false);
+    const [googleEmailVerified, setGoogleEmailVerified] = useState(false);
+
+  // Initialize Google Sign-In button so users can only sign up with a verified Gmail account
+  useEffect(() => {
+    const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+    if (!clientId) return;
+
+    const initializeGoogleButton = () => {
+      const google = (window as any).google;
+      if (!google || !google.accounts || !google.accounts.id) return;
+
+      google.accounts.id.initialize({
+        client_id: clientId,
+        callback: (response: any) => {
+          try {
+            const payload = JSON.parse(atob(response.credential.split('.')[1]));
+            if (payload.email && payload.email.toLowerCase().endsWith('@gmail.com')) {
+              setSignupEmail(payload.email);
+              setGoogleEmailVerified(true);
+            } else {
+              setGoogleEmailVerified(false);
+              alert('Please select a valid Gmail (@gmail.com) account.');
+            }
+          } catch {
+            setGoogleEmailVerified(false);
+          }
+        }
+      });
+
+      const btnContainer = document.getElementById('google-signin-button');
+      if (btnContainer) {
+        btnContainer.innerHTML = '';
+        google.accounts.id.renderButton(btnContainer, {
+          theme: 'outline',
+          size: 'large',
+          width: 320,
+          text: 'continue_with'
+        });
+      }
+    };
+
+    if ((window as any).google) {
+      initializeGoogleButton();
+    } else {
+      const interval = setInterval(() => {
+        if ((window as any).google) {
+          clearInterval(interval);
+          initializeGoogleButton();
+        }
+      }, 300);
+      return () => clearInterval(interval);
+    }
+  }, [authView]);
 
   // Simplified User Request Reset from Admin State (Single large note box)
   const [resetReqUserNote, setResetReqUserNote] = useState('');
@@ -146,8 +199,8 @@ export const AuthPage: React.FC = () => {
       return;
     }
 
-    if (!signupEmail.trim() || !signupEmail.includes('@') || !signupEmail.includes('.')) {
-      triggerError('Please enter a valid Gmail or Email address.');
+        if (!signupEmail.trim() || !googleEmailVerified) {
+      triggerError('Please verify your Gmail address using the Google Sign-In button.');
       return;
     }
 
@@ -609,27 +662,32 @@ export const AuthPage: React.FC = () => {
                   </div>
                 </div>
 
-                {/* 4. Gmail Address (Hover Zoom) */}
-                <div className="transition-all duration-200 ease-out hover:scale-[1.015] focus-within:scale-[1.015]">
+                                {/* 4. Gmail Address (Verified via Google Sign-In) */}
+                <div>
                   <label className={`block text-[11px] font-semibold mb-1 ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
-                    4. Gmail / Email Address *
+                    4. Gmail Address (Verify with Google) *
                   </label>
-                  <div className="relative">
-                    <Mail className="w-4 h-4 text-slate-400 absolute left-3.5 top-3" />
-                    <input
-                      id="signup-email-input"
-                      type="email"
-                      required
-                      value={signupEmail}
-                      onChange={(e) => setSignupEmail(e.target.value.trim())}
-                      placeholder="Type your gmail address"
-                      className={`w-full pl-10 pr-3 py-2.5 rounded-xl border text-xs font-medium focus:outline-none focus:ring-2 focus:ring-offset-0 transition-shadow ${
-                        isDark
-                          ? 'bg-slate-900/70 border-slate-700 text-white placeholder-slate-500 focus:border-slate-500 focus:ring-slate-500/20'
-                          : 'bg-[#F8FAFC] border-slate-200 text-slate-900 placeholder-slate-400 focus:border-slate-800 focus:ring-slate-900/10'
-                      }`}
-                    />
-                  </div>
+                  {googleEmailVerified && signupEmail ? (
+                    <div className={`flex items-center justify-between gap-2 px-3.5 py-2.5 rounded-xl border text-xs font-semibold ${
+                      isDark ? 'bg-emerald-500/10 border-emerald-500/40 text-emerald-400' : 'bg-emerald-50 border-emerald-200 text-emerald-700'
+                    }`}>
+                      <span className="flex items-center gap-1.5">
+                        <CheckCircle2 className="w-4 h-4" /> {signupEmail}
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setSignupEmail('');
+                          setGoogleEmailVerified(false);
+                        }}
+                        className="text-[10px] underline opacity-80 hover:opacity-100 cursor-pointer"
+                      >
+                        Change
+                      </button>
+                    </div>
+                  ) : (
+                    <div id="google-signin-button" className="flex justify-start" />
+                  )}
                 </div>
 
                 {/* 5. User Name & 6. 4-Digit Password (Hover Zoom) */}
