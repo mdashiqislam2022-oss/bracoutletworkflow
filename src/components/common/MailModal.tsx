@@ -32,7 +32,7 @@ export const MailModal: React.FC<MailModalProps> = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
 
   // Filter messages relevant to current user
-  const relevantMessages = mailMessages.filter((m) => {
+    const relevantMessages = mailMessages.filter((m) => {
     if (authMode === 'USER' && currentUser) {
       return (
         m.recipientUserId === 'ALL' ||
@@ -41,7 +41,9 @@ export const MailModal: React.FC<MailModalProps> = ({ isOpen, onClose }) => {
         m.recipientOutletId === currentUser.outletId
       );
     }
-    return true;
+    // Admin inbox: only show mail actually sent TO the admin (e.g. AFO support
+    // requests). The admin's own outgoing notes/memos should not appear here.
+    return m.senderRole === 'USER';
   });
 
   const formatDate = (isoString: string) => {
