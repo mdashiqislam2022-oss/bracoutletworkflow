@@ -352,7 +352,8 @@ export const SupabaseService = {
           needsResetLoginNotice: u.needs_reset_login_notice || false,
           createdAt: u.created_at,
           lastLoginAt: u.last_login_at,
-          isOnline: u.is_online || false
+                    isOnline: u.is_online || false,
+          lastSeenAt: u.last_seen_at
         })),
         admins: (adminsRes.data || []).map((a: any) => ({
           id: a.id,
@@ -575,11 +576,37 @@ export const SupabaseService = {
         needs_reset_login_notice: user.needsResetLoginNotice || false,
         updated_at: new Date().toISOString(),
         last_login_at: user.lastLoginAt,
-        is_online: user.isOnline || false
+                is_online: user.isOnline || false,
+        last_seen_at: user.lastSeenAt || new Date().toISOString()
       };
       await supabase.from('user_profiles').upsert(dbRow);
     } catch (err) {
       console.warn('Error saving user profile to Supabase:', err);
+    }
+  },
+    // Lightweight heartbeat - only updates last_seen_at + is_online, doesn't touch other fields
+  async updateHeartbeat(userId: string) {
+    if (!this.isAvailable() || !supabase) return;
+    try {
+      await supabase
+        .from('user_profiles')
+        .update({ last_seen_at: new Date().toISOString(), is_online: true })
+        .eq('id', userId);
+    } catch (err) {
+      console.warn('Error sending heartbeat:', err);
+    }
+  },
+
+  // Explicitly mark user offline (used on logout)
+  async setUserOffline(userId: string) {
+    if (!this.isAvailable() || !supabase) return;
+    try {
+      await supabase
+        .from('user_profiles')
+        .update({ is_online: false })
+        .eq('id', userId);
+    } catch (err) {
+      console.warn('Error setting user offline:', err);
     }
   },
 
