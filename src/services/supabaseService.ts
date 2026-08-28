@@ -596,6 +596,26 @@ export const SupabaseService = {
       console.warn('Error sending heartbeat:', err);
     }
   },
+  
+  // Real-time single-session check: onno kono tab/browser e ekhon active ase kina
+  async checkUserActiveSession(userId: string): Promise<{ isActive: boolean }> {
+    if (!this.isAvailable() || !supabase) return { isActive: false };
+    try {
+      const { data, error } = await supabase
+        .from('user_profiles')
+        .select('is_online, last_seen_at')
+        .eq('id', userId)
+        .single();
+      if (error || !data) return { isActive: false };
+      const lastSeenTime = data.last_seen_at ? new Date(data.last_seen_at).getTime() : 0;
+      const secondsSinceLastSeen = (Date.now() - lastSeenTime) / 1000;
+      const isActive = !!data.is_online && secondsSinceLastSeen < 35;
+      return { isActive };
+    } catch (err) {
+      console.warn('Error checking active session:', err);
+      return { isActive: false };
+    }
+  },
 
   // =========================================================
 // AFO SINGLE ACTIVE SESSION FUNCTIONS
