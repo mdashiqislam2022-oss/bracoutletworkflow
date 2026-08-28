@@ -64,14 +64,20 @@ export const AuthPage: React.FC = () => {
   const [signupSuccess, setSignupSuccess] = useState(false);
     const [googleEmailVerified, setGoogleEmailVerified] = useState(false);
 
-  // Initialize Google Sign-In button so users can only sign up with a verified Gmail account
+    // Initialize Google Sign-In button (retries until Google script + button element are both ready)
   useEffect(() => {
     const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
     if (!clientId) return;
 
-    const initializeGoogleButton = () => {
+    let cancelled = false;
+    let attempts = 0;
+
+    const renderGoogleButton = () => {
       const google = (window as any).google;
-      if (!google || !google.accounts || !google.accounts.id) return;
+      const btnContainer = document.getElementById('google-signin-button');
+      if (!google || !google.accounts || !google.accounts.id || !btnContainer) {
+        return false;
+      }
 
       google.accounts.id.initialize({
         client_id: clientId,
@@ -91,31 +97,32 @@ export const AuthPage: React.FC = () => {
         }
       });
 
-      const btnContainer = document.getElementById('google-signin-button');
-      if (btnContainer) {
-        btnContainer.innerHTML = '';
-        google.accounts.id.renderButton(btnContainer, {
-          theme: 'outline',
-          size: 'large',
-          width: 320,
-          text: 'continue_with'
-        });
+      btnContainer.innerHTML = '';
+      google.accounts.id.renderButton(btnContainer, {
+        theme: 'outline',
+        size: 'large',
+        width: 320,
+        text: 'continue_with'
+      });
+
+      return btnContainer.innerHTML.trim().length > 0;
+    };
+
+    const tryRender = () => {
+      if (cancelled) return;
+      attempts += 1;
+      const success = renderGoogleButton();
+      if (!success && attempts < 20) {
+        setTimeout(tryRender, 300);
       }
     };
 
-    if ((window as any).google) {
-      initializeGoogleButton();
-    } else {
-      const interval = setInterval(() => {
-        if ((window as any).google) {
-          clearInterval(interval);
-          initializeGoogleButton();
-        }
-      }, 300);
-      return () => clearInterval(interval);
-    }
-  }, [authView]);
+    tryRender();
 
+    return () => {
+      cancelled = true;
+    };
+  }, [authView]);
   // Simplified User Request Reset from Admin State (Single large note box)
   const [resetReqUserNote, setResetReqUserNote] = useState('');
   const [resetSuccessDetails, setResetSuccessDetails] = useState<{
