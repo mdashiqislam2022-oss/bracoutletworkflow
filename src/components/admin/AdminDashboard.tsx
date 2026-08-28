@@ -99,13 +99,22 @@ export const AdminDashboard: React.FC = () => {
     const tick = setInterval(() => forceOnlineStatusRecheck((n) => n + 1), 15000);
     return () => clearInterval(tick);
   }, []);
-  
+    const parsePresenceTime = (raw?: string) => {
+    if (!raw) return NaN;
+    let s = String(raw).trim().replace(' ', 'T');
+    if (!/(Z|[+-]\d{2}:?\d{2})$/i.test(s)) s += 'Z';
+    return new Date(s).getTime();
+  };
+
   const isAfoOnline = (user: UserProfile) => {
     if (user.status === 'SUSPENDED') return false;
     if (user.isOnline !== true) return false;
-    if (!user.lastSeenAt) return false;
-    const secondsSinceLastSeen = (Date.now() - new Date(user.lastSeenAt).getTime()) / 1000;
-    return secondsSinceLastSeen < 45;
+    const lastSeen = parsePresenceTime(user.lastSeenAt);
+    if (Number.isNaN(lastSeen)) return false;
+    const secondsSinceLastSeen = (Date.now() - lastSeen) / 1000;
+    if (secondsSinceLastSeen > 90) return false;
+    if (secondsSinceLastSeen < -120) return false;
+    return true;
   };
 
   const handleRefreshDashboard = () => {
