@@ -187,8 +187,13 @@ export const AuthPage: React.FC = () => {
     setErrorMessage(null);
     setSuccessMessage(null);
 
-    if (!signupOutletName.trim()) {
+        if (!signupOutletName.trim()) {
       triggerError('Please enter your assigned BRAC Bank outlet name.');
+      return;
+    }
+
+    if (!signupOutletCode.trim()) {
+      triggerError('Please enter your assigned BRAC Bank outlet code. This field is required.');
       return;
     }
 
@@ -229,7 +234,7 @@ export const AuthPage: React.FC = () => {
     setTimeout(() => {
       const res = signUpUser({
         outletName: signupOutletName.trim(),
-        outletCode: signupOutletCode.trim() || 'BBL-OUT-101',
+                outletCode: signupOutletCode.trim(),
         fullName: signupFullName.trim(),
         phone: signupPhone.trim(),
         email: signupEmail.trim(),
@@ -600,14 +605,15 @@ export const AuthPage: React.FC = () => {
                   </div>
 
                   <div className="transition-all duration-200 ease-out hover:scale-[1.015] focus-within:scale-[1.015]">
-                    <label className={`block text-[11px] font-semibold mb-1 ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
-                      Outlet Code
+                                        <label className={`block text-[11px] font-semibold mb-1 ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
+                      Outlet Code *
                     </label>
                     <div className="relative">
                       <Hash className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-3" />
                       <input
                         id="signup-outlet-code-input"
                         type="text"
+                        required
                         inputMode="numeric"
                         value={signupOutletCode}
                         onChange={handleNumericOnlyChange(setSignupOutletCode, 10)}
