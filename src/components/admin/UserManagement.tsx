@@ -2688,6 +2688,13 @@ export const UserManagement: React.FC = () => {
                             {selectedUser.outletLocation || 'Branch Location'}
                           </span>
                         </div>
+                        
+                        <div className="p-2.5 rounded-xl bg-slate-100/70 dark:bg-slate-900/80">
+                          <span className="text-[10px] uppercase font-bold text-slate-400 block mb-0.5">Assigned District</span>
+                          <span className={`font-bold text-xs ${isDark ? 'text-white' : 'text-slate-900'}`}>
+                            {selectedUser.district || 'Not Set'}
+                          </span>
+                        </div>
 
                         <div className="p-2.5 rounded-xl bg-slate-100/70 dark:bg-slate-900/80">
                           <span className="text-[10px] uppercase font-bold text-slate-400 block mb-0.5">Reporting Supervisor</span>
