@@ -30,7 +30,9 @@ export const UserProfileView: React.FC = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [showAvatarPicker, setShowAvatarPicker] = useState(false);
   const [customAvatarInput, setCustomAvatarInput] = useState('');
-  const [isDragging, setIsDragging] = useState(false);
+    const [isDragging, setIsDragging] = useState(false);
+  const [unlockedFields, setUnlockedFields] = useState<Record<string, boolean>>({});
+  const unlockField = (field: string) => setUnlockedFields((prev) => ({ ...prev, [field]: true }));
 
   if (!currentUser) return null;
 
@@ -355,15 +357,22 @@ export const UserProfileView: React.FC = () => {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className={`block text-[11px] font-semibold mb-1 ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
-                Full Name (As per NID) *
-              </label>
+                            <div className="flex items-center justify-between mb-1">
+                <label className={`text-[11px] font-semibold ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
+                  Full Name (As per NID) *
+                </label>
+                {!unlockedFields.fullName && (
+                  <button type="button" onClick={() => unlockField('fullName')} className="text-[10px] font-semibold text-emerald-500 hover:underline">Change</button>
+                )}
+              </div>
               <input
                 type="text"
+                                disabled={!unlockedFields.fullName}
                 required
                 value={formData.fullName}
                 onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
                 className={`w-full px-3.5 py-2.5 rounded-xl border text-xs focus:outline-none ${
+                  ${!unlockedFields.fullName ? 'opacity-60 cursor-not-allowed' : ''}
                   isDark ? 'bg-slate-800 border-slate-700 text-white' : 'bg-[#F4F6F8] border-slate-200/60 text-slate-900'
                 }`}
               />
@@ -384,43 +393,61 @@ export const UserProfileView: React.FC = () => {
             </div>
 
             <div>
-              <label className={`block text-[11px] font-semibold mb-1 ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
-                Mobile Phone Number *
-              </label>
-              <input
+                            <div className="flex items-center justify-between mb-1">
+                <label className={`text-[11px] font-semibold ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
+                  Mobile Phone Number *
+                </label>
+                {!unlockedFields.phone && (
+                  <button type="button" onClick={() => unlockField('phone')} className="text-[10px] font-semibold text-emerald-500 hover:underline">Change</button>
+                )}
+              </div>>
+                            <input
                 type="tel"
                 required
+                disabled={!unlockedFields.phone}
                 value={formData.phone}
                 onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                className={`w-full px-3.5 py-2.5 rounded-xl border text-xs font-mono focus:outline-none ${
+                className={`w-full px-3.5 py-2.5 rounded-xl border text-xs font-mono focus:outline-none ${!unlockedFields.phone ? 'opacity-60 cursor-not-allowed' : ''} ${
                   isDark ? 'bg-slate-800 border-slate-700 text-white' : 'bg-[#F4F6F8] border-slate-200/60 text-slate-900'
                 }`}
               />
             </div>
 
-            <div>
-              <label className={`block text-[11px] font-semibold mb-1 ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
-                Emergency Contact
-              </label>
+                       <div>
+              <div className="flex items-center justify-between mb-1">
+                <label className={`text-[11px] font-semibold ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
+                  Emergency Contact
+                </label>
+                {!unlockedFields.emergencyContact && (
+                  <button type="button" onClick={() => unlockField('emergencyContact')} className="text-[10px] font-semibold text-emerald-500 hover:underline">Change</button>
+                )}
+              </div>
               <input
                 type="text"
+                disabled={!unlockedFields.emergencyContact}
                 value={formData.emergencyContact}
                 onChange={(e) => setFormData({ ...formData, emergencyContact: e.target.value })}
                 placeholder="+880 18XX-XXXXXX (Relation)"
-                className={`w-full px-3.5 py-2.5 rounded-xl border text-xs focus:outline-none ${
+                className={`w-full px-3.5 py-2.5 rounded-xl border text-xs focus:outline-none ${!unlockedFields.emergencyContact ? 'opacity-60 cursor-not-allowed' : ''} ${
                   isDark ? 'bg-slate-800 border-slate-700 text-white placeholder-slate-500' : 'bg-[#F4F6F8] border-slate-200/60 text-slate-900 placeholder-slate-400'
                 }`}
               />
             </div>
 
             <div>
-              <label className={`block text-[11px] font-semibold mb-1 ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
-                Blood Group
-              </label>
-              <select
+                            <div className="flex items-center justify-between mb-1">
+                <label className={`text-[11px] font-semibold ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
+                  Blood Group
+                </label>
+                {!unlockedFields.bloodGroup && (
+                  <button type="button" onClick={() => unlockField('bloodGroup')} className="text-[10px] font-semibold text-emerald-500 hover:underline">Change</button>
+                )}
+              </div>
+                            <select
+                disabled={!unlockedFields.bloodGroup}
                 value={formData.bloodGroup}
                 onChange={(e) => setFormData({ ...formData, bloodGroup: e.target.value })}
-                className={`w-full px-3.5 py-2.5 rounded-xl border text-xs font-semibold focus:outline-none ${
+                className={`w-full px-3.5 py-2.5 rounded-xl border text-xs font-semibold focus:outline-none ${!unlockedFields.bloodGroup ? 'opacity-60 cursor-not-allowed' : ''} ${
                   isDark ? 'bg-slate-800 border-slate-700 text-white' : 'bg-[#F4F6F8] border-slate-200/60 text-slate-900'
                 }`}
               >
@@ -436,15 +463,21 @@ export const UserProfileView: React.FC = () => {
             </div>
 
             <div>
-              <label className={`block text-[11px] font-semibold mb-1 ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
-                Years of Service at Outlet
-              </label>
-              <input
+                           <div className="flex items-center justify-between mb-1">
+                <label className={`text-[11px] font-semibold ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
+                  Years of Service at Outlet
+                </label>
+                {!unlockedFields.yearsOfService && (
+                  <button type="button" onClick={() => unlockField('yearsOfService')} className="text-[10px] font-semibold text-emerald-500 hover:underline">Change</button>
+                )}
+              </div>
+                            <input
                 type="number"
                 step="0.1"
+                disabled={!unlockedFields.yearsOfService}
                 value={formData.yearsOfService}
                 onChange={(e) => setFormData({ ...formData, yearsOfService: parseFloat(e.target.value) || 0 })}
-                className={`w-full px-3.5 py-2.5 rounded-xl border text-xs font-mono focus:outline-none ${
+                className={`w-full px-3.5 py-2.5 rounded-xl border text-xs font-mono focus:outline-none ${!unlockedFields.yearsOfService ? 'opacity-60 cursor-not-allowed' : ''} ${
                   isDark ? 'bg-slate-800 border-slate-700 text-white' : 'bg-[#F4F6F8] border-slate-200/60 text-slate-900'
                 }`}
               />
@@ -469,16 +502,22 @@ export const UserProfileView: React.FC = () => {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {/* WhatsApp */}
             <div>
-              <label className={`block text-[11px] font-semibold mb-1 flex items-center gap-1.5 ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
-                <MessageCircle className="w-3.5 h-3.5 text-emerald-500" />
-                <span>WhatsApp Number</span>
-              </label>
-              <input
+                           <div className="flex items-center justify-between mb-1">
+                <label className={`text-[11px] font-semibold flex items-center gap-1.5 ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
+                  <MessageCircle className="w-3.5 h-3.5 text-emerald-500" />
+                  <span>WhatsApp Number</span>
+                </label>
+                {!unlockedFields.whatsapp && (
+                  <button type="button" onClick={() => unlockField('whatsapp')} className="text-[10px] font-semibold text-emerald-500 hover:underline">Change</button>
+                )}
+              </div>
+                            <input
                 type="text"
+                disabled={!unlockedFields.whatsapp}
                 value={formData.whatsapp}
                 onChange={(e) => setFormData({ ...formData, whatsapp: e.target.value })}
                 placeholder="+880 17XXXXXXXX"
-                className={`w-full px-3.5 py-2.5 rounded-xl border text-xs font-mono focus:outline-none ${
+                className={`w-full px-3.5 py-2.5 rounded-xl border text-xs font-mono focus:outline-none ${!unlockedFields.whatsapp ? 'opacity-60 cursor-not-allowed' : ''} ${
                   isDark ? 'bg-slate-800 border-slate-700 text-white placeholder-slate-500' : 'bg-[#F4F6F8] border-slate-200/60 text-slate-900 placeholder-slate-400'
                 }`}
               />
@@ -489,16 +528,22 @@ export const UserProfileView: React.FC = () => {
 
             {/* Facebook */}
             <div>
-              <label className={`block text-[11px] font-semibold mb-1 flex items-center gap-1.5 ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
-                <Facebook className="w-3.5 h-3.5 text-blue-500" />
-                <span>Facebook Profile / Handle</span>
-              </label>
-              <input
+                            <div className="flex items-center justify-between mb-1">
+                <label className={`text-[11px] font-semibold flex items-center gap-1.5 ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
+                  <Facebook className="w-3.5 h-3.5 text-blue-500" />
+                  <span>Facebook Profile / Handle</span>
+                </label>
+                {!unlockedFields.facebook && (
+                  <button type="button" onClick={() => unlockField('facebook')} className="text-[10px] font-semibold text-emerald-500 hover:underline">Change</button>
+                )}
+              </div>
+                            <input
                 type="text"
+                disabled={!unlockedFields.facebook}
                 value={formData.facebook}
                 onChange={(e) => setFormData({ ...formData, facebook: e.target.value })}
                 placeholder="https://facebook.com/username or @username"
-                className={`w-full px-3.5 py-2.5 rounded-xl border text-xs focus:outline-none ${
+                className={`w-full px-3.5 py-2.5 rounded-xl border text-xs focus:outline-none ${!unlockedFields.facebook ? 'opacity-60 cursor-not-allowed' : ''} ${
                   isDark ? 'bg-slate-800 border-slate-700 text-white placeholder-slate-500' : 'bg-[#F4F6F8] border-slate-200/60 text-slate-900 placeholder-slate-400'
                 }`}
               />
@@ -509,16 +554,22 @@ export const UserProfileView: React.FC = () => {
 
             {/* Instagram */}
             <div>
-              <label className={`block text-[11px] font-semibold mb-1 flex items-center gap-1.5 ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
-                <Instagram className="w-3.5 h-3.5 text-pink-500" />
-                <span>Instagram Profile / Handle</span>
-              </label>
-              <input
+                            <div className="flex items-center justify-between mb-1">
+                <label className={`text-[11px] font-semibold flex items-center gap-1.5 ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
+                  <Instagram className="w-3.5 h-3.5 text-pink-500" />
+                  <span>Instagram Profile / Handle</span>
+                </label>
+                {!unlockedFields.instagram && (
+                  <button type="button" onClick={() => unlockField('instagram')} className="text-[10px] font-semibold text-emerald-500 hover:underline">Change</button>
+                )}
+              </div>
+                            <input
                 type="text"
+                disabled={!unlockedFields.instagram}
                 value={formData.instagram}
                 onChange={(e) => setFormData({ ...formData, instagram: e.target.value })}
                 placeholder="username or https://instagram.com/..."
-                className={`w-full px-3.5 py-2.5 rounded-xl border text-xs focus:outline-none ${
+                className={`w-full px-3.5 py-2.5 rounded-xl border text-xs focus:outline-none ${!unlockedFields.instagram ? 'opacity-60 cursor-not-allowed' : ''} ${
                   isDark ? 'bg-slate-800 border-slate-700 text-white placeholder-slate-500' : 'bg-[#F4F6F8] border-slate-200/60 text-slate-900 placeholder-slate-400'
                 }`}
               />
@@ -593,14 +644,20 @@ export const UserProfileView: React.FC = () => {
             </div>
 
             <div className="sm:col-span-2">
-              <label className={`block text-[11px] font-semibold mb-1 ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
-                Bio & Responsibilities
-              </label>
-              <textarea
+                           <div className="flex items-center justify-between mb-1">
+                <label className={`text-[11px] font-semibold ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
+                  Bio & Responsibilities
+                </label>
+                {!unlockedFields.bio && (
+                  <button type="button" onClick={() => unlockField('bio')} className="text-[10px] font-semibold text-emerald-500 hover:underline">Change</button>
+                )}
+              </div>
+                           <textarea
                 rows={3}
+                disabled={!unlockedFields.bio}
                 value={formData.bio}
                 onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
-                className={`w-full px-3.5 py-2.5 rounded-xl border text-xs focus:outline-none ${
+                className={`w-full px-3.5 py-2.5 rounded-xl border text-xs focus:outline-none ${!unlockedFields.bio ? 'opacity-60 cursor-not-allowed' : ''} ${
                   isDark ? 'bg-slate-800 border-slate-700 text-white' : 'bg-[#F4F6F8] border-slate-200/60 text-slate-900'
                 }`}
               />
