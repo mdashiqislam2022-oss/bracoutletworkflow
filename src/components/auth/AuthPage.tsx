@@ -28,6 +28,20 @@ import {
 
 type AuthViewMode = 'USER_LOGIN' | 'USER_SIGNUP' | 'USER_FORGOT' | 'USER_FORGOT_SUCCESS' | 'ADMIN_LOGIN';
 
+const BANGLADESH_DISTRICTS = [
+  'Bagerhat', 'Bandarban', 'Barguna', 'Barishal', 'Bhola', 'Bogura', 'Brahmanbaria',
+  'Chandpur', 'Chapainawabganj', 'Chattogram', 'Chuadanga', "Cox's Bazar", 'Cumilla',
+  'Dhaka', 'Dinajpur', 'Faridpur', 'Feni', 'Gaibandha', 'Gazipur', 'Gopalganj',
+  'Habiganj', 'Jamalpur', 'Jashore', 'Jhalokati', 'Jhenaidah', 'Joypurhat',
+  'Khagrachhari', 'Khulna', 'Kishoreganj', 'Kurigram', 'Kushtia',
+  'Lakshmipur', 'Lalmonirhat', 'Madaripur', 'Magura', 'Manikganj', 'Meherpur',
+  'Moulvibazar', 'Munshiganj', 'Mymensingh', 'Naogaon', 'Narail', 'Narayanganj',
+  'Narsingdi', 'Natore', 'Netrokona', 'Nilphamari', 'Noakhali', 'Pabna',
+  'Panchagarh', 'Patuakhali', 'Pirojpur', 'Rajbari', 'Rajshahi', 'Rangamati',
+  'Rangpur', 'Satkhira', 'Shariatpur', 'Sherpur', 'Sirajganj', 'Sunamganj',
+  'Sylhet', 'Tangail', 'Thakurgaon'
+];
+
 export const AuthPage: React.FC = () => {
   const {
     loginUserWithCredentials,
@@ -52,7 +66,8 @@ export const AuthPage: React.FC = () => {
 
   // User Signup State (Strict Validations & No Default Values)
   const [signupOutletName, setSignupOutletName] = useState('');
-  const [signupOutletCode, setSignupOutletCode] = useState('');
+    const [signupOutletCode, setSignupOutletCode] = useState('');
+  const [signupDistrict, setSignupDistrict] = useState('');
   const [signupFullName, setSignupFullName] = useState('');
   const [signupPhone, setSignupPhone] = useState('');
   const [signupEmail, setSignupEmail] = useState('');
@@ -192,8 +207,13 @@ export const AuthPage: React.FC = () => {
       return;
     }
 
-    if (!signupOutletCode.trim()) {
+        if (!signupOutletCode.trim()) {
       triggerError('Please enter your assigned BRAC Bank outlet code. This field is required.');
+      return;
+    }
+
+    if (!signupDistrict.trim()) {
+      triggerError('Please select your assigned district.');
       return;
     }
 
@@ -232,9 +252,10 @@ export const AuthPage: React.FC = () => {
     setIsSigningUp(true);
 
     setTimeout(() => {
-      const res = signUpUser({
+            const res = signUpUser({
         outletName: signupOutletName.trim(),
-                outletCode: signupOutletCode.trim(),
+        outletCode: signupOutletCode.trim(),
+        district: signupDistrict,
         fullName: signupFullName.trim(),
         phone: signupPhone.trim(),
         email: signupEmail.trim(),
@@ -626,6 +647,29 @@ export const AuthPage: React.FC = () => {
                       />
                     </div>
                   </div>
+                </div>
+                
+                {/* Assigned District Dropdown */}
+                <div className="transition-all duration-200 ease-out hover:scale-[1.015] focus-within:scale-[1.015]">
+                  <label className={`block text-[11px] font-semibold mb-1 ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
+                    Assigned District *
+                  </label>
+                  <select
+                    id="signup-district-input"
+                    required
+                    value={signupDistrict}
+                    onChange={(e) => setSignupDistrict(e.target.value)}
+                    className={`w-full px-3.5 py-2.5 rounded-xl border text-xs font-medium focus:outline-none focus:ring-2 focus:ring-offset-0 transition-shadow ${
+                      isDark
+                        ? 'bg-slate-900/70 border-slate-700 text-white focus:border-slate-500 focus:ring-slate-500/20'
+                        : 'bg-[#F8FAFC] border-slate-200 text-slate-900 focus:border-slate-800 focus:ring-slate-900/10'
+                    }`}
+                  >
+                    <option value="">Select your district</option>
+                    {BANGLADESH_DISTRICTS.map((d) => (
+                      <option key={d} value={d}>{d}</option>
+                    ))}
+                  </select>
                 </div>
 
                 {/* 2. Full Name (Hover Zoom) */}
