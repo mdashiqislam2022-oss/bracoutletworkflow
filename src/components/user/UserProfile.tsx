@@ -371,8 +371,7 @@ export const UserProfileView: React.FC = () => {
                 required
                 value={formData.fullName}
                 onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
-                className={`w-full px-3.5 py-2.5 rounded-xl border text-xs focus:outline-none ${
-                  ${!unlockedFields.fullName ? 'opacity-60 cursor-not-allowed' : ''}
+                                className={`w-full px-3.5 py-2.5 rounded-xl border text-xs focus:outline-none ${!unlockedFields.fullName ? 'opacity-60 cursor-not-allowed' : ''} ${
                   isDark ? 'bg-slate-800 border-slate-700 text-white' : 'bg-[#F4F6F8] border-slate-200/60 text-slate-900'
                 }`}
               />
@@ -400,7 +399,7 @@ export const UserProfileView: React.FC = () => {
                 {!unlockedFields.phone && (
                   <button type="button" onClick={() => unlockField('phone')} className="text-[10px] font-semibold text-emerald-500 hover:underline">Change</button>
                 )}
-              </div>>
+              </div>
                             <input
                 type="tel"
                 required
