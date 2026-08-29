@@ -96,13 +96,10 @@ export const LoanAccountModal: React.FC<LoanAccountModalProps> = ({
   // - acc number: (Only number)
   // - mobile number: (Only number)
   // - loan amount: (Only number)
-  const handleAccountTitleChange = (val: string) => {
+    const handleAccountTitleChange = (val: string) => {
     // Only letters, spaces, dots, and ampersands allowed
     const sanitized = val.replace(/[^a-zA-Z\u0980-\u09FF\s.&'-]/g, '');
     setAccountTitle(sanitized);
-    if (!customerName || customerName === accountTitle) {
-      setCustomerName(sanitized);
-    }
   };
 
   const handleCustomerNameChange = (val: string) => {
