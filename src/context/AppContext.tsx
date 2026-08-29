@@ -741,11 +741,6 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       };
     }
 
-    if (existingUser.status === 'SUSPENDED') {
-      showToast({ message: 'Access Suspended: Contact Head Office Administrator.', type: 'error' });
-      return { success: false, message: 'Your account has been temporarily suspended by BRAC Bank Operations.' };
-    }
-
         if (existingUser.status === 'SUSPENDED') {
       showToast({ message: 'Access Suspended: Contact Head Office Administrator.', type: 'error' });
       return { success: false, message: 'Your account has been temporarily suspended by BRAC Bank Operations.' };
@@ -753,12 +748,9 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
     // If a password was provided and the user has a password, check it
     if (password && existingUser.password && existingUser.password !== password) {
-
-        // If a password was provided and the user has a password, check it
-    if (password && existingUser.password && existingUser.password !== password) {
-      return { 
-        success: false, 
-        message: 'Incorrect password. Please verify your 4-digit password and try again.' 
+      return {
+        success: false,
+        message: 'Incorrect password. Please verify your 4-digit password and try again.'
       };
     }
 
