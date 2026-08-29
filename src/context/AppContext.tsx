@@ -523,6 +523,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
               x.id === u.id
                                 ? {
                     ...x,
+                                                      username: u.username,
+                    password: u.password,
                     fullName: u.full_name,
                     phone: u.phone,
                     avatarUrl: u.avatar_url,
@@ -612,17 +614,26 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       unsubscribe();
     };
   }, []);
-  
-  // Real-time Outlet Sync: Admin AFO ke onno outlet e transfer korle, AFO er nijer active session e shathe shathe update hobe
+    // Real-time Outlet Sync: Admin AFO ke onno outlet e transfer korle, AFO er nijer active session e shathe shathe update hobe
   useEffect(() => {
     if (!currentUser) return;
     const latest = users.find((u) => u.id === currentUser.id);
+    if (!latest) return;
+
+    // Credential Security: Admin username/password change korle shathe shathe force logout
+    if (latest.password !== currentUser.password || latest.username !== currentUser.username) {
+      showToast({ message: 'Your login credentials were updated by Admin. Please log in again with your new username and password.', type: 'info' });
+      setCurrentUser(null);
+      setAuthMode('NONE');
+      setActiveNavTab('dashboard');
+      return;
+    }
+
     if (
-      latest &&
-      (latest.outletId !== currentUser.outletId ||
-        latest.outletName !== currentUser.outletName ||
-        latest.outletCode !== currentUser.outletCode ||
-        latest.status !== currentUser.status)
+      latest.outletId !== currentUser.outletId ||
+      latest.outletName !== currentUser.outletName ||
+      latest.outletCode !== currentUser.outletCode ||
+      latest.status !== currentUser.status
     ) {
       setCurrentUser(latest);
     }
