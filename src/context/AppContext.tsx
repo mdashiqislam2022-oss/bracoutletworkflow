@@ -516,12 +516,30 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
             lastSeenAt: u.last_seen_at
           };
           setUsers((prev) => [mappedUser, ...prev.filter((x) => x.id !== mappedUser.id)]);
-        } else if (payload.eventType === 'UPDATE' && payload.new) {
+                } else if (payload.eventType === 'UPDATE' && payload.new) {
           const u = payload.new;
           setUsers((prev) =>
             prev.map((x) =>
               x.id === u.id
-                                ? { ...x, status: u.status, isOnline: u.is_online || false, lastSeenAt: u.last_seen_at, lastLoginAt: u.last_login_at }
+                                ? {
+                    ...x,
+                    fullName: u.full_name,
+                    phone: u.phone,
+                    avatarUrl: u.avatar_url,
+                    outletId: u.outlet_id,
+                    outletName: u.outlet_name,
+                    outletCode: u.outlet_code,
+                    outletLocation: u.outlet_location,
+                    employeeId: u.employee_id,
+                    designation: u.designation,
+                    supervisorName: u.supervisor_name,
+                    role: u.role || 'USER',
+                    status: u.status,
+                    needsResetLoginNotice: u.needs_reset_login_notice || false,
+                    isOnline: u.is_online || false,
+                    lastSeenAt: u.last_seen_at,
+                    lastLoginAt: u.last_login_at
+                  }
                 : x
             )
           );
@@ -594,6 +612,21 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       unsubscribe();
     };
   }, []);
+  
+  // Real-time Outlet Sync: Admin AFO ke onno outlet e transfer korle, AFO er nijer active session e shathe shathe update hobe
+  useEffect(() => {
+    if (!currentUser) return;
+    const latest = users.find((u) => u.id === currentUser.id);
+    if (
+      latest &&
+      (latest.outletId !== currentUser.outletId ||
+        latest.outletName !== currentUser.outletName ||
+        latest.outletCode !== currentUser.outletCode ||
+        latest.status !== currentUser.status)
+    ) {
+      setCurrentUser(latest);
+    }
+  }, [users, currentUser]);
     // Heartbeat: AFO's tab open thakle proti 20 second por "still active" signal pathabe
   useEffect(() => {
     if (authMode !== 'USER' || !currentUser) return;
@@ -1977,6 +2010,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     };
 
     setUsers((prev) => prev.map((u) => (u.id === userId ? updatedUser : u)));
+        SupabaseService.saveUserProfile(updatedUser);
 
     if (currentUser?.id === userId) {
       setCurrentUser(updatedUser);
