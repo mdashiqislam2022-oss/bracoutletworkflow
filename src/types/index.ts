@@ -57,8 +57,9 @@ export interface UserProfile {
   avatarUrl: string;
   outletId: string;
   outletName: string;
-  outletCode?: string;
+    outletCode?: string;
   outletLocation: string;
+  district?: string;
   employeeId: string;
   designation: string;
   yearsOfService: number;
