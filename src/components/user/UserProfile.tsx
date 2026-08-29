@@ -179,9 +179,10 @@ export const UserProfileView: React.FC = () => {
             <p className={`text-xs font-medium ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{formData.designation}</p>
 
             <div className="mt-2.5 flex flex-wrap items-center justify-center sm:justify-start gap-4 text-xs text-slate-400">
-              <span className="flex items-center gap-1.5">
+                            <span className="flex items-center gap-1.5">
                 <Building2 className={`w-3.5 h-3.5 ${isDark ? 'text-slate-400' : 'text-slate-600'}`} />
                 {currentUser.outletName}
+                {currentUser.outletCode ? ` (${currentUser.outletCode})` : ''}
               </span>
               <span className="flex items-center gap-1.5">
                 <Mail className={`w-3.5 h-3.5 ${isDark ? 'text-slate-400' : 'text-slate-600'}`} />
