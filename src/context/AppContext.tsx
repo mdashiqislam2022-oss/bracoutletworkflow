@@ -189,7 +189,7 @@ export interface AppContextType {
   loginUser: (usernameOrEmail: string, password?: string) => Promise<{ success: boolean; needsSignup?: boolean; message?: string }>;
   loginUserByEmail: (email: string) => Promise<{ success: boolean; needsSignup?: boolean; message?: string }>;
   loginWithGoogle: (email: string) => Promise<{ success: boolean; needsSignup?: boolean; message?: string }>;
-  signUpUser: (data: { email: string; fullName: string; phone: string; outletId?: string; outletName?: string; outletCode?: string; username?: string; password?: string; avatarUrl?: string; autoLogin?: boolean }) => { success: boolean; message?: string; user?: UserProfile };
+    signUpUser: (data: { email: string; fullName: string; phone: string; outletId?: string; outletName?: string; outletCode?: string; district?: string; username?: string; password?: string; avatarUrl?: string; autoLogin?: boolean }) => { success: boolean; message?: string; user?: UserProfile };
   signupWithGoogle: (data: { email: string; fullName: string; phone: string; outletId?: string; outletName?: string; outletCode?: string; username?: string; password?: string; avatarUrl?: string; autoLogin?: boolean }) => { success: boolean; message?: string; user?: UserProfile };
   resetUserCredentials: (
     identifier: string,
@@ -822,13 +822,14 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   };
 
   // User Sign Up with comprehensive details (Outlet, Name, Mobile, Gmail, Username, Password, OutletCode)
-  const signUpUser = ({
+    const signUpUser = ({
     email,
     fullName,
     phone,
     outletId,
     outletName,
     outletCode,
+    district,
     username,
     password,
     avatarUrl,
@@ -840,6 +841,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     outletId?: string;
     outletName?: string;
     outletCode?: string;
+    district?: string;
     username?: string;
     password?: string;
     avatarUrl?: string;
@@ -948,10 +950,11 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       fullName: fullName.trim(),
       phone: phone.trim(),
       avatarUrl: avatarUrl || 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80',
-      outletId: outlet.id,
+            outletId: outlet.id,
       outletName: outlet.name,
       outletCode: finalOutletCode,
       outletLocation: outlet.address,
+      district: district || '',
       employeeId: generatedEmployeeId,
       designation: 'Assistant Field Officer (AFO)',
       yearsOfService: 0.1,
