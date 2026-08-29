@@ -746,12 +746,13 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       return { success: false, message: 'Your account has been temporarily suspended by BRAC Bank Operations.' };
     }
 
-    if (existingUser.previousOutletAccessRevoked) {
-      return {
-        success: false,
-        message: `Security Notice: Officer ${existingUser.fullName}, you have been transferred to "${existingUser.outletName}". Prior station credentials are locked. Please complete activation with your Gmail under your new station.`
-      };
+        if (existingUser.status === 'SUSPENDED') {
+      showToast({ message: 'Access Suspended: Contact Head Office Administrator.', type: 'error' });
+      return { success: false, message: 'Your account has been temporarily suspended by BRAC Bank Operations.' };
     }
+
+    // If a password was provided and the user has a password, check it
+    if (password && existingUser.password && existingUser.password !== password) {
 
         // If a password was provided and the user has a password, check it
     if (password && existingUser.password && existingUser.password !== password) {
