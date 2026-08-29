@@ -153,8 +153,10 @@ export const Header: React.FC = () => {
               <span className={`text-sm sm:text-base font-extrabold tracking-tight leading-tight ${isDark ? 'text-white' : 'text-slate-900'}`}>
                 Outlet Workflow
               </span>
-              <span className={`text-[10px] font-semibold tracking-wide uppercase ${isDark ? 'text-emerald-400' : 'text-emerald-600'}`}>
-                {authMode === 'ADMIN' ? 'Control Center' : (currentUser?.outletName || 'Field Operations')}
+                           <span className={`text-[10px] font-semibold tracking-wide uppercase ${isDark ? 'text-emerald-400' : 'text-emerald-600'}`}>
+                {authMode === 'ADMIN'
+                  ? 'Control Center'
+                  : `${currentUser?.outletName || 'Field Operations'}${currentUser?.outletCode ? ` · ${currentUser.outletCode}` : ''}`}
               </span>
             </div>
           </div>
