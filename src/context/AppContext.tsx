@@ -1489,6 +1489,15 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     };
 
     SupabaseService.saveAdminAccount(updatedAdmin);
+    
+    // TEMPORARY TEST: Verify new Supabase Auth login works in the background (does not affect app behavior)
+    SupabaseService.signInWithAuth(admin.email, cleanPin).then((result) => {
+      if (result.success) {
+        console.log('✅ Supabase Auth test login SUCCESSFUL for:', admin.email);
+      } else {
+        console.warn('❌ Supabase Auth test login FAILED for:', admin.email, '-', result.error);
+      }
+    });
 
     setAdmins((prev) => {
       const exists = prev.some((a) => a.id === updatedAdmin.id);
