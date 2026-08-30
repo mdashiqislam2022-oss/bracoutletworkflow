@@ -340,7 +340,7 @@ export const AuthPage: React.FC = () => {
   };
 
   // Handle Admin Login
-  const handleAdminLogin = (e: React.FormEvent) => {
+    const handleAdminLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage(null);
     setSuccessMessage(null);
@@ -353,7 +353,7 @@ export const AuthPage: React.FC = () => {
       return;
     }
 
-    const res = loginAdminByPin(cleanUser, cleanPass);
+        const res = await loginAdminByPin(cleanUser, cleanPass);
     if (!res.success) {
       triggerError(res.message || 'Invalid admin credentials. Access denied.');
     }
