@@ -1448,13 +1448,13 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     const cleanPin = (pin || '').trim();
 
     // Check credentials in admin list or standard admin defaults
-    const matchingAdmin = admins.find(
+        const matchingAdmin = admins.find(
       (a) =>
         a.username.toLowerCase() === cleanUser &&
-        (a.password === cleanPin || a.pinHash === cleanPin || (cleanUser === 'admin' && cleanPin === '2525'))
+        (a.password === cleanPin || a.pinHash === cleanPin)
     );
 
-    if (!matchingAdmin && !(cleanUser === 'admin' && cleanPin === '2525')) {
+    if (!matchingAdmin) {
       addAuditEntry('ADMIN_AUTH_FAILED', `Failed admin login attempt with user: "${username}"`);
       return { 
         success: false, 
