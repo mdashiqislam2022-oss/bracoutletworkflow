@@ -287,6 +287,21 @@ export const SupabaseService = {
       return null;
     }
   },
+    // Sign in using Supabase Auth (new secure system)
+  async signInWithAuth(email: string, password: string) {
+    if (!this.isAvailable() || !supabase) return { success: false, error: 'Supabase not available' };
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+      if (error) {
+        console.warn('Supabase Auth sign-in error:', error.message);
+        return { success: false, error: error.message };
+      }
+      return { success: true, session: data.session, user: data.user };
+    } catch (err) {
+      console.warn('Error during Supabase Auth sign-in:', err);
+      return { success: false, error: 'Unexpected error during sign-in' };
+    }
+  },
 
   // Fetch all initial data
   async fetchAllData() {
