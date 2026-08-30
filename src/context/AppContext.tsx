@@ -199,7 +199,7 @@ export interface AppContextType {
     identifier: string,
     data: { newPassword: string; newUsername?: string; avatarUrl?: string } | string
   ) => { success: boolean; message?: string; username?: string };
-  loginAdminByPin: (username?: string, pin?: string) => { success: boolean; message?: string };
+    loginAdminByPin: (username?: string, pin?: string) => Promise<{ success: boolean; message?: string }>;
   loginAdminWithPin: (username?: string, pin?: string) => { success: boolean; message?: string };
   loginAdminDirectly: () => { success: boolean; message?: string };
   setupFirstTimeAdmin: (data: { email: string; fullName: string; username: string; pin: string }) => { success: boolean; message?: string };
@@ -1443,16 +1443,12 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   };
 
   // Admin PIN / Password Login (Strict: Username: admin, Password: 2525)
-  const loginAdminByPin = (username?: string, pin?: string) => {
+    const loginAdminByPin = async (username?: string, pin?: string) => {
     const cleanUser = (username || '').trim().toLowerCase();
     const cleanPin = (pin || '').trim();
 
-    // Check credentials in admin list or standard admin defaults
-        const matchingAdmin = admins.find(
-      (a) =>
-        a.username.toLowerCase() === cleanUser &&
-        (a.password === cleanPin || a.pinHash === cleanPin)
-    );
+    // Find the admin record by username (password is now verified by Supabase Auth below)
+    const matchingAdmin = admins.find((a) => a.username.toLowerCase() === cleanUser);
 
     if (!matchingAdmin) {
       addAuditEntry('ADMIN_AUTH_FAILED', `Failed admin login attempt with user: "${username}"`);
@@ -1462,22 +1458,17 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       };
     }
 
-    const defaultMasterAdmin: AdminAccount = {
-      id: 'ADM-CENTRAL-001',
-      email: 'central.admin@bracbank.com',
-      username: 'admin',
-      pinHash: '2525',
-      password: '2525',
-      fullName: 'Master Administrator',
-      avatarUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
-      isMainAdmin: true,
-      permissions: ['VIEW_ALL', 'MANAGE_USERS', 'DELEGATE_ADMINS', 'EXPORT_DATA', 'MODIFY_OUTLETS', 'AUDIT_LOGS', 'SYSTEM_CONFIG'],
-      status: 'ACTIVE',
-      createdAt: new Date().toISOString(),
-      lastLoginAt: new Date().toISOString()
-    };
+    // Real security check: verify the password against Supabase Auth (not local plain-text data)
+    const authResult = await SupabaseService.signInWithAuth(matchingAdmin.email, cleanPin);
+    if (!authResult.success) {
+      addAuditEntry('ADMIN_AUTH_FAILED', `Failed admin login attempt with user: "${username}"`);
+      return {
+        success: false,
+        message: 'Invalid admin credentials. Access denied.'
+      };
+    }
 
-    const admin = matchingAdmin || admins.find((a) => a.username.toLowerCase() === 'admin') || defaultMasterAdmin;
+    const admin = matchingAdmin;
 
     if (admin.status === 'SUSPENDED') {
       return { success: false, message: 'This Admin access has been revoked or suspended.' };
@@ -1489,15 +1480,6 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     };
 
     SupabaseService.saveAdminAccount(updatedAdmin);
-    
-    // TEMPORARY TEST: Verify new Supabase Auth login works in the background (does not affect app behavior)
-    SupabaseService.signInWithAuth(admin.email, cleanPin).then((result) => {
-      if (result.success) {
-        console.log('✅ Supabase Auth test login SUCCESSFUL for:', admin.email);
-      } else {
-        console.warn('❌ Supabase Auth test login FAILED for:', admin.email, '-', result.error);
-      }
-    });
 
     setAdmins((prev) => {
       const exists = prev.some((a) => a.id === updatedAdmin.id);
