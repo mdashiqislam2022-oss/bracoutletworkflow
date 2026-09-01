@@ -26,6 +26,7 @@ import {
   mapDbToLoanRecord,
   mapDbToSubmission
 } from '../services/supabaseService';
+import { supabase } from '../lib/supabase';
 import confetti from 'canvas-confetti';
 
 export interface ToastData {
