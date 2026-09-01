@@ -1108,8 +1108,9 @@ export const AuthPage: React.FC = () => {
 
                 {/* Admin Login Submit Button */}
                 <button
-                  id="admin-login-submit-btn"
+                                    id="admin-login-submit-btn"
                   type="submit"
+                  disabled={!isCloudDataLoaded}
                   className={`w-full py-3 rounded-full text-xs font-bold transition-transform active:scale-98 shadow-sm flex items-center justify-center gap-2 cursor-pointer mt-3 ${
                     isDark 
                       ? 'bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black' 
