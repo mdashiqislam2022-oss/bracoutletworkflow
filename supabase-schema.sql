@@ -308,15 +308,50 @@ ALTER TABLE public.afo_transfers ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.audit_logs ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.portal_governance ENABLE ROW LEVEL SECURITY;
 
-CREATE POLICY "Enable all for public clients on outlets" ON public.outlets FOR ALL USING (true) WITH CHECK (true);
-CREATE POLICY "Enable all for public clients on user_profiles" ON public.user_profiles FOR ALL USING (true) WITH CHECK (true);
-CREATE POLICY "Enable all for public clients on admin_accounts" ON public.admin_accounts FOR ALL USING (true) WITH CHECK (true);
-CREATE POLICY "Enable all for public clients on cheque_card_registry" ON public.cheque_card_registry FOR ALL USING (true) WITH CHECK (true);
-CREATE POLICY "Enable all for public clients on loan_records" ON public.loan_records FOR ALL USING (true) WITH CHECK (true);
-CREATE POLICY "Enable all for public clients on work_submissions" ON public.work_submissions FOR ALL USING (true) WITH CHECK (true);
-CREATE POLICY "Enable all for public clients on station_mail_messages" ON public.station_mail_messages FOR ALL USING (true) WITH CHECK (true);
-CREATE POLICY "Enable all for public clients on station_notifications" ON public.station_notifications FOR ALL USING (true) WITH CHECK (true);
-CREATE POLICY "Enable all for public clients on password_reset_requests" ON public.password_reset_requests FOR ALL USING (true) WITH CHECK (true);
-CREATE POLICY "Enable all for public clients on afo_transfers" ON public.afo_transfers FOR ALL USING (true) WITH CHECK (true);
-CREATE POLICY "Enable all for public clients on audit_logs" ON public.audit_logs FOR ALL USING (true) WITH CHECK (true);
-CREATE POLICY "Enable all for public clients on portal_governance" ON public.portal_governance FOR ALL USING (true) WITH CHECK (true);
+CREATE POLICY "select_outlets" ON public.outlets FOR SELECT USING (true);
+CREATE POLICY "insert_outlets" ON public.outlets FOR INSERT WITH CHECK (true);
+CREATE POLICY "update_outlets" ON public.outlets FOR UPDATE USING (true) WITH CHECK (true);
+
+CREATE POLICY "select_user_profiles" ON public.user_profiles FOR SELECT USING (true);
+CREATE POLICY "insert_user_profiles" ON public.user_profiles FOR INSERT WITH CHECK (true);
+CREATE POLICY "update_user_profiles" ON public.user_profiles FOR UPDATE USING (true) WITH CHECK (true);
+
+CREATE POLICY "select_admin_accounts" ON public.admin_accounts FOR SELECT USING (true);
+CREATE POLICY "insert_admin_accounts" ON public.admin_accounts FOR INSERT WITH CHECK (true);
+CREATE POLICY "update_admin_accounts" ON public.admin_accounts FOR UPDATE USING (true) WITH CHECK (true);
+
+CREATE POLICY "select_cheque_card_registry" ON public.cheque_card_registry FOR SELECT USING (true);
+CREATE POLICY "insert_cheque_card_registry" ON public.cheque_card_registry FOR INSERT WITH CHECK (true);
+CREATE POLICY "update_cheque_card_registry" ON public.cheque_card_registry FOR UPDATE USING (true) WITH CHECK (true);
+
+CREATE POLICY "select_loan_records" ON public.loan_records FOR SELECT USING (true);
+CREATE POLICY "insert_loan_records" ON public.loan_records FOR INSERT WITH CHECK (true);
+CREATE POLICY "update_loan_records" ON public.loan_records FOR UPDATE USING (true) WITH CHECK (true);
+
+CREATE POLICY "select_work_submissions" ON public.work_submissions FOR SELECT USING (true);
+CREATE POLICY "insert_work_submissions" ON public.work_submissions FOR INSERT WITH CHECK (true);
+CREATE POLICY "update_work_submissions" ON public.work_submissions FOR UPDATE USING (true) WITH CHECK (true);
+
+CREATE POLICY "select_station_mail_messages" ON public.station_mail_messages FOR SELECT USING (true);
+CREATE POLICY "insert_station_mail_messages" ON public.station_mail_messages FOR INSERT WITH CHECK (true);
+CREATE POLICY "update_station_mail_messages" ON public.station_mail_messages FOR UPDATE USING (true) WITH CHECK (true);
+
+CREATE POLICY "select_station_notifications" ON public.station_notifications FOR SELECT USING (true);
+CREATE POLICY "insert_station_notifications" ON public.station_notifications FOR INSERT WITH CHECK (true);
+CREATE POLICY "update_station_notifications" ON public.station_notifications FOR UPDATE USING (true) WITH CHECK (true);
+
+CREATE POLICY "select_password_reset_requests" ON public.password_reset_requests FOR SELECT USING (true);
+CREATE POLICY "insert_password_reset_requests" ON public.password_reset_requests FOR INSERT WITH CHECK (true);
+CREATE POLICY "update_password_reset_requests" ON public.password_reset_requests FOR UPDATE USING (true) WITH CHECK (true);
+
+CREATE POLICY "select_afo_transfers" ON public.afo_transfers FOR SELECT USING (true);
+CREATE POLICY "insert_afo_transfers" ON public.afo_transfers FOR INSERT WITH CHECK (true);
+CREATE POLICY "update_afo_transfers" ON public.afo_transfers FOR UPDATE USING (true) WITH CHECK (true);
+
+CREATE POLICY "select_audit_logs" ON public.audit_logs FOR SELECT USING (true);
+CREATE POLICY "insert_audit_logs" ON public.audit_logs FOR INSERT WITH CHECK (true);
+CREATE POLICY "update_audit_logs" ON public.audit_logs FOR UPDATE USING (true) WITH CHECK (true);
+
+CREATE POLICY "select_portal_governance" ON public.portal_governance FOR SELECT USING (true);
+CREATE POLICY "insert_portal_governance" ON public.portal_governance FOR INSERT WITH CHECK (true);
+CREATE POLICY "update_portal_governance" ON public.portal_governance FOR UPDATE USING (true) WITH CHECK (true);
