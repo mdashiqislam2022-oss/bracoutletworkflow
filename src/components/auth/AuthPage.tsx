@@ -47,9 +47,10 @@ export const AuthPage: React.FC = () => {
     loginUserWithCredentials,
     signUpUser,
     loginAdminByPin,
-    requestPasswordResetFromAdmin,
+        requestPasswordResetFromAdmin,
     outlets,
-    userPreferences
+    userPreferences,
+    isCloudDataLoaded
   } = useApp();
 
   const isDark = userPreferences.theme === 'dark';
@@ -165,18 +166,23 @@ export const AuthPage: React.FC = () => {
   };
 
   // Handle User Login with animated sliding arrow
-  const handleUserLogin = (e: React.FormEvent) => {
-    e.preventDefault();
-    setErrorMessage(null);
-    setSuccessMessage(null);
+    const handleUserLogin = (e: React.FormEvent) => {
+      e.preventDefault();
+      setErrorMessage(null);
+      setSuccessMessage(null);
 
-    const cleanId = loginIdentifier.trim();
-    const cleanPass = loginPassword.trim();
-
-    if (!cleanId) {
-      triggerError('Please enter your username or registered Gmail address.');
+    if (!isCloudDataLoaded) {
+      triggerError('System is still loading your account data. Please wait a moment and try again.');
       return;
     }
+  
+      const cleanId = loginIdentifier.trim();
+      const cleanPass = loginPassword.trim();
+  
+      if (!cleanId) {
+        triggerError('Please enter your username or registered Gmail address.');
+        return;
+      }
 
     if (!cleanPass) {
       triggerError('Please enter your 4-digit password.');
@@ -551,14 +557,14 @@ export const AuthPage: React.FC = () => {
                 <button
                   id="user-login-submit-btn"
                   type="submit"
-                  disabled={isLoggingIn}
+                  disabled={isLoggingIn || !isCloudDataLoaded}
                   className={`group w-full py-3 rounded-full text-xs font-bold transition-all active:scale-98 shadow-sm flex items-center justify-center gap-2 cursor-pointer mt-2 overflow-hidden ${
                     isDark 
                       ? 'bg-white hover:bg-slate-100 text-slate-900' 
                       : 'bg-[#18181B] hover:bg-black text-white'
                   }`}
                 >
-                  <span>{isLoggingIn ? 'Verifying...' : 'Login'}</span>
+                    <span>{!isCloudDataLoaded ? 'Loading...' : isLoggingIn ? 'Verifying...' : 'Login'}</span>
                   <motion.span
                     animate={{ x: isLoggingIn ? 14 : 0 }}
                     transition={{ type: 'spring', stiffness: 400, damping: 20 }}
