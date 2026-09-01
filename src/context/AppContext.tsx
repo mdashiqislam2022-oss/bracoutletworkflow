@@ -1563,8 +1563,30 @@ if (sessionStatus.isActive) {
 
     const admin = matchingAdmin;
 
-    if (admin.status === 'SUSPENDED') {
+       if (admin.status === 'SUSPENDED') {
       return { success: false, message: 'This Admin access has been revoked or suspended.' };
+    }
+
+    // Same browser tab hard-refresh check.
+    let isSameTabAfterRefresh = false;
+    try {
+      const refreshAdminId = sessionStorage.getItem('brac_admin_active_id');
+      isSameTabAfterRefresh = refreshAdminId === admin.id;
+    } catch {
+      // Ignore sessionStorage errors and keep normal login flow.
+    }
+
+    if (isSameTabAfterRefresh) {
+      await SupabaseService.setAdminOffline(admin.id);
+    }
+
+    // Real-time Single-Session Check: another browser/tab still active হলে login block
+    const adminSessionStatus = await SupabaseService.checkAdminActiveSession(admin.id);
+    if (adminSessionStatus.isActive) {
+      return {
+        success: false,
+        message: `Already logged in: ${admin.fullName}, this Admin account is currently active on another browser/tab. Please log out there first.`
+      };
     }
 
     const updatedAdmin = {
