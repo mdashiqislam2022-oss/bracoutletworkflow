@@ -342,8 +342,8 @@ export const SupabaseService = {
         governanceRes
       ] = await Promise.all([
         supabase.from('outlets').select('*').order('name', { ascending: true }),
-       supabase.from('user_profiles').select('id, email, username, password, full_name, phone, avatar_url, outlet_id, outlet_name, outlet_code, outlet_location, district, employee_id, designation, years_of_service, bio, blood_group, emergency_contact, supervisor_name, facebook, instagram, whatsapp, role, status, previous_outlet_ids, previous_outlet_access_revoked, needs_reset_login_notice, created_at, last_login_at, is_online, last_seen_at'),
-       supabase.from('admin_accounts').select('id, email, phone, username, full_name, avatar_url, is_main_admin, delegated_by, delegated_at, permissions, status, created_at, last_login_at'),
+        supabase.from('user_profiles').select('id, email, username, password, full_name, phone, avatar_url, outlet_id, outlet_name, outlet_code, outlet_location, district, employee_id, designation, years_of_service, bio, blood_group, emergency_contact, supervisor_name, facebook, instagram, whatsapp, role, status, previous_outlet_ids, previous_outlet_access_revoked, needs_reset_login_notice, created_at, last_login_at, is_online, last_seen_at'),
+        supabase.from('admin_accounts').select('id, email, phone, username, full_name, avatar_url, is_main_admin, delegated_by, delegated_at, permissions, status, created_at, last_login_at, is_online, last_seen_at'),
         supabase.from('work_submissions').select('*').order('submitted_at', { ascending: false }),
         supabase.from('cheque_card_registry').select('*').order('created_at', { ascending: false }),
         supabase.from('loan_records').select('*').order('created_at', { ascending: false }),
@@ -390,12 +390,14 @@ export const SupabaseService = {
                     isOnline: u.is_online || false,
           lastSeenAt: u.last_seen_at
         })),
-        admins: (adminsRes.data || []).map((a: any) => ({
+        
+          admins: (adminsRes.data || []).map((a: any) => ({
           id: a.id,
           email: a.email,
           phone: a.phone,
           username: a.username,
-          
+          isOnline: a.is_online || false,
+          lastSeenAt: a.last_seen_at,
           fullName: a.full_name,
           avatarUrl: a.avatar_url,
           isMainAdmin: a.is_main_admin,
@@ -778,8 +780,76 @@ async releaseAfoSession(userId: string, sessionId: string): Promise<boolean> {
         },
         body: JSON.stringify({ is_online: false })
       }).catch(() => {});
+      } catch (err) {
+        console.warn('Error sending offline beacon:', err);
+      }
+    },
+    // Real-time single-session check for Admin: onno kono tab/browser e ekhon active ase kina
+  async checkAdminActiveSession(adminId: string): Promise<{ isActive: boolean }> {
+    if (!this.isAvailable() || !supabase) return { isActive: false };
+    try {
+      const { data, error } = await supabase
+        .from('admin_accounts')
+        .select('is_online, last_seen_at')
+        .eq('id', adminId)
+        .single();
+      if (error || !data) return { isActive: false };
+      const lastSeenTime = data.last_seen_at ? new Date(data.last_seen_at).getTime() : 0;
+      const secondsSinceLastSeen = (Date.now() - lastSeenTime) / 1000;
+      const isActive = !!data.is_online && secondsSinceLastSeen < 35;
+      return { isActive };
     } catch (err) {
-      console.warn('Error sending offline beacon:', err);
+      console.warn('Error checking admin active session:', err);
+      return { isActive: false };
+    }
+  },
+
+  // Lightweight heartbeat for Admin - only updates last_seen_at + is_online
+  async updateAdminHeartbeat(adminId: string) {
+    if (!this.isAvailable() || !supabase) return;
+    try {
+      await supabase
+        .from('admin_accounts')
+        .update({ last_seen_at: new Date().toISOString(), is_online: true })
+        .eq('id', adminId);
+    } catch (err) {
+      console.warn('Error sending admin heartbeat:', err);
+    }
+  },
+
+  // Explicitly mark admin offline (used on logout)
+  async setAdminOffline(adminId: string) {
+    if (!this.isAvailable() || !supabase) return;
+    try {
+      await supabase
+        .from('admin_accounts')
+        .update({ is_online: false })
+        .eq('id', adminId);
+    } catch (err) {
+      console.warn('Error setting admin offline:', err);
+    }
+  },
+
+  // Beacon-safe offline signal for Admin — fires reliably even when the tab/browser is closing
+  setAdminOfflineBeacon(adminId: string) {
+    try {
+      const supabaseUrl = (import.meta as any).env?.VITE_SUPABASE_URL || '';
+      const supabaseAnonKey = (import.meta as any).env?.VITE_SUPABASE_ANON_KEY || '';
+      if (!supabaseUrl || !supabaseAnonKey) return;
+
+      fetch(`${supabaseUrl}/rest/v1/admin_accounts?id=eq.${adminId}`, {
+        method: 'PATCH',
+        keepalive: true,
+        headers: {
+          'Content-Type': 'application/json',
+          apikey: supabaseAnonKey,
+          Authorization: `Bearer ${supabaseAnonKey}`,
+          Prefer: 'return=minimal'
+        },
+        body: JSON.stringify({ is_online: false })
+      }).catch(() => {});
+    } catch (err) {
+      console.warn('Error sending admin offline beacon:', err);
     }
   },
 
