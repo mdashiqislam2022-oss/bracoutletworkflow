@@ -1602,8 +1602,13 @@ if (sessionStatus.isActive) {
     });
     setCurrentAdmin(updatedAdmin);
     setCurrentUser(null);
-    setAuthMode('ADMIN');
+        setAuthMode('ADMIN');
     setActiveNavTab('dashboard');
+    try {
+      sessionStorage.setItem('brac_admin_active_id', updatedAdmin.id);
+    } catch {
+      // Ignore sessionStorage errors.
+    }
     addAuditEntry('ADMIN_LOGIN_SUCCESS', `Admin ${admin.fullName} logged into Master Control Center`);
     showToast({ message: `Authenticated as ${admin.fullName} (Master Admin)`, type: 'success' });
     return { success: true };
