@@ -37,6 +37,8 @@ export interface ToastData {
 
 export interface AppContextType {
   currentUser: UserProfile | null;
+    currentUser: UserProfile | null;
+  isCloudDataLoaded: boolean;
   currentAdmin: AdminAccount | null;
   authMode: 'NONE' | 'USER' | 'ADMIN';
   outlets: BRACBankOutlet[];
@@ -330,6 +332,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   // Current session
   const [currentUser, setCurrentUser] = useState<UserProfile | null>(null);
+    const [currentUser, setCurrentUser] = useState<UserProfile | null>(null);
+  const [isCloudDataLoaded, setIsCloudDataLoaded] = useState<boolean>(!SupabaseService.isAvailable());
   const [currentAdmin, setCurrentAdmin] = useState<AdminAccount | null>(null);
   const [authMode, setAuthMode] = useState<'NONE' | 'USER' | 'ADMIN'>('NONE');
   
@@ -457,9 +461,11 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
                 }
               }
             }
-          }
+                    }
         } catch (err) {
           console.warn('Supabase initial fetch error:', err);
+        } finally {
+          if (isMounted) setIsCloudDataLoaded(true);
         }
       }
     };
