@@ -25,6 +25,7 @@ import { SupportModal } from './SupportModal';
 export const Sidebar: React.FC = () => {
   const {
     authMode,
+        currentUser,
     activeNavTab,
     setActiveNavTab,
     userPreferences,
@@ -40,13 +41,28 @@ export const Sidebar: React.FC = () => {
 
   const isAdmin = authMode === 'ADMIN';
 
-  // User Portal Navigation
-  const userNav = [
-    { id: 'dashboard', icon: LayoutDashboard, label: langText.dashboard, isDashboard: true },
-    { id: 'cheque_cards', icon: CreditCard, label: langText.chequeCardRegistry },
-    { id: 'loan_accounts', icon: Landmark, label: langText.loanAccounts },
-    { id: 'profile', icon: UserCircle, label: langText.profile },
-    { id: 'settings', icon: Settings, label: langText.preferences }
+    // User Portal Navigation (grouped into MAIN / OPERATIONS / ACCOUNT sections)
+  const userNavGroups = [
+    {
+      section: 'MAIN',
+      items: [
+        { id: 'dashboard', icon: LayoutDashboard, label: langText.dashboard, isDashboard: true }
+      ]
+    },
+    {
+      section: 'OPERATIONS',
+      items: [
+        { id: 'cheque_cards', icon: CreditCard, label: langText.chequeCardRegistry },
+        { id: 'loan_accounts', icon: Landmark, label: langText.loanAccounts }
+      ]
+    },
+    {
+      section: 'ACCOUNT',
+      items: [
+        { id: 'profile', icon: UserCircle, label: langText.profile },
+        { id: 'settings', icon: Settings, label: langText.preferences }
+      ]
+    }
   ];
 
   // Admin Portal Navigation (Separated AFO and Outlets sections included)
@@ -60,7 +76,7 @@ export const Sidebar: React.FC = () => {
     { id: 'sql_schema', icon: Code2, label: langText.sqlSchema }
   ];
 
-  const navItems = isAdmin ? adminNav : userNav;
+    const navItems = adminNav;
 
   return (
     <aside
@@ -119,15 +135,15 @@ export const Sidebar: React.FC = () => {
           </button>
         </div>
 
-        {/* Navigation Items */}
-        <nav className="flex flex-col gap-1.5 w-full">
-          {navItems.map((item) => {
-            const Icon = item.icon;
-            const isActive = activeNavTab === item.id;
-            const isDashboard = item.id === 'dashboard';
+                {/* Navigation Items */}
+        {isAdmin ? (
+          <nav className="flex flex-col gap-1.5 w-full">
+            {navItems.map((item) => {
+              const Icon = item.icon;
+              const isActive = activeNavTab === item.id;
+              const isDashboard = item.id === 'dashboard';
 
-            // Admin-specific distinct styling with responsive light/dark mode support
-            if (isAdmin) {
+              // Admin-specific distinct styling with responsive light/dark mode support
               return (
                 <button
                   key={item.id}
@@ -189,67 +205,86 @@ export const Sidebar: React.FC = () => {
                   )}
                 </button>
               );
-            }
-
-            // User portal styling
-            return (
-              <button
-                key={item.id}
-                id={`sidebar-nav-${item.id}`}
-                onClick={() => setActiveNavTab(item.id)}
-                title={item.label}
-                className={`flex items-center transition-all duration-200 cursor-pointer ${
-                  isSidebarOpen
-                    ? `w-full gap-2.5 px-3 py-2.5 rounded-2xl text-xs font-semibold text-left ${
-                        isActive
-                          ? isDark
-                            ? 'bg-white text-slate-900 shadow-md font-bold'
-                            : 'bg-[#18181B] text-white shadow-md font-bold'
-                          : isDashboard
-                            ? isDark
-                              ? 'bg-indigo-500/15 text-indigo-300 border border-indigo-500/30 hover:bg-indigo-500/25 font-bold shadow-xs'
-                              : 'bg-indigo-50 text-indigo-700 border border-indigo-300 hover:bg-indigo-100 font-bold shadow-2xs'
-                            : isDark
-                              ? 'text-slate-400 hover:text-white hover:bg-slate-800/80'
-                              : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200/60'
-                      }`
-                    : `w-9 h-9 sm:w-10 sm:h-10 mx-auto rounded-full justify-center ${
-                        isActive
-                          ? isDark
-                            ? 'bg-white text-slate-900 shadow-md'
-                            : 'bg-[#18181B] text-white shadow-md'
-                          : isDashboard
-                            ? isDark
-                              ? 'bg-indigo-500/20 text-indigo-400 border border-indigo-500/40 hover:bg-indigo-500/30 shadow-xs'
-                              : 'bg-indigo-100 text-indigo-700 border border-indigo-300 hover:bg-indigo-200 shadow-2xs'
-                            : isDark
-                              ? 'text-slate-400 hover:text-white hover:bg-slate-800'
-                              : 'text-slate-400 hover:text-slate-800 hover:bg-slate-200/60'
-                      }`
-                }`}
-              >
-                <Icon
-                  className={`w-4 h-4 shrink-0 transition-colors ${
-                    isActive
-                      ? isDark
-                        ? 'text-slate-900'
-                        : 'text-white'
-                      : isDashboard
-                        ? isDark
-                          ? 'text-indigo-400'
-                          : 'text-indigo-600'
-                        : isDark
-                          ? 'text-slate-400'
-                          : 'text-slate-500'
-                  }`}
-                />
+            })}
+          </nav>
+        ) : (
+          <nav className="flex flex-col gap-3 w-full">
+            {userNavGroups.map((group) => (
+              <div key={group.section} className="flex flex-col gap-1.5 w-full">
                 {isSidebarOpen && (
-                  <span className="truncate whitespace-nowrap transition-all duration-300 ease-out">{item.label}</span>
+                  <span className={`px-3 text-[9px] font-bold uppercase tracking-widest ${
+                    isDark ? 'text-slate-500' : 'text-slate-400'
+                  }`}>
+                    {group.section}
+                  </span>
                 )}
-              </button>
-            );
-          })}
-        </nav>
+                {group.items.map((item) => {
+                  const Icon = item.icon;
+                  const isActive = activeNavTab === item.id;
+                  const isDashboard = item.id === 'dashboard';
+
+                  // User portal styling
+                  return (
+                    <button
+                      key={item.id}
+                      id={`sidebar-nav-${item.id}`}
+                      onClick={() => setActiveNavTab(item.id)}
+                      title={item.label}
+                      className={`flex items-center transition-all duration-200 cursor-pointer ${
+                        isSidebarOpen
+                          ? `w-full gap-2.5 px-3 py-2.5 rounded-2xl text-xs font-semibold text-left ${
+                              isActive
+                                ? isDark
+                                  ? 'bg-white text-slate-900 shadow-md font-bold'
+                                  : 'bg-[#18181B] text-white shadow-md font-bold'
+                                : isDashboard
+                                  ? isDark
+                                    ? 'bg-indigo-500/15 text-indigo-300 border border-indigo-500/30 hover:bg-indigo-500/25 font-bold shadow-xs'
+                                    : 'bg-indigo-50 text-indigo-700 border border-indigo-300 hover:bg-indigo-100 font-bold shadow-2xs'
+                                  : isDark
+                                    ? 'text-slate-400 hover:text-white hover:bg-slate-800/80'
+                                    : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200/60'
+                          }`
+                          : `w-9 h-9 sm:w-10 sm:h-10 mx-auto rounded-full justify-center ${
+                              isActive
+                                ? isDark
+                                  ? 'bg-white text-slate-900 shadow-md'
+                                  : 'bg-[#18181B] text-white shadow-md'
+                                : isDashboard
+                                  ? isDark
+                                    ? 'bg-indigo-500/20 text-indigo-400 border border-indigo-500/40 hover:bg-indigo-500/30 shadow-xs'
+                                    : 'bg-indigo-100 text-indigo-700 border border-indigo-300 hover:bg-indigo-200 shadow-2xs'
+                                  : isDark
+                                    ? 'text-slate-400 hover:text-white hover:bg-slate-800'
+                                    : 'text-slate-400 hover:text-slate-800 hover:bg-slate-200/60'
+                          }`
+                      }`}
+                    >
+                      <Icon
+                        className={`w-4 h-4 shrink-0 transition-colors ${
+                          isActive
+                            ? isDark
+                              ? 'text-slate-900'
+                              : 'text-white'
+                            : isDashboard
+                              ? isDark
+                                ? 'text-indigo-400'
+                                : 'text-indigo-600'
+                              : isDark
+                                ? 'text-slate-400'
+                                : 'text-slate-500'
+                        }`}
+                      />
+                      {isSidebarOpen && (
+                        <span className="truncate whitespace-nowrap transition-all duration-300 ease-out">{item.label}</span>
+                      )}
+                    </button>
+                  );
+                })}
+              </div>
+            ))}
+          </nav>
+        )}
       </div>
 
       {/* Bottom Section */}
@@ -303,6 +338,35 @@ export const Sidebar: React.FC = () => {
               <span className="text-[8px] font-mono opacity-70">v2.4</span>
             </div>
           )
+                )}
+
+        {/* User Identity Card (Name + Outlet) */}
+        {!isAdmin && currentUser && (
+          <div className={`flex items-center mt-1 ${
+            isSidebarOpen
+              ? `gap-2 px-2.5 py-2 rounded-xl ${
+                  isDark ? 'bg-slate-800/60 border border-slate-700/60' : 'bg-slate-100 border border-slate-200'
+                }`
+              : 'justify-center py-1'
+          }`}>
+            <div className={`w-7 h-7 rounded-full flex items-center justify-center shrink-0 text-[11px] font-bold ${
+              isDark
+                ? 'bg-indigo-500/20 text-indigo-300 border border-indigo-500/30'
+                : 'bg-indigo-100 text-indigo-700 border border-indigo-300'
+            }`}>
+              {(currentUser.fullName || '?').trim().charAt(0).toUpperCase()}
+            </div>
+            {isSidebarOpen && (
+              <div className="flex flex-col min-w-0 leading-tight">
+                <span className={`text-[11px] font-bold truncate ${isDark ? 'text-slate-100' : 'text-slate-800'}`}>
+                  {currentUser.fullName}
+                </span>
+                <span className={`text-[9px] truncate ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
+                  {currentUser.outletName}
+                </span>
+              </div>
+            )}
+          </div>
         )}
 
         {/* Subtle Developer Attribution Watermark */}
