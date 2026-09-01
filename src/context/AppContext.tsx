@@ -701,6 +701,43 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
   }, [authMode, currentUser?.id]);
+  
+    // Heartbeat: Admin's tab open thakle proti 20 second por "still active" signal pathabe
+  useEffect(() => {
+    if (authMode !== 'ADMIN' || !currentAdmin) return;
+
+    SupabaseService.updateAdminHeartbeat(currentAdmin.id);
+    const adminHeartbeatInterval = setInterval(() => {
+      SupabaseService.updateAdminHeartbeat(currentAdmin.id);
+    }, 20000);
+
+    return () => clearInterval(adminHeartbeatInterval);
+  }, [authMode, currentAdmin?.id]);
+    // Tab ba browser close hole sathe sathe Admin ke OFFLINE mark kora
+  useEffect(() => {
+    if (authMode !== 'ADMIN' || !currentAdmin) return;
+    const presenceAdminId = currentAdmin.id;
+
+    const markAdminOfflineNow = () => {
+      SupabaseService.setAdminOfflineBeacon(presenceAdminId);
+    };
+
+    const handleAdminVisibilityChange = () => {
+      if (document.visibilityState === 'visible') {
+        SupabaseService.updateAdminHeartbeat(presenceAdminId);
+      }
+    };
+
+    window.addEventListener('pagehide', markAdminOfflineNow);
+    window.addEventListener('beforeunload', markAdminOfflineNow);
+    document.addEventListener('visibilitychange', handleAdminVisibilityChange);
+
+    return () => {
+      window.removeEventListener('pagehide', markAdminOfflineNow);
+      window.removeEventListener('beforeunload', markAdminOfflineNow);
+      document.removeEventListener('visibilitychange', handleAdminVisibilityChange);
+    };
+  }, [authMode, currentAdmin?.id]);
 
   // Toast auto-clear
   const showToast = (
