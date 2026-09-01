@@ -441,7 +441,22 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
             if (cloudData.passwordResetRequests) setPasswordResetRequests(cloudData.passwordResetRequests);
             if (cloudData.afoTransfers) setAfoTransfers(cloudData.afoTransfers);
             if (cloudData.auditLogs) setAuditLogs(cloudData.auditLogs);
-            if (cloudData.governanceSettings) setGovernanceSettings(cloudData.governanceSettings);
+                        if (cloudData.governanceSettings) setGovernanceSettings(cloudData.governanceSettings);
+
+            // Restore admin login session after refresh (if a valid Supabase Auth session exists)
+            if (SupabaseService.isAvailable() && supabase) {
+              const { data: sessionData } = await supabase.auth.getSession();
+              const sessionEmail = sessionData?.session?.user?.email;
+              if (sessionEmail && cloudData.admins) {
+                const restoredAdmin = cloudData.admins.find(
+                  (a: AdminAccount) => a.email.toLowerCase() === sessionEmail.toLowerCase()
+                );
+                if (restoredAdmin && isMounted) {
+                  setCurrentAdmin(restoredAdmin);
+                  setAuthMode('ADMIN');
+                }
+              }
+            }
           }
         } catch (err) {
           console.warn('Supabase initial fetch error:', err);
