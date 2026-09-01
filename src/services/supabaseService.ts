@@ -342,7 +342,7 @@ export const SupabaseService = {
         governanceRes
       ] = await Promise.all([
         supabase.from('outlets').select('*').order('name', { ascending: true }),
-        supabase.from('user_profiles').select('id, email, username, full_name, phone, avatar_url, outlet_id, outlet_name, outlet_code, outlet_location, district, employee_id, designation, years_of_service, bio, blood_group, emergency_contact, supervisor_name, facebook, instagram, whatsapp, role, status, previous_outlet_ids, previous_outlet_access_revoked, needs_reset_login_notice, created_at, last_login_at, is_online, last_seen_at'),
+       supabase.from('user_profiles').select('id, email, username, password, full_name, phone, avatar_url, outlet_id, outlet_name, outlet_code, outlet_location, district, employee_id, designation, years_of_service, bio, blood_group, emergency_contact, supervisor_name, facebook, instagram, whatsapp, role, status, previous_outlet_ids, previous_outlet_access_revoked, needs_reset_login_notice, created_at, last_login_at, is_online, last_seen_at'),
        supabase.from('admin_accounts').select('id, email, phone, username, full_name, avatar_url, is_main_admin, delegated_by, delegated_at, permissions, status, created_at, last_login_at'),
         supabase.from('work_submissions').select('*').order('submitted_at', { ascending: false }),
         supabase.from('cheque_card_registry').select('*').order('created_at', { ascending: false }),
@@ -361,7 +361,7 @@ export const SupabaseService = {
           id: u.id,
           email: u.email,
           username: u.username,
-        
+          password: u.password,
           fullName: u.full_name,
           phone: u.phone,
           avatarUrl: u.avatar_url,
