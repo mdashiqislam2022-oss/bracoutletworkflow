@@ -1671,8 +1671,17 @@ if (sessionStatus.isActive) {
       const offlineUser = { ...currentUser, isOnline: false };
       setUsers((prev) => prev.map((u) => (u.id === offlineUser.id ? offlineUser : u)));
       SupabaseService.saveUserProfile(offlineUser);
-    } else if (currentAdmin) {
+        } else if (currentAdmin) {
       addAuditEntry('ADMIN_LOGOUT', `Admin ${currentAdmin.fullName} logged out.`);
+      SupabaseService.setAdminOffline(currentAdmin.id);
+      try {
+        sessionStorage.removeItem('brac_admin_active_id');
+      } catch {
+        // Ignore sessionStorage errors.
+      }
+      if (supabase) {
+        supabase.auth.signOut().catch(() => {});
+      }
     }
     setCurrentUser(null);
     setCurrentAdmin(null);
