@@ -1609,6 +1609,7 @@ if (sessionStatus.isActive) {
     } catch {
       // Ignore sessionStorage errors.
     }
+    await SupabaseService.updateAdminHeartbeat(updatedAdmin.id);
     addAuditEntry('ADMIN_LOGIN_SUCCESS', `Admin ${admin.fullName} logged into Master Control Center`);
     showToast({ message: `Authenticated as ${admin.fullName} (Master Admin)`, type: 'success' });
     return { success: true };
