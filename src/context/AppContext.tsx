@@ -37,7 +37,7 @@ export interface ToastData {
 
 export interface AppContextType {
   currentUser: UserProfile | null;
-    currentUser: UserProfile | null;
+
   isCloudDataLoaded: boolean;
   currentAdmin: AdminAccount | null;
   authMode: 'NONE' | 'USER' | 'ADMIN';
@@ -332,7 +332,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   // Current session
   const [currentUser, setCurrentUser] = useState<UserProfile | null>(null);
-    const [currentUser, setCurrentUser] = useState<UserProfile | null>(null);
+  
   const [isCloudDataLoaded, setIsCloudDataLoaded] = useState<boolean>(!SupabaseService.isAvailable());
   const [currentAdmin, setCurrentAdmin] = useState<AdminAccount | null>(null);
   const [authMode, setAuthMode] = useState<'NONE' | 'USER' | 'ADMIN'>('NONE');
@@ -2894,6 +2894,8 @@ if (sessionStatus.isActive) {
     <AppContext.Provider
       value={{
         currentUser,
+                currentUser,
+        isCloudDataLoaded,
         currentAdmin,
         authMode,
         outlets,
