@@ -150,6 +150,9 @@ export interface AdminAccount {
   status: 'ACTIVE' | 'SUSPENDED';
   createdAt: string;
   lastLoginAt: string;
+    lastLoginAt: string;
+  isOnline?: boolean;
+  lastSeenAt?: string;
 }
 
 export type AdminPermission = 
