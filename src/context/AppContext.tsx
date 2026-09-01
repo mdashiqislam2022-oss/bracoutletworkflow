@@ -773,12 +773,15 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       return { success: false, message: 'Your account has been temporarily suspended by BRAC Bank Operations.' };
     }
 
-    // If a password was provided and the user has a password, check it
-    if (password && existingUser.password && existingUser.password !== password) {
-      return {
-        success: false,
-        message: 'Incorrect password. Please verify your 4-digit password and try again.'
-      };
+       // Verify password server-side via RPC (never trust client-side password field)
+    if (password) {
+      const isValid = await SupabaseService.verifyUserPassword(rawIdentifier, password);
+      if (!isValid) {
+        return {
+          success: false,
+          message: 'Incorrect password. Please verify your 4-digit password and try again.'
+        };
+      }
     }
 
     // Real-time Single-Session Check: onno tab/browser e already active thakle login block
