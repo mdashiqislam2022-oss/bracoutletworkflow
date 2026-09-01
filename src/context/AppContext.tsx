@@ -639,6 +639,11 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     // Credential Security: Admin username/password change korle shathe shathe force logout
     if (latest.password !== currentUser.password || latest.username !== currentUser.username) {
       showToast({ message: 'Your login credentials were updated by Admin. Please log in again with your new username and password.', type: 'info' });
+      try {
+  sessionStorage.removeItem('brac_afo_active_user_id');
+} catch {
+  // Ignore sessionStorage errors.
+}
       setCurrentUser(null);
       setAuthMode('NONE');
       setActiveNavTab('dashboard');
@@ -784,14 +789,32 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       }
     }
 
-    // Real-time Single-Session Check: onno tab/browser e already active thakle login block
-    const sessionStatus = await SupabaseService.checkUserActiveSession(existingUser.id);
-    if (sessionStatus.isActive) {
-      return {
-        success: false,
-        message: `Already logged in: ${existingUser.fullName}, this AFO account is currently active on another browser/tab. Please log out there first, or wait a few seconds and try again.`
-      };
-    }
+      // Same browser tab hard-refresh check.
+// sessionStorage survives refresh but is isolated per browser tab.
+let isSameTabAfterRefresh = false;
+
+try {
+  const refreshUserId = sessionStorage.getItem('brac_afo_active_user_id');
+  isSameTabAfterRefresh = refreshUserId === existingUser.id;
+} catch {
+  // Ignore sessionStorage errors and keep normal login flow.
+}
+
+// If this is the same AFO returning immediately after a hard refresh,
+// make sure the previous page's online flag is cleared before checking.
+if (isSameTabAfterRefresh) {
+  await SupabaseService.setUserOffline(existingUser.id);
+}
+
+// Real-time Single-Session Check: another browser/tab still active হলে login block
+const sessionStatus = await SupabaseService.checkUserActiveSession(existingUser.id);
+
+if (sessionStatus.isActive) {
+  return {
+    success: false,
+    message: `Already logged in: ${existingUser.fullName}, this AFO account is currently active on another browser/tab. Please log out there first.`
+  };
+}
 
         const hasPendingResetNotice = !!existingUser.needsResetLoginNotice;
 
@@ -807,6 +830,14 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     setCurrentUser(updatedUser);
     setCurrentAdmin(null);
     setAuthMode('USER');
+      
+     try {
+  // Keep this only for the current browser tab.
+  // It survives refresh, but is removed when the tab/browser is closed.
+  sessionStorage.setItem('brac_afo_active_user_id', updatedUser.id);
+} catch {
+  // Ignore sessionStorage errors.
+}
     setActiveNavTab('dashboard');
     addAuditEntry('USER_LOGIN', `AFO ${updatedUser.fullName} logged into ${updatedUser.outletName} (${updatedUser.username || updatedUser.email})`, updatedUser.outletName);
 
@@ -1557,6 +1588,14 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   };
 
     const logout = () => {
+          try {
+      if (currentUser) {
+        sessionStorage.removeItem('brac_afo_active_user_id');
+      }
+    } catch {
+      // Ignore sessionStorage errors.
+    }
+      
     if (currentUser) {
       addAuditEntry('USER_LOGOUT', `AFO ${currentUser.fullName} logged out.`);
       const offlineUser = { ...currentUser, isOnline: false };
