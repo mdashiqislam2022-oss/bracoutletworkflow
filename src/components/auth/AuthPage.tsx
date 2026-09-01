@@ -348,8 +348,13 @@ export const AuthPage: React.FC = () => {
   // Handle Admin Login
     const handleAdminLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    setErrorMessage(null);
+        setErrorMessage(null);
     setSuccessMessage(null);
+
+    if (!isCloudDataLoaded) {
+      triggerError('System is still loading admin data. Please wait a moment and try again.');
+      return;
+    }
 
     const cleanUser = adminUsername.trim();
     const cleanPass = adminPassword.trim();
