@@ -117,7 +117,7 @@ export const Sidebar: React.FC = () => {
           <button
             onClick={() => setIsSidebarOpen(!isSidebarOpen)}
             title={isSidebarOpen ? 'Collapse Sidebar (Icons only)' : 'Expand Sidebar (Show names)'}
-            className={`w-8 h-8 sm:w-9 sm:h-9 rounded-full flex items-center justify-center transition-all duration-200 hover:scale-105 active:scale-95 cursor-pointer ${
+                        className={`w-8 h-8 sm:w-9 sm:h-9 rounded-full flex items-center justify-center transition-all duration-200 hover:scale-105 active:scale-95 cursor-pointer focus:outline-none focus-visible:outline-none ${
               isAdmin
                 ? isDark
                   ? 'bg-slate-800/80 hover:bg-slate-700 text-emerald-400 border border-emerald-500/30 hover:border-emerald-400 shadow-sm'
