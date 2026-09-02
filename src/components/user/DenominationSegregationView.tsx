@@ -98,7 +98,8 @@ export const DenominationSegregationView: React.FC = () => {
   const [denoms, setDenoms] = useState<Record<DenomKey, number>>(emptyDenoms());
   const [chargeApplied, setChargeApplied] = useState(false);
   const [showChargeSheet, setShowChargeSheet] = useState(false);
-  const [returnAmount, setReturnAmount] = useState(0);
+   const [returnAmount, setReturnAmount] = useState(0);
+  const [copiedFeedback, setCopiedFeedback] = useState(false);
   
   // ---------- Account Search State ----------
   const [searchTerm, setSearchTerm] = useState('');
