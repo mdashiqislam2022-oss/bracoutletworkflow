@@ -17,14 +17,19 @@ import {
   LoanAccountRecord,
   LoanStatus,
   PasswordResetRequest,
-  PortalGovernanceSettings,
-  AfoTransferRecord
+    PortalGovernanceSettings,
+  AfoTransferRecord,
+  CustomerAccountRecord,
+  DenominationSegregationRecord,
+  SegregationTransactionType
 } from '../types';
 import {
   SupabaseService,
   mapDbToChequeCardEntry,
-  mapDbToLoanRecord,
-  mapDbToSubmission
+    mapDbToLoanRecord,
+  mapDbToSubmission,
+  mapDbToCustomerAccount,
+  mapDbToSegregation
 } from '../services/supabaseService';
 import { supabase } from '../lib/supabase';
 import confetti from 'canvas-confetti';
