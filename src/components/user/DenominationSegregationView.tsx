@@ -315,19 +315,19 @@ export const DenominationSegregationView: React.FC = () => {
             </button>
           </div>
 
-                              {/* Transaction Type Tabs */}
-          <div className={`flex items-center gap-1 p-1.5 rounded-xl mb-4 border-2 border-rose-300/60 ${isDark ? 'bg-[#0F172A]' : 'bg-slate-100'}`}>
+                     {/* Transaction Type Tabs */}
+          <div className={`flex items-center gap-1 p-1 rounded-xl mb-4 ${isDark ? 'bg-[#0F172A]' : 'bg-slate-100'}`}>
             {TX_TYPES.map((tx) => (
               <button
                 key={tx.id}
                 onClick={() => setActiveType(tx.id)}
-                className={`flex-1 flex flex-col items-center justify-center gap-0.5 px-1 py-2 rounded-lg text-[11px] md:text-xs font-bold transition ${
+                className={`flex-1 flex flex-row items-center justify-center gap-1 px-1 py-1.5 rounded-lg text-[11px] md:text-xs font-bold transition ${
                   activeType === tx.id
                     ? `${isDark ? 'bg-[#1A2333] text-slate-100' : 'bg-white text-slate-900'} shadow-sm`
                     : 'text-slate-400'
                 }`}
               >
-                <tx.icon size={14} className={activeType === tx.id ? 'text-emerald-500' : ''} />
+                <tx.icon size={13} className={activeType === tx.id ? 'text-emerald-500' : ''} />
                 <span>{tx.id}</span>
               </button>
             ))}
