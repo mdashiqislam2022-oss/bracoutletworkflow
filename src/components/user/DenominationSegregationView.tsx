@@ -441,18 +441,33 @@ export const DenominationSegregationView: React.FC = () => {
               </div>
             )}
           </div>
-          <div className="flex items-center gap-2 mb-4">
-            <span className="text-xs font-semibold text-slate-500 w-28">Return Amount</span>
-            <input
-              type="number"
-              min={0}
-              value={returnAmount || ''}
-              onChange={(e) => setReturnAmount(Math.max(0, parseInt(e.target.value || '0', 10)))}
-              placeholder="0"
-              className={`flex-1 rounded-lg border px-2 py-1.5 text-sm ${inputBg}`}
-            />
+                    <div className="grid grid-cols-2 gap-3 mb-4">
+            <div className={`flex items-center gap-2 rounded-xl border px-2.5 py-1.5 ${inputBg}`}>
+              <div className="flex flex-col leading-tight">
+                <span className="text-[11px] font-bold text-rose-500 flex items-center gap-1">
+                  <ArrowUpCircle size={11} /> Return Amount
+                </span>
+                <span className="text-[10px] text-slate-400">Change amount</span>
+              </div>
+              <input
+                type="number"
+                min={0}
+                value={returnAmount || ''}
+                onChange={(e) => setReturnAmount(Math.max(0, parseInt(e.target.value || '0', 10)))}
+                placeholder="0"
+                className={`w-16 ml-auto rounded-lg border px-1.5 py-1 text-xs text-right ${inputBg}`}
+              />
+            </div>
+            <button
+              onClick={handleCopyAmount}
+              disabled={totalReceivedAmount <= 0}
+              className={`flex items-center justify-center gap-1.5 rounded-xl border text-xs font-semibold transition ${inputBg} ${
+                totalReceivedAmount <= 0 ? 'opacity-40 cursor-not-allowed' : 'hover:border-emerald-500 text-slate-500'
+              }`}
+            >
+              <Copy size={13} /> Copy Amount
+            </button>
           </div>
-
           {/* Totals */}
           <div className="grid grid-cols-2 gap-3 mb-4">
             <div className={`rounded-xl border p-3 ${inputBg}`}>
