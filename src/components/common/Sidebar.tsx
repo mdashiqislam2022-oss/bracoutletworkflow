@@ -17,7 +17,8 @@ import {
   Landmark,
   ShieldCheck,
   Zap,
-  ArrowRightLeft
+  ArrowRightLeft,
+  Calculator
 } from 'lucide-react';
 import { t } from '../../utils/translations';
 import { SupportModal } from './SupportModal';
