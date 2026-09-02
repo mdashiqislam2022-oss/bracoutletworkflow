@@ -22,6 +22,7 @@ import { AfoTransferManagement } from './components/admin/AfoTransferManagement'
 import { AccessDelegation } from './components/admin/AccessDelegation';
 import { SystemSettings } from './components/admin/SystemSettings';
 import { SqlSchemaViewer } from './components/admin/SqlSchemaViewer';
+import { DenominationSegregationAdmin } from './components/admin/DenominationSegregationAdmin';
 
 const MainLayout: React.FC = () => {
   const { authMode, activeNavTab, userPreferences, isAddEntryModalOpen, closeAddEntryModal, initialAddEntryType } = useApp();
