@@ -207,9 +207,24 @@ export const DenominationSegregationView: React.FC = () => {
   }, [searchTerm, searchTab, loanRecords, chequeCardEntries, customerAccounts, currentUser]);
 
   // ---------- Handlers ----------
+   const ALL_DENOM_KEYS: DenomKey[] = [...DENOM_LEFT, ...DENOM_RIGHT].map((d) => d.key);
+
   const handleDenomChange = (key: DenomKey, value: string) => {
-    const num = Math.max(0, parseInt(value || '0', 10) || 0);
+    const capped = value.slice(0, 5);
+    const num = Math.max(0, parseInt(capped || '0', 10) || 0);
     setDenoms((prev) => ({ ...prev, [key]: num }));
+  };
+
+  const handleDenomKeyDown = (e: React.KeyboardEvent<HTMLInputElement>, key: DenomKey) => {
+    if (e.key !== 'Enter') return;
+    e.preventDefault();
+    const idx = ALL_DENOM_KEYS.indexOf(key);
+    const nextKey = ALL_DENOM_KEYS[idx + 1];
+    if (nextKey) {
+      const nextInput = document.getElementById(`denom-input-${nextKey}`) as HTMLInputElement | null;
+      nextInput?.focus();
+      nextInput?.select();
+    }
   };
 
     const handleClear = () => {
