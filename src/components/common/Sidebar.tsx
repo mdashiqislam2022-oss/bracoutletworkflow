@@ -50,11 +50,12 @@ export const Sidebar: React.FC = () => {
         { id: 'dashboard', icon: LayoutDashboard, label: langText.dashboard, isDashboard: true }
       ]
     },
-    {
+        {
       section: 'OPERATIONS',
       items: [
         { id: 'cheque_cards', icon: CreditCard, label: langText.chequeCardRegistry },
-        { id: 'loan_accounts', icon: Landmark, label: langText.loanAccounts }
+        { id: 'loan_accounts', icon: Landmark, label: langText.loanAccounts },
+        { id: 'denomination_segregation', icon: Calculator, label: langText.denominationSegregation || 'Cash Counting' }
       ]
     },
     {
