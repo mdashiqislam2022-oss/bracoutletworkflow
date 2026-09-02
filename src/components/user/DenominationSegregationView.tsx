@@ -245,10 +245,12 @@ export const DenominationSegregationView: React.FC = () => {
     setReturnAmount(0);
   };
   
-  const handleCopyAmount = () => {
-    if (totalReceivedAmount <= 0) return;
-    navigator.clipboard.writeText(String(totalReceivedAmount));
-    showToast({ message: `Amount ৳${totalReceivedAmount.toLocaleString()} copied!`, type: 'success' });
+    const handleCopyAmount = () => {
+    if (actualAmount <= 0) return;
+    navigator.clipboard.writeText(String(actualAmount));
+    showToast({ message: `Amount ৳${actualAmount.toLocaleString()} copied!`, type: 'success' });
+    setCopiedFeedback(true);
+    setTimeout(() => setCopiedFeedback(false), 2000);
   };
 
   const handleAddCustomer = () => {
