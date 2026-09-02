@@ -218,6 +218,12 @@ export const DenominationSegregationView: React.FC = () => {
     setShowChargeSheet(false);
     setReturnAmount(0);
   };
+  
+  const handleCopyAmount = () => {
+    if (totalReceivedAmount <= 0) return;
+    navigator.clipboard.writeText(String(totalReceivedAmount));
+    showToast({ message: `Amount ৳${totalReceivedAmount.toLocaleString()} copied!`, type: 'success' });
+  };
 
   const handleAddCustomer = () => {
     if (!newCustAccNo.trim() || !newCustTitle.trim() || !newCustMobile.trim()) {
