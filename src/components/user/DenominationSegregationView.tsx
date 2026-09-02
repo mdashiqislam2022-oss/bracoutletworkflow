@@ -37,14 +37,33 @@ const DENOM_RIGHT: { key: DenomKey; value: number }[] = [
   { key: 'note1000', value: 1000 }
 ];
 
-const TX_TYPES: { id: SegregationTransactionType; label: string; icon: React.ElementType }[] = [
-  { id: 'CD', label: 'Cash Deposit', icon: ArrowDownCircle },
-  { id: 'CW', label: 'Cash Withdraw', icon: ArrowUpCircle },
-  { id: 'ID', label: 'Initial Deposit', icon: Wallet },
-  { id: 'LD', label: 'Loan Disbursement', icon: Banknote },
-  { id: 'LR', label: 'Loan Repayment', icon: RefreshCcw }
+const TX_TYPES: { id: SegregationTransactionType; label: string; short: string; icon: React.ElementType }[] = [
+  { id: 'CD', label: 'Cash Deposit', short: 'Deposit', icon: ArrowDownCircle },
+  { id: 'CW', label: 'Cash Withdraw', short: 'Withdraw', icon: ArrowUpCircle },
+  { id: 'ID', label: 'Initial Deposit', short: 'Init', icon: Wallet },
+  { id: 'LD', label: 'Loan Disbursement', short: 'Loan', icon: Banknote },
+  { id: 'LR', label: 'Loan Repayment', short: 'Repay', icon: RefreshCcw }
 ];
 
+// Charge Slabs — applicable only for CD (Cash Deposit) & CW (Cash Withdraw)
+const CHARGE_SLABS: { min: number; max: number | null; amount?: number; percent?: number }[] = [
+  { min: 1, max: 5000, amount: 10 },
+  { min: 5001, max: 10000, amount: 20 },
+  { min: 10001, max: 15000, amount: 25 },
+  { min: 15001, max: 25000, amount: 50 },
+  { min: 25001, max: 35000, amount: 70 },
+  { min: 35001, max: 100000, amount: 100 },
+  { min: 100001, max: 300000, amount: 200 },
+  { min: 300001, max: null, percent: 0.001 }
+];
+
+const calculateSlabCharge = (amount: number): number => {
+  if (amount <= 0) return 0;
+  const slab = CHARGE_SLABS.find((s) => amount >= s.min && (s.max === null || amount <= s.max));
+  if (!slab) return 0;
+  if (slab.percent) return Math.round(amount * slab.percent);
+  return slab.amount || 0;
+};
 const emptyDenoms = (): Record<DenomKey, number> => ({
   note1: 0, note2: 0, note5: 0, note10: 0, note20: 0,
   note50: 0, note100: 0, note200: 0, note500: 0, note1000: 0
