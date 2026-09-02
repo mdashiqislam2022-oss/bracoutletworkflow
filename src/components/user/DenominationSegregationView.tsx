@@ -425,40 +425,62 @@ export const DenominationSegregationView: React.FC = () => {
             )}
           </div>
 
-          {/* Denomination Grid */}
-          <div className="grid grid-cols-2 gap-x-4 gap-y-2 mb-4">
-            {DENOM_LEFT.map((d) => (
-              <div key={d.key} className="flex items-center gap-2">
-                <span className="text-xs w-10 font-semibold text-slate-500">Tk{d.value}</span>
-                <input
-                  type="number"
-                  min={0}
-                  value={denoms[d.key] || ''}
-                  onChange={(e) => handleDenomChange(d.key, e.target.value)}
-                  placeholder="0"
-                  className={`flex-1 rounded-lg border px-2 py-1.5 text-sm ${inputBg}`}
-                />
-                                <span className="text-[11px] text-slate-500 w-20 flex-shrink-0 text-right whitespace-nowrap">
-                  ৳{(denoms[d.key] * d.value).toLocaleString()}
-                </span>
-              </div>
-            ))}
-            {DENOM_RIGHT.map((d) => (
-              <div key={d.key} className="flex items-center gap-2">
-                <span className="text-xs w-12 font-semibold text-slate-500">Tk{d.value}</span>
-                <input
-                  type="number"
-                  min={0}
-                  value={denoms[d.key] || ''}
-                  onChange={(e) => handleDenomChange(d.key, e.target.value)}
-                  placeholder="0"
-                  className={`flex-1 rounded-lg border px-2 py-1.5 text-sm ${inputBg}`}
-                />
-                                <span className="text-[11px] text-slate-500 w-20 flex-shrink-0 text-right whitespace-nowrap">
-                  ৳{(denoms[d.key] * d.value).toLocaleString()}
-                </span>
-              </div>
-            ))}
+                    {/* Denomination Grid */}
+          <div className="flex gap-4 mb-4">
+            {/* Left Column: 1, 2, 5, 10, 20 */}
+            <div className="flex-1 space-y-2">
+              {DENOM_LEFT.map((d) => (
+                <div key={d.key} className="flex items-center gap-2">
+                  <span className="text-xs w-10 shrink-0">
+                    <span className="text-slate-400 font-normal">Tk</span>
+                    <span className={`font-extrabold ${isDark ? 'text-slate-200' : 'text-slate-700'}`}>{d.value}</span>
+                  </span>
+                  <input
+                    id={`denom-input-${d.key}`}
+                    type="number"
+                    min={0}
+                    maxLength={5}
+                    value={denoms[d.key] || ''}
+                    onChange={(e) => handleDenomChange(d.key, e.target.value)}
+                    onKeyDown={(e) => handleDenomKeyDown(e, d.key)}
+                    placeholder="0"
+                    className={`w-20 shrink-0 rounded-lg border px-2 py-1.5 text-sm ${inputBg}`}
+                  />
+                  <span className="flex-1 min-w-0 truncate text-[11px] text-slate-500 text-right">
+                    ৳{(denoms[d.key] * d.value).toLocaleString()}
+                  </span>
+                </div>
+              ))}
+            </div>
+
+            {/* Divider Line */}
+            <div className={`w-px ${isDark ? 'bg-slate-700' : 'bg-slate-200'}`} />
+
+            {/* Right Column: 50, 100, 200, 500, 1000 */}
+            <div className="flex-1 space-y-2">
+              {DENOM_RIGHT.map((d) => (
+                <div key={d.key} className="flex items-center gap-2">
+                  <span className="text-xs w-12 shrink-0">
+                    <span className="text-slate-400 font-normal">Tk</span>
+                    <span className={`font-extrabold ${isDark ? 'text-slate-200' : 'text-slate-700'}`}>{d.value}</span>
+                  </span>
+                  <input
+                    id={`denom-input-${d.key}`}
+                    type="number"
+                    min={0}
+                    maxLength={5}
+                    value={denoms[d.key] || ''}
+                    onChange={(e) => handleDenomChange(d.key, e.target.value)}
+                    onKeyDown={(e) => handleDenomKeyDown(e, d.key)}
+                    placeholder="0"
+                    className={`w-20 shrink-0 rounded-lg border px-2 py-1.5 text-sm ${inputBg}`}
+                  />
+                  <span className="flex-1 min-w-0 truncate text-[11px] text-slate-500 text-right">
+                    ৳{(denoms[d.key] * d.value).toLocaleString()}
+                  </span>
+                </div>
+              ))}
+            </div>
           </div>
 
            
