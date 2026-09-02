@@ -336,6 +336,7 @@ export const DenominationSegregationView: React.FC = () => {
                 </button>
               );
             })}
+            </div>
                     {/* Charge Sheet Box */}
           <div className="relative mb-4">
             <div className="flex items-center justify-between gap-2 rounded-xl px-3 py-2.5 bg-amber-500/10 border border-amber-500/30 flex-wrap">
