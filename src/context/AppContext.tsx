@@ -104,8 +104,38 @@ export interface AppContextType {
     loanStatus?: LoanStatus;
     notes?: string;
   }) => LoanAccountRecord;
-  updateLoanRecord: (record: LoanAccountRecord) => void;
+    updateLoanRecord: (record: LoanAccountRecord) => void;
   deleteLoanRecord: (id: string) => void;
+
+  // Denomination Segregation Module
+  customerAccounts: CustomerAccountRecord[];
+  segregationRecords: DenominationSegregationRecord[];
+  addCustomerAccount: (data: {
+    accountNumber: string;
+    accountTitle: string;
+    mobileNumber: string;
+    accountCategory: 'SAVINGS' | 'CURRENT';
+  }) => CustomerAccountRecord;
+  addSegregationRecord: (data: {
+    transactionType: SegregationTransactionType;
+    denominations: {
+      note1: number; note2: number; note5: number; note10: number; note20: number;
+      note50: number; note100: number; note200: number; note500: number; note1000: number;
+    };
+    totalReceivedAmount: number;
+    chargeApplied: boolean;
+    chargeAmount: number;
+    returnAmount: number;
+    actualAmount: number;
+    linkedAccountSource: 'LOAN_ACCOUNT' | 'CHEQUE_CARD' | 'CUSTOMER_ACCOUNT';
+    linkedAccountId: string;
+    accountNumber: string;
+    accountTitle: string;
+    customerName: string;
+    mobileNumber: string;
+    notes?: string;
+  }) => DenominationSegregationRecord;
+
 
   // Add/Edit Entry Modal controls
   isAddEntryModalOpen: boolean;
