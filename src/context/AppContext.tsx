@@ -477,6 +477,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
             if (cloudData.submissions) setSubmissions(cloudData.submissions);
             if (cloudData.chequeCardEntries) setChequeCardEntries(cloudData.chequeCardEntries);
             if (cloudData.loanRecords) setLoanRecords(cloudData.loanRecords);
+            if (cloudData.customerAccounts) setCustomerAccounts(cloudData.customerAccounts);
+            if (cloudData.segregationRecords) setSegregationRecords(cloudData.segregationRecords);
             if (cloudData.mailMessages) setMailMessages(cloudData.mailMessages);
             if (cloudData.notifications) setNotifications(cloudData.notifications);
             if (cloudData.passwordResetRequests) setPasswordResetRequests(cloudData.passwordResetRequests);
