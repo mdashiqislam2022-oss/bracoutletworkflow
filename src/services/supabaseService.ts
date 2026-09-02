@@ -530,8 +530,10 @@ export const SupabaseService = {
           lastLoginAt: a.last_login_at
         })),
         submissions: (submissionsRes.data || []).map(mapDbToSubmission),
-        chequeCardEntries: (chequeCardRes.data || []).map(mapDbToChequeCardEntry),
+                chequeCardEntries: (chequeCardRes.data || []).map(mapDbToChequeCardEntry),
         loanRecords: (loanRes.data || []).map(mapDbToLoanRecord),
+        customerAccounts: (customerAccountsRes.data || []).map(mapDbToCustomerAccount),
+        segregationRecords: (segregationsRes.data || []).map(mapDbToSegregation),
         mailMessages: (mailsRes.data || []).map((m: any) => ({
           id: m.id,
           senderName: m.sender_name || 'Central Operations',
