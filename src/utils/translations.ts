@@ -4,8 +4,9 @@ export const t = {
   en: {
     // Nav & Common
     dashboard: 'Dashboard',
-    loanAccounts: 'Loan Account Details',
+        loanAccounts: 'Loan Account Details',
     chequeCardRegistry: 'Cheque & Debit Cards',
+    denominationSegregation: 'Cash Counting',
     userDirectory: 'AFO Directory',
     afoManagement: 'AFO Directory',
     afoTransfer: 'AFO Transfer',
