@@ -57,7 +57,7 @@ const MainLayout: React.FC = () => {
         default:
           return <UserDashboard />;
       }
-    } else if (authMode === 'ADMIN') {
+        } else if (authMode === 'ADMIN') {
       switch (activeNavTab) {
         case 'dashboard':
           return <AdminDashboard />;
@@ -65,6 +65,8 @@ const MainLayout: React.FC = () => {
           return <UserManagement />;
         case 'outlets':
           return <OutletManagement />;
+        case 'denomination_segregation':
+          return <DenominationSegregationAdmin />;
         case 'afo_transfer':
           return <AfoTransferManagement />;
         case 'delegation':
