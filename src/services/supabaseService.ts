@@ -674,6 +674,48 @@ export const SupabaseService = {
       console.warn('Error deleting loan record from Supabase:', err);
     }
   },
+  
+  // Save/Upsert Customer Account (Savings/Current)
+  async saveCustomerAccount(record: CustomerAccountRecord) {
+    if (!this.isAvailable() || !supabase) return;
+    try {
+      const dbRow = mapCustomerAccountToDb(record);
+      await supabase.from('customer_accounts').upsert(dbRow);
+    } catch (err) {
+      console.warn('Error saving customer account to Supabase:', err);
+    }
+  },
+
+  // Delete Customer Account
+  async deleteCustomerAccount(id: string) {
+    if (!this.isAvailable() || !supabase) return;
+    try {
+      await supabase.from('customer_accounts').delete().eq('id', id);
+    } catch (err) {
+      console.warn('Error deleting customer account from Supabase:', err);
+    }
+  },
+
+  // Save/Upsert Denomination Segregation Record
+  async saveSegregationRecord(record: DenominationSegregationRecord) {
+    if (!this.isAvailable() || !supabase) return;
+    try {
+      const dbRow = mapSegregationToDb(record);
+      await supabase.from('denomination_segregations').upsert(dbRow);
+    } catch (err) {
+      console.warn('Error saving segregation record to Supabase:', err);
+    }
+  },
+
+  // Delete Denomination Segregation Record
+  async deleteSegregationRecord(id: string) {
+    if (!this.isAvailable() || !supabase) return;
+    try {
+      await supabase.from('denomination_segregations').delete().eq('id', id);
+    } catch (err) {
+      console.warn('Error deleting segregation record from Supabase:', err);
+    }
+  },
 
   // Save/Upsert Work Submission
   async saveSubmission(sub: WorkSubmission) {
