@@ -39,7 +39,7 @@ const MainLayout: React.FC = () => {
   }
 
   const renderActiveView = () => {
-    if (authMode === 'USER') {
+        if (authMode === 'USER') {
       switch (activeNavTab) {
         case 'dashboard':
           return <UserDashboard />;
@@ -47,6 +47,8 @@ const MainLayout: React.FC = () => {
           return <ChequeCardRegistryView />;
         case 'loan_accounts':
           return <LoanAccountDetailsView />;
+        case 'denomination_segregation':
+          return <DenominationSegregationView />;
         case 'profile':
           return <UserProfileView />;
         case 'settings':
