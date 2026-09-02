@@ -3142,6 +3142,12 @@ if (sessionStatus.isActive) {
         updateLoanRecord,
         deleteLoanRecord,
 
+        // Denomination Segregation Module
+        customerAccounts,
+        segregationRecords,
+        addCustomerAccount,
+        addSegregationRecord,
+
         // Add/Edit Entry Modal controls
         isAddEntryModalOpen,
         setIsAddEntryModalOpen,
