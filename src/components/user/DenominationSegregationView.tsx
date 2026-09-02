@@ -325,8 +325,8 @@ export const DenominationSegregationView: React.FC = () => {
             <h3 className={`font-bold flex items-center gap-2 ${isDark ? 'text-slate-100' : 'text-slate-900'}`}>
               <Banknote size={18} className="text-emerald-500" /> Denomination Segregation Calculator
             </h3>
-            <button onClick={handleClear} className="text-xs font-semibold text-rose-500 flex items-center gap-1">
-              <Trash2 size={13} /> Clear
+                       <button onClick={handleClear} className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-rose-500 hover:bg-rose-600 text-white text-xs font-bold shadow-sm transition">
+              <Trash2 size={14} /> Clear
             </button>
           </div>
 
