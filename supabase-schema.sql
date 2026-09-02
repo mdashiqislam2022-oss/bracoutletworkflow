@@ -355,3 +355,69 @@ CREATE POLICY "update_audit_logs" ON public.audit_logs FOR UPDATE USING (true) W
 CREATE POLICY "select_portal_governance" ON public.portal_governance FOR SELECT USING (true);
 CREATE POLICY "insert_portal_governance" ON public.portal_governance FOR INSERT WITH CHECK (true);
 CREATE POLICY "update_portal_governance" ON public.portal_governance FOR UPDATE USING (true) WITH CHECK (true);
+
+
+-- ==============================================================================
+-- DENOMINATION SEGREGATION MODULE (Added separately, does not affect existing tables)
+-- ==============================================================================
+
+-- 13. CUSTOMER ACCOUNTS DIRECTORY TABLE (Savings/Current)
+CREATE TABLE IF NOT EXISTS public.customer_accounts (
+    id TEXT PRIMARY KEY,
+    account_number TEXT NOT NULL,
+    account_title TEXT NOT NULL,
+    mobile_number TEXT NOT NULL,
+    account_category TEXT NOT NULL DEFAULT 'SAVINGS' CHECK (account_category IN ('SAVINGS', 'CURRENT')),
+    outlet_id TEXT NOT NULL,
+    outlet_name TEXT NOT NULL,
+    user_id TEXT,
+    user_name TEXT,
+    status TEXT NOT NULL DEFAULT 'ACTIVE' CHECK (status IN ('ACTIVE', 'INACTIVE')),
+    notes TEXT,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT timezone('utc'::text, now()),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT timezone('utc'::text, now())
+);
+
+-- 14. DENOMINATION SEGREGATION RECORDS TABLE
+CREATE TABLE IF NOT EXISTS public.denomination_segregations (
+    id TEXT PRIMARY KEY,
+    transaction_type TEXT NOT NULL CHECK (transaction_type IN ('CD', 'CW', 'ID', 'LD', 'LR')),
+    note_1 INTEGER NOT NULL DEFAULT 0,
+    note_2 INTEGER NOT NULL DEFAULT 0,
+    note_5 INTEGER NOT NULL DEFAULT 0,
+    note_10 INTEGER NOT NULL DEFAULT 0,
+    note_20 INTEGER NOT NULL DEFAULT 0,
+    note_50 INTEGER NOT NULL DEFAULT 0,
+    note_100 INTEGER NOT NULL DEFAULT 0,
+    note_200 INTEGER NOT NULL DEFAULT 0,
+    note_500 INTEGER NOT NULL DEFAULT 0,
+    note_1000 INTEGER NOT NULL DEFAULT 0,
+    total_received_amount NUMERIC NOT NULL DEFAULT 0,
+    charge_applied BOOLEAN NOT NULL DEFAULT false,
+    charge_amount NUMERIC NOT NULL DEFAULT 0,
+    return_amount NUMERIC NOT NULL DEFAULT 0,
+    actual_amount NUMERIC NOT NULL DEFAULT 0,
+    linked_account_source TEXT NOT NULL CHECK (linked_account_source IN ('LOAN_ACCOUNT', 'CHEQUE_CARD', 'CUSTOMER_ACCOUNT')),
+    linked_account_id TEXT,
+    account_number TEXT,
+    account_title TEXT,
+    customer_name TEXT,
+    mobile_number TEXT,
+    outlet_id TEXT NOT NULL,
+    outlet_name TEXT NOT NULL,
+    user_id TEXT,
+    user_name TEXT,
+    notes TEXT,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT timezone('utc'::text, now())
+);
+
+ALTER TABLE public.customer_accounts ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.denomination_segregations ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "select_customer_accounts" ON public.customer_accounts FOR SELECT USING (true);
+CREATE POLICY "insert_customer_accounts" ON public.customer_accounts FOR INSERT WITH CHECK (true);
+CREATE POLICY "update_customer_accounts" ON public.customer_accounts FOR UPDATE USING (true) WITH CHECK (true);
+
+CREATE POLICY "select_denomination_segregations" ON public.denomination_segregations FOR SELECT USING (true);
+CREATE POLICY "insert_denomination_segregations" ON public.denomination_segregations FOR INSERT WITH CHECK (true);
+CREATE POLICY "update_denomination_segregations" ON public.denomination_segregations FOR UPDATE USING (true) WITH CHECK (true);
