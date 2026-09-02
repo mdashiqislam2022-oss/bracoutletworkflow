@@ -13,7 +13,10 @@ import {
   ArrowDownCircle,
   ArrowUpCircle,
   RefreshCcw,
-  Trash2
+  Trash2,
+  Tag,
+  ChevronDown,
+  Copy
 } from 'lucide-react';
 import { SegregationTransactionType } from '../../types';
 
