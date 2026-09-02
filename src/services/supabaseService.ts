@@ -13,7 +13,9 @@ import {
   LoanAccountRecord,
   PasswordResetRequest,
   AfoTransferRecord,
-  PortalGovernanceSettings
+    PortalGovernanceSettings,
+  CustomerAccountRecord,
+  DenominationSegregationRecord
 } from '../types';
 
 /**
@@ -144,6 +146,121 @@ export const mapLoanRecordToDb = (record: LoanAccountRecord) => {
     notes: record.notes || null,
     is_locked: (record as any).isLocked || false,
     updated_at: new Date().toISOString()
+  };
+};
+
+/**
+ * Maps DB row to CustomerAccountRecord
+ */
+export const mapDbToCustomerAccount = (row: any): CustomerAccountRecord => {
+  return {
+    id: row.id,
+    accountNumber: row.account_number || '',
+    accountTitle: row.account_title || '',
+    mobileNumber: row.mobile_number || '',
+    accountCategory: row.account_category || 'SAVINGS',
+    outletId: row.outlet_id || '',
+    outletName: row.outlet_name || '',
+    userId: row.user_id,
+    userName: row.user_name,
+    status: row.status || 'ACTIVE',
+    notes: row.notes || undefined,
+    createdAt: row.created_at || new Date().toISOString()
+  };
+};
+
+/**
+ * Maps CustomerAccountRecord to DB row
+ */
+export const mapCustomerAccountToDb = (record: CustomerAccountRecord) => {
+  return {
+    id: record.id,
+    account_number: record.accountNumber,
+    account_title: record.accountTitle,
+    mobile_number: record.mobileNumber,
+    account_category: record.accountCategory,
+    outlet_id: record.outletId,
+    outlet_name: record.outletName,
+    user_id: record.userId,
+    user_name: record.userName,
+    status: record.status,
+    notes: record.notes || null,
+    updated_at: new Date().toISOString()
+  };
+};
+
+/**
+ * Maps DB row to DenominationSegregationRecord
+ */
+export const mapDbToSegregation = (row: any): DenominationSegregationRecord => {
+  return {
+    id: row.id,
+    transactionType: row.transaction_type || 'CD',
+    denominations: {
+      note1: Number(row.note_1 || 0),
+      note2: Number(row.note_2 || 0),
+      note5: Number(row.note_5 || 0),
+      note10: Number(row.note_10 || 0),
+      note20: Number(row.note_20 || 0),
+      note50: Number(row.note_50 || 0),
+      note100: Number(row.note_100 || 0),
+      note200: Number(row.note_200 || 0),
+      note500: Number(row.note_500 || 0),
+      note1000: Number(row.note_1000 || 0)
+    },
+    totalReceivedAmount: Number(row.total_received_amount || 0),
+    chargeApplied: row.charge_applied || false,
+    chargeAmount: Number(row.charge_amount || 0),
+    returnAmount: Number(row.return_amount || 0),
+    actualAmount: Number(row.actual_amount || 0),
+    linkedAccountSource: row.linked_account_source || 'CUSTOMER_ACCOUNT',
+    linkedAccountId: row.linked_account_id || '',
+    accountNumber: row.account_number || '',
+    accountTitle: row.account_title || '',
+    customerName: row.customer_name || '',
+    mobileNumber: row.mobile_number || '',
+    outletId: row.outlet_id || '',
+    outletName: row.outlet_name || '',
+    userId: row.user_id,
+    userName: row.user_name,
+    notes: row.notes || undefined,
+    createdAt: row.created_at || new Date().toISOString()
+  };
+};
+
+/**
+ * Maps DenominationSegregationRecord to DB row
+ */
+export const mapSegregationToDb = (record: DenominationSegregationRecord) => {
+  return {
+    id: record.id,
+    transaction_type: record.transactionType,
+    note_1: record.denominations.note1,
+    note_2: record.denominations.note2,
+    note_5: record.denominations.note5,
+    note_10: record.denominations.note10,
+    note_20: record.denominations.note20,
+    note_50: record.denominations.note50,
+    note_100: record.denominations.note100,
+    note_200: record.denominations.note200,
+    note_500: record.denominations.note500,
+    note_1000: record.denominations.note1000,
+    total_received_amount: record.totalReceivedAmount,
+    charge_applied: record.chargeApplied,
+    charge_amount: record.chargeAmount,
+    return_amount: record.returnAmount,
+    actual_amount: record.actualAmount,
+    linked_account_source: record.linkedAccountSource,
+    linked_account_id: record.linkedAccountId,
+    account_number: record.accountNumber,
+    account_title: record.accountTitle,
+    customer_name: record.customerName,
+    mobile_number: record.mobileNumber,
+    outlet_id: record.outletId,
+    outlet_name: record.outletName,
+    user_id: record.userId,
+    user_name: record.userName,
+    notes: record.notes || null
   };
 };
 
