@@ -93,13 +93,13 @@ export const DenominationSegregationView: React.FC = () => {
 
   const isDark = userPreferences.theme === 'dark';
 
-  // ---------- Calculator State ----------
+    // ---------- Calculator State ----------
   const [activeType, setActiveType] = useState<SegregationTransactionType>('CD');
   const [denoms, setDenoms] = useState<Record<DenomKey, number>>(emptyDenoms());
   const [chargeApplied, setChargeApplied] = useState(false);
-  const [chargeAmount, setChargeAmount] = useState(0);
+  const [showChargeSheet, setShowChargeSheet] = useState(false);
   const [returnAmount, setReturnAmount] = useState(0);
-
+  
   // ---------- Account Search State ----------
   const [searchTerm, setSearchTerm] = useState('');
   const [searchTab, setSearchTab] = useState<'ALL' | 'SAVINGS' | 'LOAN' | 'CARDS'>('ALL');
