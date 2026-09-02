@@ -2907,6 +2907,109 @@ if (sessionStatus.isActive) {
     SupabaseService.deleteLoanRecord(id);
     showToast({ message: 'Loan account removed from registry.', type: 'info' });
   };
+  
+  // Denomination Segregation Module — Customer Account (Savings/Current)
+  const addCustomerAccount = (data: {
+    accountNumber: string;
+    accountTitle: string;
+    mobileNumber: string;
+    accountCategory: 'SAVINGS' | 'CURRENT';
+  }): CustomerAccountRecord => {
+    const user = currentUser || {
+      id: 'USR-AFO-001',
+      fullName: 'Mohammad Ashiqul Islam',
+      outletId: 'OUT-DHK-001',
+      outletName: 'Motijheel Commercial SME Outlet'
+    };
+
+    const newRecord: CustomerAccountRecord = {
+      id: createUniqueId('CUST'),
+      accountNumber: data.accountNumber.trim(),
+      accountTitle: data.accountTitle.trim(),
+      mobileNumber: data.mobileNumber.trim(),
+      accountCategory: data.accountCategory,
+      outletId: user.outletId || 'OUT-DHK-001',
+      outletName: user.outletName || 'Motijheel Commercial SME Outlet',
+      userId: user.id,
+      userName: user.fullName,
+      status: 'ACTIVE',
+      createdAt: new Date().toISOString()
+    };
+
+    setCustomerAccounts((prev) => [newRecord, ...prev]);
+    SupabaseService.saveCustomerAccount(newRecord);
+    addAuditEntry(
+      'CUSTOMER_ACCOUNT_ADDED',
+      `New ${data.accountCategory} account added: ${data.accountTitle} (Acc: ${data.accountNumber})`,
+      user.outletName
+    );
+    showToast({ message: `Account for "${data.accountTitle}" added successfully!`, type: 'success' });
+    return newRecord;
+  };
+
+  // Denomination Segregation Module — Save Segregation Transaction
+  const addSegregationRecord = (data: {
+    transactionType: SegregationTransactionType;
+    denominations: {
+      note1: number; note2: number; note5: number; note10: number; note20: number;
+      note50: number; note100: number; note200: number; note500: number; note1000: number;
+    };
+    totalReceivedAmount: number;
+    chargeApplied: boolean;
+    chargeAmount: number;
+    returnAmount: number;
+    actualAmount: number;
+    linkedAccountSource: 'LOAN_ACCOUNT' | 'CHEQUE_CARD' | 'CUSTOMER_ACCOUNT';
+    linkedAccountId: string;
+    accountNumber: string;
+    accountTitle: string;
+    customerName: string;
+    mobileNumber: string;
+    notes?: string;
+  }): DenominationSegregationRecord => {
+    const user = currentUser || {
+      id: 'USR-AFO-001',
+      fullName: 'Mohammad Ashiqul Islam',
+      outletId: 'OUT-DHK-001',
+      outletName: 'Motijheel Commercial SME Outlet'
+    };
+
+    const newRecord: DenominationSegregationRecord = {
+      id: createUniqueId('SEG'),
+      transactionType: data.transactionType,
+      denominations: data.denominations,
+      totalReceivedAmount: data.totalReceivedAmount,
+      chargeApplied: data.chargeApplied,
+      chargeAmount: data.chargeAmount,
+      returnAmount: data.returnAmount,
+      actualAmount: data.actualAmount,
+      linkedAccountSource: data.linkedAccountSource,
+      linkedAccountId: data.linkedAccountId,
+      accountNumber: data.accountNumber,
+      accountTitle: data.accountTitle,
+      customerName: data.customerName,
+      mobileNumber: data.mobileNumber,
+      outletId: user.outletId || 'OUT-DHK-001',
+      outletName: user.outletName || 'Motijheel Commercial SME Outlet',
+      userId: user.id,
+      userName: user.fullName,
+      notes: data.notes,
+      createdAt: new Date().toISOString()
+    };
+
+    setSegregationRecords((prev) => [newRecord, ...prev]);
+    SupabaseService.saveSegregationRecord(newRecord);
+    addAuditEntry(
+      'DENOMINATION_SEGREGATION_SAVED',
+      `Segregation (${data.transactionType}) saved for ${data.accountTitle} (Acc: ${data.accountNumber}) — Amount: ৳${data.actualAmount}`,
+      user.outletName
+    );
+    try {
+      confetti({ particleCount: 45, spread: 50, origin: { y: 0.8 } });
+    } catch {}
+    showToast({ message: `Transaction saved successfully for "${data.accountTitle}"!`, type: 'success' });
+    return newRecord;
+  };
 
   const resetAllDemoData = () => {
     if (SupabaseService.isAvailable()) {
