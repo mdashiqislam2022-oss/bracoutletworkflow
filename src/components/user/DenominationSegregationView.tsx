@@ -500,16 +500,16 @@ export const DenominationSegregationView: React.FC = () => {
                     <div className="grid grid-cols-2 gap-3 mb-4">
             <div className={`flex items-center gap-2 rounded-xl border px-2.5 py-1.5 ${inputBg}`}>
               <div className="flex flex-col leading-tight">
-                <span className="text-[11px] font-bold text-rose-500 flex items-center gap-1">
+                                <span className="text-[11px] font-bold text-rose-500 flex items-center gap-1">
                   <ArrowUpCircle size={11} /> Return Amount
                 </span>
-                <span className="text-[10px] text-slate-400">Change amount</span>
               </div>
-                           <input
+              <input
                 type="number"
                 min={0}
                 value={returnAmount || ''}
                 onChange={(e) => setReturnAmount(Math.max(0, parseInt(e.target.value || '0', 10)))}
+                onKeyDown={handleReturnAmountKeyDown}
                 placeholder="0"
                 className={`w-28 ml-auto rounded-lg border px-1.5 py-1 text-xs text-right ${inputBg}`}
               />
