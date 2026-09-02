@@ -212,10 +212,10 @@ export const DenominationSegregationView: React.FC = () => {
     setDenoms((prev) => ({ ...prev, [key]: num }));
   };
 
-  const handleClear = () => {
+    const handleClear = () => {
     setDenoms(emptyDenoms());
     setChargeApplied(false);
-    setChargeAmount(0);
+    setShowChargeSheet(false);
     setReturnAmount(0);
   };
 
