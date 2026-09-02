@@ -363,40 +363,47 @@ export const DenominationSegregationView: React.FC = () => {
             ))}
           </div>
 
-          {/* Charge & Return */}
-          <div className="flex items-center gap-3 mb-3 flex-wrap">
-            <span className="text-xs font-semibold text-slate-500">Apply Charge:</span>
-            <button
-              onClick={() => setChargeApplied(true)}
-              className={`px-3 py-1 rounded-lg text-xs font-bold ${
-                chargeApplied ? 'bg-amber-500 text-white' : `${inputBg} text-slate-500`
-              }`}
-            >
-              Yes
-            </button>
-            <button
-              onClick={() => {
-                setChargeApplied(false);
-                setChargeAmount(0);
-              }}
-              className={`px-3 py-1 rounded-lg text-xs font-bold ${
-                !chargeApplied ? 'bg-rose-500 text-white' : `${inputBg} text-slate-500`
-              }`}
-            >
-              No
-            </button>
-            {chargeApplied && (
-              <input
-                type="number"
-                min={0}
-                value={chargeAmount || ''}
-                onChange={(e) => setChargeAmount(Math.max(0, parseInt(e.target.value || '0', 10)))}
-                placeholder="Charge Amount"
-                className={`w-32 rounded-lg border px-2 py-1 text-xs ${inputBg}`}
-              />
-            )}
-          </div>
+                    {/* Charge Sheet Box */}
+          <div className="relative mb-4">
+            <div className="flex items-center justify-between gap-2 rounded-xl px-3 py-2.5 bg-amber-500/10 border border-amber-500/30 flex-wrap">
+              <button
+                onClick={() => setShowChargeSheet((v) => !v)}
+                className="flex items-center gap-1.5 text-xs font-bold text-amber-600"
+              >
+                <Tag size={14} /> Charge Sheet
+                <ChevronDown size={14} className={`transition-transform ${showChargeSheet ? 'rotate-180' : ''}`} />
+              </button>
 
+              <div className={`rounded-lg border px-3 py-1 text-xs font-bold ${inputBg}`}>
+                ৳ {computedChargeAmount.toLocaleString()}
+              </div>
+
+              <div className="flex items-center gap-2 ml-auto">
+                <span className="text-xs font-semibold text-slate-500">Apply Charge:</span>
+                <button
+                  onClick={() => chargeIsApplicable && setChargeApplied(true)}
+                  disabled={!chargeIsApplicable}
+                  className={`px-3 py-1 rounded-lg text-xs font-bold transition ${
+                    chargeApplied
+                      ? 'bg-emerald-500 text-white'
+                      : `${inputBg} text-slate-500`
+                  } ${!chargeIsApplicable ? 'opacity-40 cursor-not-allowed' : ''}`}
+                >
+                  Yes
+                </button>
+                <button
+                  onClick={() => setChargeApplied(false)}
+                  className={`px-3 py-1 rounded-lg text-xs font-bold transition ${
+                    !chargeApplied ? 'bg-rose-500 text-white' : `${inputBg} text-slate-500`
+                  }`}
+                >
+                  No
+                </button>
+              </div>
+            </div>
+
+            {/* Slab dropdown panel will be added here in Step C2 */}
+          </div>
           <div className="flex items-center gap-2 mb-4">
             <span className="text-xs font-semibold text-slate-500 w-28">Return Amount</span>
             <input
