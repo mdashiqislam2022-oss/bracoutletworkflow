@@ -454,13 +454,13 @@ export const DenominationSegregationView: React.FC = () => {
                 </span>
                 <span className="text-[10px] text-slate-400">Change amount</span>
               </div>
-              <input
+                           <input
                 type="number"
                 min={0}
                 value={returnAmount || ''}
                 onChange={(e) => setReturnAmount(Math.max(0, parseInt(e.target.value || '0', 10)))}
                 placeholder="0"
-                className={`w-16 ml-auto rounded-lg border px-1.5 py-1 text-xs text-right ${inputBg}`}
+                className={`w-28 ml-auto rounded-lg border px-1.5 py-1 text-xs text-right ${inputBg}`}
               />
             </div>
             <button
