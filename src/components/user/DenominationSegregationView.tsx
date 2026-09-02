@@ -216,7 +216,11 @@ export const DenominationSegregationView: React.FC = () => {
     setDenoms((prev) => ({ ...prev, [key]: num }));
   };
 
-  const handleDenomKeyDown = (e: React.KeyboardEvent<HTMLInputElement>, key: DenomKey) => {
+    const handleDenomKeyDown = (e: React.KeyboardEvent<HTMLInputElement>, key: DenomKey) => {
+    if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+      e.preventDefault();
+      return;
+    }
     if (e.key !== 'Enter') return;
     e.preventDefault();
     const idx = ALL_DENOM_KEYS.indexOf(key);
@@ -225,6 +229,12 @@ export const DenominationSegregationView: React.FC = () => {
       const nextInput = document.getElementById(`denom-input-${nextKey}`) as HTMLInputElement | null;
       nextInput?.focus();
       nextInput?.select();
+    }
+  };
+
+  const handleReturnAmountKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+      e.preventDefault();
     }
   };
 
