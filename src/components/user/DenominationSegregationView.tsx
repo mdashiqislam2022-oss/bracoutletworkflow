@@ -317,21 +317,25 @@ export const DenominationSegregationView: React.FC = () => {
 
                      {/* Transaction Type Tabs */}
           <div className={`flex items-center gap-1 p-1 rounded-xl mb-4 ${isDark ? 'bg-[#0F172A]' : 'bg-slate-100'}`}>
-            {TX_TYPES.map((tx) => (
-              <button
-                key={tx.id}
-                onClick={() => setActiveType(tx.id)}
-                className={`flex-1 flex flex-row items-center justify-center gap-1 px-1 py-1.5 rounded-lg text-[11px] md:text-xs font-bold transition ${
-                  activeType === tx.id
-                    ? `${isDark ? 'bg-[#1A2333] text-slate-100' : 'bg-white text-slate-900'} shadow-sm`
-                    : 'text-slate-400'
-                }`}
-              >
-                <tx.icon size={13} className={activeType === tx.id ? 'text-emerald-500' : ''} />
-                <span>{tx.id}</span>
-              </button>
-            ))}
-          </div>
+                       {TX_TYPES.map((tx) => {
+              const isOutgoing = tx.id === 'CW' || tx.id === 'LD';
+              return (
+                <button
+                  key={tx.id}
+                  onClick={() => setActiveType(tx.id)}
+                  className={`flex-1 flex flex-row items-center justify-center gap-1 px-1 py-1.5 rounded-lg text-[11px] md:text-xs font-bold transition ${
+                    activeType === tx.id
+                      ? isOutgoing
+                        ? 'bg-rose-500 text-white shadow-sm'
+                        : 'bg-emerald-500 text-white shadow-sm'
+                      : 'text-slate-400'
+                  }`}
+                >
+                  <tx.icon size={13} className={activeType === tx.id ? 'text-white' : ''} />
+                  <span>{tx.id}</span>
+                </button>
+              );
+            })}
                     {/* Charge Sheet Box */}
           <div className="relative mb-4">
             <div className="flex items-center justify-between gap-2 rounded-xl px-3 py-2.5 bg-amber-500/10 border border-amber-500/30 flex-wrap">
