@@ -12,6 +12,7 @@ import { LoanAccountDetailsView } from './components/user/LoanAccountDetailsView
 import { ChequeCardModal } from './components/user/ChequeCardModal';
 import { UserProfileView } from './components/user/UserProfile';
 import { UserSettingsView } from './components/user/UserSettings';
+import { DenominationSegregationView } from './components/user/DenominationSegregationView';
 
 // Admin views
 import { AdminDashboard } from './components/admin/AdminDashboard';
