@@ -402,7 +402,38 @@ export const DenominationSegregationView: React.FC = () => {
               </div>
             </div>
 
-            {/* Slab dropdown panel will be added here in Step C2 */}
+                        {showChargeSheet && (
+              <div className={`absolute z-20 top-full left-0 right-0 mt-2 rounded-xl border shadow-lg p-3 ${cardBg}`}>
+                <div className="flex items-center justify-between mb-2">
+                  <span className={`text-xs font-bold ${isDark ? 'text-slate-100' : 'text-slate-900'}`}>
+                    {activeType === 'CW' ? 'Cash Withdraw (CW)' : 'Cash Deposit (CD)'} Charge Slabs
+                  </span>
+                  <button onClick={() => setShowChargeSheet(false)} className="text-slate-400">
+                    <X size={15} />
+                  </button>
+                </div>
+                <div className="space-y-1 max-h-52 overflow-y-auto">
+                  {CHARGE_SLABS.map((slab, idx) => (
+                    <div
+                      key={idx}
+                      className={`flex items-center justify-between text-[11px] px-2 py-1.5 rounded-lg ${inputBg}`}
+                    >
+                      <span className="text-slate-500">
+                        ৳ {slab.min.toLocaleString()} – {slab.max ? `৳ ${slab.max.toLocaleString()}` : '৳ 300,001+'}
+                      </span>
+                      <span className="font-bold text-amber-600">
+                        {slab.percent ? `0.10% (1 Tk / 1k)` : `৳ ${slab.amount}`}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+                {!chargeIsApplicable && (
+                  <div className="mt-2 text-[10px] text-slate-500 text-center">
+                    Charge slab only applies to CD (Cash Deposit) and CW (Cash Withdraw).
+                  </div>
+                )}
+              </div>
+            )}
           </div>
           <div className="flex items-center gap-2 mb-4">
             <span className="text-xs font-semibold text-slate-500 w-28">Return Amount</span>
