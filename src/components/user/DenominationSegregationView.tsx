@@ -514,14 +514,22 @@ export const DenominationSegregationView: React.FC = () => {
                 className={`w-28 ml-auto rounded-lg border px-1.5 py-1 text-xs text-right ${inputBg}`}
               />
             </div>
-            <button
+                        <button
               onClick={handleCopyAmount}
-              disabled={totalReceivedAmount <= 0}
-              className={`flex items-center justify-center gap-1.5 rounded-xl border text-xs font-semibold transition ${inputBg} ${
-                totalReceivedAmount <= 0 ? 'opacity-40 cursor-not-allowed' : 'hover:border-emerald-500 text-slate-500'
+              disabled={actualAmount <= 0}
+              className={`flex items-center justify-center gap-1.5 rounded-xl border text-xs font-semibold transition active:scale-95 ${inputBg} ${
+                actualAmount <= 0 ? 'opacity-40 cursor-not-allowed' : 'hover:border-emerald-500 text-slate-500'
               }`}
             >
-              <Copy size={13} /> Copy Amount
+              {copiedFeedback ? (
+                <span className="flex items-center gap-1 text-emerald-500 font-bold">
+                  <Check size={13} /> Copied
+                </span>
+              ) : (
+                <>
+                  <Copy size={13} /> Copy Amount
+                </>
+              )}
             </button>
           </div>
           {/* Totals */}
