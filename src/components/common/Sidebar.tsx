@@ -68,11 +68,12 @@ export const Sidebar: React.FC = () => {
   ];
 
   // Admin Portal Navigation (Separated AFO and Outlets sections included)
-  const adminNav = [
+    const adminNav = [
     { id: 'dashboard', icon: LayoutDashboard, label: langText.dashboard, isDashboard: true },
     { id: 'users', icon: Users, label: langText.userDirectory },
     { id: 'afo_transfer', icon: ArrowRightLeft, label: langText.afoTransfer || 'AFO Transfer' },
     { id: 'outlets', icon: Building2, label: langText.outlets || 'Outlet Details' },
+    { id: 'denomination_segregation', icon: Calculator, label: langText.denominationSegregation || 'Cash Counting' },
     { id: 'delegation', icon: KeyRound, label: langText.delegation },
     { id: 'system_settings', icon: SlidersHorizontal, label: langText.settings },
     { id: 'sql_schema', icon: Code2, label: langText.sqlSchema }
