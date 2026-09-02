@@ -376,7 +376,7 @@ export const DenominationSegregationView: React.FC = () => {
                 <ChevronDown size={14} className={`transition-transform ${showChargeSheet ? 'rotate-180' : ''}`} />
               </button>
 
-              <div className={`rounded-lg border px-3 py-1 text-xs font-bold ${inputBg}`}>
+                           <div className={`rounded-lg border px-4 py-1.5 text-xs font-bold min-w-[100px] text-right ${inputBg}`}>
                 ৳ {computedChargeAmount.toLocaleString()}
               </div>
 
