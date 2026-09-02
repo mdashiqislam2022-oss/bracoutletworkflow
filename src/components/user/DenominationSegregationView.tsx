@@ -439,7 +439,7 @@ export const DenominationSegregationView: React.FC = () => {
                   placeholder="0"
                   className={`flex-1 rounded-lg border px-2 py-1.5 text-sm ${inputBg}`}
                 />
-                <span className="text-[11px] text-slate-500 w-16 text-right">
+                                <span className="text-[11px] text-slate-500 w-20 flex-shrink-0 text-right whitespace-nowrap">
                   ৳{(denoms[d.key] * d.value).toLocaleString()}
                 </span>
               </div>
