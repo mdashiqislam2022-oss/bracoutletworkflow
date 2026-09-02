@@ -119,10 +119,16 @@ export const DenominationSegregationView: React.FC = () => {
     return [...DENOM_LEFT, ...DENOM_RIGHT].reduce((sum, d) => sum + denoms[d.key], 0);
   }, [denoms]);
 
+    const chargeIsApplicable = activeType === 'CD' || activeType === 'CW';
+
+  const computedChargeAmount = useMemo(() => {
+    if (!chargeIsApplicable || !chargeApplied) return 0;
+    return calculateSlabCharge(totalReceivedAmount);
+  }, [chargeIsApplicable, chargeApplied, totalReceivedAmount]);
+
   const actualAmount = useMemo(() => {
-    const chargeDeduction = chargeApplied ? chargeAmount : 0;
-    return Math.max(0, totalReceivedAmount - returnAmount - chargeDeduction);
-  }, [totalReceivedAmount, returnAmount, chargeApplied, chargeAmount]);
+    return Math.max(0, totalReceivedAmount - returnAmount - computedChargeAmount);
+  }, [totalReceivedAmount, returnAmount, computedChargeAmount]);
 
   // ---------- Derived: Top Summary Cards ----------
   const summaryByType = useMemo(() => {
