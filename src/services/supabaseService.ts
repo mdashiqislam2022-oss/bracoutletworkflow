@@ -451,6 +451,8 @@ export const SupabaseService = {
         submissionsRes,
         chequeCardRes,
         loanRes,
+        customerAccountsRes,
+        segregationsRes,
         mailsRes,
         notifsRes,
         resetRequestsRes,
