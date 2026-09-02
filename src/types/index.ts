@@ -309,3 +309,60 @@ export interface PortalGovernanceSettings {
   systemBroadcastType: 'INFO' | 'WARNING' | 'ALERT';
   enableBroadcastBanner: boolean;
 }
+
+// ==================== Denomination Segregation Module ====================
+
+export type SegregationTransactionType = 'CD' | 'CW' | 'ID' | 'LD' | 'LR';
+
+export interface DenominationCounts {
+  note1: number;
+  note2: number;
+  note5: number;
+  note10: number;
+  note20: number;
+  note50: number;
+  note100: number;
+  note200: number;
+  note500: number;
+  note1000: number;
+}
+
+export type LinkedAccountSource = 'LOAN_ACCOUNT' | 'CHEQUE_CARD' | 'CUSTOMER_ACCOUNT';
+
+export interface CustomerAccountRecord {
+  id: string;
+  accountNumber: string;
+  accountTitle: string;
+  mobileNumber: string;
+  accountCategory: 'SAVINGS' | 'CURRENT';
+  outletId: string;
+  outletName: string;
+  userId: string;
+  userName: string;
+  status: 'ACTIVE' | 'INACTIVE';
+  notes?: string;
+  createdAt: string;
+}
+
+export interface DenominationSegregationRecord {
+  id: string;
+  transactionType: SegregationTransactionType;
+  denominations: DenominationCounts;
+  totalReceivedAmount: number;
+  chargeApplied: boolean;
+  chargeAmount: number;
+  returnAmount: number;
+  actualAmount: number;
+  linkedAccountSource: LinkedAccountSource;
+  linkedAccountId: string;
+  accountNumber: string;
+  accountTitle: string;
+  customerName: string;
+  mobileNumber: string;
+  outletId: string;
+  outletName: string;
+  userId: string;
+  userName: string;
+  notes?: string;
+  createdAt: string;
+}
