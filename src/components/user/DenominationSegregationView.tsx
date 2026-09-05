@@ -42,7 +42,8 @@ const TX_TYPES: { id: SegregationTransactionType; label: string; short: string; 
   { id: 'CW', label: 'Cash Withdraw', short: 'Withdraw', icon: ArrowUpCircle },
   { id: 'ID', label: 'Initial Deposit', short: 'Init', icon: Wallet },
   { id: 'LD', label: 'Loan Disbursement', short: 'Loan', icon: Banknote },
-  { id: 'LR', label: 'Loan Repayment', short: 'Repay', icon: RefreshCcw }
+  { id: 'LR', label: 'Loan Repayment', short: 'Repay', icon: RefreshCcw },
+  { id: 'BC', label: 'Bill Collection', short: 'Bill', icon: CreditCard }
 ];
 
 // Charge Slabs — applicable only for CD (Cash Deposit) & CW (Cash Withdraw)
