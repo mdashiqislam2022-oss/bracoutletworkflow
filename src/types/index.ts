@@ -342,8 +342,8 @@ export interface CustomerAccountRecord {
   status: 'ACTIVE' | 'INACTIVE';
   notes?: string;
   createdAt: string;
+  isOutsideOutlet?: boolean;
 }
-
 export interface DenominationSegregationRecord {
   id: string;
   transactionType: SegregationTransactionType;
