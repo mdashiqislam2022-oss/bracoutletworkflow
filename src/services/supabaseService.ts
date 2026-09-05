@@ -163,9 +163,10 @@ export const mapDbToCustomerAccount = (row: any): CustomerAccountRecord => {
     outletName: row.outlet_name || '',
     userId: row.user_id,
     userName: row.user_name,
-    status: row.status || 'ACTIVE',
+        status: row.status || 'ACTIVE',
     notes: row.notes || undefined,
-    createdAt: row.created_at || new Date().toISOString()
+    createdAt: row.created_at || new Date().toISOString(),
+    isOutsideOutlet: row.is_outside_outlet || false
   };
 };
 
