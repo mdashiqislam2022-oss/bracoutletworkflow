@@ -312,7 +312,7 @@ export interface PortalGovernanceSettings {
 
 // ==================== Denomination Segregation Module ====================
 
-export type SegregationTransactionType = 'CD' | 'CW' | 'ID' | 'LD' | 'LR';
+export type SegregationTransactionType = 'CD' | 'CW' | 'ID' | 'LD' | 'LR' | 'BC';
 
 export interface DenominationCounts {
   note1: number;
