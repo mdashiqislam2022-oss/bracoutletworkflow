@@ -137,12 +137,13 @@ export const DenominationSegregationView: React.FC = () => {
     const scoped = segregationRecords.filter(
       (r) => !currentUser || r.userId === currentUser.id
     );
-    const map: Record<SegregationTransactionType, { amount: number; count: number }> = {
+        const map: Record<SegregationTransactionType, { amount: number; count: number }> = {
       CD: { amount: 0, count: 0 },
       CW: { amount: 0, count: 0 },
       ID: { amount: 0, count: 0 },
       LD: { amount: 0, count: 0 },
-      LR: { amount: 0, count: 0 }
+      LR: { amount: 0, count: 0 },
+      BC: { amount: 0, count: 0 }
     };
     scoped.forEach((r) => {
       map[r.transactionType].amount += r.actualAmount;
