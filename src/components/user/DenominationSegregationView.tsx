@@ -335,9 +335,23 @@ export const DenominationSegregationView: React.FC = () => {
             <div className="text-lg font-extrabold mt-1 text-emerald-500">
               ৳ {summaryByType[tx.id].amount.toLocaleString()}
             </div>
-            <div className="text-[11px] text-slate-500">{summaryByType[tx.id].count} Entries</div>
+                       <div className="text-[11px] text-slate-500">{summaryByType[tx.id].count} Entries</div>
           </div>
         ))}
+
+        {/* Total Charge Amount (CD only) — box section, not part of the calculator */}
+        <div className={`rounded-2xl border p-3 border-amber-500/40 bg-amber-500/10`}>
+          <div className="flex items-center gap-1.5 text-xs font-semibold text-amber-600">
+            <Tag size={14} /> Charge
+          </div>
+          <div className={`text-sm font-bold mt-1 text-amber-600`}>
+            Total Charge Amount
+          </div>
+          <div className="text-lg font-extrabold mt-1 text-amber-600">
+            ৳ {totalChargeAmount.toLocaleString()}
+          </div>
+          <div className="text-[11px] text-amber-600/70">From Cash Deposit (CD)</div>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
