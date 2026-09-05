@@ -684,10 +684,11 @@ export const DenominationSegregationView: React.FC = () => {
             {searchResults.length === 0 && (
               <div className="text-xs text-slate-500 text-center py-6">No accounts found.</div>
             )}
-            {searchResults.map((acc) => (
+                       {searchResults.map((acc) => (
               <div
                 key={`${acc.source}-${acc.id}`}
-                className={`rounded-xl border p-2.5 flex items-center justify-between ${inputBg}`}
+                onClick={() => setSelectedAccount(acc)}
+                className={`rounded-xl border p-2.5 flex items-center justify-between cursor-pointer hover:border-emerald-500 transition ${inputBg}`}
               >
                 <div>
                   <div className="text-sm font-bold">{acc.accountNumber}</div>
@@ -695,12 +696,9 @@ export const DenominationSegregationView: React.FC = () => {
                     {acc.categoryLabel} · {acc.accountTitle} · {acc.mobileNumber}
                   </div>
                 </div>
-                <button
-                  onClick={() => setSelectedAccount(acc)}
-                  className="text-xs font-bold text-emerald-500 flex items-center gap-1"
-                >
+                <span className="text-xs font-bold text-emerald-500 flex items-center gap-1">
                   <Check size={13} /> Select
-                </button>
+                </span>
               </div>
             ))}
           </div>
