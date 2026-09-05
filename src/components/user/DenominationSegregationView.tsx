@@ -196,13 +196,13 @@ export const DenominationSegregationView: React.FC = () => {
       customerAccounts
         .filter((a) => !currentUser || a.outletId === currentUser.outletId)
         .forEach((a) => {
-          list.push({
+                    list.push({
             source: 'CUSTOMER_ACCOUNT',
             id: a.id,
             accountNumber: a.accountNumber,
             accountTitle: a.accountTitle,
             mobileNumber: a.mobileNumber,
-            categoryLabel: a.accountCategory
+            categoryLabel: a.isOutsideOutlet ? 'EXTERNAL ACCOUNT' : a.accountCategory
           });
         });
     }
