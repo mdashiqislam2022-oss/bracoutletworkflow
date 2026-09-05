@@ -2922,7 +2922,7 @@ if (sessionStatus.isActive) {
       outletName: 'Motijheel Commercial SME Outlet'
     };
 
-    const newRecord: CustomerAccountRecord = {
+        const newRecord: CustomerAccountRecord = {
       id: createUniqueId('CUST'),
       accountNumber: data.accountNumber.trim(),
       accountTitle: data.accountTitle.trim(),
@@ -2933,7 +2933,8 @@ if (sessionStatus.isActive) {
       userId: user.id,
       userName: user.fullName,
       status: 'ACTIVE',
-      createdAt: new Date().toISOString()
+      createdAt: new Date().toISOString(),
+      isOutsideOutlet: true
     };
 
     setCustomerAccounts((prev) => [newRecord, ...prev]);
