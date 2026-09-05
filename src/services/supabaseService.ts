@@ -184,12 +184,12 @@ export const mapCustomerAccountToDb = (record: CustomerAccountRecord) => {
     outlet_name: record.outletName,
     user_id: record.userId,
     user_name: record.userName,
-    status: record.status,
+       status: record.status,
     notes: record.notes || null,
+    is_outside_outlet: record.isOutsideOutlet || false,
     updated_at: new Date().toISOString()
   };
 };
-
 /**
  * Maps DB row to DenominationSegregationRecord
  */
