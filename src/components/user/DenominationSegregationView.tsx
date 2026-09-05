@@ -323,7 +323,7 @@ export const DenominationSegregationView: React.FC = () => {
   return (
     <div className="space-y-4 md:space-y-6">
       {/* Top Summary Cards */}
-      <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
+            <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2">
         {TX_TYPES.map((tx) => (
           <div key={tx.id} className={`rounded-2xl border p-3 ${cardBg}`}>
             <div className="flex items-center gap-1.5 text-xs font-semibold text-slate-500">
