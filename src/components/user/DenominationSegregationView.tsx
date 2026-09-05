@@ -145,11 +145,18 @@ export const DenominationSegregationView: React.FC = () => {
       LR: { amount: 0, count: 0 },
       BC: { amount: 0, count: 0 }
     };
-    scoped.forEach((r) => {
+        scoped.forEach((r) => {
       map[r.transactionType].amount += r.actualAmount;
       map[r.transactionType].count += 1;
     });
     return map;
+  }, [segregationRecords, currentUser]);
+
+  // Total charge amount collected from CD (Cash Deposit) transactions only
+  const totalChargeAmount = useMemo(() => {
+    return segregationRecords
+      .filter((r) => (!currentUser || r.userId === currentUser.id) && r.transactionType === 'CD')
+      .reduce((sum, r) => sum + (r.chargeAmount || 0), 0);
   }, [segregationRecords, currentUser]);
 
   // ---------- Derived: Unified Account Search Results ----------
