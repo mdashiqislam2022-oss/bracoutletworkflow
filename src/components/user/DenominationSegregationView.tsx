@@ -324,33 +324,33 @@ export const DenominationSegregationView: React.FC = () => {
     <div className="space-y-4 md:space-y-6">
       {/* Top Summary Cards */}
             <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2">
-        {TX_TYPES.map((tx) => (
-          <div key={tx.id} className={`rounded-2xl border p-3 ${cardBg}`}>
-            <div className="flex items-center gap-1.5 text-xs font-semibold text-slate-500">
-              <tx.icon size={14} /> {tx.id}
+                {TX_TYPES.map((tx) => (
+          <div key={tx.id} className={`rounded-xl border p-2.5 ${cardBg}`}>
+            <div className="flex items-center gap-1 text-[10px] font-semibold text-slate-500">
+              <tx.icon size={12} /> {tx.id}
             </div>
-            <div className={`text-sm font-bold mt-1 ${isDark ? 'text-slate-100' : 'text-slate-900'}`}>
-              {tx.label}
+            <div className={`text-xs font-bold mt-0.5 truncate ${isDark ? 'text-slate-100' : 'text-slate-900'}`}>
+              {tx.short}
             </div>
-            <div className="text-lg font-extrabold mt-1 text-emerald-500">
+            <div className="text-sm font-extrabold mt-0.5 text-emerald-500 truncate">
               ৳ {summaryByType[tx.id].amount.toLocaleString()}
             </div>
-                       <div className="text-[11px] text-slate-500">{summaryByType[tx.id].count} Entries</div>
+            <div className="text-[10px] text-slate-500">{summaryByType[tx.id].count} Entries</div>
           </div>
         ))}
 
         {/* Total Charge Amount (CD only) — box section, not part of the calculator */}
-        <div className={`rounded-2xl border p-3 border-amber-500/40 bg-amber-500/10`}>
-          <div className="flex items-center gap-1.5 text-xs font-semibold text-amber-600">
-            <Tag size={14} /> Charge
+        <div className="rounded-xl border p-2.5 border-amber-500/40 bg-amber-500/10">
+          <div className="flex items-center gap-1 text-[10px] font-semibold text-amber-600">
+            <Tag size={12} /> Charge
           </div>
-          <div className={`text-sm font-bold mt-1 text-amber-600`}>
-            Total Charge Amount
+          <div className="text-xs font-bold mt-0.5 text-amber-600 truncate">
+            Total Charge
           </div>
-          <div className="text-lg font-extrabold mt-1 text-amber-600">
+          <div className="text-sm font-extrabold mt-0.5 text-amber-600 truncate">
             ৳ {totalChargeAmount.toLocaleString()}
           </div>
-          <div className="text-[11px] text-amber-600/70">From Cash Deposit (CD)</div>
+          <div className="text-[10px] text-amber-600/70 truncate">From CD</div>
         </div>
       </div>
 
