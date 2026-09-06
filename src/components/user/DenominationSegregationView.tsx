@@ -606,10 +606,12 @@ export const DenominationSegregationView: React.FC = () => {
 
           {showAddCustomer && (
             <div className={`rounded-xl border p-3 mb-3 space-y-2 ${inputBg}`}>
-              <input
+                            <input
                 value={newCustAccNo}
-                onChange={(e) => setNewCustAccNo(e.target.value)}
-                placeholder="Account Number"
+                onChange={(e) => setNewCustAccNo(e.target.value.replace(/\D/g, '').slice(0, 16))}
+                inputMode="numeric"
+                maxLength={16}
+                placeholder="Account Number (max 16 digits)"
                 className={`w-full rounded-lg border px-2 py-1.5 text-sm ${inputBg}`}
               />
               <input
