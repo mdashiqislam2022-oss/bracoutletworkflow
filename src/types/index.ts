@@ -147,14 +147,16 @@ export interface AdminAccount {
   delegatedBy?: string;
   delegatedAt?: string;
   permissions: AdminPermission[];
+  assignedOutletIds?: string[]; // Outlets this admin is scoped to. Empty/undefined = no outlet restriction (only relevant for delegated admins)
   status: 'ACTIVE' | 'SUSPENDED';
   createdAt: string;
   lastLoginAt: string;
-    lastLoginAt: string;
   isOnline?: boolean;
   lastSeenAt?: string;
 }
 
+// Section-level permissions — each maps to one Admin Portal page.
+// 'DELEGATION' is intentionally excluded: it can never be granted to a delegated admin.
 export type AdminPermission = 
   | 'VIEW_ALL'
   | 'MANAGE_USERS'
@@ -162,7 +164,14 @@ export type AdminPermission =
   | 'EXPORT_DATA'
   | 'MODIFY_OUTLETS'
   | 'AUDIT_LOGS'
-  | 'SYSTEM_CONFIG';
+  | 'SYSTEM_CONFIG'
+  | 'SECTION_DASHBOARD'
+  | 'SECTION_AFO_DIRECTORY'
+  | 'SECTION_AFO_TRANSFER'
+  | 'SECTION_OUTLET_DETAILS'
+  | 'SECTION_CASH_ANALYSIS'
+  | 'SECTION_SETTINGS'
+  | 'SECTION_SQL_RLS';
 
 export type ServiceCategory = 
   | 'CHEQUE_BOOK_DISPATCH'
