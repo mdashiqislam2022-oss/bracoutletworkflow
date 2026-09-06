@@ -38,11 +38,15 @@ export const DenominationSegregationAdmin: React.FC = () => {
   const [outletFilter, setOutletFilter] = useState('ALL');
   const [outletDropdownOpen, setOutletDropdownOpen] = useState(false);
     const [outletSearchTerm, setOutletSearchTerm] = useState('');
-  const [datePickerOpen, setDatePickerOpen] = useState(false);
+    const [datePickerOpen, setDatePickerOpen] = useState(false);
   const [calendarMonth, setCalendarMonth] = useState(() => {
     const d = dateFilter ? new Date(dateFilter) : new Date();
     return { year: d.getFullYear(), month: d.getMonth() };
   });
+  const [monthDropdownOpen, setMonthDropdownOpen] = useState(false);
+  const [yearDropdownOpen, setYearDropdownOpen] = useState(false);
+  const monthNamesList = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  const yearOptionsList = Array.from({ length: 20 }, (_, i) => 2020 + i);
   const cardBg = isDark ? 'bg-[#1A2333] border-slate-800' : 'bg-white border-slate-200';
   const inputBg = isDark
     ? 'bg-[#0F172A] border-slate-700 text-slate-100'
