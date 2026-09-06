@@ -56,7 +56,7 @@ export const Sidebar: React.FC = () => {
       items: [
         { id: 'cheque_cards', icon: CreditCard, label: langText.chequeCardRegistry },
         { id: 'loan_accounts', icon: Landmark, label: langText.loanAccounts },
-                { id: 'denomination_segregation', icon: BarChart3, label: langText.denominationSegregation || 'Cash Analysis' }
+                { id: 'denomination_segregation', icon: Calculator, label: 'Cash Counting' }
       ]
     },
     {
