@@ -393,7 +393,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     setAfoTransferResetTrigger((prev) => prev + 1);
   };
 
-  const refreshLiveMetrics = () => {
+    const refreshLiveMetrics = () => {
     // Re-fetch fresh live data from Supabase
     if (SupabaseService.isAvailable()) {
       SupabaseService.fetchAllData().then((cloudData) => {
@@ -410,6 +410,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
           if (cloudData.afoTransfers) setAfoTransfers(cloudData.afoTransfers);
           if (cloudData.auditLogs) setAuditLogs(cloudData.auditLogs);
           if (cloudData.governanceSettings) setGovernanceSettings(cloudData.governanceSettings);
+          if (cloudData.segregationRecords) setSegregationRecords(cloudData.segregationRecords);
         }
       }).catch((err) => console.warn('Refresh error:', err));
     }
