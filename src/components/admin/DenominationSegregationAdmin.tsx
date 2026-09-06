@@ -10,8 +10,10 @@ import {
   Building2,
   User,
   Calendar,
-  CreditCard,
+    CreditCard,
   ChevronDown,
+  ChevronLeft,
+  ChevronRight,
   X
 } from 'lucide-react';
 import { SegregationTransactionType } from '../../types';
