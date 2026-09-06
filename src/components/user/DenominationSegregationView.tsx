@@ -694,10 +694,16 @@ export const DenominationSegregationView: React.FC = () => {
                 onClick={() => setSelectedAccount(acc)}
                 className={`rounded-xl border p-2.5 flex items-center justify-between cursor-pointer hover:border-emerald-500 transition ${inputBg}`}
               >
-                <div>
-                  <div className="text-sm font-bold">{acc.accountNumber}</div>
+                                <div>
+                  <div className="text-sm font-bold">
+                    {acc.accountNumber}
+                    {acc.accountTitle ? ` - ${acc.accountTitle}` : ''}
+                  </div>
                   <div className="text-[11px] text-slate-500">
-                    {acc.categoryLabel} · {acc.accountTitle} · {acc.mobileNumber}
+                    {acc.categoryLabel}
+                  </div>
+                  <div className={`text-[11px] font-extrabold mt-0.5 ${isDark ? 'text-slate-200' : 'text-slate-800'}`}>
+                    {acc.mobileNumber}
                   </div>
                 </div>
                 <span className="text-xs font-bold text-emerald-500 flex items-center gap-1">
