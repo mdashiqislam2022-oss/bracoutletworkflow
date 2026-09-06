@@ -211,23 +211,121 @@ export const DenominationSegregationAdmin: React.FC = () => {
               className={`w-full rounded-lg border pl-9 pr-3 py-2 text-sm ${inputBg}`}
             />
           </div>
-          <div className="relative">
-            <Calendar size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
-            <input
-              type="date"
-              value={dateFilter}
-              onChange={(e) => setDateFilter(e.target.value)}
-              className={`rounded-lg border pl-9 pr-3 py-2 text-sm ${inputBg}`}
-            />
-          </div>
-          {dateFilter && (
+                    <div className="relative">
             <button
-              onClick={() => setDateFilter('')}
-              className="flex items-center gap-1 px-3 py-2 rounded-lg text-xs font-semibold text-rose-500 border border-rose-500/30"
+              onClick={() => setDatePickerOpen((v) => !v)}
+              className={`flex items-center gap-2 rounded-lg border px-3 py-2 text-sm font-semibold ${inputBg}`}
             >
-              <X size={13} /> Clear Date
+              <Calendar size={15} className="text-emerald-500" />
+              {dateFilter
+                ? new Date(dateFilter + 'T00:00:00').toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })
+                : 'Select Date'}
             </button>
-          )}
+
+            <div
+              className={`absolute right-0 z-30 mt-2 w-72 rounded-2xl border shadow-lg p-3 origin-top-right transition-all duration-150 ease-out ${cardBg} ${
+                datePickerOpen ? 'opacity-100 scale-100 pointer-events-auto' : 'opacity-0 scale-95 pointer-events-none'
+              }`}
+            >
+              <div className="flex items-center justify-between mb-2">
+                <button
+                  onClick={() =>
+                    setCalendarMonth((prev) => {
+                      const m = prev.month === 0 ? 11 : prev.month - 1;
+                      const y = prev.month === 0 ? prev.year - 1 : prev.year;
+                      return { year: y, month: m };
+                    })
+                  }
+                  className="p-1 rounded-lg hover:bg-emerald-500/10 text-slate-500"
+                >
+                  <ChevronLeft size={16} />
+                </button>
+                <div className="text-sm font-bold">
+                  {new Date(calendarMonth.year, calendarMonth.month, 1).toLocaleDateString('en-GB', { month: 'long', year: 'numeric' })}
+                </div>
+                <button
+                  onClick={() =>
+                    setCalendarMonth((prev) => {
+                      const m = prev.month === 11 ? 0 : prev.month + 1;
+                      const y = prev.month === 11 ? prev.year + 1 : prev.year;
+                      return { year: y, month: m };
+                    })
+                  }
+                  className="p-1 rounded-lg hover:bg-emerald-500/10 text-slate-500"
+                >
+                  <ChevronRight size={16} />
+                </button>
+              </div>
+
+              <div className="grid grid-cols-7 gap-1 mb-1">
+                {['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'].map((d, i) => (
+                  <div
+                    key={d}
+                    className={`text-center text-[10px] font-bold ${i === 5 || i === 6 ? 'text-rose-500' : 'text-slate-400'}`}
+                  >
+                    {d}
+                  </div>
+                ))}
+              </div>
+
+              <div className="grid grid-cols-7 gap-1">
+                {Array.from({ length: new Date(calendarMonth.year, calendarMonth.month, 1).getDay() }).map((_, i) => (
+                  <div key={`blank-${i}`} />
+                ))}
+                {Array.from({ length: new Date(calendarMonth.year, calendarMonth.month + 1, 0).getDate() }).map((_, i) => {
+                  const day = i + 1;
+                  const dow = new Date(calendarMonth.year, calendarMonth.month, day).getDay();
+                  const isWeekend = dow === 5 || dow === 6;
+                  const dateStr = `${calendarMonth.year}-${String(calendarMonth.month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                  const isSelected = dateFilter === dateStr;
+                  const isToday = dateStr === new Date().toLocaleDateString('en-CA');
+                  return (
+                    <button
+                      key={day}
+                      onClick={() => {
+                        setDateFilter(dateStr);
+                        setDatePickerOpen(false);
+                      }}
+                      className={`h-8 rounded-lg text-xs font-semibold transition ${
+                        isSelected
+                          ? 'bg-emerald-500 text-white'
+                          : isToday
+                          ? 'border border-emerald-500 text-emerald-500'
+                          : isWeekend
+                          ? 'text-rose-500 hover:bg-rose-500/10'
+                          : 'hover:bg-emerald-500/10'
+                      }`}
+                    >
+                      {day}
+                    </button>
+                  );
+                })}
+              </div>
+
+              <div className="flex items-center justify-between mt-2 pt-2 border-t border-slate-700/20">
+                <button
+                  onClick={() => {
+                    setDateFilter('');
+                    setDatePickerOpen(false);
+                  }}
+                  className="text-xs font-semibold text-rose-500"
+                >
+                  Clear
+                </button>
+                <button
+                  onClick={() => {
+                    const t = new Date();
+                    setCalendarMonth({ year: t.getFullYear(), month: t.getMonth() });
+                    setDateFilter(t.toLocaleDateString('en-CA'));
+                    setDatePickerOpen(false);
+                  }}
+                  className="text-xs font-semibold text-emerald-500"
+                >
+                  Today
+                </button>
+              </div>
+            </div>
+          </div>  
         </div>
 
         <div className="flex items-center justify-between mb-3 text-xs text-slate-500">
