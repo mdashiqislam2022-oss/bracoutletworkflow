@@ -97,7 +97,7 @@ export const t = {
     dashboard: 'ড্যাশবোর্ড',
     loanAccounts: 'লোন অ্যাকাউন্ট বিবরণী',
     chequeCardRegistry: 'চেক ও ডেবিট কার্ড রেজিস্ট্রি',
-    denominationSegregation: 'নগদ গণনা',
+        denominationSegregation: 'ক্যাশ অ্যানালাইসিস',
     userDirectory: 'AFO ডিরেক্টরি',
     afoManagement: 'AFO ডিরেক্টরি',
     afoTransfer: 'AFO ট্রান্সফার',
