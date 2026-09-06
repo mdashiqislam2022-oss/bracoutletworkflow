@@ -6,7 +6,7 @@ export const t = {
     dashboard: 'Dashboard',
         loanAccounts: 'Loan Account Details',
     chequeCardRegistry: 'Cheque & Debit Cards',
-        denominationSegregation: 'Cash Analysis',
+        denominationSegregation: 'Cash Counting',
     userDirectory: 'AFO Directory',
     afoManagement: 'AFO Directory',
     afoTransfer: 'AFO Transfer',
