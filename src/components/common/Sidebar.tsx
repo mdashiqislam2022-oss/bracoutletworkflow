@@ -69,17 +69,25 @@ export const Sidebar: React.FC = () => {
     }
   ];
 
-  // Admin Portal Navigation (Separated AFO and Outlets sections included)
-    const adminNav = [
-    { id: 'dashboard', icon: LayoutDashboard, label: langText.dashboard, isDashboard: true },
-    { id: 'users', icon: Users, label: langText.userDirectory },
-    { id: 'afo_transfer', icon: ArrowRightLeft, label: langText.afoTransfer || 'AFO Transfer' },
-    { id: 'outlets', icon: Building2, label: langText.outlets || 'Outlet Details' },
-            { id: 'denomination_segregation', icon: BarChart3, label: 'Cash Analysis' },
-    { id: 'delegation', icon: KeyRound, label: langText.delegation },
-    { id: 'system_settings', icon: SlidersHorizontal, label: langText.settings },
-    { id: 'sql_schema', icon: Code2, label: langText.sqlSchema }
+    // Admin Portal Navigation (Separated AFO and Outlets sections included)
+    const fullAdminNav = [
+    { id: 'dashboard', icon: LayoutDashboard, label: langText.dashboard, isDashboard: true, permissionKey: 'SECTION_DASHBOARD' },
+    { id: 'users', icon: Users, label: langText.userDirectory, permissionKey: 'SECTION_AFO_DIRECTORY' },
+    { id: 'afo_transfer', icon: ArrowRightLeft, label: langText.afoTransfer || 'AFO Transfer', permissionKey: 'SECTION_AFO_TRANSFER' },
+    { id: 'outlets', icon: Building2, label: langText.outlets || 'Outlet Details', permissionKey: 'SECTION_OUTLET_DETAILS' },
+            { id: 'denomination_segregation', icon: BarChart3, label: 'Cash Analysis', permissionKey: 'SECTION_CASH_ANALYSIS' },
+    { id: 'delegation', icon: KeyRound, label: langText.delegation, permissionKey: null },
+    { id: 'system_settings', icon: SlidersHorizontal, label: langText.settings, permissionKey: 'SECTION_SETTINGS' },
+    { id: 'sql_schema', icon: Code2, label: langText.sqlSchema, permissionKey: 'SECTION_SQL_RLS' }
   ];
+
+  // Master Admin sees everything. A delegated admin only sees sections they have permission for,
+  // and Delegation (permissionKey: null) is never shown to a delegated admin.
+  const adminNav = currentAdmin?.isMainAdmin
+    ? fullAdminNav
+    : fullAdminNav.filter(
+        (item) => item.permissionKey && currentAdmin?.permissions?.includes(item.permissionKey as any)
+      );
 
     const navItems = adminNav;
 
