@@ -356,7 +356,10 @@ export const DenominationSegregationView: React.FC = () => {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
         {/* LEFT: Denomination Calculator */}
-        <div className={`rounded-2xl border p-4 md:p-5 ${cardBg}`}>
+               <div className={`rounded-2xl border p-4 md:p-5 ${cardBg}`}>
+          <div className={`text-[11px] font-semibold mb-1.5 ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
+            {new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}
+          </div>
           <div className="flex items-center justify-between mb-3">
             <h3 className={`font-bold flex items-center gap-2 ${isDark ? 'text-slate-100' : 'text-slate-900'}`}>
               <Banknote size={18} className="text-emerald-500" /> Denomination Segregation Calculator
