@@ -244,29 +244,88 @@ export const DenominationSegregationAdmin: React.FC = () => {
                 >
                   <ChevronLeft size={16} />
                 </button>
-                                <div className="flex items-center gap-1">
-                  <select
-                    value={calendarMonth.month}
-                    onChange={(e) => setCalendarMonth((prev) => ({ ...prev, month: parseInt(e.target.value, 10) }))}
-                    className={`text-xs font-bold py-1 px-1.5 rounded-md border cursor-pointer ${
-                      isDark ? 'bg-slate-900 border-slate-700 text-white' : 'bg-slate-50 border-slate-200 text-slate-900'
-                    }`}
-                  >
-                    {['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'].map((mName, idx) => (
-                      <option key={mName} value={idx}>{mName}</option>
-                    ))}
-                  </select>
-                  <select
-                    value={calendarMonth.year}
-                    onChange={(e) => setCalendarMonth((prev) => ({ ...prev, year: parseInt(e.target.value, 10) }))}
-                    className={`text-xs font-bold py-1 px-1.5 rounded-md border cursor-pointer font-mono ${
-                      isDark ? 'bg-slate-900 border-slate-700 text-white' : 'bg-slate-50 border-slate-200 text-slate-900'
-                    }`}
-                  >
-                    {Array.from({ length: 20 }, (_, i) => 2020 + i).map((y) => (
-                      <option key={y} value={y}>{y}</option>
-                    ))}
-                  </select>
+                                 <div className="flex items-center gap-1">
+                  {/* Custom Month Dropdown */}
+                  <div className="relative">
+                    <button
+                      type="button"
+                      onClick={() => { setMonthDropdownOpen((v) => !v); setYearDropdownOpen(false); }}
+                      className={`text-xs font-bold py-1 px-2 rounded-md border cursor-pointer flex items-center gap-1 ${
+                        isDark ? 'bg-slate-900 border-slate-700 text-white' : 'bg-slate-50 border-slate-200 text-slate-900'
+                      }`}
+                    >
+                      {monthNamesList[calendarMonth.month]}
+                      <span className="text-[9px] opacity-60">▼</span>
+                    </button>
+                    {monthDropdownOpen && (
+                      <div
+                        className={`absolute left-0 top-full mt-1 z-50 max-h-48 overflow-y-auto rounded-lg border shadow-xl w-32 ${
+                          isDark ? 'bg-[#1E293B] border-slate-700' : 'bg-white border-slate-200'
+                        }`}
+                      >
+                        {monthNamesList.map((mName, idx) => (
+                          <button
+                            key={mName}
+                            type="button"
+                            onClick={() => {
+                              setCalendarMonth((prev) => ({ ...prev, month: idx }));
+                              setMonthDropdownOpen(false);
+                            }}
+                            className={`w-full text-left text-xs font-semibold px-3 py-1.5 cursor-pointer ${
+                              idx === calendarMonth.month
+                                ? 'bg-emerald-600 text-white'
+                                : isDark
+                                ? 'text-slate-200 hover:bg-slate-800'
+                                : 'text-slate-800 hover:bg-slate-100'
+                            }`}
+                          >
+                            {mName}
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Custom Year Dropdown */}
+                  <div className="relative">
+                    <button
+                      type="button"
+                      onClick={() => { setYearDropdownOpen((v) => !v); setMonthDropdownOpen(false); }}
+                      className={`text-xs font-bold py-1 px-2 rounded-md border cursor-pointer font-mono flex items-center gap-1 ${
+                        isDark ? 'bg-slate-900 border-slate-700 text-white' : 'bg-slate-50 border-slate-200 text-slate-900'
+                      }`}
+                    >
+                      {calendarMonth.year}
+                      <span className="text-[9px] opacity-60">▼</span>
+                    </button>
+                    {yearDropdownOpen && (
+                      <div
+                        className={`absolute left-0 top-full mt-1 z-50 max-h-48 overflow-y-auto rounded-lg border shadow-xl w-20 ${
+                          isDark ? 'bg-[#1E293B] border-slate-700' : 'bg-white border-slate-200'
+                        }`}
+                      >
+                        {yearOptionsList.map((y) => (
+                          <button
+                            key={y}
+                            type="button"
+                            onClick={() => {
+                              setCalendarMonth((prev) => ({ ...prev, year: y }));
+                              setYearDropdownOpen(false);
+                            }}
+                            className={`w-full text-left text-xs font-semibold px-3 py-1.5 cursor-pointer font-mono ${
+                              y === calendarMonth.year
+                                ? 'bg-emerald-600 text-white'
+                                : isDark
+                                ? 'text-slate-200 hover:bg-slate-800'
+                                : 'text-slate-800 hover:bg-slate-100'
+                            }`}
+                          >
+                            {y}
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
                 </div>
                 <button
                   onClick={() =>
