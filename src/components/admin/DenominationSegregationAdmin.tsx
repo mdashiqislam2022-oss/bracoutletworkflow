@@ -240,8 +240,29 @@ export const DenominationSegregationAdmin: React.FC = () => {
                 >
                   <ChevronLeft size={16} />
                 </button>
-                <div className="text-sm font-bold">
-                  {new Date(calendarMonth.year, calendarMonth.month, 1).toLocaleDateString('en-GB', { month: 'long', year: 'numeric' })}
+                                <div className="flex items-center gap-1">
+                  <select
+                    value={calendarMonth.month}
+                    onChange={(e) => setCalendarMonth((prev) => ({ ...prev, month: parseInt(e.target.value, 10) }))}
+                    className={`text-xs font-bold py-1 px-1.5 rounded-md border cursor-pointer ${
+                      isDark ? 'bg-slate-900 border-slate-700 text-white' : 'bg-slate-50 border-slate-200 text-slate-900'
+                    }`}
+                  >
+                    {['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'].map((mName, idx) => (
+                      <option key={mName} value={idx}>{mName}</option>
+                    ))}
+                  </select>
+                  <select
+                    value={calendarMonth.year}
+                    onChange={(e) => setCalendarMonth((prev) => ({ ...prev, year: parseInt(e.target.value, 10) }))}
+                    className={`text-xs font-bold py-1 px-1.5 rounded-md border cursor-pointer font-mono ${
+                      isDark ? 'bg-slate-900 border-slate-700 text-white' : 'bg-slate-50 border-slate-200 text-slate-900'
+                    }`}
+                  >
+                    {Array.from({ length: 20 }, (_, i) => 2020 + i).map((y) => (
+                      <option key={y} value={y}>{y}</option>
+                    ))}
+                  </select>
                 </div>
                 <button
                   onClick={() =>
