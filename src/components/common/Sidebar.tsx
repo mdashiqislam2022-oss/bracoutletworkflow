@@ -25,9 +25,10 @@ import { t } from '../../utils/translations';
 import { SupportModal } from './SupportModal';
 
 export const Sidebar: React.FC = () => {
-  const {
+    const {
     authMode,
         currentUser,
+    currentAdmin,
     activeNavTab,
     setActiveNavTab,
     userPreferences,
