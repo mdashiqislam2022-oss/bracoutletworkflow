@@ -620,10 +620,12 @@ export const DenominationSegregationView: React.FC = () => {
                 placeholder="Customer / Account Title"
                 className={`w-full rounded-lg border px-2 py-1.5 text-sm ${inputBg}`}
               />
-              <input
+                           <input
                 value={newCustMobile}
-                onChange={(e) => setNewCustMobile(e.target.value)}
-                placeholder="Mobile Number"
+                onChange={(e) => setNewCustMobile(e.target.value.replace(/\D/g, '').slice(0, 11))}
+                inputMode="numeric"
+                maxLength={11}
+                placeholder="Mobile Number (11 digits)"
                 className={`w-full rounded-lg border px-2 py-1.5 text-sm ${inputBg}`}
               />
               <div className="flex gap-2">
