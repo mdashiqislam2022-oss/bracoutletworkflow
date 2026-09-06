@@ -629,18 +629,22 @@ export const DenominationSegregationView: React.FC = () => {
                 className={`w-full rounded-lg border px-2 py-1.5 text-sm ${inputBg}`}
               />
               <div className="flex gap-2">
-                <button
+                                <button
                   onClick={() => setNewCustCategory('SAVINGS')}
-                  className={`flex-1 py-1.5 rounded-lg text-xs font-semibold ${
-                    newCustCategory === 'SAVINGS' ? 'bg-emerald-500 text-white' : inputBg
+                  className={`flex-1 py-1.5 rounded-lg text-xs font-semibold border transition ${
+                    newCustCategory === 'SAVINGS'
+                      ? 'bg-emerald-500 border-emerald-500 text-white'
+                      : 'bg-transparent border-emerald-500 text-emerald-500'
                   }`}
                 >
                   Savings
                 </button>
                 <button
                   onClick={() => setNewCustCategory('CURRENT')}
-                  className={`flex-1 py-1.5 rounded-lg text-xs font-semibold ${
-                    newCustCategory === 'CURRENT' ? 'bg-emerald-500 text-white' : inputBg
+                  className={`flex-1 py-1.5 rounded-lg text-xs font-semibold border transition ${
+                    newCustCategory === 'CURRENT'
+                      ? 'bg-blue-500 border-blue-500 text-white'
+                      : 'bg-transparent border-blue-500 text-blue-500'
                   }`}
                 >
                   Current
