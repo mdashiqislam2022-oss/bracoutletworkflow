@@ -778,6 +778,24 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       document.removeEventListener('visibilitychange', handleAdminVisibilityChange);
     };
   }, [authMode, currentAdmin?.id]);
+  
+  // Admin dashboard: প্রতি ১৫ সেকেন্ড পরপর AFO-দের online/offline status নতুন করে আনা (অন্য device-এর আপডেট দেখার জন্য)
+  useEffect(() => {
+    if (authMode !== 'ADMIN') return;
+
+    const pollAfoPresence = () => {
+      if (SupabaseService.isAvailable()) {
+        SupabaseService.fetchAllData().then((cloudData) => {
+          if (cloudData?.users) setUsers(cloudData.users);
+        }).catch(() => {});
+      }
+    };
+
+    pollAfoPresence();
+    const presenceInterval = setInterval(pollAfoPresence, 15000);
+
+    return () => clearInterval(presenceInterval);
+  }, [authMode]);
 
   // Toast auto-clear
   const showToast = (
