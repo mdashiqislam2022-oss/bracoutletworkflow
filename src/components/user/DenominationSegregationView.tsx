@@ -262,9 +262,9 @@ export const DenominationSegregationView: React.FC = () => {
     setTimeout(() => setCopiedFeedback(false), 2000);
   };
 
-  const handleAddCustomer = () => {
-    if (!newCustAccNo.trim() || !newCustTitle.trim() || !newCustMobile.trim()) {
-      showToast({ message: 'Account Number, Title and Mobile are required.', type: 'error' });
+   const handleAddCustomer = () => {
+    if (!newCustAccNo.trim() && !newCustTitle.trim() && !newCustMobile.trim()) {
+      showToast({ message: 'Please enter at least one of: Account Number, Title, or Mobile Number.', type: 'error' });
       return;
     }
     const created = addCustomerAccount({
