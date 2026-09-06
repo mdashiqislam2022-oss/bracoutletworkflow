@@ -614,9 +614,9 @@ export const DenominationSegregationView: React.FC = () => {
                 placeholder="Account Number (max 16 digits)"
                 className={`w-full rounded-lg border px-2 py-1.5 text-sm ${inputBg}`}
               />
-              <input
+                            <input
                 value={newCustTitle}
-                onChange={(e) => setNewCustTitle(e.target.value)}
+                onChange={(e) => setNewCustTitle(e.target.value.replace(/[^a-zA-Z\s.]/g, '').toUpperCase())}
                 placeholder="Customer / Account Title"
                 className={`w-full rounded-lg border px-2 py-1.5 text-sm ${inputBg}`}
               />
