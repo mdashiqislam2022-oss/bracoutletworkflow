@@ -18,9 +18,9 @@ import {
   DenominationSegregationRecord,
   MotherAmountRecord,
   OutletTransferRecord,
-  OutletVaultRecord
+    OutletVaultRecord,
+  CashTransferRecord
 } from '../types';
-
 /**
  * Maps database snake_case or JSON record to TypeScript ChequeCardEntry
  */
