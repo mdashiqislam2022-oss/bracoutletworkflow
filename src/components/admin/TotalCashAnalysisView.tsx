@@ -101,14 +101,17 @@ export const TotalCashAnalysisView: React.FC = () => {
   const selectedOutletName = viewOutlet === 'ALL' ? 'All Outlets' : outlets.find((o) => o.id === viewOutlet)?.name || 'All Outlets';
 
   // ---------- Combined History (latest 15) ----------
-  const combinedHistory = useMemo(() => {
+      const combinedHistory = useMemo(() => {
         const items = [
       ...motherAmounts.map((m) => ({ ...m, kind: 'Mother Amount' as const })),
-      ...outletTransfers.map((t) => ({ ...t, kind: 'Transfer' as const }))
+      ...outletTransfers.map((t) => ({ ...t, kind: 'Transfer' as const })),
+      ...cashTransfers
+        .filter((t) => t.transferType === 'RTGS')
+        .map((t) => ({ ...t, setByUserName: t.userName, kind: 'RTGS Transfer' as const }))
     ];
     const scoped = viewOutlet === 'ALL' ? items : items.filter((i) => i.outletId === viewOutlet);
     return scoped.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()).slice(0, 15);
-  }, [motherAmounts, outletTransfers, outletVaults, viewOutlet]);
+  }, [motherAmounts, outletTransfers, outletVaults, cashTransfers, viewOutlet]);
 
   // ---------- Handlers ----------
   const handleSetMother = () => {
