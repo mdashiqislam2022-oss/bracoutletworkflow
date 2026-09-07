@@ -3335,7 +3335,9 @@ if (sessionStatus.isActive) {
         addMotherAmount,
         addOutletTransfer,
         addOutletVault,
-
+        cashTransfers,
+        addCashTransfer,
+        
         // Add/Edit Entry Modal controls
         isAddEntryModalOpen,
         setIsAddEntryModalOpen,
