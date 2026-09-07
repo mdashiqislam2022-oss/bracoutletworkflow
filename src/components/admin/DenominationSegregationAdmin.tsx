@@ -558,7 +558,9 @@ export const DenominationSegregationAdmin: React.FC = () => {
               </div>
             );
           })}
-        </div>
+                </div>
+          </>
+        )}
       </div>
     </div>
   );
