@@ -428,6 +428,9 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
           if (cloudData.auditLogs) setAuditLogs(cloudData.auditLogs);
           if (cloudData.governanceSettings) setGovernanceSettings(cloudData.governanceSettings);
           if (cloudData.segregationRecords) setSegregationRecords(cloudData.segregationRecords);
+                    if (cloudData.motherAmounts) setMotherAmounts(cloudData.motherAmounts);
+          if (cloudData.outletTransfers) setOutletTransfers(cloudData.outletTransfers);
+          if (cloudData.outletVaults) setOutletVaults(cloudData.outletVaults);
         }
       }).catch((err) => console.warn('Refresh error:', err));
     }
