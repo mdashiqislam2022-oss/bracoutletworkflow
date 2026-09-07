@@ -51,7 +51,7 @@ const ALL_PERMISSIONS: { id: AdminPermission; label: string; description: string
 ];
 
 export const AccessDelegation: React.FC = () => {
-  const { admins, currentAdmin, delegateAdminAccess, revokeAdminDelegation, userPreferences } = useApp();
+   const { admins, currentAdmin, delegateAdminAccess, revokeAdminDelegation, userPreferences, outlets } = useApp();
 
   const isDark = userPreferences.theme === 'dark';
 
