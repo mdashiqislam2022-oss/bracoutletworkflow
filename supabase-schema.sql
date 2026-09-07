@@ -471,3 +471,34 @@ CREATE POLICY "insert_outlet_transfers" ON public.outlet_transfers FOR INSERT WI
 
 CREATE POLICY "select_outlet_vaults" ON public.outlet_vaults FOR SELECT USING (true);
 CREATE POLICY "insert_outlet_vaults" ON public.outlet_vaults FOR INSERT WITH CHECK (true);
+
+-- ==============================================================================
+-- AFO CASH TRANSFER MODULE (RTGS / Move Money)
+-- ==============================================================================
+
+CREATE TABLE IF NOT EXISTS public.cash_transfers (
+    id TEXT PRIMARY KEY,
+    transfer_type TEXT NOT NULL CHECK (transfer_type IN ('RTGS', 'MOVE_MONEY')),
+    amount NUMERIC NOT NULL DEFAULT 0,
+    note_1 INTEGER NOT NULL DEFAULT 0,
+    note_2 INTEGER NOT NULL DEFAULT 0,
+    note_5 INTEGER NOT NULL DEFAULT 0,
+    note_10 INTEGER NOT NULL DEFAULT 0,
+    note_20 INTEGER NOT NULL DEFAULT 0,
+    note_50 INTEGER NOT NULL DEFAULT 0,
+    note_100 INTEGER NOT NULL DEFAULT 0,
+    note_200 INTEGER NOT NULL DEFAULT 0,
+    note_500 INTEGER NOT NULL DEFAULT 0,
+    note_1000 INTEGER NOT NULL DEFAULT 0,
+    outlet_id TEXT NOT NULL,
+    outlet_name TEXT NOT NULL,
+    user_id TEXT,
+    user_name TEXT,
+    note TEXT,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT timezone('utc'::text, now())
+);
+
+ALTER TABLE public.cash_transfers ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "select_cash_transfers" ON public.cash_transfers FOR SELECT USING (true);
+CREATE POLICY "insert_cash_transfers" ON public.cash_transfers FOR INSERT WITH CHECK (true);
