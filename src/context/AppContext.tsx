@@ -500,6 +500,9 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
             if (cloudData.loanRecords) setLoanRecords(cloudData.loanRecords);
             if (cloudData.customerAccounts) setCustomerAccounts(cloudData.customerAccounts);
             if (cloudData.segregationRecords) setSegregationRecords(cloudData.segregationRecords);
+                        if (cloudData.motherAmounts) setMotherAmounts(cloudData.motherAmounts);
+            if (cloudData.outletTransfers) setOutletTransfers(cloudData.outletTransfers);
+            if (cloudData.outletVaults) setOutletVaults(cloudData.outletVaults);
             if (cloudData.mailMessages) setMailMessages(cloudData.mailMessages);
             if (cloudData.notifications) setNotifications(cloudData.notifications);
             if (cloudData.passwordResetRequests) setPasswordResetRequests(cloudData.passwordResetRequests);
