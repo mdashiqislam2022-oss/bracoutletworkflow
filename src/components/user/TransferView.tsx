@@ -48,9 +48,16 @@ export const TransferView: React.FC = () => {
   const [amountInput, setAmountInput] = useState('');
   const [denoms, setDenoms] = useState<Record<DenomKey, number>>(emptyDenoms());
   const [note, setNote] = useState('');
-  const [historyDate, setHistoryDate] = useState('ALL');
-  const [dateDropdownOpen, setDateDropdownOpen] = useState(false);
-
+    const [dateFilter, setDateFilter] = useState('');
+  const [datePickerOpen, setDatePickerOpen] = useState(false);
+  const [calendarMonth, setCalendarMonth] = useState(() => {
+    const d = dateFilter ? new Date(dateFilter) : new Date();
+    return { year: d.getFullYear(), month: d.getMonth() };
+  });
+  const [monthDropdownOpen, setMonthDropdownOpen] = useState(false);
+  const [yearDropdownOpen, setYearDropdownOpen] = useState(false);
+  const monthNamesList = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  const yearOptionsList = Array.from({ length: 20 }, (_, i) => 2020 + i);
   const myTransfers = useMemo(() => {
     return cashTransfers.filter((t) => !currentUser || t.userId === currentUser.id);
   }, [cashTransfers, currentUser]);
