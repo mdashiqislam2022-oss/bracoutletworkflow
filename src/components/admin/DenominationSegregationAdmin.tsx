@@ -464,7 +464,7 @@ export const DenominationSegregationAdmin: React.FC = () => {
                         </div>
                       ))}
                     </div>
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-2 text-[11px] text-slate-500">
+                                        <div className="grid grid-cols-2 md:grid-cols-4 gap-2 text-[11px] text-slate-500">
                       <div>Mobile: <span className="font-semibold">{r.mobileNumber}</span></div>
                       <div>Total RCVD: <span className="font-semibold">৳{r.totalReceivedAmount.toLocaleString()}</span></div>
                       <div>Charge: <span className="font-semibold">{r.chargeApplied ? `৳${r.chargeAmount}` : 'No'}</span></div>
@@ -472,6 +472,12 @@ export const DenominationSegregationAdmin: React.FC = () => {
                       <div>Source: <span className="font-semibold">{r.linkedAccountSource.replace('_', ' ')}</span></div>
                       <div>Type: <span className="font-semibold">{r.transactionType}</span></div>
                     </div>
+                    {r.notes && (
+                      <div className="mt-2 text-[11px] rounded-lg bg-black/5 dark:bg-white/5 px-2 py-1.5">
+                        <span className="font-semibold text-slate-500">Note: </span>
+                        <span>{r.notes}</span>
+                      </div>
+                    )}
                   </div>
                 )}
               </div>
