@@ -15,12 +15,13 @@ import { SegregationTransactionType } from '../../types';
 const CASH_IN_TYPES: SegregationTransactionType[] = ['CD', 'ID', 'LR', 'BC'];
 
 export const TotalCashAnalysisView: React.FC = () => {
-  const {
+    const {
     outlets,
     segregationRecords,
     motherAmounts,
     outletTransfers,
     outletVaults,
+    cashTransfers,
     addMotherAmount,
     addOutletTransfer,
     addOutletVault,
