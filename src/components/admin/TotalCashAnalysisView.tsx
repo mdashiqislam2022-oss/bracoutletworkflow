@@ -98,10 +98,9 @@ export const TotalCashAnalysisView: React.FC = () => {
 
   // ---------- Combined History (latest 15) ----------
   const combinedHistory = useMemo(() => {
-    const items = [
+        const items = [
       ...motherAmounts.map((m) => ({ ...m, kind: 'Mother Amount' as const })),
-      ...outletTransfers.map((t) => ({ ...t, kind: 'Transfer' as const })),
-      ...outletVaults.map((v) => ({ ...v, kind: 'Vault' as const }))
+      ...outletTransfers.map((t) => ({ ...t, kind: 'Transfer' as const }))
     ];
     const scoped = viewOutlet === 'ALL' ? items : items.filter((i) => i.outletId === viewOutlet);
     return scoped.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()).slice(0, 15);
