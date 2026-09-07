@@ -67,14 +67,11 @@ export const TotalCashAnalysisView: React.FC = () => {
     return outletTransfers.filter((t) => t.outletId === outletId).reduce((sum, t) => sum + t.amount, 0);
   };
 
-  const getAfoCash = (outletId: string) => {
-    const mother = getLatestMotherAmount(outletId);
-    const baseAmount = mother?.amount || 0;
-    const sinceTime = mother ? new Date(mother.createdAt).getTime() : 0;
+    const getAfoCash = (outletId: string) => {
     const net = segregationRecords
-      .filter((r) => r.outletId === outletId && new Date(r.createdAt).getTime() >= sinceTime)
+      .filter((r) => r.outletId === outletId)
       .reduce((sum, r) => sum + (CASH_IN_TYPES.includes(r.transactionType) ? r.actualAmount : -r.actualAmount), 0);
-    return baseAmount + net;
+    return net;
   };
 
   const relevantOutlets = useMemo(() => {
