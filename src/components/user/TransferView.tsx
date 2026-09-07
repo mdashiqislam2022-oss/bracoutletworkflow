@@ -6,6 +6,8 @@ import {
   Landmark,
   Calendar,
   ChevronDown,
+  ChevronLeft,
+  ChevronRight,
   History,
   Send
 } from 'lucide-react';
