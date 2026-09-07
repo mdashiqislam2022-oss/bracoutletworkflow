@@ -88,6 +88,15 @@ export const DenominationSegregationAdmin: React.FC = () => {
     });
     return map;
   }, [scopedForSummary]);
+  
+  // Total Charge collected (Outlet + Date scoped) — from CD & CW where charge was applied
+  const scopedTotalCharge = useMemo(() => {
+    return scopedForSummary.reduce((sum, r) => sum + (r.chargeApplied ? r.chargeAmount : 0), 0);
+  }, [scopedForSummary]);
+
+  const scopedChargeEntryCount = useMemo(() => {
+    return scopedForSummary.filter((r) => r.chargeApplied && r.chargeAmount > 0).length;
+  }, [scopedForSummary]);
 
   // Final list: Outlet + Date + Type + Search text, all combined
   const filtered = useMemo(() => {
