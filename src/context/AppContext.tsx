@@ -3138,6 +3138,42 @@ if (sessionStatus.isActive) {
     showToast({ message: `Vault Amount updated for ${outlet?.name}.`, type: 'success' });
     return newRecord;
   };
+  
+  const addCashTransfer = (data: { outletId: string; transferType: CashTransferType; amount: number; denominations?: DenominationCounts; note?: string }): CashTransferRecord => {
+    const user = currentUser || { id: 'USR-AFO-001', fullName: 'Master Administrator' };
+    const outlet = outlets.find((o) => o.id === data.outletId);
+    const newRecord: CashTransferRecord = {
+      id: createUniqueId('CT'),
+      transferType: data.transferType,
+      amount: data.amount,
+      denominations: data.denominations,
+      outletId: data.outletId,
+      outletName: outlet?.name || '',
+      userId: user.id,
+      userName: user.fullName,
+      note: data.note,
+      createdAt: new Date().toISOString()
+    };
+    setCashTransfers((prev) => [newRecord, ...prev]);
+    SupabaseService.saveCashTransfer(newRecord);
+
+    // Move Money transfers are deducted directly from the outlet's current Mother Amount
+    if (data.transferType === 'MOVE_MONEY') {
+      const latestMother = motherAmounts
+        .filter((m) => m.outletId === data.outletId)
+        .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())[0];
+      const currentMotherAmount = latestMother?.amount || 0;
+      addMotherAmount({
+        outletId: data.outletId,
+        amount: currentMotherAmount - data.amount,
+        note: `Move Money transfer of ৳${data.amount}`
+      });
+    }
+
+    addAuditEntry('CASH_TRANSFER_ADDED', `${data.transferType} transfer of ৳${data.amount} added for ${outlet?.name}`, outlet?.name);
+    showToast({ message: `${data.transferType === 'RTGS' ? 'RTGS' : 'Move Money'} transfer saved.`, type: 'success' });
+    return newRecord;
+  };
 
   const resetAllDemoData = () => {
     if (SupabaseService.isAvailable()) {
