@@ -153,6 +153,8 @@ export interface AppContextType {
   addMotherAmount: (data: { outletId: string; amount: number; note?: string }) => MotherAmountRecord;
   addOutletTransfer: (data: { outletId: string; amount: number; note?: string }) => OutletTransferRecord;
   addOutletVault: (data: { outletId: string; amount: number; note?: string }) => OutletVaultRecord;
+    cashTransfers: CashTransferRecord[];
+  addCashTransfer: (data: { outletId: string; transferType: CashTransferType; amount: number; denominations?: DenominationCounts; note?: string }) => CashTransferRecord;
 
 
   // Add/Edit Entry Modal controls
