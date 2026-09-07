@@ -261,7 +261,7 @@ export interface AppContextType {
     targetOutletId: string,
     options?: { revokePreviousOutletAccess?: boolean; adminNote?: string }
   ) => { success: boolean; message: string };
-  delegateAdminAccess: (data: { email: string; fullName: string; username: string; pin: string; permissions: AdminPermission[] }) => { success: boolean; message?: string };
+   delegateAdminAccess: (data: { email: string; fullName: string; username: string; pin: string; permissions: AdminPermission[]; assignedOutletIds?: string[] }) => { success: boolean; message?: string };
   revokeAdminDelegation: (adminId: string) => void;
   addOutlet: (outlet: Omit<BRACBankOutlet, 'id'>) => void;
   addNewOutlet: (outlet: Omit<BRACBankOutlet, 'id'>) => void;
