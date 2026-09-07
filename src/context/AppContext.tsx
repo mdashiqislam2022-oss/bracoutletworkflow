@@ -1871,18 +1871,20 @@ if (sessionStatus.isActive) {
   };
 
   // Delegate Admin Access
-  const delegateAdminAccess = ({
+    const delegateAdminAccess = ({
     email,
     fullName,
     username,
     pin,
-    permissions
+    permissions,
+    assignedOutletIds
   }: {
     email: string;
     fullName: string;
     username: string;
     pin: string;
     permissions: AdminPermission[];
+    assignedOutletIds?: string[];
   }) => {
     const cleanEmail = email.trim().toLowerCase();
     const cleanUsername = username.trim().toLowerCase();
@@ -1902,12 +1904,14 @@ if (sessionStatus.isActive) {
       delegatedBy: currentAdmin?.email || 'admin@bracbank.com',
       delegatedAt: new Date().toISOString(),
       permissions,
+      assignedOutletIds: assignedOutletIds && assignedOutletIds.length > 0 ? assignedOutletIds : undefined,
       status: 'ACTIVE',
       createdAt: new Date().toISOString(),
       lastLoginAt: new Date().toISOString()
     };
 
     setAdmins((prev) => [newDelegatedAdmin, ...prev]);
+    SupabaseService.saveAdminAccount(newDelegatedAdmin);
     addAuditEntry(
       'ADMIN_DELEGATION_GRANTED',
       `Main Admin delegated ${permissions.length} permissions to ${newDelegatedAdmin.email} (@${newDelegatedAdmin.username})`
