@@ -38,7 +38,8 @@ import {
   mapDbToSegregation,
   mapDbToMotherAmount,
   mapDbToOutletTransfer,
-  mapDbToOutletVault
+    mapDbToOutletVault,
+  mapDbToCashTransfer
 } from '../services/supabaseService';
 import { supabase } from '../lib/supabase';
 import confetti from 'canvas-confetti';
