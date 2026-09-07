@@ -3060,6 +3060,21 @@ if (sessionStatus.isActive) {
   const isUserPortal = authMode === 'USER' && !!currentUser && !currentAdmin;
 
   const scopedChequeCardEntries = useMemo(() => {
+      // Admin outlet-scoping: a delegated admin with assignedOutletIds only sees data for those outlets.
+  // Master Admin, or a delegated admin with no outlet restriction, sees everything.
+  const visibleOutlets = useMemo(() => {
+    if (currentAdmin && !currentAdmin.isMainAdmin && currentAdmin.assignedOutletIds && currentAdmin.assignedOutletIds.length > 0) {
+      return outlets.filter((o) => currentAdmin.assignedOutletIds!.includes(o.id));
+    }
+    return outlets;
+  }, [outlets, currentAdmin]);
+
+  const visibleUsers = useMemo(() => {
+    if (currentAdmin && !currentAdmin.isMainAdmin && currentAdmin.assignedOutletIds && currentAdmin.assignedOutletIds.length > 0) {
+      return users.filter((u) => currentAdmin.assignedOutletIds!.includes(u.outletId));
+    }
+    return users;
+  }, [users, currentAdmin]);
     if (isUserPortal && currentUser) {
       const userOutletId = (currentUser.outletId || '').trim().toLowerCase();
       const userOutletName = (currentUser.outletName || '').trim().toLowerCase();
