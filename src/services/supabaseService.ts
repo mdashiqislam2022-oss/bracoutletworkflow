@@ -1,4 +1,4 @@
-import { supabase, isSupabaseConfigured } from '../lib/supabase';
+import { supabase, isSupabaseConfigured, supabaseUrl } from '../lib/supabase';
 import {
   UserProfile,
   AdminAccount,
