@@ -50,6 +50,7 @@ export const TransferView: React.FC = () => {
   const [amountInput, setAmountInput] = useState('');
   const [denoms, setDenoms] = useState<Record<DenomKey, number>>(emptyDenoms());
   const [note, setNote] = useState('');
+    const [copiedTotal, setCopiedTotal] = useState(false);
     const [dateFilter, setDateFilter] = useState('');
   const [datePickerOpen, setDatePickerOpen] = useState(false);
   const [calendarMonth, setCalendarMonth] = useState(() => {
