@@ -360,6 +360,41 @@ export const AccessDelegation: React.FC = () => {
                       </div>
                     </label>
                   );
+                               })}
+              </div>
+            </div>
+
+            {/* Outlet Scope Selection */}
+            <div className={`pt-3 border-t ${isDark ? 'border-slate-800' : 'border-slate-100'}`}>
+              <label className={`font-bold uppercase tracking-wider text-[11px] block mb-1 ${isDark ? 'text-slate-300' : 'text-slate-800'}`}>
+                Outlet Scope:
+              </label>
+              <p className="text-[10px] text-slate-400 mb-3">
+                Select the outlets this admin should see. Leave empty for no outlet restriction (visible only if permitted elsewhere).
+              </p>
+              <div className={`max-h-56 overflow-y-auto space-y-1.5 p-2 rounded-2xl border ${
+                isDark ? 'bg-slate-950/60 border-slate-800' : 'bg-[#F8FAFC] border-slate-100'
+              }`}>
+                {outlets.map((o) => {
+                  const isChecked = selectedOutletIds.includes(o.id);
+                  return (
+                    <label
+                      key={o.id}
+                      className={`flex items-center gap-2.5 px-3 py-2 rounded-xl cursor-pointer transition-all ${
+                        isChecked
+                          ? isDark ? 'bg-slate-900 text-white' : 'bg-white border border-slate-200'
+                          : isDark ? 'text-slate-300' : 'text-slate-700'
+                      }`}
+                    >
+                      <input
+                        type="checkbox"
+                        checked={isChecked}
+                        onChange={() => handleToggleOutlet(o.id)}
+                        className="w-3.5 h-3.5 rounded accent-emerald-500 cursor-pointer"
+                      />
+                      <span className="text-xs font-semibold">{o.name}</span>
+                    </label>
+                  );
                 })}
               </div>
             </div>
@@ -375,7 +410,6 @@ export const AccessDelegation: React.FC = () => {
             </div>
           </form>
         </div>
-
         {/* Active Admins List */}
         <div className={`lg:col-span-5 rounded-[28px] p-6 sm:p-7 border transition-all flex flex-col justify-between ${
           isDark
