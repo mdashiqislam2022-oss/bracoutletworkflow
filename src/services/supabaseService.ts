@@ -264,9 +264,74 @@ export const mapSegregationToDb = (record: DenominationSegregationRecord) => {
     outlet_name: record.outletName,
     user_id: record.userId,
     user_name: record.userName,
-    notes: record.notes || null
+        notes: record.notes || null
   };
 };
+
+// ---------- Total Cash Analysis Module ----------
+
+export const mapDbToMotherAmount = (row: any): MotherAmountRecord => ({
+  id: row.id,
+  outletId: row.outlet_id || '',
+  outletName: row.outlet_name || '',
+  amount: Number(row.amount || 0),
+  note: row.note || undefined,
+  setByUserId: row.set_by_user_id,
+  setByUserName: row.set_by_user_name,
+  createdAt: row.created_at || new Date().toISOString()
+});
+
+export const mapMotherAmountToDb = (record: MotherAmountRecord) => ({
+  id: record.id,
+  outlet_id: record.outletId,
+  outlet_name: record.outletName,
+  amount: record.amount,
+  note: record.note || null,
+  set_by_user_id: record.setByUserId,
+  set_by_user_name: record.setByUserName
+});
+
+export const mapDbToOutletTransfer = (row: any): OutletTransferRecord => ({
+  id: row.id,
+  outletId: row.outlet_id || '',
+  outletName: row.outlet_name || '',
+  amount: Number(row.amount || 0),
+  note: row.note || undefined,
+  setByUserId: row.set_by_user_id,
+  setByUserName: row.set_by_user_name,
+  createdAt: row.created_at || new Date().toISOString()
+});
+
+export const mapOutletTransferToDb = (record: OutletTransferRecord) => ({
+  id: record.id,
+  outlet_id: record.outletId,
+  outlet_name: record.outletName,
+  amount: record.amount,
+  note: record.note || null,
+  set_by_user_id: record.setByUserId,
+  set_by_user_name: record.setByUserName
+});
+
+export const mapDbToOutletVault = (row: any): OutletVaultRecord => ({
+  id: row.id,
+  outletId: row.outlet_id || '',
+  outletName: row.outlet_name || '',
+  amount: Number(row.amount || 0),
+  note: row.note || undefined,
+  setByUserId: row.set_by_user_id,
+  setByUserName: row.set_by_user_name,
+  createdAt: row.created_at || new Date().toISOString()
+});
+
+export const mapOutletVaultToDb = (record: OutletVaultRecord) => ({
+  id: record.id,
+  outlet_id: record.outletId,
+  outlet_name: record.outletName,
+  amount: record.amount,
+  note: record.note || null,
+  set_by_user_id: record.setByUserId,
+  set_by_user_name: record.setByUserName
+});
 
 /**
  * Maps DB row to WorkSubmission
