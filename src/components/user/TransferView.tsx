@@ -9,7 +9,9 @@ import {
   ChevronLeft,
   ChevronRight,
   History,
-  Send
+  Send,
+  Copy,
+  Check
 } from 'lucide-react';
 import { CashTransferType } from '../../types';
 
