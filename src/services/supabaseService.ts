@@ -333,6 +333,51 @@ export const mapOutletVaultToDb = (record: OutletVaultRecord) => ({
   set_by_user_name: record.setByUserName
 });
 
+export const mapDbToCashTransfer = (row: any): CashTransferRecord => ({
+  id: row.id,
+  transferType: row.transfer_type || 'RTGS',
+  amount: Number(row.amount || 0),
+  denominations: {
+    note1: Number(row.note_1 || 0),
+    note2: Number(row.note_2 || 0),
+    note5: Number(row.note_5 || 0),
+    note10: Number(row.note_10 || 0),
+    note20: Number(row.note_20 || 0),
+    note50: Number(row.note_50 || 0),
+    note100: Number(row.note_100 || 0),
+    note200: Number(row.note_200 || 0),
+    note500: Number(row.note_500 || 0),
+    note1000: Number(row.note_1000 || 0)
+  },
+  outletId: row.outlet_id || '',
+  outletName: row.outlet_name || '',
+  userId: row.user_id,
+  userName: row.user_name,
+  note: row.note || undefined,
+  createdAt: row.created_at || new Date().toISOString()
+});
+
+export const mapCashTransferToDb = (record: CashTransferRecord) => ({
+  id: record.id,
+  transfer_type: record.transferType,
+  amount: record.amount,
+  note_1: record.denominations?.note1 || 0,
+  note_2: record.denominations?.note2 || 0,
+  note_5: record.denominations?.note5 || 0,
+  note_10: record.denominations?.note10 || 0,
+  note_20: record.denominations?.note20 || 0,
+  note_50: record.denominations?.note50 || 0,
+  note_100: record.denominations?.note100 || 0,
+  note_200: record.denominations?.note200 || 0,
+  note_500: record.denominations?.note500 || 0,
+  note_1000: record.denominations?.note1000 || 0,
+  outlet_id: record.outletId,
+  outlet_name: record.outletName,
+  user_id: record.userId,
+  user_name: record.userName,
+  note: record.note || null
+});
+
 /**
  * Maps DB row to WorkSubmission
  */
