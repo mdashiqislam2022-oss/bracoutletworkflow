@@ -690,6 +690,7 @@ export const SupabaseService = {
                 motherAmounts: (motherAmountsRes.data || []).map(mapDbToMotherAmount),
         outletTransfers: (outletTransfersRes.data || []).map(mapDbToOutletTransfer),
         outletVaults: (outletVaultsRes.data || []).map(mapDbToOutletVault),
+                cashTransfers: (cashTransfersRes.data || []).map(mapDbToCashTransfer),
         mailMessages: (mailsRes.data || []).map((m: any) => ({
           id: m.id,
           senderName: m.sender_name || 'Central Operations',
