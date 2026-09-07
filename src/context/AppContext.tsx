@@ -386,6 +386,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     const [motherAmounts, setMotherAmounts] = useState<MotherAmountRecord[]>([]);
   const [outletTransfers, setOutletTransfers] = useState<OutletTransferRecord[]>([]);
   const [outletVaults, setOutletVaults] = useState<OutletVaultRecord[]>([]);
+    const [cashTransfers, setCashTransfers] = useState<CashTransferRecord[]>([]);
   const [passwordResetRequests, setPasswordResetRequests] = useState<PasswordResetRequest[]>([]);
   const [governanceSettings, setGovernanceSettings] = useState<PortalGovernanceSettings>(defaultGovernanceSettings);
   const [afoTransfers, setAfoTransfers] = useState<AfoTransferRecord[]>([]);
