@@ -1593,6 +1593,9 @@ if (sessionStatus.isActive) {
     return { success: true };
   };
 
+    // Converts a 4-digit PIN into the actual password stored in Supabase Auth (keeps the 4-digit PIN UX unchanged)
+  const derivePinPassword = (username: string, pin: string) => `Bank-${username}-${pin}!Key`;
+
   // Admin PIN / Password Login (Strict: Username: admin, Password: 2525)
     const loginAdminByPin = async (username?: string, pin?: string) => {
     const cleanUser = (username || '').trim().toLowerCase();
