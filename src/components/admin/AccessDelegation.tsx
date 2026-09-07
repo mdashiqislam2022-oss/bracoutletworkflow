@@ -118,14 +118,14 @@ export const AccessDelegation: React.FC = () => {
       return;
     }
 
-    const res = delegateAdminAccess({
+       const res = delegateAdminAccess({
       email,
       fullName,
       username,
       pin,
-      permissions: selectedPermissions
+      permissions: selectedPermissions,
+      assignedOutletIds: selectedOutletIds
     });
-
     if (res.success) {
       setEmail('');
       setFullName('');
