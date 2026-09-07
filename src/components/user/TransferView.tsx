@@ -200,9 +200,10 @@ export const TransferView: React.FC = () => {
             </button>
           </div>
 
-          {/* Right: Segregation panel (RTGS only) */}
-          {transferType === 'RTGS' && (
-            <div className={`rounded-xl border p-3 space-y-2 ${inputBg}`}>
+          {/* Right: Segregation panel */}
+<div className={`rounded-xl border p-3 space-y-2 ${inputBg} ${
+  transferType === 'MOVE_MONEY' ? 'opacity-60' : ''
+}`}>
               <div className="text-xs font-bold flex items-center gap-1.5 text-blue-600 mb-1">
                 Segregation
               </div>
