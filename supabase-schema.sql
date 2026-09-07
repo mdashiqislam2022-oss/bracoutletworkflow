@@ -421,3 +421,53 @@ CREATE POLICY "update_customer_accounts" ON public.customer_accounts FOR UPDATE 
 CREATE POLICY "select_denomination_segregations" ON public.denomination_segregations FOR SELECT USING (true);
 CREATE POLICY "insert_denomination_segregations" ON public.denomination_segregations FOR INSERT WITH CHECK (true);
 CREATE POLICY "update_denomination_segregations" ON public.denomination_segregations FOR UPDATE USING (true) WITH CHECK (true);
+
+-- ==============================================================================
+-- TOTAL CASH ANALYSIS MODULE (Mother Amount / Transfer / Vault)
+-- ==============================================================================
+
+CREATE TABLE IF NOT EXISTS public.mother_amounts (
+    id TEXT PRIMARY KEY,
+    outlet_id TEXT NOT NULL,
+    outlet_name TEXT NOT NULL,
+    amount NUMERIC NOT NULL DEFAULT 0,
+    note TEXT,
+    set_by_user_id TEXT,
+    set_by_user_name TEXT,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT timezone('utc'::text, now())
+);
+
+CREATE TABLE IF NOT EXISTS public.outlet_transfers (
+    id TEXT PRIMARY KEY,
+    outlet_id TEXT NOT NULL,
+    outlet_name TEXT NOT NULL,
+    amount NUMERIC NOT NULL DEFAULT 0,
+    note TEXT,
+    set_by_user_id TEXT,
+    set_by_user_name TEXT,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT timezone('utc'::text, now())
+);
+
+CREATE TABLE IF NOT EXISTS public.outlet_vaults (
+    id TEXT PRIMARY KEY,
+    outlet_id TEXT NOT NULL,
+    outlet_name TEXT NOT NULL,
+    amount NUMERIC NOT NULL DEFAULT 0,
+    note TEXT,
+    set_by_user_id TEXT,
+    set_by_user_name TEXT,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT timezone('utc'::text, now())
+);
+
+ALTER TABLE public.mother_amounts ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.outlet_transfers ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.outlet_vaults ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "select_mother_amounts" ON public.mother_amounts FOR SELECT USING (true);
+CREATE POLICY "insert_mother_amounts" ON public.mother_amounts FOR INSERT WITH CHECK (true);
+
+CREATE POLICY "select_outlet_transfers" ON public.outlet_transfers FOR SELECT USING (true);
+CREATE POLICY "insert_outlet_transfers" ON public.outlet_transfers FOR INSERT WITH CHECK (true);
+
+CREATE POLICY "select_outlet_vaults" ON public.outlet_vaults FOR SELECT USING (true);
+CREATE POLICY "insert_outlet_vaults" ON public.outlet_vaults FOR INSERT WITH CHECK (true);
