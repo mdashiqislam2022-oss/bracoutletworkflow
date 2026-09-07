@@ -1,7 +1,7 @@
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
 
 // Safe environment variable retrieval
-const supabaseUrl = (import.meta as any).env?.VITE_SUPABASE_URL || '';
+export const supabaseUrl = (import.meta as any).env?.VITE_SUPABASE_URL || '';
 const supabaseAnonKey = (import.meta as any).env?.VITE_SUPABASE_ANON_KEY || '';
 
 // Determine if valid Supabase cloud credentials have been configured
