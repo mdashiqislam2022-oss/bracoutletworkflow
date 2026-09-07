@@ -822,6 +822,39 @@ export const SupabaseService = {
       console.warn('Error deleting segregation record from Supabase:', err);
     }
   },
+  
+  // Save Mother Amount Entry
+  async saveMotherAmount(record: MotherAmountRecord) {
+    if (!this.isAvailable() || !supabase) return;
+    try {
+      const dbRow = mapMotherAmountToDb(record);
+      await supabase.from('mother_amounts').upsert(dbRow);
+    } catch (err) {
+      console.warn('Error saving mother amount to Supabase:', err);
+    }
+  },
+
+  // Save Outlet Transfer Entry
+  async saveOutletTransfer(record: OutletTransferRecord) {
+    if (!this.isAvailable() || !supabase) return;
+    try {
+      const dbRow = mapOutletTransferToDb(record);
+      await supabase.from('outlet_transfers').upsert(dbRow);
+    } catch (err) {
+      console.warn('Error saving outlet transfer to Supabase:', err);
+    }
+  },
+
+  // Save Outlet Vault Entry
+  async saveOutletVault(record: OutletVaultRecord) {
+    if (!this.isAvailable() || !supabase) return;
+    try {
+      const dbRow = mapOutletVaultToDb(record);
+      await supabase.from('outlet_vaults').upsert(dbRow);
+    } catch (err) {
+      console.warn('Error saving outlet vault to Supabase:', err);
+    }
+  },
 
   // Save/Upsert Work Submission
   async saveSubmission(sub: WorkSubmission) {
