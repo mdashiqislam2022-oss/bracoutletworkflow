@@ -231,21 +231,8 @@ export const TotalCashAnalysisView: React.FC = () => {
             <input value={transferNote} onChange={(e) => setTransferNote(e.target.value)} placeholder="Note (optional)" className={`w-full rounded-lg border px-2 py-1.5 text-xs ${inputBg}`} />
             <button onClick={handleAddTransfer} className="w-full py-1.5 rounded-lg bg-amber-500 text-white text-xs font-bold">Add Transfer</button>
           </div>
+                  </div>
 
-          {/* Set Vault */}
-          <div className={`rounded-xl border p-3 space-y-2 ${inputBg}`}>
-            <div className="text-xs font-bold flex items-center gap-1.5 text-purple-600">
-              <PlusCircle size={14} /> Set Vault Amount
-            </div>
-            <select value={vaultOutlet} onChange={(e) => setVaultOutlet(e.target.value)} className={`w-full rounded-lg border px-2 py-1.5 text-xs ${inputBg}`}>
-              <option value="">Select Outlet</option>
-              {outlets.map((o) => <option key={o.id} value={o.id}>{o.name}</option>)}
-            </select>
-            <input type="number" min={0} value={vaultAmountInput} onChange={(e) => setVaultAmountInput(e.target.value)} placeholder="Amount" className={`w-full rounded-lg border px-2 py-1.5 text-xs ${inputBg}`} />
-            <input value={vaultNote} onChange={(e) => setVaultNote(e.target.value)} placeholder="Note (optional)" className={`w-full rounded-lg border px-2 py-1.5 text-xs ${inputBg}`} />
-            <button onClick={handleSetVault} className="w-full py-1.5 rounded-lg bg-purple-500 text-white text-xs font-bold">Save Vault Amount</button>
-          </div>
-        </div>
 
         {/* History */}
         <div>
