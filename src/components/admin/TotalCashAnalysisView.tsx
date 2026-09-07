@@ -78,7 +78,7 @@ export const TotalCashAnalysisView: React.FC = () => {
     return viewOutlet === 'ALL' ? outlets : outlets.filter((o) => o.id === viewOutlet);
   }, [outlets, viewOutlet]);
 
-    const totals = useMemo(() => {
+      const totals = useMemo(() => {
     let mother = 0;
     let afoCash = 0;
     let transfer = 0;
@@ -87,7 +87,7 @@ export const TotalCashAnalysisView: React.FC = () => {
       afoCash += getAfoCash(o.id);
       transfer += getTotalTransfer(o.id);
     });
-    const vault = afoCash - transfer;
+    const vault = mother + afoCash - transfer;
     return { mother, afoCash, transfer, vault };
   }, [relevantOutlets, motherAmounts, outletTransfers, segregationRecords]);
 
