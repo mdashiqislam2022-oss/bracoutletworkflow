@@ -14,9 +14,12 @@ import {
   ChevronDown,
   ChevronLeft,
   ChevronRight,
-  X
+  X,
+  BarChart3,
+  List
 } from 'lucide-react';
 import { SegregationTransactionType } from '../../types';
+import { TotalCashAnalysisView } from './TotalCashAnalysisView';
 
 const TX_LABELS: Record<SegregationTransactionType, { label: string; icon: React.ElementType; color: string }> = {
   CD: { label: 'Cash Deposit', icon: ArrowDownCircle, color: 'text-emerald-500' },
