@@ -192,15 +192,18 @@ export const DenominationSegregationAdmin: React.FC = () => {
           )}
         </div>
 
-        {/* Clickable Summary Boxes (Outlet + Date scoped) */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 mb-4">
+                {/* Clickable Summary Boxes (Outlet + Date scoped) */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2 mb-4">
           {(Object.keys(TX_LABELS) as SegregationTransactionType[]).map((t) => {
             const tx = TX_LABELS[t];
-            const isActive = typeFilter === t;
+            const isActive = !chargeOnlyFilter && typeFilter === t;
             return (
               <button
                 key={t}
-                onClick={() => setTypeFilter(isActive ? 'ALL' : t)}
+                onClick={() => {
+                  setChargeOnlyFilter(false);
+                  setTypeFilter(isActive ? 'ALL' : t);
+                }}
                 className={`text-left rounded-xl border p-2.5 transition ${
                   isActive ? 'border-emerald-500 ring-1 ring-emerald-500' : inputBg
                 }`}
@@ -216,8 +219,29 @@ export const DenominationSegregationAdmin: React.FC = () => {
               </button>
             );
           })}
-        </div>
 
+          {/* Charge Total Box (clickable — shows which accounts were charged) */}
+          <button
+            onClick={() => {
+              setTypeFilter('ALL');
+              setChargeOnlyFilter((v) => !v);
+            }}
+            className={`text-left rounded-xl border p-2.5 transition ${
+              chargeOnlyFilter
+                ? 'border-amber-500 ring-1 ring-amber-500 bg-amber-500/10'
+                : 'border-amber-500/40 bg-amber-500/10'
+            }`}
+          >
+            <div className="flex items-center gap-1 text-[10px] font-semibold text-amber-600">
+              <Search size={12} /> Charge
+            </div>
+            <div className="text-xs font-bold mt-0.5 text-amber-600 truncate">Total Charge</div>
+            <div className="text-sm font-extrabold mt-0.5 text-amber-600">
+              ৳ {scopedTotalCharge.toLocaleString()}
+            </div>
+            <div className="text-[10px] text-amber-600/70">{scopedChargeEntryCount} Entries</div>
+          </button>
+        </div>
         {/* Search + Date Picker */}
         <div className="flex flex-col md:flex-row gap-2 mb-4">
           <div className="relative flex-1">
