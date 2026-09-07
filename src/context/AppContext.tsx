@@ -1613,7 +1613,8 @@ if (sessionStatus.isActive) {
     }
 
     // Real security check: verify the password against Supabase Auth (not local plain-text data)
-    const authResult = await SupabaseService.signInWithAuth(matchingAdmin.email, cleanPin);
+       const derivedPassword = derivePinPassword(matchingAdmin.username.toLowerCase(), cleanPin);
+    const authResult = await SupabaseService.signInWithAuth(matchingAdmin.email, derivedPassword);
     if (!authResult.success) {
       addAuditEntry('ADMIN_AUTH_FAILED', `Failed admin login attempt with user: "${username}"`);
       return {
