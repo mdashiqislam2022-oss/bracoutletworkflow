@@ -101,6 +101,7 @@ export const DenominationSegregationView: React.FC = () => {
   const [showChargeSheet, setShowChargeSheet] = useState(false);
    const [returnAmount, setReturnAmount] = useState(0);
   const [copiedFeedback, setCopiedFeedback] = useState(false);
+    const [note, setNote] = useState('');
   
   // ---------- Account Search State ----------
   const [searchTerm, setSearchTerm] = useState('');
