@@ -13,9 +13,12 @@ import {
   LoanAccountRecord,
   PasswordResetRequest,
   AfoTransferRecord,
-    PortalGovernanceSettings,
+     PortalGovernanceSettings,
   CustomerAccountRecord,
-  DenominationSegregationRecord
+  DenominationSegregationRecord,
+  MotherAmountRecord,
+  OutletTransferRecord,
+  OutletVaultRecord
 } from '../types';
 
 /**
