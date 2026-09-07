@@ -31,8 +31,9 @@ export const DenominationSegregationAdmin: React.FC = () => {
   const { segregationRecords, outlets, userPreferences } = useApp();
   const isDark = userPreferences.theme === 'dark';
 
-  const [searchTerm, setSearchTerm] = useState('');
+    const [searchTerm, setSearchTerm] = useState('');
   const [typeFilter, setTypeFilter] = useState<'ALL' | SegregationTransactionType>('ALL');
+  const [chargeOnlyFilter, setChargeOnlyFilter] = useState(false);
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [dateFilter, setDateFilter] = useState('');
   const [outletFilter, setOutletFilter] = useState('ALL');
