@@ -118,7 +118,7 @@ export const AccessDelegation: React.FC = () => {
       return;
     }
 
-       const res = delegateAdminAccess({
+         const res = await delegateAdminAccess({
       email,
       fullName,
       username,
