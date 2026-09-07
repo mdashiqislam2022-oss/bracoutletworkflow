@@ -25,7 +25,7 @@ import { SqlSchemaViewer } from './components/admin/SqlSchemaViewer';
 import { DenominationSegregationAdmin } from './components/admin/DenominationSegregationAdmin';
 
 const MainLayout: React.FC = () => {
-  const { authMode, activeNavTab, userPreferences, isAddEntryModalOpen, closeAddEntryModal, initialAddEntryType } = useApp();
+   const { authMode, activeNavTab, userPreferences, isAddEntryModalOpen, closeAddEntryModal, initialAddEntryType, currentAdmin } = useApp();
   const isDark = userPreferences.theme === 'dark';
 
   if (authMode === 'NONE') {
