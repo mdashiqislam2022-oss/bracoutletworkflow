@@ -435,7 +435,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
           if (cloudData.auditLogs) setAuditLogs(cloudData.auditLogs);
           if (cloudData.governanceSettings) setGovernanceSettings(cloudData.governanceSettings);
           if (cloudData.segregationRecords) setSegregationRecords(cloudData.segregationRecords);
-                   if (cloudData.motherAmounts && cloudData.motherAmounts.length) setMotherAmounts(cloudData.motherAmounts);
+                  if (cloudData.motherAmounts) setMotherAmounts(cloudData.motherAmounts);
           if (cloudData.outletTransfers && cloudData.outletTransfers.length) setOutletTransfers(cloudData.outletTransfers);
           if (cloudData.outletVaults && cloudData.outletVaults.length) setOutletVaults(cloudData.outletVaults);
                     if (cloudData.cashTransfers && cloudData.cashTransfers.length) setCashTransfers(cloudData.cashTransfers);
