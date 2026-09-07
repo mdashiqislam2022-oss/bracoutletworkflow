@@ -139,8 +139,16 @@ export interface AppContextType {
     accountTitle: string;
     customerName: string;
     mobileNumber: string;
-    notes?: string;
+        notes?: string;
   }) => DenominationSegregationRecord;
+
+  // Total Cash Analysis Module
+  motherAmounts: MotherAmountRecord[];
+  outletTransfers: OutletTransferRecord[];
+  outletVaults: OutletVaultRecord[];
+  addMotherAmount: (data: { outletId: string; amount: number; note?: string }) => MotherAmountRecord;
+  addOutletTransfer: (data: { outletId: string; amount: number; note?: string }) => OutletTransferRecord;
+  addOutletVault: (data: { outletId: string; amount: number; note?: string }) => OutletVaultRecord;
 
 
   // Add/Edit Entry Modal controls
