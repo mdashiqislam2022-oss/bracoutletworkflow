@@ -601,6 +601,7 @@ export const SupabaseService = {
                 motherAmountsRes,
         outletTransfersRes,
         outletVaultsRes,
+                cashTransfersRes,
         mailsRes,
         notifsRes,
         resetRequestsRes,
