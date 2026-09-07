@@ -23,8 +23,11 @@ import {
   DenominationSegregationRecord,
   SegregationTransactionType,
   MotherAmountRecord,
-  OutletTransferRecord,
-  OutletVaultRecord
+    OutletTransferRecord,
+  OutletVaultRecord,
+  CashTransferRecord,
+  CashTransferType,
+  DenominationCounts
 } from '../types';
 import {
   SupabaseService,
