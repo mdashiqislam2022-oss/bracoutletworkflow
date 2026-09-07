@@ -1875,7 +1875,7 @@ if (sessionStatus.isActive) {
   };
 
   // Delegate Admin Access
-    const delegateAdminAccess = ({
+     const delegateAdminAccess = async ({
     email,
     fullName,
     username,
@@ -1895,6 +1895,13 @@ if (sessionStatus.isActive) {
 
     if (admins.some((a) => a.username.toLowerCase() === cleanUsername || a.email.toLowerCase() === cleanEmail)) {
       return { success: false, message: 'An admin with this email or username already exists.' };
+    }
+
+    // Create the REAL Supabase Auth login first — if this fails, we don't create the local record either.
+    const derivedPassword = derivePinPassword(cleanUsername, pin);
+    const authProvisionResult = await SupabaseService.createDelegatedAdminAuth(cleanEmail, derivedPassword);
+    if (!authProvisionResult.success) {
+      return { success: false, message: authProvisionResult.error || 'Failed to create admin login credentials.' };
     }
 
     const newDelegatedAdmin: AdminAccount = {
