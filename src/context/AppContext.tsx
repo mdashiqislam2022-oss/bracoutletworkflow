@@ -438,6 +438,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
                    if (cloudData.motherAmounts && cloudData.motherAmounts.length) setMotherAmounts(cloudData.motherAmounts);
           if (cloudData.outletTransfers && cloudData.outletTransfers.length) setOutletTransfers(cloudData.outletTransfers);
           if (cloudData.outletVaults && cloudData.outletVaults.length) setOutletVaults(cloudData.outletVaults);
+                    if (cloudData.cashTransfers && cloudData.cashTransfers.length) setCashTransfers(cloudData.cashTransfers);
         }
       }).catch((err) => console.warn('Refresh error:', err));
     }
@@ -510,6 +511,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
                         if (cloudData.motherAmounts && cloudData.motherAmounts.length) setMotherAmounts(cloudData.motherAmounts);
             if (cloudData.outletTransfers && cloudData.outletTransfers.length) setOutletTransfers(cloudData.outletTransfers);
             if (cloudData.outletVaults && cloudData.outletVaults.length) setOutletVaults(cloudData.outletVaults);
+                      if (cloudData.cashTransfers && cloudData.cashTransfers.length) setCashTransfers(cloudData.cashTransfers);
             if (cloudData.mailMessages) setMailMessages(cloudData.mailMessages);
             if (cloudData.notifications) setNotifications(cloudData.notifications);
             if (cloudData.passwordResetRequests) setPasswordResetRequests(cloudData.passwordResetRequests);
