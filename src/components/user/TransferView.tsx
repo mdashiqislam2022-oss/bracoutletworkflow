@@ -74,17 +74,12 @@ export const TransferView: React.FC = () => {
     return [...DENOM_LEFT, ...DENOM_RIGHT].reduce((sum, d) => sum + denoms[d.key] * d.value, 0);
   }, [denoms]);
 
-  const availableDates = useMemo(() => {
-    const set = new Set(myTransfers.map((t) => new Date(t.createdAt).toDateString()));
-    return Array.from(set).sort((a, b) => new Date(b).getTime() - new Date(a).getTime());
-  }, [myTransfers]);
-
-  const historyList = useMemo(() => {
-    const scoped = historyDate === 'ALL'
+    const historyList = useMemo(() => {
+    const scoped = !dateFilter
       ? myTransfers
-      : myTransfers.filter((t) => new Date(t.createdAt).toDateString() === historyDate);
+      : myTransfers.filter((t) => new Date(t.createdAt).toLocaleDateString('en-CA') === dateFilter);
     return scoped.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
-  }, [myTransfers, historyDate]);
+  }, [myTransfers, dateFilter]);
 
   const historyTotalForSelectedDate = useMemo(() => {
     return historyList.reduce((sum, t) => sum + t.amount, 0);
