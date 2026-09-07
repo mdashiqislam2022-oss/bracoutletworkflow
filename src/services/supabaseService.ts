@@ -620,6 +620,7 @@ export const SupabaseService = {
                 supabase.from('mother_amounts').select('*').order('created_at', { ascending: false }),
         supabase.from('outlet_transfers').select('*').order('created_at', { ascending: false }),
         supabase.from('outlet_vaults').select('*').order('created_at', { ascending: false }),
+                supabase.from('cash_transfers').select('*').order('created_at', { ascending: false }),
         supabase.from('station_mail_messages').select('*').order('created_at', { ascending: false }),
         supabase.from('station_notifications').select('*').order('created_at', { ascending: false }),
         supabase.from('password_reset_requests').select('*').order('requested_at', { ascending: false }),
