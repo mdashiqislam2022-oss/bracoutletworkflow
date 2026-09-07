@@ -96,6 +96,12 @@ export const TransferView: React.FC = () => {
   const handleSaveTransfer = () => {
     const amt = parseFloat(amountInput);
     if (!currentUser || isNaN(amt) || amt <= 0) return;
+
+    if (transferType === 'RTGS' && segregatedTotal <= 0) {
+      showToast({ message: 'RTGS Transfer save করার আগে অবশ্যই Segregation দিতে হবে।', type: 'error' });
+      return;
+    }
+
     addCashTransfer({
       outletId: currentUser.outletId,
       transferType,
