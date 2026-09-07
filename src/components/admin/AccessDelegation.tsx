@@ -64,9 +64,17 @@ export const AccessDelegation: React.FC = () => {
     'SECTION_DASHBOARD',
     'SECTION_AFO_DIRECTORY'
   ]);
-  const [delegationMode, setDelegationMode] = useState<'LIMITED' | 'FULL'>('LIMITED');
+   const [delegationMode, setDelegationMode] = useState<'LIMITED' | 'FULL'>('LIMITED');
+  const [selectedOutletIds, setSelectedOutletIds] = useState<string[]>([]);
   const [error, setError] = useState<string | null>(null);
 
+  const handleToggleOutlet = (outletId: string) => {
+    if (selectedOutletIds.includes(outletId)) {
+      setSelectedOutletIds(selectedOutletIds.filter((id) => id !== outletId));
+    } else {
+      setSelectedOutletIds([...selectedOutletIds, outletId]);
+    }
+  };
   if (!currentAdmin) return null;
 
   const handleTogglePermission = (permId: AdminPermission) => {
