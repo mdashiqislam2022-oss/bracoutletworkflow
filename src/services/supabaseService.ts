@@ -385,7 +385,28 @@ export const SupabaseService = {
   isAvailable: () => isSupabaseConfigured && !!supabase,
     // Upload a profile picture to Supabase Storage and return its public URL
   async uploadAvatar(file: File, ownerId: string): Promise<string | null> {
-      // Calls the secure Edge Function to create a REAL Supabase Auth login for a newly delegated admin.
+    if (!this.isAvailable() || !supabase) return null;
+    try {
+      const fileExt = file.name.split('.').pop() || 'jpg';
+      const fileName = `${ownerId}-${Date.now()}.${fileExt}`;
+      const { error: uploadError } = await supabase.storage
+        .from('avatars')
+        .upload(fileName, file, { upsert: true, cacheControl: '3600' });
+
+      if (uploadError) {
+        console.warn('Error uploading avatar to Supabase Storage:', uploadError);
+        return null;
+      }
+
+      const { data } = supabase.storage.from('avatars').getPublicUrl(fileName);
+      return data?.publicUrl || null;
+    } catch (err) {
+      console.warn('Error uploading avatar:', err);
+      return null;
+    }
+  },
+
+  // Calls the secure Edge Function to create a REAL Supabase Auth login for a newly delegated admin.
   // Only succeeds if the caller is currently logged in as the Master Administrator (checked server-side).
   async createDelegatedAdminAuth(email: string, password: string): Promise<{ success: boolean; error?: string }> {
     if (!this.isAvailable() || !supabase) return { success: false, error: 'Supabase not available' };
@@ -413,26 +434,6 @@ export const SupabaseService = {
     } catch (err) {
       console.warn('Error creating delegated admin auth:', err);
       return { success: false, error: 'Unexpected error while creating admin login.' };
-    }
-  },
-    if (!this.isAvailable() || !supabase) return null;
-    try {
-      const fileExt = file.name.split('.').pop() || 'jpg';
-      const fileName = `${ownerId}-${Date.now()}.${fileExt}`;
-      const { error: uploadError } = await supabase.storage
-        .from('avatars')
-        .upload(fileName, file, { upsert: true, cacheControl: '3600' });
-
-      if (uploadError) {
-        console.warn('Error uploading avatar to Supabase Storage:', uploadError);
-        return null;
-      }
-
-      const { data } = supabase.storage.from('avatars').getPublicUrl(fileName);
-      return data?.publicUrl || null;
-    } catch (err) {
-      console.warn('Error uploading avatar:', err);
-      return null;
     }
   },
     // Sign in using Supabase Auth (new secure system)
