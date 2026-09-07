@@ -3068,6 +3068,67 @@ if (sessionStatus.isActive) {
     showToast({ message: `Transaction saved successfully for "${data.accountTitle}"!`, type: 'success' });
     return newRecord;
   };
+  
+  // Total Cash Analysis Module
+  const addMotherAmount = (data: { outletId: string; amount: number; note?: string }): MotherAmountRecord => {
+    const user = currentUser || { id: 'USR-AFO-001', fullName: 'Master Administrator' };
+    const outlet = outlets.find((o) => o.id === data.outletId);
+    const newRecord: MotherAmountRecord = {
+      id: createUniqueId('MA'),
+      outletId: data.outletId,
+      outletName: outlet?.name || '',
+      amount: data.amount,
+      note: data.note,
+      setByUserId: user.id,
+      setByUserName: user.fullName,
+      createdAt: new Date().toISOString()
+    };
+    setMotherAmounts((prev) => [newRecord, ...prev]);
+    SupabaseService.saveMotherAmount(newRecord);
+    addAuditEntry('MOTHER_AMOUNT_SET', `Mother Amount set to ৳${data.amount} for ${outlet?.name}`, outlet?.name);
+    showToast({ message: `Mother Amount updated for ${outlet?.name}.`, type: 'success' });
+    return newRecord;
+  };
+
+  const addOutletTransfer = (data: { outletId: string; amount: number; note?: string }): OutletTransferRecord => {
+    const user = currentUser || { id: 'USR-AFO-001', fullName: 'Master Administrator' };
+    const outlet = outlets.find((o) => o.id === data.outletId);
+    const newRecord: OutletTransferRecord = {
+      id: createUniqueId('TR'),
+      outletId: data.outletId,
+      outletName: outlet?.name || '',
+      amount: data.amount,
+      note: data.note,
+      setByUserId: user.id,
+      setByUserName: user.fullName,
+      createdAt: new Date().toISOString()
+    };
+    setOutletTransfers((prev) => [newRecord, ...prev]);
+    SupabaseService.saveOutletTransfer(newRecord);
+    addAuditEntry('OUTLET_TRANSFER_ADDED', `Transfer entry of ৳${data.amount} added for ${outlet?.name}`, outlet?.name);
+    showToast({ message: `Transfer entry added for ${outlet?.name}.`, type: 'success' });
+    return newRecord;
+  };
+
+  const addOutletVault = (data: { outletId: string; amount: number; note?: string }): OutletVaultRecord => {
+    const user = currentUser || { id: 'USR-AFO-001', fullName: 'Master Administrator' };
+    const outlet = outlets.find((o) => o.id === data.outletId);
+    const newRecord: OutletVaultRecord = {
+      id: createUniqueId('VT'),
+      outletId: data.outletId,
+      outletName: outlet?.name || '',
+      amount: data.amount,
+      note: data.note,
+      setByUserId: user.id,
+      setByUserName: user.fullName,
+      createdAt: new Date().toISOString()
+    };
+    setOutletVaults((prev) => [newRecord, ...prev]);
+    SupabaseService.saveOutletVault(newRecord);
+    addAuditEntry('OUTLET_VAULT_SET', `Vault Amount set to ৳${data.amount} for ${outlet?.name}`, outlet?.name);
+    showToast({ message: `Vault Amount updated for ${outlet?.name}.`, type: 'success' });
+    return newRecord;
+  };
 
   const resetAllDemoData = () => {
     if (SupabaseService.isAvailable()) {
