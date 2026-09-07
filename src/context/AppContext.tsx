@@ -19,9 +19,12 @@ import {
   PasswordResetRequest,
     PortalGovernanceSettings,
   AfoTransferRecord,
-  CustomerAccountRecord,
+    CustomerAccountRecord,
   DenominationSegregationRecord,
-  SegregationTransactionType
+  SegregationTransactionType,
+  MotherAmountRecord,
+  OutletTransferRecord,
+  OutletVaultRecord
 } from '../types';
 import {
   SupabaseService,
