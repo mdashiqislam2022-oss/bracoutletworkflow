@@ -912,6 +912,17 @@ export const SupabaseService = {
       console.warn('Error saving outlet vault to Supabase:', err);
     }
   },
+  
+  // Save Cash Transfer Entry (RTGS / Move Money)
+  async saveCashTransfer(record: CashTransferRecord) {
+    if (!this.isAvailable() || !supabase) return;
+    try {
+      const dbRow = mapCashTransferToDb(record);
+      await supabase.from('cash_transfers').upsert(dbRow);
+    } catch (err) {
+      console.warn('Error saving cash transfer to Supabase:', err);
+    }
+  },
 
   // Save/Upsert Work Submission
   async saveSubmission(sub: WorkSubmission) {
