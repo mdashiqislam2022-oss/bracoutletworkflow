@@ -232,7 +232,25 @@ export const TransferView: React.FC = () => {
                   ))}
                 </div>
               </div>
-              <div className="text-[11px] font-bold text-right pt-1 border-t border-slate-700/30">
+                           <div className="flex items-center justify-end gap-2 text-[11px] font-bold pt-1 border-t border-slate-700/30">
+                <button
+                  type="button"
+                  onClick={() => {
+                    navigator.clipboard.writeText(String(segregatedTotal));
+                    setCopiedTotal(true);
+                    setTimeout(() => setCopiedTotal(false), 1500);
+                  }}
+                  title="Copy exact amount"
+                  className={`p-1 rounded-md border transition-colors ${
+                    copiedTotal
+                      ? 'border-emerald-500 text-emerald-500'
+                      : isDark
+                      ? 'border-slate-700 text-slate-400 hover:text-slate-200'
+                      : 'border-slate-200 text-slate-500 hover:text-slate-800'
+                  }`}
+                >
+                  {copiedTotal ? <Check size={12} /> : <Copy size={12} />}
+                </button>
                 Segregated Total: ৳ {segregatedTotal.toLocaleString()}
               </div>
             </div>
