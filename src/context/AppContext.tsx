@@ -3278,10 +3278,18 @@ if (sessionStatus.isActive) {
         deleteLoanRecord,
 
         // Denomination Segregation Module
-        customerAccounts,
+                customerAccounts,
         segregationRecords,
         addCustomerAccount,
         addSegregationRecord,
+
+        // Total Cash Analysis Module
+        motherAmounts,
+        outletTransfers,
+        outletVaults,
+        addMotherAmount,
+        addOutletTransfer,
+        addOutletVault,
 
         // Add/Edit Entry Modal controls
         isAddEntryModalOpen,
