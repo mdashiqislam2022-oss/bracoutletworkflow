@@ -3067,8 +3067,7 @@ if (sessionStatus.isActive) {
   // - For Admin Portal: Master global view across ALL outlets nationwide.
   const isUserPortal = authMode === 'USER' && !!currentUser && !currentAdmin;
 
-  const scopedChequeCardEntries = useMemo(() => {
-      // Admin outlet-scoping: a delegated admin with assignedOutletIds only sees data for those outlets.
+    // Admin outlet-scoping: a delegated admin with assignedOutletIds only sees data for those outlets.
   // Master Admin, or a delegated admin with no outlet restriction, sees everything.
   const visibleOutlets = useMemo(() => {
     if (currentAdmin && !currentAdmin.isMainAdmin && currentAdmin.assignedOutletIds && currentAdmin.assignedOutletIds.length > 0) {
@@ -3083,6 +3082,8 @@ if (sessionStatus.isActive) {
     }
     return users;
   }, [users, currentAdmin]);
+
+  const scopedChequeCardEntries = useMemo(() => {
     if (isUserPortal && currentUser) {
       const userOutletId = (currentUser.outletId || '').trim().toLowerCase();
       const userOutletName = (currentUser.outletName || '').trim().toLowerCase();
