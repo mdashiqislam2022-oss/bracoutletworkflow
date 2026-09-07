@@ -49,8 +49,10 @@ const MainLayout: React.FC = () => {
           return <ChequeCardRegistryView />;
         case 'loan_accounts':
           return <LoanAccountDetailsView />;
-        case 'denomination_segregation':
+                case 'denomination_segregation':
           return <DenominationSegregationView />;
+        case 'cash_transfer':
+          return <TransferView />;
         case 'profile':
           return <UserProfileView />;
         case 'settings':
