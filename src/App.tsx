@@ -57,7 +57,28 @@ const MainLayout: React.FC = () => {
         default:
           return <UserDashboard />;
       }
-        } else if (authMode === 'ADMIN') {
+                 } else if (authMode === 'ADMIN') {
+      // Section-level access guard: Master Admin always allowed. A delegated admin must have
+      // the matching permission — Delegation page is never accessible to a delegated admin.
+      const sectionPermissionMap: Record<string, string | null> = {
+        dashboard: 'SECTION_DASHBOARD',
+        users: 'SECTION_AFO_DIRECTORY',
+        outlets: 'SECTION_OUTLET_DETAILS',
+        denomination_segregation: 'SECTION_CASH_ANALYSIS',
+        afo_transfer: 'SECTION_AFO_TRANSFER',
+        delegation: null,
+        system_settings: 'SECTION_SETTINGS',
+        sql_schema: 'SECTION_SQL_RLS'
+      };
+      const requiredPermission = sectionPermissionMap[activeNavTab];
+      const isAllowed =
+        currentAdmin?.isMainAdmin ||
+        (requiredPermission !== null && currentAdmin?.permissions?.includes(requiredPermission as any));
+
+      if (!isAllowed) {
+        return <AdminDashboard />;
+      }
+
       switch (activeNavTab) {
         case 'dashboard':
           return <AdminDashboard />;
