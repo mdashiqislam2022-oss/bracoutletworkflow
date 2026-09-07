@@ -99,10 +99,14 @@ export const DenominationSegregationAdmin: React.FC = () => {
   }, [scopedForSummary]);
 
   // Final list: Outlet + Date + Type + Search text, all combined
-  const filtered = useMemo(() => {
+    const filtered = useMemo(() => {
     const term = searchTerm.trim().toLowerCase();
     return scopedForSummary.filter((r) => {
-      if (typeFilter !== 'ALL' && r.transactionType !== typeFilter) return false;
+      if (chargeOnlyFilter) {
+        if (!r.chargeApplied || r.chargeAmount <= 0) return false;
+      } else if (typeFilter !== 'ALL' && r.transactionType !== typeFilter) {
+        return false;
+      }
       if (!term) return true;
       return (
         r.accountNumber.toLowerCase().includes(term) ||
@@ -112,7 +116,7 @@ export const DenominationSegregationAdmin: React.FC = () => {
         r.userName?.toLowerCase().includes(term)
       );
     });
-  }, [scopedForSummary, searchTerm, typeFilter]);
+  }, [scopedForSummary, searchTerm, typeFilter, chargeOnlyFilter]);
 
   const totalAmount = useMemo(() => filtered.reduce((sum, r) => sum + r.actualAmount, 0), [filtered]);
 
