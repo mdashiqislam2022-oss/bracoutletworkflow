@@ -202,8 +202,8 @@ export const TotalCashAnalysisView: React.FC = () => {
           </div>
         </div>
 
-        {/* 3 Update Forms */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-6">
+                {/* Update Forms */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6">
           {/* Set Mother Amount */}
           <div className={`rounded-xl border p-3 space-y-2 ${inputBg}`}>
             <div className="text-xs font-bold flex items-center gap-1.5 text-blue-500">
