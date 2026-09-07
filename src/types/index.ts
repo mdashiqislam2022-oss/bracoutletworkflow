@@ -375,3 +375,38 @@ export interface DenominationSegregationRecord {
   notes?: string;
   createdAt: string;
 }
+
+// ==================== Total Cash Analysis Module ====================
+
+export interface MotherAmountRecord {
+  id: string;
+  outletId: string;
+  outletName: string;
+  amount: number;
+  note?: string;
+  setByUserId: string;
+  setByUserName: string;
+  createdAt: string;
+}
+
+export interface OutletTransferRecord {
+  id: string;
+  outletId: string;
+  outletName: string;
+  amount: number;
+  note?: string;
+  setByUserId: string;
+  setByUserName: string;
+  createdAt: string;
+}
+
+export interface OutletVaultRecord {
+  id: string;
+  outletId: string;
+  outletName: string;
+  amount: number;
+  note?: string;
+  setByUserId: string;
+  setByUserName: string;
+  createdAt: string;
+}
