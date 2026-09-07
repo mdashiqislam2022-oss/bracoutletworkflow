@@ -14,39 +14,39 @@ import { AdminPermission } from '../../types';
 
 const ALL_PERMISSIONS: { id: AdminPermission; label: string; description: string }[] = [
   {
-    id: 'VIEW_ALL',
-    label: 'View Master Data & Submissions',
-    description: 'Inspect live outlet logs, customer submissions, and stats'
+    id: 'SECTION_DASHBOARD',
+    label: 'Dashboard',
+    description: 'View overall summary, quick find, and live stats'
   },
   {
-    id: 'MANAGE_USERS',
-    label: 'User Management & AFO Oversight',
-    description: 'Activate, suspend, or reassign field officers across outlets'
+    id: 'SECTION_AFO_DIRECTORY',
+    label: 'AFO Directory',
+    description: 'View and manage field officers across assigned outlets'
   },
   {
-    id: 'EXPORT_DATA',
-    label: 'Data Export & Batch Download',
-    description: 'Export nationwide work data to CSV / JSON reports'
+    id: 'SECTION_AFO_TRANSFER',
+    label: 'AFO Transfer',
+    description: 'Transfer field officers between outlets'
   },
   {
-    id: 'MODIFY_OUTLETS',
-    label: 'Modify Outlets Registry',
-    description: 'Add new BRAC Bank outlets or toggle operational status'
+    id: 'SECTION_OUTLET_DETAILS',
+    label: 'Outlet Details',
+    description: 'View and manage outlet registry information'
   },
   {
-    id: 'AUDIT_LOGS',
-    label: 'Security & Activity Audit Logs',
-    description: 'Access full actor audit trail and security timestamp logs'
+    id: 'SECTION_CASH_ANALYSIS',
+    label: 'Cash Analysis',
+    description: 'View denomination segregation and cash counting entries'
   },
   {
-    id: 'DELEGATE_ADMINS',
-    label: 'Delegate Secondary Admins',
-    description: 'Grant or revoke sub-admin credentials'
+    id: 'SECTION_SETTINGS',
+    label: 'Settings',
+    description: 'Access system and profile settings'
   },
   {
-    id: 'SYSTEM_CONFIG',
-    label: 'System & Database Architecture',
-    description: 'Access Supabase RLS and database configurations'
+    id: 'SECTION_SQL_RLS',
+    label: 'SQL RLS',
+    description: 'Access database schema and RLS reference page'
   }
 ];
 
