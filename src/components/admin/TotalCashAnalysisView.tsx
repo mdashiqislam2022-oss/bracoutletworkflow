@@ -82,19 +82,22 @@ export const TotalCashAnalysisView: React.FC = () => {
     return viewOutlet === 'ALL' ? outlets : outlets.filter((o) => o.id === viewOutlet);
   }, [outlets, viewOutlet]);
 
-      const totals = useMemo(() => {
+         const totals = useMemo(() => {
     let mother = 0;
     let afoCash = 0;
     let transfer = 0;
+    let moveMoney = 0;
     relevantOutlets.forEach((o) => {
       mother += getLatestMotherAmount(o.id)?.amount || 0;
       afoCash += getAfoCash(o.id);
       transfer += getTotalTransfer(o.id);
+      moveMoney += cashTransfers
+        .filter((t) => t.outletId === o.id && t.transferType === 'MOVE_MONEY')
+        .reduce((sum, t) => sum + t.amount, 0);
     });
-    const vault = mother + afoCash - transfer;
+    const vault = mother + afoCash + moveMoney - transfer;
     return { mother, afoCash, transfer, vault };
-  }, [relevantOutlets, motherAmounts, outletTransfers, segregationRecords]);
-
+  }, [relevantOutlets, motherAmounts, outletTransfers, segregationRecords, cashTransfers]);
   const selectedOutletName = viewOutlet === 'ALL' ? 'All Outlets' : outlets.find((o) => o.id === viewOutlet)?.name || 'All Outlets';
 
   // ---------- Combined History (latest 15) ----------
