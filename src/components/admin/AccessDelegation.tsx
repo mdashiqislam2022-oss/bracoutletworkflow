@@ -60,10 +60,9 @@ export const AccessDelegation: React.FC = () => {
   const [username, setUsername] = useState('');
   const [pin, setPin] = useState('');
   const [confirmPin, setConfirmPin] = useState('');
-  const [selectedPermissions, setSelectedPermissions] = useState<AdminPermission[]>([
-    'VIEW_ALL',
-    'MANAGE_USERS',
-    'EXPORT_DATA'
+    const [selectedPermissions, setSelectedPermissions] = useState<AdminPermission[]>([
+    'SECTION_DASHBOARD',
+    'SECTION_AFO_DIRECTORY'
   ]);
   const [delegationMode, setDelegationMode] = useState<'LIMITED' | 'FULL'>('LIMITED');
   const [error, setError] = useState<string | null>(null);
