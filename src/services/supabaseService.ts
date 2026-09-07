@@ -385,6 +385,36 @@ export const SupabaseService = {
   isAvailable: () => isSupabaseConfigured && !!supabase,
     // Upload a profile picture to Supabase Storage and return its public URL
   async uploadAvatar(file: File, ownerId: string): Promise<string | null> {
+      // Calls the secure Edge Function to create a REAL Supabase Auth login for a newly delegated admin.
+  // Only succeeds if the caller is currently logged in as the Master Administrator (checked server-side).
+  async createDelegatedAdminAuth(email: string, password: string): Promise<{ success: boolean; error?: string }> {
+    if (!this.isAvailable() || !supabase) return { success: false, error: 'Supabase not available' };
+    try {
+      const { data: sessionData } = await supabase.auth.getSession();
+      const accessToken = sessionData?.session?.access_token;
+      if (!accessToken) {
+        return { success: false, error: 'No active session found. Please log in again.' };
+      }
+
+      const response = await fetch(`${supabaseUrl}/functions/v1/create-delegated-admin`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`
+        },
+        body: JSON.stringify({ email, password })
+      });
+
+      const result = await response.json();
+      if (!response.ok) {
+        return { success: false, error: result?.error || 'Failed to create admin login.' };
+      }
+      return { success: true };
+    } catch (err) {
+      console.warn('Error creating delegated admin auth:', err);
+      return { success: false, error: 'Unexpected error while creating admin login.' };
+    }
+  },
     if (!this.isAvailable() || !supabase) return null;
     try {
       const fileExt = file.name.split('.').pop() || 'jpg';
