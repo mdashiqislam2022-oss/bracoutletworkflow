@@ -77,12 +77,12 @@ export const AccessDelegation: React.FC = () => {
     }
   };
 
-  const handleModeChange = (mode: 'LIMITED' | 'FULL') => {
+   const handleModeChange = (mode: 'LIMITED' | 'FULL') => {
     setDelegationMode(mode);
     if (mode === 'FULL') {
       setSelectedPermissions(ALL_PERMISSIONS.map((p) => p.id));
     } else {
-      setSelectedPermissions(['VIEW_ALL', 'MANAGE_USERS', 'EXPORT_DATA']);
+      setSelectedPermissions(['SECTION_DASHBOARD', 'SECTION_AFO_DIRECTORY']);
     }
   };
 
