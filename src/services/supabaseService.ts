@@ -884,10 +884,20 @@ export const SupabaseService = {
   async saveMotherAmount(record: MotherAmountRecord) {
     if (!this.isAvailable() || !supabase) return;
     try {
-      const dbRow = mapMotherAmountToDb(record);
-      await supabase.from('mother_amounts').upsert(dbRow);
+      const dbRow = {
+        ...mapMotherAmountToDb(record),
+        created_at: record.createdAt
+      };
+
+      const { error } = await supabase
+        .from('mother_amounts')
+        .upsert(dbRow);
+
+      if (error) {
+        console.warn('Error saving mother amount to Supabase:', error.message);
+      }
     } catch (err) {
-      console.warn('Error saving mother amount to Supabase:', err);
+      console.warn('Unexpected error saving mother amount to Supabase:', err);
     }
   },
 
