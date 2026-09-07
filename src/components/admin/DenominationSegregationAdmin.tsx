@@ -124,16 +124,49 @@ export const DenominationSegregationAdmin: React.FC = () => {
 
   const totalAmount = useMemo(() => filtered.reduce((sum, r) => sum + r.actualAmount, 0), [filtered]);
 
-  return (
+    return (
     <div className="space-y-4 md:space-y-6">
       <div className={`rounded-2xl border p-4 md:p-5 ${cardBg}`}>
-        <h2 className={`font-bold text-lg flex items-center gap-2 mb-1 ${isDark ? 'text-slate-100' : 'text-slate-900'}`}>
-          <Banknote className="text-emerald-500" size={20} /> Denomination Segregation — All Entries
-        </h2>
-        <p className="text-xs text-slate-500 mb-4">
-          Every cash counting transaction saved by AFOs across all outlets, with full denomination breakdown.
-        </p>
+        <div className="flex items-center justify-between flex-wrap gap-2 mb-1">
+          <h2 className={`font-bold text-lg flex items-center gap-2 ${isDark ? 'text-slate-100' : 'text-slate-900'}`}>
+            <Banknote className="text-emerald-500" size={20} />
+            {activeSubPage === 'ENTRIES' ? 'Denomination Segregation — All Entries' : 'Total Cash Analysis'}
+          </h2>
 
+          <div className={`flex items-center gap-1 p-1 rounded-xl ${isDark ? 'bg-[#0F172A]' : 'bg-slate-100'}`}>
+            <button
+              onClick={() => setActiveSubPage('ENTRIES')}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition ${
+                activeSubPage === 'ENTRIES'
+                  ? `${isDark ? 'bg-[#1A2333] text-slate-100' : 'bg-white text-slate-900'} shadow-sm`
+                  : 'text-slate-400'
+              }`}
+            >
+              <List size={13} /> All Entries
+            </button>
+            <button
+              onClick={() => setActiveSubPage('ANALYSIS')}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition ${
+                activeSubPage === 'ANALYSIS'
+                  ? `${isDark ? 'bg-[#1A2333] text-slate-100' : 'bg-white text-slate-900'} shadow-sm`
+                  : 'text-slate-400'
+              }`}
+            >
+              <BarChart3 size={13} /> Total Cash Analysis
+            </button>
+          </div>
+        </div>
+
+        {activeSubPage === 'ENTRIES' && (
+          <p className="text-xs text-slate-500 mb-4">
+            Every cash counting transaction saved by AFOs across all outlets, with full denomination breakdown.
+          </p>
+        )}
+
+        {activeSubPage === 'ANALYSIS' ? (
+          <TotalCashAnalysisView />
+        ) : (
+          <>
         {/* Outlet Selector (with its own search) */}
         <div className="relative mb-4 max-w-sm">
           <button
