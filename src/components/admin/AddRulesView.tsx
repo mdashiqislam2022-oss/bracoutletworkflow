@@ -22,8 +22,9 @@ export const AddRulesView: React.FC = () => {
   const [contentHtml, setContentHtml] = useState('');
   const [selectedOutlets, setSelectedOutlets] = useState<string[]>([]);
 
-  const [assignTargetRuleId, setAssignTargetRuleId] = useState<string | null>(null);
+   const [assignTargetRuleId, setAssignTargetRuleId] = useState<string | null>(null);
   const [assignOutlets, setAssignOutlets] = useState<string[]>([]);
+  const [deleteTargetId, setDeleteTargetId] = useState<string | null>(null);
 
   const toggleOutlet = (id: string) => {
     setSelectedOutlets((prev) => (prev.includes(id) ? prev.filter((o) => o !== id) : [...prev, id]));
