@@ -367,9 +367,10 @@ export const CustomDatePicker: React.FC<CustomDatePickerProps> = ({
               className="px-2.5 py-1 rounded-lg text-[10px] font-bold bg-emerald-600 hover:bg-emerald-500 text-white transition-all shadow-xs flex items-center gap-1 cursor-pointer"
             >
               <Sparkles className="w-2.5 h-2.5" />
-              <span>Today ({today.getDate()}/{today.getMonth() + 1})</span>
+                           <span>Today ({today.getDate()}/{today.getMonth() + 1})</span>
             </button>
           </div>
+          )}
         </div>
       )}
 
