@@ -93,8 +93,10 @@ const MainLayout: React.FC = () => {
           return <UserManagement />;
         case 'outlets':
           return <OutletManagement />;
-        case 'denomination_segregation':
+                case 'denomination_segregation':
           return <DenominationSegregationAdmin />;
+        case 'add_rules':
+          return <AddRulesView />;
         case 'afo_transfer':
           return <AfoTransferManagement />;
         case 'delegation':
