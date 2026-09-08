@@ -25,6 +25,7 @@ import { AccessDelegation } from './components/admin/AccessDelegation';
 import { SystemSettings } from './components/admin/SystemSettings';
 import { SqlSchemaViewer } from './components/admin/SqlSchemaViewer';
 import { DenominationSegregationAdmin } from './components/admin/DenominationSegregationAdmin';
+import { AddRulesView } from './components/admin/AddRulesView';
 
 const MainLayout: React.FC = () => {
    const { authMode, activeNavTab, userPreferences, isAddEntryModalOpen, closeAddEntryModal, initialAddEntryType, currentAdmin } = useApp();
