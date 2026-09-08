@@ -196,12 +196,15 @@ export const CustomDatePicker: React.FC<CustomDatePickerProps> = ({
               : 'bg-white border-slate-200 text-slate-900 shadow-xl'
           }`}
         >
-          {/* Month & Year Navigation with Specific Selectors */}
+                    {/* Header: Prev/Next + Clickable Month & Year labels */}
           <div className="flex items-center justify-between mb-2 pb-1.5 border-b border-slate-100 dark:border-slate-800 gap-1">
             <button
               type="button"
-              onClick={handlePrevMonth}
-              title="Previous Month"
+              onClick={() => {
+                if (pickerView === 'DATE') handlePrevMonth();
+                else if (pickerView === 'YEAR') setViewDate(new Date(year - 25, month, 1));
+              }}
+              title="Previous"
               className={`p-1 rounded-md transition-colors cursor-pointer shrink-0 ${
                 isDark ? 'hover:bg-slate-800 text-slate-300' : 'hover:bg-slate-100 text-slate-700'
               }`}
@@ -209,45 +212,36 @@ export const CustomDatePicker: React.FC<CustomDatePickerProps> = ({
               <ChevronLeft className="w-3.5 h-3.5" />
             </button>
 
-            {/* Direct Month & Year Dropdown Selectors */}
-            <div className="flex items-center gap-1">
-              <select
-                value={month}
-                onChange={(e) => setViewDate(new Date(year, parseInt(e.target.value, 10), 1))}
-                className={`text-[11px] font-extrabold py-0.5 px-1 rounded border transition-colors cursor-pointer ${
-                  isDark
-                    ? 'bg-slate-900 border-slate-700 text-white'
-                    : 'bg-slate-50 border-slate-200 text-slate-900'
+            <div className="flex items-center gap-1.5">
+              {pickerView !== 'YEAR' && (
+                <button
+                  type="button"
+                  onClick={() => setPickerView(pickerView === 'MONTH' ? 'DATE' : 'MONTH')}
+                  className={`text-[11px] font-extrabold py-0.5 px-2 rounded transition-colors cursor-pointer ${
+                    isDark ? 'bg-slate-900 hover:bg-slate-800 text-white' : 'bg-slate-50 hover:bg-slate-100 text-slate-900'
+                  }`}
+                >
+                  {monthNames[month].slice(0, 3)}
+                </button>
+              )}
+              <button
+                type="button"
+                onClick={() => setPickerView(pickerView === 'YEAR' ? 'DATE' : 'YEAR')}
+                className={`text-[11px] font-extrabold py-0.5 px-2 rounded transition-colors cursor-pointer font-mono ${
+                  isDark ? 'bg-slate-900 hover:bg-slate-800 text-white' : 'bg-slate-50 hover:bg-slate-100 text-slate-900'
                 }`}
               >
-                {monthNames.map((mName, idx) => (
-                  <option key={mName} value={idx}>
-                    {mName.slice(0, 3)}
-                  </option>
-                ))}
-              </select>
-
-              <select
-                value={year}
-                onChange={(e) => setViewDate(new Date(parseInt(e.target.value, 10), month, 1))}
-                className={`text-[11px] font-extrabold py-0.5 px-1 rounded border transition-colors cursor-pointer font-mono ${
-                  isDark
-                    ? 'bg-slate-900 border-slate-700 text-white'
-                    : 'bg-slate-50 border-slate-200 text-slate-900'
-                }`}
-              >
-                {Array.from({ length: 25 }, (_, i) => 2015 + i).map((y) => (
-                  <option key={y} value={y}>
-                    {y}
-                  </option>
-                ))}
-              </select>
+                {year}
+              </button>
             </div>
 
             <button
               type="button"
-              onClick={handleNextMonth}
-              title="Next Month"
+              onClick={() => {
+                if (pickerView === 'DATE') handleNextMonth();
+                else if (pickerView === 'YEAR') setViewDate(new Date(year + 25, month, 1));
+              }}
+              title="Next"
               className={`p-1 rounded-md transition-colors cursor-pointer shrink-0 ${
                 isDark ? 'hover:bg-slate-800 text-slate-300' : 'hover:bg-slate-100 text-slate-700'
               }`}
@@ -256,50 +250,109 @@ export const CustomDatePicker: React.FC<CustomDatePickerProps> = ({
             </button>
           </div>
 
-          {/* Weekday headers */}
-          <div className="grid grid-cols-7 gap-0.5 text-center mb-1">
-            {['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'].map((d, i) => (
-              <div
-                key={d}
-                className={`text-[9px] font-bold ${
-                  i === 5 ? 'text-rose-500' : 'text-slate-400 dark:text-slate-500'
-                }`}
-              >
-                {d}
-              </div>
-            ))}
-          </div>
-
-          {/* Days Grid */}
-          <div className="grid grid-cols-7 gap-0.5 text-center">
-            {blanksArray.map((_, i) => (
-              <div key={`blank-${i}`} className="h-6 w-6" />
-            ))}
-
-            {daysArray.map((day) => {
-              const selected = isSelected(day);
-              const current = isCurrentDay(day);
-
-              return (
+          {/* ===== YEAR VIEW ===== */}
+          {pickerView === 'YEAR' && (
+            <div className="grid grid-cols-4 gap-1 max-h-[168px] overflow-y-auto">
+              {Array.from({ length: 25 }, (_, i) => 2015 + i).map((y) => (
                 <button
-                  key={day}
+                  key={y}
                   type="button"
-                  onClick={() => handleSelectDay(day)}
-                  className={`h-6 w-6 rounded-md text-[11px] font-semibold flex items-center justify-center transition-all cursor-pointer ${
-                    selected
-                      ? 'bg-emerald-600 text-white font-bold shadow-xs'
-                      : current
-                      ? 'bg-emerald-50 text-emerald-800 font-bold dark:bg-emerald-950/60 dark:text-emerald-300 border border-emerald-400 dark:border-emerald-700'
+                  onClick={() => {
+                    setViewDate(new Date(y, month, 1));
+                    setPickerView('MONTH');
+                  }}
+                  className={`py-1.5 rounded-md text-[11px] font-bold transition-colors cursor-pointer ${
+                    y === year
+                      ? 'bg-emerald-600 text-white'
                       : isDark
-                      ? 'text-slate-200 hover:bg-slate-800 hover:text-white'
-                      : 'text-slate-800 hover:bg-slate-100 hover:text-slate-900'
+                      ? 'text-slate-200 hover:bg-slate-800'
+                      : 'text-slate-800 hover:bg-slate-100'
                   }`}
                 >
-                  {day}
+                  {y}
                 </button>
-              );
-            })}
-          </div>
+              ))}
+            </div>
+          )}
+
+          {/* ===== MONTH VIEW ===== */}
+          {pickerView === 'MONTH' && (
+            <div className="grid grid-cols-3 gap-1">
+              {monthNames.map((mName, idx) => (
+                <button
+                  key={mName}
+                  type="button"
+                  onClick={() => {
+                    setViewDate(new Date(year, idx, 1));
+                    setPickerView('DATE');
+                  }}
+                  className={`py-2 rounded-md text-[11px] font-bold transition-colors cursor-pointer ${
+                    idx === month
+                      ? 'bg-emerald-600 text-white'
+                      : isDark
+                      ? 'text-slate-200 hover:bg-slate-800'
+                      : 'text-slate-800 hover:bg-slate-100'
+                  }`}
+                >
+                  {mName.slice(0, 3)}
+                </button>
+              ))}
+            </div>
+          )}
+
+          {/* ===== DATE VIEW ===== */}
+          {pickerView === 'DATE' && (
+            <>
+              {/* Weekday headers */}
+              <div className="grid grid-cols-7 gap-0.5 text-center mb-1">
+                {['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'].map((d, i) => (
+                  <div
+                    key={d}
+                    className={`text-[9px] font-bold ${
+                      i === 5 || i === 6 ? 'text-rose-500' : 'text-slate-400 dark:text-slate-500'
+                    }`}
+                  >
+                    {d}
+                  </div>
+                ))}
+              </div>
+
+              {/* Days Grid */}
+              <div className="grid grid-cols-7 gap-0.5 text-center">
+                {blanksArray.map((_, i) => (
+                  <div key={`blank-${i}`} className="h-6 w-6" />
+                ))}
+
+                {daysArray.map((day) => {
+                  const selected = isSelected(day);
+                  const current = isCurrentDay(day);
+                  const dayOfWeek = new Date(year, month, day).getDay();
+                  const isWeekend = dayOfWeek === 5 || dayOfWeek === 6;
+
+                  return (
+                    <button
+                      key={day}
+                      type="button"
+                      onClick={() => handleSelectDay(day)}
+                      className={`h-6 w-6 rounded-md text-[11px] font-semibold flex items-center justify-center transition-all cursor-pointer ${
+                        selected
+                          ? 'bg-emerald-600 text-white font-bold shadow-xs'
+                          : current
+                          ? 'bg-emerald-50 text-emerald-800 font-bold dark:bg-emerald-950/60 dark:text-emerald-300 border border-emerald-400 dark:border-emerald-700'
+                          : isWeekend
+                          ? 'text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950/40'
+                          : isDark
+                          ? 'text-slate-200 hover:bg-slate-800 hover:text-white'
+                          : 'text-slate-800 hover:bg-slate-100 hover:text-slate-900'
+                      }`}
+                    >
+                      {day}
+                    </button>
+                  );
+                })}
+              </div>
+            </>
+          )}
 
           {/* Footer Quick Action: Real-Time "Today" Button */}
           <div className="mt-2 pt-2 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
