@@ -207,9 +207,10 @@ export const TransferView: React.FC = () => {
               className={`w-full rounded-lg border px-2 py-1.5 text-xs ${inputBg}`}
             />
 
-            <button
+                        <button
               onClick={handleSaveTransfer}
-              className="w-full py-1.5 rounded-lg bg-emerald-500 text-white text-xs font-bold"
+              disabled={!canSaveTransfer}
+              className="w-full py-1.5 rounded-lg bg-emerald-500 text-white text-xs font-bold disabled:opacity-40 disabled:cursor-not-allowed"
             >
               Save Transfer
             </button>
