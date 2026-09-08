@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useApp } from '../../context/AppContext';
 import { RichTextEditor } from '../common/RichTextEditor';
 import { CustomDatePicker } from '../common/CustomDatePicker';
-import { ShieldCheck, Plus, X, Building2, Check, PlusCircle } from 'lucide-react';
+import { ShieldCheck, Plus, X, Building2, Check, PlusCircle, Trash2 } from 'lucide-react';
 
 const SECTORS = ['Cash Handling', 'Loan Operations', 'Cheque & Card', 'Customer Service', 'Compliance', 'General'];
 
