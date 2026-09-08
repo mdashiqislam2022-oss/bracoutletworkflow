@@ -95,7 +95,7 @@ export const TotalCashAnalysisView: React.FC = () => {
     { key: 'note1000', value: 1000 }
   ];
 
-    const denomTotals = useMemo(() => {
+      const denomTotals = useMemo(() => {
     const relevantIds = relevantOutlets.map((o) => o.id);
     const totals: Record<string, number> = {
       note1: 0, note2: 0, note5: 0, note10: 0, note20: 0,
@@ -109,8 +109,15 @@ export const TotalCashAnalysisView: React.FC = () => {
           totals[d.key] += sign * (r.denominations?.[d.key] || 0);
         });
       });
+    cashTransfers
+      .filter((t) => relevantIds.includes(t.outletId) && t.transferType === 'RTGS' && t.denominations)
+      .forEach((t) => {
+        DENOM_LIST.forEach((d) => {
+          totals[d.key] -= t.denominations?.[d.key] || 0;
+        });
+      });
     return totals;
-  }, [segregationRecords, relevantOutlets]);
+  }, [segregationRecords, cashTransfers, relevantOutlets]);
 
          const totals = useMemo(() => {
     let mother = 0;
