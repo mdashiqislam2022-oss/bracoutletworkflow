@@ -373,11 +373,59 @@ export const mapCashTransferToDb = (record: CashTransferRecord) => ({
   note_200: record.denominations?.note200 || 0,
   note_500: record.denominations?.note500 || 0,
   note_1000: record.denominations?.note1000 || 0,
-  outlet_id: record.outletId,
+    outlet_id: record.outletId,
   outlet_name: record.outletName,
   user_id: record.userId,
   user_name: record.userName,
   note: record.note || null
+});
+
+// ---------- Note & Rule Module ----------
+
+export const mapDbToNote = (row: any): NoteRecord => ({
+  id: row.id,
+  outletId: row.outlet_id || '',
+  outletName: row.outlet_name || '',
+  userId: row.user_id,
+  userName: row.user_name,
+  title: row.title || '',
+  contentHtml: row.content_html || '',
+  noteDate: row.note_date || '',
+  createdAt: row.created_at || new Date().toISOString()
+});
+
+export const mapNoteToDb = (record: NoteRecord) => ({
+  id: record.id,
+  outlet_id: record.outletId,
+  outlet_name: record.outletName,
+  user_id: record.userId,
+  user_name: record.userName,
+  title: record.title,
+  content_html: record.contentHtml,
+  note_date: record.noteDate
+});
+
+export const mapDbToRule = (row: any): RuleRecord => ({
+  id: row.id,
+  title: row.title || '',
+  sector: row.sector || '',
+  contentHtml: row.content_html || '',
+  ruleDate: row.rule_date || '',
+  outletIds: Array.isArray(row.outlet_ids) ? row.outlet_ids : JSON.parse(row.outlet_ids || '[]'),
+  createdByUserId: row.created_by_user_id,
+  createdByUserName: row.created_by_user_name,
+  createdAt: row.created_at || new Date().toISOString()
+});
+
+export const mapRuleToDb = (record: RuleRecord) => ({
+  id: record.id,
+  title: record.title,
+  sector: record.sector,
+  content_html: record.contentHtml,
+  rule_date: record.ruleDate,
+  outlet_ids: record.outletIds,
+  created_by_user_id: record.createdByUserId,
+  created_by_user_name: record.createdByUserName
 });
 
 /**
