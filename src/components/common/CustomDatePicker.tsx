@@ -54,10 +54,14 @@ export const CustomDatePicker: React.FC<CustomDatePickerProps> = ({
         setIsOpen(false);
       }
     };
-    if (isOpen) {
+        if (isOpen) {
       document.addEventListener('mousedown', handleOutsideClick);
     }
     return () => document.removeEventListener('mousedown', handleOutsideClick);
+  }, [isOpen]);
+
+  useEffect(() => {
+    if (!isOpen) setPickerView('DATE');
   }, [isOpen]);
 
   const today = new Date();
