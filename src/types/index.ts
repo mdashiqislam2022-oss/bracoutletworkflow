@@ -427,3 +427,29 @@ export interface CashTransferRecord {
   note?: string;
   createdAt: string;
 }
+
+// ==================== Note & Rule Module ====================
+
+export interface NoteRecord {
+  id: string;
+  outletId: string;
+  outletName: string;
+  userId: string;
+  userName: string;
+  title: string;
+  contentHtml: string;
+  noteDate: string;
+  createdAt: string;
+}
+
+export interface RuleRecord {
+  id: string;
+  title: string;
+  sector: string;
+  contentHtml: string;
+  ruleDate: string;
+  outletIds: string[];
+  createdByUserId: string;
+  createdByUserName: string;
+  createdAt: string;
+}
