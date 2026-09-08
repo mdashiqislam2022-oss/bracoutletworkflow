@@ -741,10 +741,12 @@ export const SupabaseService = {
         loanRecords: (loanRes.data || []).map(mapDbToLoanRecord),
         customerAccounts: (customerAccountsRes.data || []).map(mapDbToCustomerAccount),
         segregationRecords: (segregationsRes.data || []).map(mapDbToSegregation),
-                motherAmounts: (motherAmountsRes.data || []).map(mapDbToMotherAmount),
+                         motherAmounts: (motherAmountsRes.data || []).map(mapDbToMotherAmount),
         outletTransfers: (outletTransfersRes.data || []).map(mapDbToOutletTransfer),
         outletVaults: (outletVaultsRes.data || []).map(mapDbToOutletVault),
                 cashTransfers: (cashTransfersRes.data || []).map(mapDbToCashTransfer),
+        notes: (notesRes.data || []).map(mapDbToNote),
+        rules: (rulesRes.data || []).map(mapDbToRule),
         mailMessages: (mailsRes.data || []).map((m: any) => ({
           id: m.id,
           senderName: m.sender_name || 'Central Operations',
