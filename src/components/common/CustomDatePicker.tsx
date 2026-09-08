@@ -25,7 +25,8 @@ export const CustomDatePicker: React.FC<CustomDatePickerProps> = ({
   isDark = false,
   error
 }) => {
-  const [isOpen, setIsOpen] = useState(false);
+    const [isOpen, setIsOpen] = useState(false);
+  const [pickerView, setPickerView] = useState<'DATE' | 'MONTH' | 'YEAR'>('DATE');
   const containerRef = useRef<HTMLDivElement>(null);
 
   // Parse initial selected date or today
