@@ -27,7 +27,9 @@ import {
   OutletVaultRecord,
   CashTransferRecord,
   CashTransferType,
-  DenominationCounts
+  DenominationCounts,
+    NoteRecord,
+  RuleRecord
 } from '../types';
 import {
   SupabaseService,
