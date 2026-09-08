@@ -233,7 +233,25 @@ export const TotalCashAnalysisView: React.FC = () => {
             <div className="flex items-center gap-1.5 text-[11px] font-semibold text-purple-600">
               <Vault size={13} /> Total Vault Amount
             </div>
-            <div className="text-lg font-extrabold mt-1 text-purple-600">৳ {totals.vault.toLocaleString()}</div>
+                        <div className="text-lg font-extrabold mt-1 text-purple-600">৳ {totals.vault.toLocaleString()}</div>
+          </div>
+        </div>
+
+        {/* Denomination-wise Note Count (Outlet scoped) */}
+        <div className="mb-6">
+          <div className="text-xs font-bold text-slate-500 mb-2">Denomination-wise Note Count</div>
+          <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
+            {DENOM_LIST.map((d) => (
+              <div key={d.key} className={`rounded-xl border p-3 ${cardBg}`}>
+                <div className="text-[11px] font-semibold text-slate-500 mb-1">Tk{d.value}</div>
+                <div className="text-xl font-extrabold text-slate-800 dark:text-slate-100">
+                  {denomTotals[d.key].toLocaleString()}
+                </div>
+                <div className="text-[11px] text-emerald-600 font-semibold mt-0.5">
+                  ৳ {(denomTotals[d.key] * d.value).toLocaleString()}
+                </div>
+              </div>
+            ))}
           </div>
         </div>
 
