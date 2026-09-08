@@ -193,6 +193,33 @@ export const NoteAndRuleView: React.FC = () => {
         )}
       </div>
 
+            {/* View Note Modal */}
+      {viewNoteId && (() => {
+        const n = myNotes.find((x) => x.id === viewNoteId);
+        if (!n) return null;
+        return (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4">
+            <div className={`rounded-2xl border p-5 max-w-lg w-full max-h-[80vh] overflow-y-auto ${cardBg}`}>
+              <div className="flex items-start justify-between gap-2 mb-2">
+                <div>
+                  <h3 className={`font-bold text-base ${isDark ? 'text-slate-100' : 'text-slate-900'}`}>{n.title}</h3>
+                  <div className="text-[11px] text-slate-500 flex items-center gap-1 mt-0.5">
+                    <Calendar size={11} /> {formatDate(n.noteDate)}
+                  </div>
+                </div>
+                <button onClick={() => setViewNoteId(null)} className="text-slate-400">
+                  <X size={18} />
+                </button>
+              </div>
+              <div
+                className="text-sm leading-relaxed break-words mt-3"
+                dangerouslySetInnerHTML={{ __html: n.contentHtml }}
+              />
+            </div>
+          </div>
+        );
+      })()}
+
       {/* Delete Confirmation Popup */}
       {deleteTargetId && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4">
