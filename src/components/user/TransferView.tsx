@@ -216,10 +216,8 @@ export const TransferView: React.FC = () => {
             </button>
           </div>
 
-         {/* Right: Segregation panel (RTGS only) */}
-         {transferType === 'RTGS' && (
-           <div className={`rounded-xl border p-3 space-y-2 ${inputBg}`}>
-          
+                  {/* Right: Segregation panel (always visible, disabled unless RTGS selected) */}
+         <div className={`rounded-xl border p-3 space-y-2 transition-all ${inputBg} ${transferType !== 'RTGS' ? 'opacity-40 grayscale pointer-events-none' : ''}`}>
               <div className="text-xs font-bold flex items-center gap-1.5 text-blue-600 mb-1">
                 Segregation
               </div>
@@ -231,6 +229,7 @@ export const TransferView: React.FC = () => {
                       <input
                         type="number"
                         min={0}
+                        disabled={transferType !== 'RTGS'}
                         value={denoms[d.key] || ''}
                         onChange={(e) => handleDenomChange(d.key, e.target.value)}
                         placeholder="0"
@@ -246,6 +245,7 @@ export const TransferView: React.FC = () => {
                       <input
                         type="number"
                         min={0}
+                        disabled={transferType !== 'RTGS'}
                         value={denoms[d.key] || ''}
                         onChange={(e) => handleDenomChange(d.key, e.target.value)}
                         placeholder="0"
@@ -255,7 +255,7 @@ export const TransferView: React.FC = () => {
                   ))}
                 </div>
               </div>
-                           <div className="flex items-center justify-end gap-2 text-[11px] font-bold pt-1 border-t border-slate-700/30">
+              <div className="flex items-center justify-end gap-2 text-[11px] font-bold pt-1 border-t border-slate-700/30">
                 <button
                   type="button"
                   onClick={() => {
@@ -277,7 +277,6 @@ export const TransferView: React.FC = () => {
                 Segregated Total: ৳ {segregatedTotal.toLocaleString()}
               </div>
             </div>
-          )}
         </div>
 
         {/* History */}
