@@ -354,7 +354,8 @@ export const CustomDatePicker: React.FC<CustomDatePickerProps> = ({
             </>
           )}
 
-          {/* Footer Quick Action: Real-Time "Today" Button */}
+                   {/* Footer Quick Action: Real-Time "Today" Button */}
+          {pickerView === 'DATE' && (
           <div className="mt-2 pt-2 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
             <span className="text-[10px] text-slate-500 dark:text-slate-400 font-medium">
               Real-time Date
