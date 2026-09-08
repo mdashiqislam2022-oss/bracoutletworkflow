@@ -10,7 +10,7 @@ import {
   History,
   PlusCircle
 } from 'lucide-react';
-import { SegregationTransactionType } from '../../types';
+import { SegregationTransactionType, DenominationCounts } from '../../types';
 
 const CASH_IN_TYPES: SegregationTransactionType[] = ['CD', 'ID', 'LR', 'BC'];
 
