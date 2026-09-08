@@ -132,12 +132,16 @@ export const NoteAndRuleView: React.FC = () => {
               </div>
             )}
 
-            <div className="space-y-3">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {myNotes.length === 0 && (
-                <div className="text-sm text-slate-500 text-center py-10">No notes yet. Add your first note above.</div>
+                <div className="col-span-full text-sm text-slate-500 text-center py-10">No notes yet. Add your first note above.</div>
               )}
               {myNotes.map((n) => (
-                <div key={n.id} className={`rounded-xl border p-3 ${inputBg}`}>
+                <div
+                  key={n.id}
+                  onClick={() => setViewNoteId(n.id)}
+                  className={`rounded-xl border p-3 cursor-pointer transition-all duration-200 hover:scale-[1.03] hover:shadow-lg ${inputBg}`}
+                >
                   <div className="flex items-start justify-between gap-2">
                     <div className="min-w-0">
                       <div className="text-sm font-bold truncate">{n.title}</div>
@@ -145,12 +149,15 @@ export const NoteAndRuleView: React.FC = () => {
                         <Calendar size={11} /> {formatDate(n.noteDate)}
                       </div>
                     </div>
-                    <button onClick={() => setDeleteTargetId(n.id)} className="text-rose-500 shrink-0">
+                    <button
+                      onClick={(e) => { e.stopPropagation(); setDeleteTargetId(n.id); }}
+                      className="text-rose-500 shrink-0"
+                    >
                       <Trash2 size={15} />
                     </button>
                   </div>
                   <div
-                    className="text-sm mt-2 leading-relaxed break-words"
+                    className="text-sm mt-2 leading-relaxed break-words line-clamp-4"
                     dangerouslySetInnerHTML={{ __html: n.contentHtml }}
                   />
                 </div>
