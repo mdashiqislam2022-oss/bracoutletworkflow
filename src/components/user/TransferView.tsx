@@ -184,12 +184,6 @@ export const TransferView: React.FC = () => {
               className={`w-full rounded-lg border px-2 py-1.5 text-xs ${inputBg}`}
             />
 
-            <p className="text-[10px] text-slate-500">
-              {transferType === 'RTGS'
-                ? 'RTGS transfer cash হিসেবে count হবে।'
-                : 'Move Money transfer Mother Amount থেকে বিয়োগ হবে।'}
-            </p>
-
             <button
               onClick={handleSaveTransfer}
               className="w-full py-1.5 rounded-lg bg-emerald-500 text-white text-xs font-bold"
