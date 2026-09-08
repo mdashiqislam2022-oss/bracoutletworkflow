@@ -209,7 +209,27 @@ export const AddRulesView: React.FC = () => {
             </div>
           ))}
         </div>
-      </div>
+          </div>
+
+      {deleteTargetId && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4">
+          <div className={`rounded-2xl border p-5 max-w-sm w-full ${cardBg}`}>
+            <h3 className={`font-bold text-sm mb-2 ${isDark ? 'text-slate-100' : 'text-slate-900'}`}>Delete this rule?</h3>
+            <p className="text-xs text-slate-500 mb-4">This will remove the rule from all assigned outlets. This action cannot be undone.</p>
+            <div className="flex gap-2">
+              <button onClick={() => setDeleteTargetId(null)} className={`flex-1 py-2 rounded-xl text-xs font-bold ${inputBg}`}>
+                No, Keep it
+              </button>
+              <button
+                onClick={() => { deleteRule(deleteTargetId); setDeleteTargetId(null); }}
+                className="flex-1 py-2 rounded-xl bg-rose-500 text-white text-xs font-bold"
+              >
+                Yes, Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
