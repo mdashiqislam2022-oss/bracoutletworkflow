@@ -541,3 +541,4 @@ CREATE POLICY "delete_afo_notes" ON public.afo_notes FOR DELETE USING (true);
 CREATE POLICY "select_outlet_rules" ON public.outlet_rules FOR SELECT USING (true);
 CREATE POLICY "insert_outlet_rules" ON public.outlet_rules FOR INSERT WITH CHECK (true);
 CREATE POLICY "update_outlet_rules" ON public.outlet_rules FOR UPDATE USING (true) WITH CHECK (true);
+CREATE POLICY "delete_outlet_rules" ON public.outlet_rules FOR DELETE USING (true);
