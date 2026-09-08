@@ -13,6 +13,7 @@ import { ChequeCardModal } from './components/user/ChequeCardModal';
 import { UserProfileView } from './components/user/UserProfile';
 import { UserSettingsView } from './components/user/UserSettings';
 import { DenominationSegregationView } from './components/user/DenominationSegregationView';
+import { NoteAndRuleView } from './components/user/NoteAndRuleView';
 import { TransferView } from './components/user/TransferView';
 
 // Admin views
