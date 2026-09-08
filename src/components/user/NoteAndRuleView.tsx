@@ -115,7 +115,9 @@ export const NoteAndRuleView: React.FC = () => {
                   placeholder="Note title"
                   className={`w-full rounded-lg border px-3 py-2 text-sm ${inputBg}`}
                 />
-                <CustomDatePicker value={noteDate} onChange={setNoteDate} label="Note Date" isDark={isDark} />
+                               <div className="max-w-[220px]">
+                  <CustomDatePicker value={noteDate} onChange={setNoteDate} label="Note Date" isDark={isDark} />
+                </div>
                 <RichTextEditor
                   value={contentHtml}
                   onChange={setContentHtml}
