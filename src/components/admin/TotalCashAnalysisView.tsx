@@ -208,10 +208,10 @@ export const TotalCashAnalysisView: React.FC = () => {
           </div>
         </div>
 
-                {/* Update Forms */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6">
+                       {/* Update Forms */}
+        <div className="grid grid-cols-1 mb-6">
           {/* Set Mother Amount */}
-          <div className={`rounded-xl border p-3 space-y-2 ${inputBg}`}>
+          <div className={`rounded-xl border p-3 space-y-2 max-w-md ${inputBg}`}>
             <div className="text-xs font-bold flex items-center gap-1.5 text-blue-500">
               <PlusCircle size={14} /> Set Mother Amount
             </div>
@@ -222,20 +222,6 @@ export const TotalCashAnalysisView: React.FC = () => {
             <input type="number" min={0} value={motherAmountInput} onChange={(e) => setMotherAmountInput(e.target.value)} placeholder="Amount" className={`w-full rounded-lg border px-2 py-1.5 text-xs ${inputBg}`} />
             <input value={motherNote} onChange={(e) => setMotherNote(e.target.value)} placeholder="Note (optional)" className={`w-full rounded-lg border px-2 py-1.5 text-xs ${inputBg}`} />
             <button onClick={handleSetMother} className="w-full py-1.5 rounded-lg bg-blue-500 text-white text-xs font-bold">Save Mother Amount</button>
-          </div>
-
-          {/* Add Transfer */}
-          <div className={`rounded-xl border p-3 space-y-2 ${inputBg}`}>
-            <div className="text-xs font-bold flex items-center gap-1.5 text-amber-600">
-              <PlusCircle size={14} /> Add Transfer Entry
-            </div>
-            <select value={transferOutlet} onChange={(e) => setTransferOutlet(e.target.value)} className={`w-full rounded-lg border px-2 py-1.5 text-xs ${inputBg}`}>
-              <option value="">Select Outlet</option>
-              {outlets.map((o) => <option key={o.id} value={o.id}>{o.name}</option>)}
-            </select>
-            <input type="number" min={0} value={transferAmountInput} onChange={(e) => setTransferAmountInput(e.target.value)} placeholder="Amount" className={`w-full rounded-lg border px-2 py-1.5 text-xs ${inputBg}`} />
-            <input value={transferNote} onChange={(e) => setTransferNote(e.target.value)} placeholder="Note (optional)" className={`w-full rounded-lg border px-2 py-1.5 text-xs ${inputBg}`} />
-            <button onClick={handleAddTransfer} className="w-full py-1.5 rounded-lg bg-amber-500 text-white text-xs font-bold">Add Transfer</button>
           </div>
                   </div>
 
