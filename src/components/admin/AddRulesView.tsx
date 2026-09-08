@@ -138,11 +138,16 @@ export const AddRulesView: React.FC = () => {
           )}
           {sortedRules.map((r) => (
             <div key={r.id} className={`rounded-xl border p-3 ${inputBg}`}>
-              <div className="flex items-center justify-between flex-wrap gap-1">
+                           <div className="flex items-center justify-between flex-wrap gap-1">
                 <div className="text-sm font-bold">{r.title}</div>
-                <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600">
-                  {r.sector}
-                </span>
+                <div className="flex items-center gap-2">
+                  <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600">
+                    {r.sector}
+                  </span>
+                  <button onClick={() => setDeleteTargetId(r.id)} className="text-rose-500">
+                    <Trash2 size={15} />
+                  </button>
+                </div>
               </div>
               <div className="text-[11px] text-slate-500 mt-0.5">{formatDate(r.ruleDate)}</div>
               <div className="text-sm mt-2 leading-relaxed break-words" dangerouslySetInnerHTML={{ __html: r.contentHtml }} />
