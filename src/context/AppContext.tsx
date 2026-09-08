@@ -41,7 +41,9 @@ import {
   mapDbToMotherAmount,
   mapDbToOutletTransfer,
     mapDbToOutletVault,
-  mapDbToCashTransfer
+  mapDbToCashTransfer,
+    mapDbToNote,
+  mapDbToRule
 } from '../services/supabaseService';
 import { supabase } from '../lib/supabase';
 import confetti from 'canvas-confetti';
