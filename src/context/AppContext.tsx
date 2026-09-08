@@ -3431,8 +3431,9 @@ if (sessionStatus.isActive) {
         rules,
         addNote,
         deleteNote,
-        addRule,
+                addRule,
         updateRuleOutlets,
+        deleteRule,
         cashTransfers,
         addCashTransfer,
         
