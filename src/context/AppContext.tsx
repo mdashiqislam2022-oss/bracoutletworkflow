@@ -3411,13 +3411,21 @@ if (sessionStatus.isActive) {
         addCustomerAccount,
         addSegregationRecord,
 
-        // Total Cash Analysis Module
+                // Total Cash Analysis Module
         motherAmounts,
         outletTransfers,
         outletVaults,
         addMotherAmount,
         addOutletTransfer,
         addOutletVault,
+
+        // Note & Rule Module
+        notes,
+        rules,
+        addNote,
+        deleteNote,
+        addRule,
+        updateRuleOutlets,
         cashTransfers,
         addCashTransfer,
         
