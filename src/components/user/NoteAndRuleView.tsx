@@ -25,7 +25,8 @@ export const NoteAndRuleView: React.FC = () => {
   const [title, setTitle] = useState('');
   const [contentHtml, setContentHtml] = useState('');
   const [noteDate, setNoteDate] = useState(new Date().toISOString().slice(0, 10));
-  const [deleteTargetId, setDeleteTargetId] = useState<string | null>(null);
+    const [deleteTargetId, setDeleteTargetId] = useState<string | null>(null);
+  const [viewNoteId, setViewNoteId] = useState<string | null>(null);
 
   const myNotes = useMemo(() => {
     return notes
