@@ -88,9 +88,17 @@ export const TransferView: React.FC = () => {
     return historyList.reduce((sum, t) => sum + t.amount, 0);
   }, [historyList]);
 
-  const handleDenomChange = (key: DenomKey, value: string) => {
+    const handleDenomChange = (key: DenomKey, value: string) => {
     const num = parseInt(value, 10);
-    setDenoms((prev) => ({ ...prev, [key]: isNaN(num) ? 0 : num }));
+    const safeNum = isNaN(num) ? 0 : num;
+    setDenoms((prev) => {
+      const updated = { ...prev, [key]: safeNum };
+      if (transferType === 'RTGS') {
+        const newTotal = [...DENOM_LEFT, ...DENOM_RIGHT].reduce((sum, d) => sum + updated[d.key] * d.value, 0);
+        setAmountInput(newTotal > 0 ? String(newTotal) : '');
+      }
+      return updated;
+    });
   };
 
   const handleSaveTransfer = () => {
