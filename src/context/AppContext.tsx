@@ -157,6 +157,14 @@ export interface AppContextType {
   addMotherAmount: (data: { outletId: string; amount: number; note?: string }) => MotherAmountRecord;
   addOutletTransfer: (data: { outletId: string; amount: number; note?: string }) => OutletTransferRecord;
   addOutletVault: (data: { outletId: string; amount: number; note?: string }) => OutletVaultRecord;
+  
+  // Note & Rule Module
+  notes: NoteRecord[];
+  rules: RuleRecord[];
+  addNote: (data: { title: string; contentHtml: string; noteDate: string }) => NoteRecord;
+  deleteNote: (id: string) => void;
+  addRule: (data: { title: string; sector: string; contentHtml: string; ruleDate: string; outletIds: string[] }) => RuleRecord;
+  updateRuleOutlets: (ruleId: string, outletIds: string[]) => void;
     cashTransfers: CashTransferRecord[];
   addCashTransfer: (data: { outletId: string; transferType: CashTransferType; amount: number; denominations?: DenominationCounts; note?: string }) => CashTransferRecord;
 
