@@ -81,6 +81,35 @@ export const TotalCashAnalysisView: React.FC = () => {
   const relevantOutlets = useMemo(() => {
     return viewOutlet === 'ALL' ? outlets : outlets.filter((o) => o.id === viewOutlet);
   }, [outlets, viewOutlet]);
+  
+  const DENOM_LIST: { key: keyof DenominationCounts; value: number }[] = [
+    { key: 'note1', value: 1 },
+    { key: 'note2', value: 2 },
+    { key: 'note5', value: 5 },
+    { key: 'note10', value: 10 },
+    { key: 'note20', value: 20 },
+    { key: 'note50', value: 50 },
+    { key: 'note100', value: 100 },
+    { key: 'note200', value: 200 },
+    { key: 'note500', value: 500 },
+    { key: 'note1000', value: 1000 }
+  ];
+
+  const denomTotals = useMemo(() => {
+    const relevantIds = relevantOutlets.map((o) => o.id);
+    const totals: Record<string, number> = {
+      note1: 0, note2: 0, note5: 0, note10: 0, note20: 0,
+      note50: 0, note100: 0, note200: 0, note500: 0, note1000: 0
+    };
+    segregationRecords
+      .filter((r) => relevantIds.includes(r.outletId))
+      .forEach((r) => {
+        DENOM_LIST.forEach((d) => {
+          totals[d.key] += r.denominations?.[d.key] || 0;
+        });
+      });
+    return totals;
+  }, [segregationRecords, relevantOutlets]);
 
          const totals = useMemo(() => {
     let mother = 0;
