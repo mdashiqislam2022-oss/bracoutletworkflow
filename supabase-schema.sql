@@ -502,3 +502,42 @@ ALTER TABLE public.cash_transfers ENABLE ROW LEVEL SECURITY;
 
 CREATE POLICY "select_cash_transfers" ON public.cash_transfers FOR SELECT USING (true);
 CREATE POLICY "insert_cash_transfers" ON public.cash_transfers FOR INSERT WITH CHECK (true);
+
+-- ==============================================================================
+-- NOTE & RULE MODULE
+-- ==============================================================================
+
+CREATE TABLE IF NOT EXISTS public.afo_notes (
+    id TEXT PRIMARY KEY,
+    outlet_id TEXT NOT NULL,
+    outlet_name TEXT NOT NULL,
+    user_id TEXT NOT NULL,
+    user_name TEXT NOT NULL,
+    title TEXT NOT NULL,
+    content_html TEXT NOT NULL,
+    note_date TEXT NOT NULL,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT timezone('utc'::text, now())
+);
+
+CREATE TABLE IF NOT EXISTS public.outlet_rules (
+    id TEXT PRIMARY KEY,
+    title TEXT NOT NULL,
+    sector TEXT,
+    content_html TEXT NOT NULL,
+    rule_date TEXT NOT NULL,
+    outlet_ids JSONB NOT NULL DEFAULT '[]'::jsonb,
+    created_by_user_id TEXT,
+    created_by_user_name TEXT,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT timezone('utc'::text, now())
+);
+
+ALTER TABLE public.afo_notes ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.outlet_rules ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "select_afo_notes" ON public.afo_notes FOR SELECT USING (true);
+CREATE POLICY "insert_afo_notes" ON public.afo_notes FOR INSERT WITH CHECK (true);
+CREATE POLICY "delete_afo_notes" ON public.afo_notes FOR DELETE USING (true);
+
+CREATE POLICY "select_outlet_rules" ON public.outlet_rules FOR SELECT USING (true);
+CREATE POLICY "insert_outlet_rules" ON public.outlet_rules FOR INSERT WITH CHECK (true);
+CREATE POLICY "update_outlet_rules" ON public.outlet_rules FOR UPDATE USING (true) WITH CHECK (true);
