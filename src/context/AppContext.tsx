@@ -3223,6 +3223,12 @@ if (sessionStatus.isActive) {
     showToast({ message: 'Rule assigned to additional outlet(s).', type: 'success' });
   };
   
+  const deleteRule = (id: string) => {
+    setRules((prev) => prev.filter((r) => r.id !== id));
+    SupabaseService.deleteRule(id);
+    showToast({ message: 'Rule deleted.', type: 'info' });
+  };
+  
   const addCashTransfer = (data: { outletId: string; transferType: CashTransferType; amount: number; denominations?: DenominationCounts; note?: string }): CashTransferRecord => {
     const user = currentUser || { id: 'USR-AFO-001', fullName: 'Master Administrator' };
     const outlet = outlets.find((o) => o.id === data.outletId);
