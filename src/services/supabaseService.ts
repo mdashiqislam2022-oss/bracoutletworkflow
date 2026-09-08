@@ -16,10 +16,12 @@ import {
      PortalGovernanceSettings,
   CustomerAccountRecord,
   DenominationSegregationRecord,
-  MotherAmountRecord,
+    MotherAmountRecord,
   OutletTransferRecord,
     OutletVaultRecord,
-  CashTransferRecord
+  CashTransferRecord,
+  NoteRecord,
+  RuleRecord
 } from '../types';
 /**
  * Maps database snake_case or JSON record to TypeScript ChequeCardEntry
