@@ -163,8 +163,9 @@ export interface AppContextType {
   rules: RuleRecord[];
   addNote: (data: { title: string; contentHtml: string; noteDate: string }) => NoteRecord;
   deleteNote: (id: string) => void;
-  addRule: (data: { title: string; sector: string; contentHtml: string; ruleDate: string; outletIds: string[] }) => RuleRecord;
+    addRule: (data: { title: string; sector: string; contentHtml: string; ruleDate: string; outletIds: string[] }) => RuleRecord;
   updateRuleOutlets: (ruleId: string, outletIds: string[]) => void;
+  deleteRule: (id: string) => void;
     cashTransfers: CashTransferRecord[];
   addCashTransfer: (data: { outletId: string; transferType: CashTransferType; amount: number; denominations?: DenominationCounts; note?: string }) => CashTransferRecord;
 
