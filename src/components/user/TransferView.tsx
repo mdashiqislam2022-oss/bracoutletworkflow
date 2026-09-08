@@ -120,9 +120,7 @@ export const TransferView: React.FC = () => {
         <h2 className={`font-bold text-lg flex items-center gap-2 mb-1 ${isDark ? 'text-slate-100' : 'text-slate-900'}`}>
           <ArrowRightLeft className="text-emerald-500" size={20} /> Transfer
         </h2>
-        <p className="text-xs text-slate-500 mb-4">
-          RTGS ও Move Money ট্রান্সফার এখান থেকে করুন এবং হিস্টোরি দেখুন।
-        </p>
+       
 
         {/* 2 Summary Boxes */}
         <div className="grid grid-cols-2 gap-3 mb-6 max-w-lg">
