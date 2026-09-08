@@ -7,7 +7,7 @@ import { ShieldCheck, Plus, X, Building2, Check, PlusCircle, Trash2 } from 'luci
 const SECTORS = ['Cash Handling', 'Loan Operations', 'Cheque & Card', 'Customer Service', 'Compliance', 'General'];
 
 export const AddRulesView: React.FC = () => {
-  const { outlets, rules, addRule, updateRuleOutlets, userPreferences } = useApp();
+   const { outlets, rules, addRule, updateRuleOutlets, deleteRule, userPreferences } = useApp();
   const isDark = userPreferences.theme === 'dark';
 
   const cardBg = isDark ? 'bg-[#1A2333] border-slate-800' : 'bg-white border-slate-200';
