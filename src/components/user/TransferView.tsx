@@ -114,9 +114,15 @@ export const TransferView: React.FC = () => {
     const amt = parseFloat(amountInput);
     if (!currentUser || isNaN(amt) || amt <= 0) return;
 
-    if (transferType === 'RTGS' && segregatedTotal <= 0) {
-      showToast({ message: 'RTGS Transfer save করার আগে অবশ্যই Segregation দিতে হবে।', type: 'error' });
-      return;
+        if (transferType === 'RTGS') {
+      if (segregatedTotal <= 0) {
+        showToast({ message: 'RTGS Transfer save করার আগে অবশ্যই Segregation দিতে হবে।', type: 'error' });
+        return;
+      }
+      if (amt !== segregatedTotal) {
+        showToast({ message: 'Amount এবং Segregation Total অবশ্যই এক হতে হবে।', type: 'error' });
+        return;
+      }
     }
 
     addCashTransfer({
