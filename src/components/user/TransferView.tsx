@@ -76,6 +76,15 @@ export const TransferView: React.FC = () => {
   const segregatedTotal = useMemo(() => {
     return [...DENOM_LEFT, ...DENOM_RIGHT].reduce((sum, d) => sum + denoms[d.key] * d.value, 0);
   }, [denoms]);
+  
+  const canSaveTransfer = useMemo(() => {
+    const amt = parseFloat(amountInput);
+    if (isNaN(amt) || amt <= 0) return false;
+    if (transferType === 'RTGS') {
+      return segregatedTotal > 0 && amt === segregatedTotal;
+    }
+    return true;
+  }, [amountInput, transferType, segregatedTotal]);
 
     const historyList = useMemo(() => {
     const scoped = !dateFilter
