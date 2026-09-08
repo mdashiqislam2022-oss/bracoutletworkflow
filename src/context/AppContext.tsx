@@ -3157,6 +3157,71 @@ if (sessionStatus.isActive) {
     return newRecord;
   };
   
+  // Note & Rule Module
+  const addNote = (data: { title: string; contentHtml: string; noteDate: string }): NoteRecord => {
+    const user = currentUser || { id: 'USR-AFO-001', fullName: 'Ashiqul Islam', outletId: 'OUT-DHK-001', outletName: 'Kalaroa' };
+    const newRecord: NoteRecord = {
+      id: createUniqueId('NOTE'),
+      outletId: user.outletId || '',
+      outletName: user.outletName || '',
+      userId: user.id,
+      userName: user.fullName,
+      title: data.title,
+      contentHtml: data.contentHtml,
+      noteDate: data.noteDate,
+      createdAt: new Date().toISOString()
+    };
+    setNotes((prev) => [newRecord, ...prev]);
+    SupabaseService.saveNote(newRecord);
+    showToast({ message: 'Note saved successfully!', type: 'success' });
+    return newRecord;
+  };
+
+  const deleteNote = (id: string) => {
+    setNotes((prev) => prev.filter((n) => n.id !== id));
+    SupabaseService.deleteNote(id);
+    showToast({ message: 'Note deleted.', type: 'info' });
+  };
+
+  const addRule = (data: {
+    title: string;
+    sector: string;
+    contentHtml: string;
+    ruleDate: string;
+    outletIds: string[];
+  }): RuleRecord => {
+    const user = currentUser || { id: 'USR-ADMIN-001', fullName: 'Master Administrator' };
+    const newRecord: RuleRecord = {
+      id: createUniqueId('RULE'),
+      title: data.title,
+      sector: data.sector,
+      contentHtml: data.contentHtml,
+      ruleDate: data.ruleDate,
+      outletIds: data.outletIds,
+      createdByUserId: user.id,
+      createdByUserName: user.fullName,
+      createdAt: new Date().toISOString()
+    };
+    setRules((prev) => [newRecord, ...prev]);
+    SupabaseService.saveRule(newRecord);
+    addAuditEntry('RULE_ADDED', `New rule "${data.title}" added for ${data.outletIds.length} outlet(s)`);
+    showToast({ message: 'Rule saved successfully!', type: 'success' });
+    return newRecord;
+  };
+
+  const updateRuleOutlets = (ruleId: string, outletIds: string[]) => {
+    setRules((prev) =>
+      prev.map((r) => {
+        if (r.id !== ruleId) return r;
+        const merged = Array.from(new Set([...r.outletIds, ...outletIds]));
+        const updated = { ...r, outletIds: merged };
+        SupabaseService.saveRule(updated);
+        return updated;
+      })
+    );
+    showToast({ message: 'Rule assigned to additional outlet(s).', type: 'success' });
+  };
+  
   const addCashTransfer = (data: { outletId: string; transferType: CashTransferType; amount: number; denominations?: DenominationCounts; note?: string }): CashTransferRecord => {
     const user = currentUser || { id: 'USR-AFO-001', fullName: 'Master Administrator' };
     const outlet = outlets.find((o) => o.id === data.outletId);
