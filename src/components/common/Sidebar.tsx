@@ -19,7 +19,8 @@ import {
   Zap,
   ArrowRightLeft,
   Calculator,
-    BarChart3,
+       BarChart3,
+  StickyNote
 } from 'lucide-react';
 import { t } from '../../utils/translations';
 import { SupportModal } from './SupportModal';
