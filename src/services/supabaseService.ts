@@ -1011,6 +1011,16 @@ export const SupabaseService = {
     }
   },
   
+  // Delete Outlet Rule
+  async deleteRule(id: string) {
+    if (!this.isAvailable() || !supabase) return;
+    try {
+      await supabase.from('outlet_rules').delete().eq('id', id);
+    } catch (err) {
+      console.warn('Error deleting rule from Supabase:', err);
+    }
+  },
+  
   // Save Cash Transfer Entry (RTGS / Move Money)
   async saveCashTransfer(record: CashTransferRecord) {
     if (!this.isAvailable() || !supabase) return;
