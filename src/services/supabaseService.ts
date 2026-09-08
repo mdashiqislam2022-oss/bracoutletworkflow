@@ -962,7 +962,7 @@ export const SupabaseService = {
     }
   },
 
-  // Save Outlet Vault Entry
+    // Save Outlet Vault Entry
   async saveOutletVault(record: OutletVaultRecord) {
     if (!this.isAvailable() || !supabase) return;
     try {
@@ -970,6 +970,38 @@ export const SupabaseService = {
       await supabase.from('outlet_vaults').upsert(dbRow);
     } catch (err) {
       console.warn('Error saving outlet vault to Supabase:', err);
+    }
+  },
+
+  // Save AFO Note
+  async saveNote(record: NoteRecord) {
+    if (!this.isAvailable() || !supabase) return;
+    try {
+      const dbRow = mapNoteToDb(record);
+      await supabase.from('afo_notes').upsert(dbRow);
+    } catch (err) {
+      console.warn('Error saving note to Supabase:', err);
+    }
+  },
+
+  // Delete AFO Note
+  async deleteNote(id: string) {
+    if (!this.isAvailable() || !supabase) return;
+    try {
+      await supabase.from('afo_notes').delete().eq('id', id);
+    } catch (err) {
+      console.warn('Error deleting note from Supabase:', err);
+    }
+  },
+
+  // Save/Upsert Outlet Rule (used for both create & add-outlet update)
+  async saveRule(record: RuleRecord) {
+    if (!this.isAvailable() || !supabase) return;
+    try {
+      const dbRow = mapRuleToDb(record);
+      await supabase.from('outlet_rules').upsert(dbRow);
+    } catch (err) {
+      console.warn('Error saving rule to Supabase:', err);
     }
   },
   
