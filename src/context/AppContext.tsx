@@ -452,6 +452,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
                   if (cloudData.motherAmounts) setMotherAmounts(cloudData.motherAmounts);
           if (cloudData.outletTransfers && cloudData.outletTransfers.length) setOutletTransfers(cloudData.outletTransfers);
           if (cloudData.outletVaults && cloudData.outletVaults.length) setOutletVaults(cloudData.outletVaults);
+          if (cloudData.notes && cloudData.notes.length) setNotes(cloudData.notes);
+if (cloudData.rules && cloudData.rules.length) setRules(cloudData.rules);
                     if (cloudData.cashTransfers && cloudData.cashTransfers.length) setCashTransfers(cloudData.cashTransfers);
         }
       }).catch((err) => console.warn('Refresh error:', err));
