@@ -3282,16 +3282,21 @@ if (sessionStatus.isActive) {
       });
     }
       
-    // RTGS transfers move outlet cash INTO the Mother Amount (vault cash goes down, mother goes up)
+        // RTGS transfers move outlet cash INTO the Mother Amount (vault cash goes down, mother goes up)
+    // If a charge is applied, only the amount AFTER deducting the charge is added to Mother Amount
     if (data.transferType === 'RTGS') {
+      const rtgsChargeAmt = data.chargeAmount || 0;
+      const rtgsNetAmount = data.amount - rtgsChargeAmt;
       const latestMotherRtgs = motherAmounts
         .filter((m) => m.outletId === data.outletId)
         .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())[0];
       const currentMotherAmountRtgs = latestMotherRtgs?.amount || 0;
       addMotherAmount({
         outletId: data.outletId,
-        amount: currentMotherAmountRtgs + data.amount,
-        note: `RTGS transfer of ৳${data.amount}`
+        amount: currentMotherAmountRtgs + rtgsNetAmount,
+        note: rtgsChargeAmt > 0
+          ? `RTGS transfer of ৳${data.amount} (Charge: ৳${rtgsChargeAmt}, Net: ৳${rtgsNetAmount})`
+          : `RTGS transfer of ৳${data.amount}`
       });
     }
 
