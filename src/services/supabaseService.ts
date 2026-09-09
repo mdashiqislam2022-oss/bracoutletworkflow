@@ -351,8 +351,10 @@ export const mapDbToCashTransfer = (row: any): CashTransferRecord => ({
     note500: Number(row.note_500 || 0),
     note1000: Number(row.note_1000 || 0)
   },
-  outletId: row.outlet_id || '',
+    outletId: row.outlet_id || '',
   outletName: row.outlet_name || '',
+  destinationOutletId: row.destination_outlet_id || undefined,
+  destinationOutletName: row.destination_outlet_name || undefined,
   userId: row.user_id,
   userName: row.user_name,
   note: row.note || undefined,
