@@ -143,8 +143,9 @@ export const TransferView: React.FC = () => {
       <div className={`rounded-2xl border p-4 md:p-5 ${cardBg}`}>
         <h2 className={`font-bold text-lg flex items-center gap-2 mb-1 ${isDark ? 'text-slate-100' : 'text-slate-900'}`}>
           <ArrowRightLeft className="text-emerald-500" size={20} /> Transfer
-        </h2>
-       
+               </h2>
+
+        <OutletCashSummaryPanel outletId={currentUser?.outletId || ''} isDark={isDark} />
 
         {/* 2 Summary Boxes */}
         <div className="grid grid-cols-2 gap-3 mb-6 max-w-lg">
