@@ -419,6 +419,7 @@ export interface CashTransferRecord {
   id: string;
   transferType: CashTransferType;
   amount: number;
+  chargeAmount?: number;
   denominations?: DenominationCounts;
   outletId: string;
   outletName: string;
