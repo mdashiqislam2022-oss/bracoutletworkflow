@@ -116,16 +116,29 @@ export const TotalCashAnalysisView: React.FC = () => {
           totals[d.key] += sign * (r.denominations?.[d.key] || 0);
         });
       });
-    cashTransfers
+       cashTransfers
       .filter((t) => relevantIds.includes(t.outletId) && t.transferType === 'RTGS' && t.denominations)
       .forEach((t) => {
         DENOM_LIST.forEach((d) => {
           totals[d.key] -= t.denominations?.[d.key] || 0;
         });
       });
+    cashTransfers
+      .filter((t) => t.transferType === 'TRANSFER_TO_OUTLET' && t.denominations)
+      .forEach((t) => {
+        if (relevantIds.includes(t.outletId)) {
+          DENOM_LIST.forEach((d) => {
+            totals[d.key] -= t.denominations?.[d.key] || 0;
+          });
+        }
+        if (t.destinationOutletId && relevantIds.includes(t.destinationOutletId)) {
+          DENOM_LIST.forEach((d) => {
+            totals[d.key] += t.denominations?.[d.key] || 0;
+          });
+        }
+      });
     return totals;
   }, [segregationRecords, cashTransfers, relevantOutlets]);
-
          const totals = useMemo(() => {
     let mother = 0;
     let afoCash = 0;
