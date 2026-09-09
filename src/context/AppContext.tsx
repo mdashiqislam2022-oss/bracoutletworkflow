@@ -167,8 +167,7 @@ export interface AppContextType {
   updateRuleOutlets: (ruleId: string, outletIds: string[]) => void;
   deleteRule: (id: string) => void;
     cashTransfers: CashTransferRecord[];
-  addCashTransfer: (data: { outletId: string; transferType: CashTransferType; amount: number; denominations?: DenominationCounts; note?: string }) => CashTransferRecord;
-
+    addCashTransfer: (data: { outletId: string; transferType: CashTransferType; amount: number; denominations?: DenominationCounts; note?: string; destinationOutletId?: string }) => CashTransferRecord;
 
   // Add/Edit Entry Modal controls
   isAddEntryModalOpen: boolean;
