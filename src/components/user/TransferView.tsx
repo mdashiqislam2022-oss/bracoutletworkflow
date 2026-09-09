@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { useApp } from '../../context/AppContext';
+import { OutletCashSummaryPanel } from '../common/OutletCashSummaryPanel';
 import {
   ArrowRightLeft,
   Wallet,
