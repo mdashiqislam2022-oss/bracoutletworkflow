@@ -589,7 +589,13 @@ export const TransferView: React.FC = () => {
             {historyList.map((t) => (
               <div key={t.id} className={`flex items-center justify-between rounded-lg border px-3 py-2 text-[11px] ${inputBg}`}>
                 <div>
-                  <span className="font-bold">{t.transferType === 'RTGS' ? 'RTGS Transfer' : 'Move Money Transfer'}</span>
+                                   <span className="font-bold">
+                    {t.transferType === 'RTGS'
+                      ? 'RTGS Transfer'
+                      : t.transferType === 'MOVE_MONEY'
+                      ? 'Move Money Transfer'
+                      : `Transfer to ${t.destinationOutletName || 'Outlet'}`}
+                  </span>
                   {t.note ? <span className="text-slate-500"> ({t.note})</span> : null}
                   <div className="text-slate-500">{new Date(t.createdAt).toLocaleString()}</div>
                 </div>
