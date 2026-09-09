@@ -319,7 +319,7 @@ export const TransferView: React.FC = () => {
                       <input
                         type="number"
                         min={0}
-                        disabled={transferType !== 'RTGS'}
+                                                disabled={transferType === 'MOVE_MONEY'}
                         value={denoms[d.key] || ''}
                         onChange={(e) => handleDenomChange(d.key, e.target.value)}
                         placeholder="0"
@@ -335,7 +335,7 @@ export const TransferView: React.FC = () => {
                       <input
                         type="number"
                         min={0}
-                        disabled={transferType !== 'RTGS'}
+                                                disabled={transferType === 'MOVE_MONEY'}
                         value={denoms[d.key] || ''}
                         onChange={(e) => handleDenomChange(d.key, e.target.value)}
                         placeholder="0"
