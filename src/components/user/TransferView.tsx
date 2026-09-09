@@ -154,10 +154,17 @@ export const TransferView: React.FC = () => {
       return;
     }
 
+       const rtgsChargeAmt = transferType === 'RTGS' && rtgsChargeEnabled ? (parseFloat(rtgsChargeAmount) || 0) : 0;
+    if (transferType === 'RTGS' && rtgsChargeEnabled && rtgsChargeAmt > amt) {
+      showToast({ message: 'Charge amount, total RTGS amount থেকে বেশি হতে পারবে না।', type: 'error' });
+      return;
+    }
+
     addCashTransfer({
       outletId: currentUser.outletId,
       transferType,
       amount: amt,
+      chargeAmount: transferType === 'RTGS' ? rtgsChargeAmt : undefined,
       denominations: transferType !== 'MOVE_MONEY' ? denoms : undefined,
       note: note.trim() || undefined,
       destinationOutletId: transferType === 'TRANSFER_TO_OUTLET' ? destinationOutletId : undefined
@@ -167,6 +174,8 @@ export const TransferView: React.FC = () => {
     setNote('');
     setDestinationOutletId('');
     setOutletSearchTerm('');
+    setRtgsChargeEnabled(false);
+    setRtgsChargeAmount('100');
   };
 
   return (
