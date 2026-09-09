@@ -59,7 +59,7 @@ export const OutletCashSummaryPanel: React.FC<OutletCashSummaryPanelProps> = ({ 
       .filter((t) => t.outletId === outletId && t.transferType === 'MOVE_MONEY')
       .reduce((sum, t) => sum + t.amount, 0);
 
-    const vault = mother + afoCash + moveMoney - transfer;
+        const vault = afoCash + moveMoney - transfer;
 
     return { mother, afoCash, transfer, vault };
   }, [outletId, motherAmounts, segregationRecords, outletTransfers, cashTransfers]);
