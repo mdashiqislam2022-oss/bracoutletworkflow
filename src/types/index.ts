@@ -373,6 +373,9 @@ export interface DenominationSegregationRecord {
   userId: string;
   userName: string;
   notes?: string;
+  crossOutletId?: string;
+  crossOutletName?: string;
+  crossOutletDirection?: 'HERE' | 'THERE';
   createdAt: string;
 }
 
