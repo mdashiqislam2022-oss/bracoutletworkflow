@@ -96,15 +96,19 @@ export const TransferView: React.FC = () => {
     return [...DENOM_LEFT, ...DENOM_RIGHT].reduce((sum, d) => sum + denoms[d.key] * d.value, 0);
   }, [denoms]);
   
-    const canSaveTransfer = useMemo(() => {
+        const canSaveTransfer = useMemo(() => {
     const amt = parseFloat(amountInput);
     if (isNaN(amt) || amt <= 0) return false;
     if (transferType === 'RTGS' || transferType === 'TRANSFER_TO_OUTLET') {
       if (segregatedTotal <= 0 || amt !== segregatedTotal) return false;
     }
+    if (transferType === 'RTGS' && rtgsChargeEnabled) {
+      const chargeAmt = parseFloat(rtgsChargeAmount);
+      if (isNaN(chargeAmt) || chargeAmt < 0 || chargeAmt > amt) return false;
+    }
     if (transferType === 'TRANSFER_TO_OUTLET' && !destinationOutletId) return false;
     return true;
-  }, [amountInput, transferType, segregatedTotal, destinationOutletId]);
+  }, [amountInput, transferType, segregatedTotal, destinationOutletId, rtgsChargeEnabled, rtgsChargeAmount]);
 
     const historyList = useMemo(() => {
     const scoped = !dateFilter
