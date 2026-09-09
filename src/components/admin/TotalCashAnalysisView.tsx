@@ -260,11 +260,11 @@ export const TotalCashAnalysisView: React.FC = () => {
             </div>
             <div className="text-lg font-extrabold mt-1 text-emerald-600">৳ {totals.afoCash.toLocaleString()}</div>
           </div>
-          <div className="rounded-xl border p-3 border-amber-500/40 bg-amber-500/10">
+                    <div className="rounded-xl border p-3 border-amber-500/40 bg-amber-500/10">
             <div className="flex items-center gap-1.5 text-[11px] font-semibold text-amber-600">
-              <ArrowRightLeft size={13} /> Total Transfer Amount
+              <ArrowRightLeft size={13} /> Total Amount Received From Outlet
             </div>
-            <div className="text-lg font-extrabold mt-1 text-amber-600">৳ {totals.transfer.toLocaleString()}</div>
+            <div className="text-lg font-extrabold mt-1 text-amber-600">৳ {totals.receivedFromOutlet.toLocaleString()}</div>
           </div>
           <div className="rounded-xl border p-3 border-purple-500/40 bg-purple-500/10">
             <div className="flex items-center gap-1.5 text-[11px] font-semibold text-purple-600">
