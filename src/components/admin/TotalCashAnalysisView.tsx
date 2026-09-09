@@ -139,11 +139,12 @@ export const TotalCashAnalysisView: React.FC = () => {
       });
     return totals;
   }, [segregationRecords, cashTransfers, relevantOutlets]);
-         const totals = useMemo(() => {
+            const totals = useMemo(() => {
     let mother = 0;
     let afoCash = 0;
     let transfer = 0;
     let moveMoney = 0;
+    let receivedFromOutlet = 0;
     relevantOutlets.forEach((o) => {
       mother += getLatestMotherAmount(o.id)?.amount || 0;
       afoCash += getAfoCash(o.id);
@@ -151,9 +152,12 @@ export const TotalCashAnalysisView: React.FC = () => {
       moveMoney += cashTransfers
         .filter((t) => t.outletId === o.id && t.transferType === 'MOVE_MONEY')
         .reduce((sum, t) => sum + t.amount, 0);
+      receivedFromOutlet += cashTransfers
+        .filter((t) => t.destinationOutletId === o.id && t.transferType === 'TRANSFER_TO_OUTLET')
+        .reduce((sum, t) => sum + t.amount, 0);
     });
         const vault = afoCash - transfer;
-    return { mother, afoCash, transfer, vault };
+    return { mother, afoCash, transfer, vault, receivedFromOutlet };
   }, [relevantOutlets, motherAmounts, outletTransfers, segregationRecords, cashTransfers]);
   const selectedOutletName = viewOutlet === 'ALL' ? 'All Outlets' : outlets.find((o) => o.id === viewOutlet)?.name || 'All Outlets';
 
