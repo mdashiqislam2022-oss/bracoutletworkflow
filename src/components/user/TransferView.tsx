@@ -172,8 +172,8 @@ export const TransferView: React.FC = () => {
 
         <OutletCashSummaryPanel outletId={currentUser?.outletId || ''} isDark={isDark} />
 
-        {/* 2 Summary Boxes */}
-        <div className="grid grid-cols-2 gap-3 mb-6 max-w-lg">
+               {/* 3 Summary Boxes */}
+        <div className="grid grid-cols-3 gap-3 mb-6 max-w-2xl">
           <div className="rounded-xl border p-3 border-blue-500/40 bg-blue-500/10">
             <div className="flex items-center gap-1.5 text-[11px] font-semibold text-blue-600">
               <Landmark size={13} /> RTGS Transfer
@@ -185,6 +185,12 @@ export const TransferView: React.FC = () => {
               <Wallet size={13} /> Move Money Transfer
             </div>
             <div className="text-lg font-extrabold mt-1 text-purple-600">৳ {moveMoneyTotal.toLocaleString()}</div>
+          </div>
+          <div className="rounded-xl border p-3 border-teal-500/40 bg-teal-500/10">
+            <div className="flex items-center gap-1.5 text-[11px] font-semibold text-teal-600">
+              <Send size={13} /> Transferred Amount to Outlet
+            </div>
+            <div className="text-lg font-extrabold mt-1 text-teal-600">৳ {transferToOutletTotal.toLocaleString()}</div>
           </div>
         </div>
 
