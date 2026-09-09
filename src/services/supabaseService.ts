@@ -265,11 +265,14 @@ export const mapSegregationToDb = (record: DenominationSegregationRecord) => {
     account_title: record.accountTitle,
     customer_name: record.customerName,
     mobile_number: record.mobileNumber,
-    outlet_id: record.outletId,
+       outlet_id: record.outletId,
     outlet_name: record.outletName,
     user_id: record.userId,
     user_name: record.userName,
-        notes: record.notes || null
+        notes: record.notes || null,
+    cross_outlet_id: record.crossOutletId || null,
+    cross_outlet_name: record.crossOutletName || null,
+    cross_outlet_direction: record.crossOutletDirection || null
   };
 };
 
