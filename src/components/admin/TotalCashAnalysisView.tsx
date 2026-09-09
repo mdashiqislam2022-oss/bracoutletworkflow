@@ -283,7 +283,7 @@ export const TotalCashAnalysisView: React.FC = () => {
 
 
         {/* History */}
-        <div>
+                <div>
           <div className="text-xs font-bold flex items-center gap-1.5 mb-2 text-slate-500">
             <History size={14} /> Recent History
           </div>
@@ -291,16 +291,40 @@ export const TotalCashAnalysisView: React.FC = () => {
             {combinedHistory.length === 0 && (
               <div className="text-xs text-slate-500 text-center py-6">No history yet.</div>
             )}
-            {combinedHistory.map((h) => (
-              <div key={`${h.kind}-${h.id}`} className={`flex items-center justify-between rounded-lg border px-3 py-2 text-[11px] ${inputBg}`}>
-                <div>
-                  <span className="font-bold">{h.kind}</span> — {h.outletName}
-                  {h.note ? <span className="text-slate-500"> ({h.note})</span> : null}
-                  <div className="text-slate-500">{new Date(h.createdAt).toLocaleString()} · {h.setByUserName}</div>
+            {combinedHistory.map((h) => {
+              const hasDenoms = h.kind === 'RTGS Transfer' && !!(h as any).denominations;
+              const isOpen = expandedHistoryId === h.id;
+              return (
+                <div key={`${h.kind}-${h.id}`} className={`rounded-lg border ${inputBg}`}>
+                  <button
+                    type="button"
+                    onClick={() => hasDenoms && setExpandedHistoryId(isOpen ? null : h.id)}
+                    className={`w-full flex items-center justify-between px-3 py-2 text-[11px] text-left ${
+                      hasDenoms ? 'cursor-pointer' : 'cursor-default'
+                    }`}
+                  >
+                    <div>
+                      <span className="font-bold">{h.kind}</span> — {h.outletName}
+                      {h.note ? <span className="text-slate-500"> ({h.note})</span> : null}
+                      <div className="text-slate-500">{new Date(h.createdAt).toLocaleString()} · {h.setByUserName}</div>
+                    </div>
+                    <div className="font-extrabold">৳ {h.amount.toLocaleString()}</div>
+                  </button>
+
+                  {isOpen && hasDenoms && (
+                    <div className="px-3 pb-2 pt-1 border-t border-slate-700/20">
+                      <div className="grid grid-cols-2 md:grid-cols-5 gap-2 text-[10px]">
+                        {DENOM_LIST.map((d) => (
+                          <div key={d.key} className="rounded-lg bg-black/5 dark:bg-white/5 px-2 py-1">
+                            <span className="font-semibold">Tk{d.value}:</span> {(h as any).denominations?.[d.key] || 0}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
-                <div className="font-extrabold">৳ {h.amount.toLocaleString()}</div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </div>
