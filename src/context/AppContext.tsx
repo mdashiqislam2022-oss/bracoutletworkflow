@@ -3228,9 +3228,10 @@ if (sessionStatus.isActive) {
     showToast({ message: 'Rule deleted.', type: 'info' });
   };
   
-  const addCashTransfer = (data: { outletId: string; transferType: CashTransferType; amount: number; denominations?: DenominationCounts; note?: string }): CashTransferRecord => {
+    const addCashTransfer = (data: { outletId: string; transferType: CashTransferType; amount: number; denominations?: DenominationCounts; note?: string; destinationOutletId?: string }): CashTransferRecord => {
     const user = currentUser || { id: 'USR-AFO-001', fullName: 'Master Administrator' };
     const outlet = outlets.find((o) => o.id === data.outletId);
+    const destinationOutlet = data.destinationOutletId ? outlets.find((o) => o.id === data.destinationOutletId) : undefined;
     const newRecord: CashTransferRecord = {
       id: createUniqueId('CT'),
       transferType: data.transferType,
@@ -3238,6 +3239,8 @@ if (sessionStatus.isActive) {
       denominations: data.denominations,
       outletId: data.outletId,
       outletName: outlet?.name || '',
+      destinationOutletId: data.destinationOutletId,
+      destinationOutletName: destinationOutlet?.name,
       userId: user.id,
       userName: user.fullName,
       note: data.note,
@@ -3259,8 +3262,17 @@ if (sessionStatus.isActive) {
       });
     }
 
-    addAuditEntry('CASH_TRANSFER_ADDED', `${data.transferType} transfer of ৳${data.amount} added for ${outlet?.name}`, outlet?.name);
-    showToast({ message: `${data.transferType === 'RTGS' ? 'RTGS' : 'Move Money'} transfer saved.`, type: 'success' });
+    addAuditEntry(
+      'CASH_TRANSFER_ADDED',
+      `${data.transferType} transfer of ৳${data.amount} added for ${outlet?.name}${destinationOutlet ? ` → ${destinationOutlet.name}` : ''}`,
+      outlet?.name
+    );
+    showToast({
+      message: `${
+        data.transferType === 'RTGS' ? 'RTGS' : data.transferType === 'MOVE_MONEY' ? 'Move Money' : 'Transfer to Outlet'
+      } transfer saved.`,
+      type: 'success'
+    });
     return newRecord;
   };
 
