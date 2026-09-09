@@ -3035,7 +3035,7 @@ if (sessionStatus.isActive) {
   };
 
   // Denomination Segregation Module — Save Segregation Transaction
-  const addSegregationRecord = (data: {
+    const addSegregationRecord = (data: {
     transactionType: SegregationTransactionType;
     denominations: {
       note1: number; note2: number; note5: number; note10: number; note20: number;
@@ -3053,6 +3053,8 @@ if (sessionStatus.isActive) {
     customerName: string;
     mobileNumber: string;
     notes?: string;
+    crossOutletId?: string;
+    crossOutletDirection?: 'HERE' | 'THERE';
   }): DenominationSegregationRecord => {
     const user = currentUser || {
       id: 'USR-AFO-001',
@@ -3060,6 +3062,8 @@ if (sessionStatus.isActive) {
       outletId: 'OUT-DHK-001',
       outletName: 'Motijheel Commercial SME Outlet'
     };
+
+    const crossOutlet = data.crossOutletId ? outlets.find((o) => o.id === data.crossOutletId) : undefined;
 
     const newRecord: DenominationSegregationRecord = {
       id: createUniqueId('SEG'),
@@ -3081,18 +3085,28 @@ if (sessionStatus.isActive) {
       userId: user.id,
       userName: user.fullName,
       notes: data.notes,
+      crossOutletId: data.crossOutletId,
+      crossOutletName: crossOutlet?.name,
+      crossOutletDirection: data.crossOutletDirection,
       createdAt: new Date().toISOString()
     };
 
         setSegregationRecords((prev) => [newRecord, ...prev]);
     SupabaseService.saveSegregationRecord(newRecord);
 
-    // Auto-adjust Mother Amount opposite to vault movement:
+    // Determine which outlet gets the NORMAL (full) effect, and which just gets
+    // a plain Mother Amount deduction (cross-outlet bookkeeping-only adjustment)
+    const isThere = data.crossOutletId && data.crossOutletDirection === 'THERE';
+    const effectiveOutletId = isThere ? data.crossOutletId! : newRecord.outletId;
+    const otherOutletId = data.crossOutletId
+      ? (isThere ? newRecord.outletId : data.crossOutletId)
+      : null;
+
+    // Auto-adjust Mother Amount opposite to vault movement (applied to the EFFECTIVE outlet):
     // CD/ID/LR/BC add cash TO the vault  -> that amount is deducted FROM Mother Amount
     // CW/LD  remove cash FROM the vault  -> that amount is added TO Mother Amount
-    const segOutletId = newRecord.outletId;
     const latestMotherForSeg = motherAmounts
-      .filter((m) => m.outletId === segOutletId)
+      .filter((m) => m.outletId === effectiveOutletId)
       .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())[0];
     const currentMotherForSeg = latestMotherForSeg?.amount || 0;
     const isCashOutType = data.transactionType === 'CW' || data.transactionType === 'LD';
@@ -3100,14 +3114,30 @@ if (sessionStatus.isActive) {
       ? currentMotherForSeg + data.actualAmount
       : currentMotherForSeg - data.actualAmount;
     addMotherAmount({
-      outletId: segOutletId,
+      outletId: effectiveOutletId,
       amount: updatedMotherForSeg,
       note: `Auto-adjusted from ${data.transactionType} transaction (${data.accountTitle})`
     });
 
+    // Cross-outlet bookkeeping adjustment: the OTHER outlet (the one that did NOT
+    // physically hold the cash) only gets its Mother Amount reduced.
+    if (otherOutletId) {
+      const latestMotherForOther = motherAmounts
+        .filter((m) => m.outletId === otherOutletId)
+        .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())[0];
+      const currentMotherForOther = latestMotherForOther?.amount || 0;
+      addMotherAmount({
+        outletId: otherOutletId,
+        amount: currentMotherForOther - data.actualAmount,
+        note: `Cross-outlet adjustment for ${data.transactionType} transaction (${data.accountTitle})`
+      });
+    }
+
     addAuditEntry(
       'DENOMINATION_SEGREGATION_SAVED',
-      `Segregation (${data.transactionType}) saved for ${data.accountTitle} (Acc: ${data.accountNumber}) — Amount: ৳${data.actualAmount}`,
+      `Segregation (${data.transactionType}) saved for ${data.accountTitle} (Acc: ${data.accountNumber}) — Amount: ৳${data.actualAmount}${
+        crossOutlet ? ` [Cross-Outlet: ${crossOutlet.name}, ${data.crossOutletDirection}]` : ''
+      }`,
       user.outletName
     );
     try {
