@@ -549,3 +549,11 @@ CREATE POLICY "delete_outlet_rules" ON public.outlet_rules FOR DELETE USING (tru
 
 ALTER TABLE public.cash_transfers ADD COLUMN IF NOT EXISTS destination_outlet_id TEXT;
 ALTER TABLE public.cash_transfers ADD COLUMN IF NOT EXISTS destination_outlet_name TEXT;
+
+-- ==============================================================================
+-- CROSS-OUTLET CASH RECEIVING SUPPORT (Denomination Segregation)
+-- ==============================================================================
+
+ALTER TABLE public.denomination_segregations ADD COLUMN IF NOT EXISTS cross_outlet_id TEXT;
+ALTER TABLE public.denomination_segregations ADD COLUMN IF NOT EXISTS cross_outlet_name TEXT;
+ALTER TABLE public.denomination_segregations ADD COLUMN IF NOT EXISTS cross_outlet_direction TEXT;
