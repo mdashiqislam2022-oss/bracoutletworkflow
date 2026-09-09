@@ -250,6 +250,43 @@ export const TransferView: React.FC = () => {
               </button>
             </div>
 
+                        {transferType === 'RTGS' && (
+              <div className={`rounded-lg border p-2 ${inputBg}`}>
+                <div className="flex items-center justify-between gap-2 mb-1.5">
+                  <span className="text-xs font-bold text-slate-500">RTGS Charge</span>
+                  <div className="flex gap-1">
+                    <button
+                      type="button"
+                      onClick={() => setRtgsChargeEnabled(true)}
+                      className={`px-3 py-1 rounded-md text-[11px] font-bold border ${
+                        rtgsChargeEnabled ? 'bg-emerald-500 text-white border-emerald-500' : `${inputBg}`
+                      }`}
+                    >
+                      Yes
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setRtgsChargeEnabled(false)}
+                      className={`px-3 py-1 rounded-md text-[11px] font-bold border ${
+                        !rtgsChargeEnabled ? 'bg-rose-500 text-white border-rose-500' : `${inputBg}`
+                      }`}
+                    >
+                      No
+                    </button>
+                  </div>
+                </div>
+                <input
+                  type="number"
+                  min={0}
+                  value={rtgsChargeAmount}
+                  onChange={(e) => setRtgsChargeAmount(e.target.value)}
+                  disabled={!rtgsChargeEnabled}
+                  placeholder="Charge amount"
+                  className={`w-full rounded-lg border px-2 py-1.5 text-xs ${inputBg} ${!rtgsChargeEnabled ? 'opacity-40 cursor-not-allowed' : ''}`}
+                />
+              </div>
+            )}
+
             <input
               type="number"
               min={0}
