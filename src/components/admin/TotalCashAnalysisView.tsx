@@ -69,14 +69,20 @@ export const TotalCashAnalysisView: React.FC = () => {
     return outletTransfers.filter((t) => t.outletId === outletId).reduce((sum, t) => sum + t.amount, 0);
   };
 
-       const getAfoCash = (outletId: string) => {
+            const getAfoCash = (outletId: string) => {
     const net = segregationRecords
       .filter((r) => r.outletId === outletId)
       .reduce((sum, r) => sum + (CASH_IN_TYPES.includes(r.transactionType) ? r.actualAmount : -r.actualAmount), 0);
     const rtgsOut = cashTransfers
       .filter((t) => t.outletId === outletId && t.transferType === 'RTGS')
       .reduce((sum, t) => sum + t.amount, 0);
-    return net - rtgsOut;
+    const transferOut = cashTransfers
+      .filter((t) => t.outletId === outletId && t.transferType === 'TRANSFER_TO_OUTLET')
+      .reduce((sum, t) => sum + t.amount, 0);
+    const transferIn = cashTransfers
+      .filter((t) => t.destinationOutletId === outletId && t.transferType === 'TRANSFER_TO_OUTLET')
+      .reduce((sum, t) => sum + t.amount, 0);
+    return net - rtgsOut - transferOut + transferIn;
   };
 
   const relevantOutlets = useMemo(() => {
