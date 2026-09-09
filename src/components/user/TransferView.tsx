@@ -76,6 +76,19 @@ export const TransferView: React.FC = () => {
   const moveMoneyTotal = useMemo(() => {
     return myTransfers.filter((t) => t.transferType === 'MOVE_MONEY').reduce((sum, t) => sum + t.amount, 0);
   }, [myTransfers]);
+  
+  const transferToOutletTotal = useMemo(() => {
+    return myTransfers.filter((t) => t.transferType === 'TRANSFER_TO_OUTLET').reduce((sum, t) => sum + t.amount, 0);
+  }, [myTransfers]);
+
+  const filteredOutlets = useMemo(() => {
+    const term = outletSearchTerm.trim().toLowerCase();
+    const list = outlets.filter((o) => o.id !== currentUser?.outletId);
+    if (!term) return list;
+    return list.filter((o) => o.name.toLowerCase().includes(term) || o.code?.toLowerCase().includes(term));
+  }, [outlets, outletSearchTerm, currentUser]);
+
+  const selectedDestinationOutlet = outlets.find((o) => o.id === destinationOutletId);
 
   const segregatedTotal = useMemo(() => {
     return [...DENOM_LEFT, ...DENOM_RIGHT].reduce((sum, d) => sum + denoms[d.key] * d.value, 0);
