@@ -144,10 +144,12 @@ export interface AppContextType {
     linkedAccountSource: 'LOAN_ACCOUNT' | 'CHEQUE_CARD' | 'CUSTOMER_ACCOUNT';
     linkedAccountId: string;
     accountNumber: string;
-    accountTitle: string;
+       accountTitle: string;
     customerName: string;
     mobileNumber: string;
         notes?: string;
+    crossOutletId?: string;
+    crossOutletDirection?: 'HERE' | 'THERE';
   }) => DenominationSegregationRecord;
 
   // Total Cash Analysis Module
