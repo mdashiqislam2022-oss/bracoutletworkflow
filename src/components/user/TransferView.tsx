@@ -47,8 +47,10 @@ export const TransferView: React.FC = () => {
     ? 'bg-[#0F172A] border-slate-700 text-slate-100'
     : 'bg-white border-slate-200 text-slate-900';
 
-  const [transferType, setTransferType] = useState<CashTransferType>('RTGS');
+    const [transferType, setTransferType] = useState<CashTransferType>('RTGS');
   const [amountInput, setAmountInput] = useState('');
+  const [rtgsChargeEnabled, setRtgsChargeEnabled] = useState(false);
+  const [rtgsChargeAmount, setRtgsChargeAmount] = useState('100');
   const [denoms, setDenoms] = useState<Record<DenomKey, number>>(emptyDenoms());
     const [note, setNote] = useState('');
     const [copiedTotal, setCopiedTotal] = useState(false);
