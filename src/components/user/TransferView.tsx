@@ -39,7 +39,7 @@ const emptyDenoms = (): Record<DenomKey, number> => ({
 });
 
 export const TransferView: React.FC = () => {
- const { currentUser, userPreferences, cashTransfers, addCashTransfer, showToast } = useApp();
+  const { currentUser, userPreferences, cashTransfers, addCashTransfer, showToast, outlets } = useApp();
 
   const isDark = userPreferences.theme === 'dark';
   const cardBg = isDark ? 'bg-[#1A2333] border-slate-800' : 'bg-white border-slate-200';
