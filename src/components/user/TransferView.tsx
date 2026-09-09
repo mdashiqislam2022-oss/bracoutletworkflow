@@ -202,7 +202,7 @@ export const TransferView: React.FC = () => {
               <Send size={14} /> Transfer Option
             </div>
 
-            <div className="flex gap-2">
+                        <div className="flex gap-2">
               <button
                 onClick={() => setTransferType('RTGS')}
                 className={`flex-1 py-1.5 rounded-lg text-xs font-bold border ${
@@ -223,6 +223,16 @@ export const TransferView: React.FC = () => {
               >
                 Move Money
               </button>
+              <button
+                onClick={() => setTransferType('TRANSFER_TO_OUTLET')}
+                className={`flex-1 py-1.5 rounded-lg text-xs font-bold border ${
+                  transferType === 'TRANSFER_TO_OUTLET'
+                    ? 'bg-teal-500 text-white border-teal-500'
+                    : `${inputBg}`
+                }`}
+              >
+                Transfer to Outlet
+              </button>
             </div>
 
             <input
@@ -239,6 +249,53 @@ export const TransferView: React.FC = () => {
               placeholder="Note (optional)"
               className={`w-full rounded-lg border px-2 py-1.5 text-xs ${inputBg}`}
             />
+
+            {transferType === 'TRANSFER_TO_OUTLET' && (
+              <div className="relative">
+                <button
+                  type="button"
+                  onClick={() => setOutletDropdownOpen((v) => !v)}
+                  className={`w-full flex items-center justify-between rounded-lg border px-2 py-1.5 text-xs font-semibold ${inputBg}`}
+                >
+                  <span className="truncate">{selectedDestinationOutlet ? selectedDestinationOutlet.name : 'Select Destination Outlet'}</span>
+                  <ChevronDown size={13} className="text-slate-400 shrink-0" />
+                </button>
+                {outletDropdownOpen && (
+                  <div className={`absolute z-30 mt-1 w-full rounded-xl border shadow-lg ${cardBg}`}>
+                    <div className="p-2 border-b border-slate-700/20">
+                      <input
+                        autoFocus
+                        value={outletSearchTerm}
+                        onChange={(e) => setOutletSearchTerm(e.target.value)}
+                        placeholder="Search outlet..."
+                        className={`w-full rounded-lg border px-2 py-1 text-xs ${inputBg}`}
+                      />
+                    </div>
+                    <div className="max-h-40 overflow-y-auto">
+                      {filteredOutlets.length === 0 && (
+                        <div className="text-[11px] text-slate-500 text-center py-3">No outlet found.</div>
+                      )}
+                      {filteredOutlets.map((o) => (
+                        <button
+                          key={o.id}
+                          type="button"
+                          onClick={() => {
+                            setDestinationOutletId(o.id);
+                            setOutletDropdownOpen(false);
+                            setOutletSearchTerm('');
+                          }}
+                          className={`w-full text-left px-3 py-1.5 text-xs font-semibold hover:bg-emerald-500/10 ${
+                            destinationOutletId === o.id ? 'text-emerald-500' : ''
+                          }`}
+                        >
+                          {o.name} {o.code ? `(${o.code})` : ''}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
 
                         <button
               onClick={handleSaveTransfer}
