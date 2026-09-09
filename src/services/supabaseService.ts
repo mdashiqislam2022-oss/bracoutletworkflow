@@ -375,13 +375,14 @@ export const mapCashTransferToDb = (record: CashTransferRecord) => ({
   note_200: record.denominations?.note200 || 0,
   note_500: record.denominations?.note500 || 0,
   note_1000: record.denominations?.note1000 || 0,
-    outlet_id: record.outletId,
+      outlet_id: record.outletId,
   outlet_name: record.outletName,
+  destination_outlet_id: record.destinationOutletId || null,
+  destination_outlet_name: record.destinationOutletName || null,
   user_id: record.userId,
   user_name: record.userName,
   note: record.note || null
 });
-
 // ---------- Note & Rule Module ----------
 
 export const mapDbToNote = (row: any): NoteRecord => ({
