@@ -3082,8 +3082,27 @@ if (sessionStatus.isActive) {
       createdAt: new Date().toISOString()
     };
 
-    setSegregationRecords((prev) => [newRecord, ...prev]);
+        setSegregationRecords((prev) => [newRecord, ...prev]);
     SupabaseService.saveSegregationRecord(newRecord);
+
+    // Auto-adjust Mother Amount opposite to vault movement:
+    // CD/ID/LR/BC add cash TO the vault  -> that amount is deducted FROM Mother Amount
+    // CW/LD  remove cash FROM the vault  -> that amount is added TO Mother Amount
+    const segOutletId = newRecord.outletId;
+    const latestMotherForSeg = motherAmounts
+      .filter((m) => m.outletId === segOutletId)
+      .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())[0];
+    const currentMotherForSeg = latestMotherForSeg?.amount || 0;
+    const isCashOutType = data.transactionType === 'CW' || data.transactionType === 'LD';
+    const updatedMotherForSeg = isCashOutType
+      ? currentMotherForSeg + data.actualAmount
+      : currentMotherForSeg - data.actualAmount;
+    addMotherAmount({
+      outletId: segOutletId,
+      amount: updatedMotherForSeg,
+      note: `Auto-adjusted from ${data.transactionType} transaction (${data.accountTitle})`
+    });
+
     addAuditEntry(
       'DENOMINATION_SEGREGATION_SAVED',
       `Segregation (${data.transactionType}) saved for ${data.accountTitle} (Acc: ${data.accountNumber}) — Amount: ৳${data.actualAmount}`,
