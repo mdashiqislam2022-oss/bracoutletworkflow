@@ -542,3 +542,10 @@ CREATE POLICY "select_outlet_rules" ON public.outlet_rules FOR SELECT USING (tru
 CREATE POLICY "insert_outlet_rules" ON public.outlet_rules FOR INSERT WITH CHECK (true);
 CREATE POLICY "update_outlet_rules" ON public.outlet_rules FOR UPDATE USING (true) WITH CHECK (true);
 CREATE POLICY "delete_outlet_rules" ON public.outlet_rules FOR DELETE USING (true);
+
+-- ==============================================================================
+-- TRANSFER TO OUTLET — Destination Outlet Support
+-- ==============================================================================
+
+ALTER TABLE public.cash_transfers ADD COLUMN IF NOT EXISTS destination_outlet_id TEXT;
+ALTER TABLE public.cash_transfers ADD COLUMN IF NOT EXISTS destination_outlet_name TEXT;
