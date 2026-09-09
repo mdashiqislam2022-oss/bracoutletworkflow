@@ -3251,10 +3251,11 @@ if (sessionStatus.isActive) {
     const user = currentUser || { id: 'USR-AFO-001', fullName: 'Master Administrator' };
     const outlet = outlets.find((o) => o.id === data.outletId);
     const destinationOutlet = data.destinationOutletId ? outlets.find((o) => o.id === data.destinationOutletId) : undefined;
-    const newRecord: CashTransferRecord = {
+        const newRecord: CashTransferRecord = {
       id: createUniqueId('CT'),
       transferType: data.transferType,
       amount: data.amount,
+      chargeAmount: data.chargeAmount,
       denominations: data.denominations,
       outletId: data.outletId,
       outletName: outlet?.name || '',
