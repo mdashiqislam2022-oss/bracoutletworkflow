@@ -227,9 +227,12 @@ export const mapDbToSegregation = (row: any): DenominationSegregationRecord => {
     mobileNumber: row.mobile_number || '',
     outletId: row.outlet_id || '',
     outletName: row.outlet_name || '',
-    userId: row.user_id,
+       userId: row.user_id,
     userName: row.user_name,
     notes: row.notes || undefined,
+    crossOutletId: row.cross_outlet_id || undefined,
+    crossOutletName: row.cross_outlet_name || undefined,
+    crossOutletDirection: row.cross_outlet_direction || undefined,
     createdAt: row.created_at || new Date().toISOString()
   };
 };
