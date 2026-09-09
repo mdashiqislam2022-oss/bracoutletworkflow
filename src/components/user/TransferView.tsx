@@ -306,8 +306,8 @@ export const TransferView: React.FC = () => {
             </button>
           </div>
 
-                  {/* Right: Segregation panel (always visible, disabled unless RTGS selected) */}
-         <div className={`rounded-xl border p-3 space-y-2 transition-all ${inputBg} ${transferType !== 'RTGS' ? 'opacity-40 grayscale pointer-events-none' : ''}`}>
+                            {/* Right: Segregation panel (enabled for RTGS & Transfer to Outlet, disabled for Move Money) */}
+         <div className={`rounded-xl border p-3 space-y-2 transition-all ${inputBg} ${transferType === 'MOVE_MONEY' ? 'opacity-40 grayscale pointer-events-none' : ''}`}>
               <div className="text-xs font-bold flex items-center gap-1.5 text-blue-600 mb-1">
                 Segregation
               </div>
