@@ -413,7 +413,7 @@ export interface OutletVaultRecord {
 
 // ==================== AFO Cash Transfer Module ====================
 
-export type CashTransferType = 'RTGS' | 'MOVE_MONEY';
+export type CashTransferType = 'RTGS' | 'MOVE_MONEY' | 'TRANSFER_TO_OUTLET';
 
 export interface CashTransferRecord {
   id: string;
@@ -422,6 +422,8 @@ export interface CashTransferRecord {
   denominations?: DenominationCounts;
   outletId: string;
   outletName: string;
+  destinationOutletId?: string;
+  destinationOutletName?: string;
   userId: string;
   userName: string;
   note?: string;
