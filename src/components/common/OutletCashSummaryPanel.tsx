@@ -77,16 +77,29 @@ export const OutletCashSummaryPanel: React.FC<OutletCashSummaryPanelProps> = ({ 
           totalsMap[d.key] += sign * (r.denominations?.[d.key] || 0);
         });
       });
-    cashTransfers
+        cashTransfers
       .filter((t) => t.outletId === outletId && t.transferType === 'RTGS' && t.denominations)
       .forEach((t) => {
         DENOM_LIST.forEach((d) => {
           totalsMap[d.key] -= t.denominations?.[d.key] || 0;
         });
       });
+    cashTransfers
+      .filter((t) => t.transferType === 'TRANSFER_TO_OUTLET' && t.denominations)
+      .forEach((t) => {
+        if (t.outletId === outletId) {
+          DENOM_LIST.forEach((d) => {
+            totalsMap[d.key] -= t.denominations?.[d.key] || 0;
+          });
+        }
+        if (t.destinationOutletId === outletId) {
+          DENOM_LIST.forEach((d) => {
+            totalsMap[d.key] += t.denominations?.[d.key] || 0;
+          });
+        }
+      });
     return totalsMap;
   }, [outletId, segregationRecords, cashTransfers]);
-
   return (
     <div className="mb-5">
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-4">
