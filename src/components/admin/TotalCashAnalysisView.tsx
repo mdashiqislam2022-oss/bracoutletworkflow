@@ -315,8 +315,8 @@ export const TotalCashAnalysisView: React.FC = () => {
             {combinedHistory.length === 0 && (
               <div className="text-xs text-slate-500 text-center py-6">No history yet.</div>
             )}
-            {combinedHistory.map((h) => {
-              const hasDenoms = h.kind === 'RTGS Transfer' && !!(h as any).denominations;
+                        {combinedHistory.map((h) => {
+              const hasDenoms = (h.kind === 'RTGS Transfer' || h.kind === 'Transfer to Outlet') && !!(h as any).denominations;
               const isOpen = expandedHistoryId === h.id;
               return (
                 <div key={`${h.kind}-${h.id}`} className={`rounded-lg border ${inputBg}`}>
@@ -329,12 +329,14 @@ export const TotalCashAnalysisView: React.FC = () => {
                   >
                     <div>
                       <span className="font-bold">{h.kind}</span> — {h.outletName}
+                      {h.kind === 'Transfer to Outlet' && (h as any).destinationOutletName ? (
+                        <span className="text-teal-600 font-semibold"> → {(h as any).destinationOutletName}</span>
+                      ) : null}
                       {h.note ? <span className="text-slate-500"> ({h.note})</span> : null}
                       <div className="text-slate-500">{new Date(h.createdAt).toLocaleString()} · {h.setByUserName}</div>
                     </div>
                     <div className="font-extrabold">৳ {h.amount.toLocaleString()}</div>
                   </button>
-
                   {isOpen && hasDenoms && (
                     <div className="px-3 pb-2 pt-1 border-t border-slate-700/20">
                       <div className="grid grid-cols-2 md:grid-cols-5 gap-2 text-[10px]">
