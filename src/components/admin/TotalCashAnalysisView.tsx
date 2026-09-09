@@ -152,7 +152,7 @@ export const TotalCashAnalysisView: React.FC = () => {
         .filter((t) => t.outletId === o.id && t.transferType === 'MOVE_MONEY')
         .reduce((sum, t) => sum + t.amount, 0);
     });
-    const vault = mother + afoCash + moveMoney - transfer;
+       const vault = afoCash + moveMoney - transfer;
     return { mother, afoCash, transfer, vault };
   }, [relevantOutlets, motherAmounts, outletTransfers, segregationRecords, cashTransfers]);
   const selectedOutletName = viewOutlet === 'ALL' ? 'All Outlets' : outlets.find((o) => o.id === viewOutlet)?.name || 'All Outlets';
