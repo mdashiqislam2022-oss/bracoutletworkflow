@@ -128,13 +128,13 @@ export const TransferView: React.FC = () => {
     });
   };
 
-  const handleSaveTransfer = () => {
+    const handleSaveTransfer = () => {
     const amt = parseFloat(amountInput);
     if (!currentUser || isNaN(amt) || amt <= 0) return;
 
-        if (transferType === 'RTGS') {
+    if (transferType === 'RTGS' || transferType === 'TRANSFER_TO_OUTLET') {
       if (segregatedTotal <= 0) {
-        showToast({ message: 'RTGS Transfer save করার আগে অবশ্যই Segregation দিতে হবে।', type: 'error' });
+        showToast({ message: 'Transfer save করার আগে অবশ্যই Segregation দিতে হবে।', type: 'error' });
         return;
       }
       if (amt !== segregatedTotal) {
@@ -143,16 +143,24 @@ export const TransferView: React.FC = () => {
       }
     }
 
+    if (transferType === 'TRANSFER_TO_OUTLET' && !destinationOutletId) {
+      showToast({ message: 'অনুগ্রহ করে একটা Destination Outlet সিলেক্ট করুন।', type: 'error' });
+      return;
+    }
+
     addCashTransfer({
       outletId: currentUser.outletId,
       transferType,
       amount: amt,
-      denominations: transferType === 'RTGS' ? denoms : undefined,
-      note: note.trim() || undefined
+      denominations: transferType !== 'MOVE_MONEY' ? denoms : undefined,
+      note: note.trim() || undefined,
+      destinationOutletId: transferType === 'TRANSFER_TO_OUTLET' ? destinationOutletId : undefined
     });
     setAmountInput('');
     setDenoms(emptyDenoms());
     setNote('');
+    setDestinationOutletId('');
+    setOutletSearchTerm('');
   };
 
   return (
