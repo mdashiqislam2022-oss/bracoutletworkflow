@@ -50,8 +50,11 @@ export const TransferView: React.FC = () => {
   const [transferType, setTransferType] = useState<CashTransferType>('RTGS');
   const [amountInput, setAmountInput] = useState('');
   const [denoms, setDenoms] = useState<Record<DenomKey, number>>(emptyDenoms());
-  const [note, setNote] = useState('');
+    const [note, setNote] = useState('');
     const [copiedTotal, setCopiedTotal] = useState(false);
+  const [destinationOutletId, setDestinationOutletId] = useState('');
+  const [outletSearchTerm, setOutletSearchTerm] = useState('');
+  const [outletDropdownOpen, setOutletDropdownOpen] = useState(false);
     const [dateFilter, setDateFilter] = useState('');
   const [datePickerOpen, setDatePickerOpen] = useState(false);
   const [calendarMonth, setCalendarMonth] = useState(() => {
