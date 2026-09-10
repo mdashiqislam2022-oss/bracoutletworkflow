@@ -81,7 +81,7 @@ interface UnifiedAccount {
 }
 
 export const DenominationSegregationView: React.FC = () => {
-  const {
+    const {
     currentUser,
     userPreferences,
     loanRecords,
@@ -90,7 +90,8 @@ export const DenominationSegregationView: React.FC = () => {
     segregationRecords,
     addCustomerAccount,
     addSegregationRecord,
-    showToast
+    showToast,
+    outlets
   } = useApp();
 
   const isDark = userPreferences.theme === 'dark';
