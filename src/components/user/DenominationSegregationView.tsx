@@ -313,7 +313,7 @@ export const DenominationSegregationView: React.FC = () => {
       showToast({ message: 'Please enter at least one denomination count.', type: 'error' });
       return;
     }
-        addSegregationRecord({
+             addSegregationRecord({
       transactionType: activeType,
       denominations: denoms,
       totalReceivedAmount,
@@ -327,7 +327,9 @@ export const DenominationSegregationView: React.FC = () => {
       accountTitle: selectedAccount.accountTitle,
       customerName: selectedAccount.accountTitle,
       mobileNumber: selectedAccount.mobileNumber,
-      notes: note.trim() || undefined
+      notes: note.trim() || undefined,
+      crossOutletId: crossOutletId || undefined,
+      crossOutletDirection: crossOutletId ? crossOutletDirection : undefined
     });
     handleClear();
     setSelectedAccount(null);
