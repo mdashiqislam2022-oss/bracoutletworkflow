@@ -195,10 +195,17 @@ export const TotalCashAnalysisView: React.FC = () => {
   }, [motherAmounts, motherOutlet]);
 
   // ---------- Handlers ----------
-  const handleSetMother = () => {
+    const handleSetMother = () => {
     const amt = parseFloat(motherAmountInput);
-    if (!motherOutlet || isNaN(amt) || amt < 0) return;
-    addMotherAmount({ outletId: motherOutlet, amount: amt, note: motherNote.trim() || undefined });
+    if (!motherOutlet || isNaN(amt) || amt <= 0) return;
+    const newTotal = motherAmountSign === '+'
+      ? currentMotherForSelectedOutlet + amt
+      : currentMotherForSelectedOutlet - amt;
+    addMotherAmount({
+      outletId: motherOutlet,
+      amount: newTotal,
+      note: `Manual ${motherAmountSign === '+' ? 'added' : 'subtracted'} ৳${amt}${motherNote.trim() ? ' — ' + motherNote.trim() : ''}`
+    });
     setMotherAmountInput('');
     setMotherNote('');
   };
