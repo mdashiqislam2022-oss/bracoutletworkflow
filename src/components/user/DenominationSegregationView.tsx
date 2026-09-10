@@ -16,7 +16,8 @@ import {
   Trash2,
   Tag,
   ChevronDown,
-  Copy
+  Copy,
+  Building2
 } from 'lucide-react';
 import { SegregationTransactionType } from '../../types';
 
