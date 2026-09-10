@@ -398,8 +398,9 @@ export const TotalCashAnalysisView: React.FC = () => {
               <div className="text-xs text-slate-500 text-center py-6">No history yet.</div>
             )}
                         {combinedHistory.map((h) => {
-              const hasDenoms = (h.kind === 'RTGS Transfer' || h.kind === 'Transfer to Outlet') && !!(h as any).denominations;
+                           const hasDenoms = (h.kind === 'RTGS Transfer' || h.kind === 'Transfer to Outlet') && !!(h as any).denominations;
               const isOpen = expandedHistoryId === h.id;
+              const motherTag = h.kind === 'Mother Amount' ? getMotherAmountReasonTag(h.note) : '';
               return (
                 <div key={`${h.kind}-${h.id}`} className={`rounded-lg border ${inputBg}`}>
                   <button
