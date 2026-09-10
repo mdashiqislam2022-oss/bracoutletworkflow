@@ -137,6 +137,10 @@ export const DenominationSegregationView: React.FC = () => {
   const totalPieces = useMemo(() => {
     return [...DENOM_LEFT, ...DENOM_RIGHT].reduce((sum, d) => sum + denoms[d.key], 0);
   }, [denoms]);
+  
+  const returnDenomTotal = useMemo(() => {
+    return [...DENOM_LEFT, ...DENOM_RIGHT].reduce((sum, d) => sum + returnDenoms[d.key] * d.value, 0);
+  }, [returnDenoms]);
 
     const chargeIsApplicable = activeType === 'CD' || activeType === 'CW';
 
