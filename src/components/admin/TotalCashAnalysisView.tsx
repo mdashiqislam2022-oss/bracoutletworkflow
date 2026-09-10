@@ -415,9 +415,11 @@ export const TotalCashAnalysisView: React.FC = () => {
                       {h.kind === 'Transfer to Outlet' && (h as any).destinationOutletName ? (
                         <span className="text-teal-600 font-semibold"> → {(h as any).destinationOutletName}</span>
                       ) : null}
-                      {h.kind === 'Mother Amount' ? (
-                        <span className="ml-1 inline-block px-1.5 py-0.5 rounded bg-blue-500/10 text-blue-600 text-[9px] font-bold align-middle">
-                          {getMotherAmountReasonTag(h.note)}
+                                            {h.kind === 'Mother Amount' ? (
+                        <span className={`ml-1 inline-block px-1.5 py-0.5 rounded text-[9px] font-bold align-middle ${
+                          motherTag === 'CW' || motherTag === 'LD' ? 'bg-red-500/10 text-red-600' : 'bg-emerald-500/10 text-emerald-600'
+                        }`}>
+                          {motherTag}
                         </span>
                       ) : (
                         h.note ? <span className="text-slate-500"> ({h.note})</span> : null
