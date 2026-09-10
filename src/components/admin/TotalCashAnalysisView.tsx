@@ -372,10 +372,33 @@ export const TotalCashAnalysisView: React.FC = () => {
                 </button>
               </div>
             </div>
-            <select value={motherOutlet} onChange={(e) => setMotherOutlet(e.target.value)} className={`w-full rounded-lg border px-2 py-1.5 text-xs ${inputBg}`}>
-              <option value="">Select Outlet</option>
-              {outlets.map((o) => <option key={o.id} value={o.id}>{o.name}</option>)}
-            </select>
+                        <div className="relative">
+              <button
+                type="button"
+                onClick={() => setMotherOutletDropdownOpen((v) => !v)}
+                className={`w-full flex items-center justify-between rounded-lg border px-2 py-1.5 text-xs font-semibold ${inputBg}`}
+              >
+                <span className="flex items-center gap-1.5 truncate">
+                  <Building2 size={13} className="text-blue-500 shrink-0" />
+                  {motherOutlet ? outlets.find((o) => o.id === motherOutlet)?.name : 'Select Outlet'}
+                </span>
+                <ChevronDown size={13} className="text-slate-400 shrink-0" />
+              </button>
+              {motherOutletDropdownOpen && (
+                <div className={`absolute z-20 mt-1 w-full rounded-xl border shadow-lg max-h-56 overflow-y-auto ${cardBg}`}>
+                  {outlets.map((o) => (
+                    <button
+                      key={o.id}
+                      type="button"
+                      onClick={() => { setMotherOutlet(o.id); setMotherOutletDropdownOpen(false); }}
+                      className={`w-full text-left px-3 py-2 text-xs font-semibold hover:bg-emerald-500/10 ${motherOutlet === o.id ? 'text-emerald-500' : ''}`}
+                    >
+                      {o.name} {o.code ? `(${o.code})` : ''}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
             <input type="number" min={0} value={motherAmountInput} onChange={(e) => setMotherAmountInput(e.target.value)} placeholder="Amount" className={`w-full rounded-lg border px-2 py-1.5 text-xs ${inputBg}`} />
             {motherOutlet && motherAmountInput && !isNaN(parseFloat(motherAmountInput)) && (
               <div className="text-[10px] font-semibold text-slate-500 px-1">
