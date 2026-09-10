@@ -3094,7 +3094,7 @@ if (sessionStatus.isActive) {
         setSegregationRecords((prev) => [newRecord, ...prev]);
     SupabaseService.saveSegregationRecord(newRecord);
 
-    // Determine which outlet gets the NORMAL (full) effect, and which just gets
+        // Determine which outlet gets the NORMAL (full) effect, and which just gets
     // a plain Mother Amount deduction (cross-outlet bookkeeping-only adjustment)
     const isThere = data.crossOutletId && data.crossOutletDirection === 'THERE';
     const effectiveOutletId = isThere ? data.crossOutletId! : newRecord.outletId;
@@ -3102,25 +3102,30 @@ if (sessionStatus.isActive) {
       ? (isThere ? newRecord.outletId : data.crossOutletId)
       : null;
 
-    // Auto-adjust Mother Amount opposite to vault movement (applied to the EFFECTIVE outlet):
-    // CD/ID/LR/BC add cash TO the vault  -> that amount is deducted FROM Mother Amount
-    // CW/LD  remove cash FROM the vault  -> that amount is added TO Mother Amount
-    const latestMotherForSeg = motherAmounts
-      .filter((m) => m.outletId === effectiveOutletId)
-      .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())[0];
-    const currentMotherForSeg = latestMotherForSeg?.amount || 0;
-    const isCashOutType = data.transactionType === 'CW' || data.transactionType === 'LD';
-    const updatedMotherForSeg = isCashOutType
-      ? currentMotherForSeg + data.actualAmount
-      : currentMotherForSeg - data.actualAmount;
-    addMotherAmount({
-      outletId: effectiveOutletId,
-      amount: updatedMotherForSeg,
-      note: `Auto-adjusted from ${data.transactionType} transaction (${data.accountTitle})`
-    });
+    if (!data.crossOutletId) {
+      // Normal (non cross-outlet) transaction: auto-adjust Mother Amount opposite
+      // to vault movement, exactly as before.
+      // CD/ID/LR/BC add cash TO the vault  -> that amount is deducted FROM Mother Amount
+      // CW/LD  remove cash FROM the vault  -> that amount is added TO Mother Amount
+      const latestMotherForSeg = motherAmounts
+        .filter((m) => m.outletId === effectiveOutletId)
+        .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())[0];
+      const currentMotherForSeg = latestMotherForSeg?.amount || 0;
+      const isCashOutType = data.transactionType === 'CW' || data.transactionType === 'LD';
+      const updatedMotherForSeg = isCashOutType
+        ? currentMotherForSeg + data.actualAmount
+        : currentMotherForSeg - data.actualAmount;
+      addMotherAmount({
+        outletId: effectiveOutletId,
+        amount: updatedMotherForSeg,
+        note: `Auto-adjusted from ${data.transactionType} transaction (${data.accountTitle})`
+      });
+    }
 
     // Cross-outlet bookkeeping adjustment: the OTHER outlet (the one that did NOT
     // physically hold the cash) only gets its Mother Amount reduced.
+    // The EFFECTIVE outlet (which received the Total AFO Cash/Vault/Denomination
+    // effect) gets NO Mother Amount change at all in a cross-outlet transaction.
     if (otherOutletId) {
       const latestMotherForOther = motherAmounts
         .filter((m) => m.outletId === otherOutletId)
