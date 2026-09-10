@@ -39,6 +39,7 @@ export const TotalCashAnalysisView: React.FC = () => {
     const [expandedHistoryId, setExpandedHistoryId] = useState<string | null>(null);
 
   const [motherOutlet, setMotherOutlet] = useState('');
+    const [motherOutletDropdownOpen, setMotherOutletDropdownOpen] = useState(false);
   const [motherAmountInput, setMotherAmountInput] = useState('');
   const [motherNote, setMotherNote] = useState('');
     const [motherAmountSign, setMotherAmountSign] = useState<'+' | '-'>('+');
