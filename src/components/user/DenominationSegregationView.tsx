@@ -262,14 +262,15 @@ export const DenominationSegregationView: React.FC = () => {
     }
   };
 
-        const handleClear = () => {
+            const handleClear = () => {
     setDenoms(emptyDenoms());
     setChargeApplied(false);
     setShowChargeSheet(false);
     setReturnAmount(0);
     setNote('');
+    setCrossOutletId('');
+    setCrossOutletDirection('HERE');
   };
-  
     const handleCopyAmount = () => {
     if (actualAmount <= 0) return;
     navigator.clipboard.writeText(String(actualAmount));
