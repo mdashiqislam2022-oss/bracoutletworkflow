@@ -192,7 +192,30 @@ export const TotalCashAnalysisView: React.FC = () => {
     return motherAmounts
       .filter((m) => m.outletId === motherOutlet)
       .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())[0]?.amount || 0;
-  }, [motherAmounts, motherOutlet]);
+    }, [motherAmounts, motherOutlet]);
+
+  const getPreviousMotherAmount = (record: { outletId: string; createdAt: string }): number => {
+    const prior = motherAmounts
+      .filter((m) => m.outletId === record.outletId && new Date(m.createdAt).getTime() < new Date(record.createdAt).getTime())
+      .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())[0];
+    return prior?.amount || 0;
+  };
+
+  const getMotherAmountReasonTag = (note?: string): string => {
+    if (!note) return 'Manual';
+    if (note.startsWith('Manual added')) return 'Manual +';
+    if (note.startsWith('Manual subtracted')) return 'Manual −';
+    if (note.includes('CD transaction')) return 'CD';
+    if (note.includes('CW transaction')) return 'CW';
+    if (note.includes('ID transaction')) return 'ID';
+    if (note.includes('LD transaction')) return 'LD';
+    if (note.includes('LR transaction')) return 'LR';
+    if (note.includes('BC transaction')) return 'BC';
+    if (note.includes('Move Money')) return 'Move Money';
+    if (note.includes('RTGS')) return 'RTGS';
+    if (note.includes('Cross-outlet')) return 'Cross-Outlet';
+    return 'Adjustment';
+  };
 
   // ---------- Handlers ----------
     const handleSetMother = () => {
