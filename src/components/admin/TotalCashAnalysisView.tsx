@@ -41,6 +41,7 @@ export const TotalCashAnalysisView: React.FC = () => {
   const [motherOutlet, setMotherOutlet] = useState('');
   const [motherAmountInput, setMotherAmountInput] = useState('');
   const [motherNote, setMotherNote] = useState('');
+    const [motherAmountSign, setMotherAmountSign] = useState<'+' | '-'>('+');
 
   const [transferOutlet, setTransferOutlet] = useState('');
   const [transferAmountInput, setTransferAmountInput] = useState('');
