@@ -345,17 +345,17 @@ export const TotalCashAnalysisView: React.FC = () => {
               <div className="text-xs font-bold flex items-center gap-1.5 text-blue-500">
                 <PlusCircle size={14} /> Set Mother Amount
               </div>
-              <div className={`relative flex items-center rounded-full p-0.5 border ${inputBg}`} style={{ width: '56px', height: '24px' }}>
+                            <div className={`relative flex items-center rounded-lg border p-0.5 ${inputBg}`} style={{ width: '60px', height: '26px' }}>
                 <div
-                  className={`absolute top-0.5 bottom-0.5 left-0.5 w-6 rounded-full bg-blue-500 transition-transform duration-300 ease-in-out ${
-                    motherAmountSign === '-' ? 'translate-x-6' : 'translate-x-0'
+                  className={`absolute top-0.5 bottom-0.5 left-0.5 w-[27px] rounded-md transition-all duration-300 ease-in-out ${
+                    motherAmountSign === '-' ? 'translate-x-[27px] bg-red-500/15' : 'translate-x-0 bg-emerald-500/15'
                   }`}
                 />
                 <button
                   type="button"
                   onClick={() => setMotherAmountSign('+')}
-                  className={`relative z-10 w-1/2 h-full text-center text-xs font-extrabold rounded-full transition-colors ${
-                    motherAmountSign === '+' ? 'text-white' : 'text-slate-400'
+                  className={`relative z-10 w-1/2 h-full text-center text-xs font-extrabold rounded-md transition-colors ${
+                    motherAmountSign === '+' ? 'text-emerald-500' : 'text-slate-400'
                   }`}
                 >
                   +
@@ -363,8 +363,8 @@ export const TotalCashAnalysisView: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setMotherAmountSign('-')}
-                  className={`relative z-10 w-1/2 h-full text-center text-xs font-extrabold rounded-full transition-colors ${
-                    motherAmountSign === '-' ? 'text-white' : 'text-slate-400'
+                  className={`relative z-10 w-1/2 h-full text-center text-xs font-extrabold rounded-md transition-colors ${
+                    motherAmountSign === '-' ? 'text-red-500' : 'text-slate-400'
                   }`}
                 >
                   −
