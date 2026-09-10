@@ -458,7 +458,9 @@ export const TotalCashAnalysisView: React.FC = () => {
                       )}
                       <div className="text-slate-500">{new Date(h.createdAt).toLocaleString()} · {h.setByUserName}</div>
                     </div>
-                    <div className="font-extrabold">৳ {h.amount.toLocaleString()}</div>
+                                       <div className={`font-extrabold ${h.kind === 'Mother Amount' ? (h.amount >= getPreviousMotherAmount(h) ? 'text-emerald-600' : 'text-red-500') : ''}`}>
+                      {h.kind === 'Mother Amount' ? (h.amount >= getPreviousMotherAmount(h) ? '+ ' : '− ') : ''}৳ {h.amount.toLocaleString()}
+                    </div>
                   </button>
                   {isOpen && hasDenoms && (
                     <div className="px-3 pb-2 pt-1 border-t border-slate-700/20">
