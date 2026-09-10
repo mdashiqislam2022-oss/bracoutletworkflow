@@ -34,10 +34,12 @@ export const OutletCashSummaryPanel: React.FC<OutletCashSummaryPanelProps> = ({ 
         .filter((m) => m.outletId === outletId)
         .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())[0]?.amount || 0;
 
-    const net = segregationRecords
-      .filter((r) => r.outletId === outletId)
+       const net = segregationRecords
+      .filter((r) => {
+        const effectiveId = r.crossOutletDirection === 'THERE' && r.crossOutletId ? r.crossOutletId : r.outletId;
+        return effectiveId === outletId;
+      })
       .reduce((sum, r) => sum + (CASH_IN_TYPES.includes(r.transactionType) ? r.actualAmount : -r.actualAmount), 0);
-
         const rtgsOut = cashTransfers
       .filter((t) => t.outletId === outletId && t.transferType === 'RTGS')
       .reduce((sum, t) => sum + t.amount, 0);
