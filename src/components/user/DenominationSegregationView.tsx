@@ -236,9 +236,20 @@ export const DenominationSegregationView: React.FC = () => {
         a.mobileNumber.toLowerCase().includes(term)
     );
   }, [searchTerm, searchTab, loanRecords, chequeCardEntries, customerAccounts, currentUser]);
-
+  
   // ---------- Handlers ----------
    const ALL_DENOM_KEYS: DenomKey[] = [...DENOM_LEFT, ...DENOM_RIGHT].map((d) => d.key);
+
+  const handleReturnDenomChange = (key: DenomKey, value: string) => {
+    const capped = value.slice(0, 5);
+    const num = Math.max(0, parseInt(capped || '0', 10) || 0);
+    setReturnDenoms((prev) => {
+      const updated = { ...prev, [key]: num };
+      const newTotal = [...DENOM_LEFT, ...DENOM_RIGHT].reduce((sum, d) => sum + updated[d.key] * d.value, 0);
+      setReturnAmount(newTotal);
+      return updated;
+    });
+  };
 
   const handleDenomChange = (key: DenomKey, value: string) => {
     const capped = value.slice(0, 5);
