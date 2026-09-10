@@ -185,7 +185,15 @@ export const TotalCashAnalysisView: React.FC = () => {
         ? items
         : items.filter((i) => i.outletId === viewOutlet || (i as any).destinationOutletId === viewOutlet);
     return scoped.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()).slice(0, 15);
-  }, [motherAmounts, outletTransfers, outletVaults, cashTransfers, viewOutlet]);
+    }, [motherAmounts, outletTransfers, outletVaults, cashTransfers, viewOutlet]);
+
+  const currentMotherForSelectedOutlet = useMemo(() => {
+    if (!motherOutlet) return 0;
+    return motherAmounts
+      .filter((m) => m.outletId === motherOutlet)
+      .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())[0]?.amount || 0;
+  }, [motherAmounts, motherOutlet]);
+
   // ---------- Handlers ----------
   const handleSetMother = () => {
     const amt = parseFloat(motherAmountInput);
