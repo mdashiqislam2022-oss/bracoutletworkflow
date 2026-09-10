@@ -482,6 +482,84 @@ export const DenominationSegregationView: React.FC = () => {
                 )}
               </div>
             )}
+                   </div>
+
+          {/* Cross-Outlet Cash Location */}
+          <div className="relative mb-4">
+            <div className="flex items-center gap-2 flex-wrap rounded-xl px-3 py-2 bg-teal-500/10 border border-teal-500/30">
+              <span className="text-xs font-bold text-teal-600 flex items-center gap-1 shrink-0">
+                <Building2 size={13} /> Cross-Outlet:
+              </span>
+              <button
+                type="button"
+                onClick={() => setCrossOutletDropdownOpen((v) => !v)}
+                className={`flex-1 min-w-[140px] flex items-center justify-between rounded-lg border px-2 py-1 text-xs font-semibold ${inputBg}`}
+              >
+                <span className="truncate">{crossOutlet ? crossOutlet.name : 'Select Outlet (optional)'}</span>
+                <ChevronDown size={13} className="text-slate-400 shrink-0" />
+              </button>
+              {crossOutletId && (
+                <>
+                  <div className={`flex items-center gap-1 p-1 rounded-lg ${isDark ? 'bg-[#0F172A]' : 'bg-white'}`}>
+                    <button
+                      type="button"
+                      onClick={() => setCrossOutletDirection('HERE')}
+                      className={`px-2 py-1 rounded-md text-[10px] font-bold ${
+                        crossOutletDirection === 'HERE' ? 'bg-teal-500 text-white' : 'text-slate-500'
+                      }`}
+                    >
+                      Cash Received Here
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setCrossOutletDirection('THERE')}
+                      className={`px-2 py-1 rounded-md text-[10px] font-bold ${
+                        crossOutletDirection === 'THERE' ? 'bg-teal-500 text-white' : 'text-slate-500'
+                      }`}
+                    >
+                      Cash Received at {crossOutlet?.name}
+                    </button>
+                  </div>
+                  <button type="button" onClick={() => setCrossOutletId('')} className="text-rose-500 shrink-0">
+                    <X size={14} />
+                  </button>
+                </>
+              )}
+            </div>
+
+            {crossOutletDropdownOpen && (
+              <div className={`absolute z-30 mt-1 w-full rounded-xl border shadow-lg ${cardBg}`}>
+                <div className="p-2 border-b border-slate-700/20">
+                  <input
+                    autoFocus
+                    value={crossOutletSearch}
+                    onChange={(e) => setCrossOutletSearch(e.target.value)}
+                    placeholder="Search outlet..."
+                    className={`w-full rounded-lg border px-2 py-1 text-xs ${inputBg}`}
+                  />
+                </div>
+                <div className="max-h-40 overflow-y-auto">
+                  {filteredCrossOutlets.length === 0 && (
+                    <div className="text-[11px] text-slate-500 text-center py-3">No outlet found.</div>
+                  )}
+                  {filteredCrossOutlets.map((o) => (
+                    <button
+                      key={o.id}
+                      type="button"
+                      onClick={() => {
+                        setCrossOutletId(o.id);
+                        setCrossOutletDirection('HERE');
+                        setCrossOutletDropdownOpen(false);
+                        setCrossOutletSearch('');
+                      }}
+                      className="w-full text-left px-3 py-1.5 text-xs font-semibold hover:bg-emerald-500/10"
+                    >
+                      {o.name} {o.code ? `(${o.code})` : ''}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
 
                     {/* Denomination Grid */}
