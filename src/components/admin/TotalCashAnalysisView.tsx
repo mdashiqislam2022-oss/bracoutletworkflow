@@ -428,10 +428,206 @@ export const TotalCashAnalysisView: React.FC = () => {
                   </div>
 
 
-        {/* History */}
+               {/* History */}
                 <div>
-          <div className="text-xs font-bold flex items-center gap-1.5 mb-2 text-slate-500">
-            <History size={14} /> Recent History
+          <div className="flex items-center justify-between mb-2">
+            <div className="text-xs font-bold flex items-center gap-1.5 text-slate-500">
+              <History size={14} /> Recent History
+            </div>
+
+            <div className="relative">
+              <button
+                onClick={() => setHistoryDatePickerOpen((v) => !v)}
+                className={`flex items-center gap-2 rounded-lg border px-3 py-1.5 text-xs font-semibold ${inputBg}`}
+              >
+                <Calendar size={13} className="text-emerald-500" />
+                {historyDateFilter
+                  ? new Date(historyDateFilter + 'T00:00:00').toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })
+                  : 'Select Date'}
+              </button>
+
+              <div
+                className={`absolute right-0 z-30 mt-2 w-72 rounded-2xl border shadow-lg p-3 origin-top-right transition-all duration-150 ease-out ${cardBg} ${
+                  historyDatePickerOpen ? 'opacity-100 scale-100 pointer-events-auto' : 'opacity-0 scale-95 pointer-events-none'
+                }`}
+              >
+                <div className="flex items-center justify-between mb-2">
+                  <button
+                    onClick={() =>
+                      setHistoryCalendarMonth((prev) => {
+                        const m = prev.month === 0 ? 11 : prev.month - 1;
+                        const y = prev.month === 0 ? prev.year - 1 : prev.year;
+                        return { year: y, month: m };
+                      })
+                    }
+                    className="p-1 rounded-lg hover:bg-emerald-500/10 text-slate-500"
+                  >
+                    <ChevronLeft size={16} />
+                  </button>
+                  <div className="flex items-center gap-1">
+                    <div className="relative">
+                      <button
+                        type="button"
+                        onClick={() => { setHistoryMonthDropdownOpen((v) => !v); setHistoryYearDropdownOpen(false); }}
+                        className={`text-xs font-bold py-1 px-2 rounded-md border cursor-pointer flex items-center gap-1 ${
+                          isDark ? 'bg-slate-900 border-slate-700 text-white' : 'bg-slate-50 border-slate-200 text-slate-900'
+                        }`}
+                      >
+                        {historyMonthNamesList[historyCalendarMonth.month]}
+                        <span className="text-[9px] opacity-60">▼</span>
+                      </button>
+                      {historyMonthDropdownOpen && (
+                        <div
+                          className={`absolute left-0 top-full mt-1 z-50 max-h-48 overflow-y-auto rounded-lg border shadow-xl w-32 ${
+                            isDark ? 'bg-[#1E293B] border-slate-700' : 'bg-white border-slate-200'
+                          }`}
+                        >
+                          {historyMonthNamesList.map((mName, idx) => (
+                            <button
+                              key={mName}
+                              type="button"
+                              onClick={() => {
+                                setHistoryCalendarMonth((prev) => ({ ...prev, month: idx }));
+                                setHistoryMonthDropdownOpen(false);
+                              }}
+                              className={`w-full text-left text-xs font-semibold px-3 py-1.5 cursor-pointer ${
+                                idx === historyCalendarMonth.month
+                                  ? 'bg-emerald-600 text-white'
+                                  : isDark
+                                  ? 'text-slate-200 hover:bg-slate-800'
+                                  : 'text-slate-800 hover:bg-slate-100'
+                              }`}
+                            >
+                              {mName}
+                            </button>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="relative">
+                      <button
+                        type="button"
+                        onClick={() => { setHistoryYearDropdownOpen((v) => !v); setHistoryMonthDropdownOpen(false); }}
+                        className={`text-xs font-bold py-1 px-2 rounded-md border cursor-pointer font-mono flex items-center gap-1 ${
+                          isDark ? 'bg-slate-900 border-slate-700 text-white' : 'bg-slate-50 border-slate-200 text-slate-900'
+                        }`}
+                      >
+                        {historyCalendarMonth.year}
+                        <span className="text-[9px] opacity-60">▼</span>
+                      </button>
+                      {historyYearDropdownOpen && (
+                        <div
+                          className={`absolute left-0 top-full mt-1 z-50 max-h-48 overflow-y-auto rounded-lg border shadow-xl w-20 ${
+                            isDark ? 'bg-[#1E293B] border-slate-700' : 'bg-white border-slate-200'
+                          }`}
+                        >
+                          {historyYearOptionsList.map((y) => (
+                            <button
+                              key={y}
+                              type="button"
+                              onClick={() => {
+                                setHistoryCalendarMonth((prev) => ({ ...prev, year: y }));
+                                setHistoryYearDropdownOpen(false);
+                              }}
+                              className={`w-full text-left text-xs font-semibold px-3 py-1.5 cursor-pointer font-mono ${
+                                y === historyCalendarMonth.year
+                                  ? 'bg-emerald-600 text-white'
+                                  : isDark
+                                  ? 'text-slate-200 hover:bg-slate-800'
+                                  : 'text-slate-800 hover:bg-slate-100'
+                              }`}
+                            >
+                              {y}
+                            </button>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                  <button
+                    onClick={() =>
+                      setHistoryCalendarMonth((prev) => {
+                        const m = prev.month === 11 ? 0 : prev.month + 1;
+                        const y = prev.month === 11 ? prev.year + 1 : prev.year;
+                        return { year: y, month: m };
+                      })
+                    }
+                    className="p-1 rounded-lg hover:bg-emerald-500/10 text-slate-500"
+                  >
+                    <ChevronRight size={16} />
+                  </button>
+                </div>
+
+                <div className="grid grid-cols-7 gap-1 mb-1">
+                  {['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'].map((d, i) => (
+                    <div
+                      key={d}
+                      className={`text-center text-[10px] font-bold ${i === 5 || i === 6 ? 'text-rose-500' : 'text-slate-400'}`}
+                    >
+                      {d}
+                    </div>
+                  ))}
+                </div>
+
+                <div className="grid grid-cols-7 gap-1">
+                  {Array.from({ length: new Date(historyCalendarMonth.year, historyCalendarMonth.month, 1).getDay() }).map((_, i) => (
+                    <div key={`blank-${i}`} />
+                  ))}
+                  {Array.from({ length: new Date(historyCalendarMonth.year, historyCalendarMonth.month + 1, 0).getDate() }).map((_, i) => {
+                    const day = i + 1;
+                    const dow = new Date(historyCalendarMonth.year, historyCalendarMonth.month, day).getDay();
+                    const isWeekend = dow === 5 || dow === 6;
+                    const dateStr = `${historyCalendarMonth.year}-${String(historyCalendarMonth.month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                    const isSelected = historyDateFilter === dateStr;
+                    const isToday = dateStr === new Date().toLocaleDateString('en-CA');
+                    return (
+                      <button
+                        key={day}
+                        onClick={() => {
+                          setHistoryDateFilter(dateStr);
+                          setHistoryDatePickerOpen(false);
+                        }}
+                        className={`h-8 rounded-lg text-xs font-semibold transition ${
+                          isSelected
+                            ? 'bg-emerald-500 text-white'
+                            : isToday
+                            ? 'border border-emerald-500 text-emerald-500'
+                            : isWeekend
+                            ? 'text-rose-500 hover:bg-rose-500/10'
+                            : 'hover:bg-emerald-500/10'
+                        }`}
+                      >
+                        {day}
+                      </button>
+                    );
+                  })}
+                </div>
+
+                <div className="flex items-center justify-between mt-2 pt-2 border-t border-slate-700/20">
+                  <button
+                    onClick={() => {
+                      setHistoryDateFilter('');
+                      setHistoryDatePickerOpen(false);
+                    }}
+                    className="text-xs font-semibold text-rose-500"
+                  >
+                    Clear
+                  </button>
+                  <button
+                    onClick={() => {
+                      const t = new Date();
+                      setHistoryCalendarMonth({ year: t.getFullYear(), month: t.getMonth() });
+                      setHistoryDateFilter(t.toLocaleDateString('en-CA'));
+                      setHistoryDatePickerOpen(false);
+                    }}
+                    className="text-xs font-semibold text-emerald-500"
+                  >
+                    Today
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
           <div className="space-y-1.5 max-h-64 overflow-y-auto">
             {combinedHistory.length === 0 && (
