@@ -316,16 +316,49 @@ export const TotalCashAnalysisView: React.FC = () => {
 
                        {/* Update Forms */}
         <div className="grid grid-cols-1 mb-6">
-          {/* Set Mother Amount */}
+                   {/* Set Mother Amount */}
           <div className={`rounded-xl border p-3 space-y-2 max-w-md ${inputBg}`}>
-            <div className="text-xs font-bold flex items-center gap-1.5 text-blue-500">
-              <PlusCircle size={14} /> Set Mother Amount
+            <div className="flex items-center justify-between">
+              <div className="text-xs font-bold flex items-center gap-1.5 text-blue-500">
+                <PlusCircle size={14} /> Set Mother Amount
+              </div>
+              <div className={`relative flex items-center rounded-full p-0.5 border ${inputBg}`} style={{ width: '56px', height: '24px' }}>
+                <div
+                  className={`absolute top-0.5 bottom-0.5 left-0.5 w-6 rounded-full bg-blue-500 transition-transform duration-300 ease-in-out ${
+                    motherAmountSign === '-' ? 'translate-x-6' : 'translate-x-0'
+                  }`}
+                />
+                <button
+                  type="button"
+                  onClick={() => setMotherAmountSign('+')}
+                  className={`relative z-10 w-1/2 h-full text-center text-xs font-extrabold rounded-full transition-colors ${
+                    motherAmountSign === '+' ? 'text-white' : 'text-slate-400'
+                  }`}
+                >
+                  +
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setMotherAmountSign('-')}
+                  className={`relative z-10 w-1/2 h-full text-center text-xs font-extrabold rounded-full transition-colors ${
+                    motherAmountSign === '-' ? 'text-white' : 'text-slate-400'
+                  }`}
+                >
+                  −
+                </button>
+              </div>
             </div>
             <select value={motherOutlet} onChange={(e) => setMotherOutlet(e.target.value)} className={`w-full rounded-lg border px-2 py-1.5 text-xs ${inputBg}`}>
               <option value="">Select Outlet</option>
               {outlets.map((o) => <option key={o.id} value={o.id}>{o.name}</option>)}
             </select>
             <input type="number" min={0} value={motherAmountInput} onChange={(e) => setMotherAmountInput(e.target.value)} placeholder="Amount" className={`w-full rounded-lg border px-2 py-1.5 text-xs ${inputBg}`} />
+            {motherOutlet && motherAmountInput && !isNaN(parseFloat(motherAmountInput)) && (
+              <div className="text-[10px] font-semibold text-slate-500 px-1">
+                Current: ৳{currentMotherForSelectedOutlet.toLocaleString()}
+                {' '}→ New: ৳{(currentMotherForSelectedOutlet + (motherAmountSign === '+' ? 1 : -1) * parseFloat(motherAmountInput)).toLocaleString()}
+              </div>
+            )}
             <input value={motherNote} onChange={(e) => setMotherNote(e.target.value)} placeholder="Note (optional)" className={`w-full rounded-lg border px-2 py-1.5 text-xs ${inputBg}`} />
             <button onClick={handleSetMother} className="w-full py-1.5 rounded-lg bg-blue-500 text-white text-xs font-bold">Save Mother Amount</button>
           </div>
