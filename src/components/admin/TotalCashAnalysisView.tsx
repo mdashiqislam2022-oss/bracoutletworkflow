@@ -182,7 +182,7 @@ export const TotalCashAnalysisView: React.FC = () => {
   }, [relevantOutlets, motherAmounts, outletTransfers, segregationRecords, cashTransfers]);
   const selectedOutletName = viewOutlet === 'ALL' ? 'All Outlets' : outlets.find((o) => o.id === viewOutlet)?.name || 'All Outlets';
 
-  // ---------- Combined History (latest 15) ----------
+    // ---------- Combined History (latest 15) ----------
          const combinedHistory = useMemo(() => {
         const items = [
       ...motherAmounts.map((m) => ({ ...m, kind: 'Mother Amount' as const })),
@@ -194,12 +194,15 @@ export const TotalCashAnalysisView: React.FC = () => {
         .filter((t) => t.transferType === 'TRANSFER_TO_OUTLET')
         .map((t) => ({ ...t, setByUserName: t.userName, kind: 'Transfer to Outlet' as const }))
     ];
-    const scoped =
+    let scoped =
       viewOutlet === 'ALL'
         ? items
         : items.filter((i) => i.outletId === viewOutlet || (i as any).destinationOutletId === viewOutlet);
+    if (historyDateFilter) {
+      scoped = scoped.filter((i) => new Date(i.createdAt).toLocaleDateString('en-CA') === historyDateFilter);
+    }
     return scoped.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()).slice(0, 15);
-    }, [motherAmounts, outletTransfers, outletVaults, cashTransfers, viewOutlet]);
+    }, [motherAmounts, outletTransfers, outletVaults, cashTransfers, viewOutlet, historyDateFilter]);
 
   const currentMotherForSelectedOutlet = useMemo(() => {
     if (!motherOutlet) return 0;
