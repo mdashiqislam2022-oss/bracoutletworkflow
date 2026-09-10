@@ -279,11 +279,12 @@ export const DenominationSegregationView: React.FC = () => {
     }
   };
 
-            const handleClear = () => {
+               const handleClear = () => {
     setDenoms(emptyDenoms());
     setChargeApplied(false);
     setShowChargeSheet(false);
     setReturnAmount(0);
+    setReturnDenoms(emptyDenoms());
     setNote('');
     setCrossOutletId('');
     setCrossOutletDirection('HERE');
