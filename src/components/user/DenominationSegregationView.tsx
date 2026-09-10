@@ -104,6 +104,10 @@ export const DenominationSegregationView: React.FC = () => {
    const [returnAmount, setReturnAmount] = useState(0);
   const [copiedFeedback, setCopiedFeedback] = useState(false);
     const [note, setNote] = useState('');
+    const [crossOutletId, setCrossOutletId] = useState('');
+  const [crossOutletDirection, setCrossOutletDirection] = useState<'HERE' | 'THERE'>('HERE');
+  const [crossOutletSearch, setCrossOutletSearch] = useState('');
+  const [crossOutletDropdownOpen, setCrossOutletDropdownOpen] = useState(false);
   
   // ---------- Account Search State ----------
   const [searchTerm, setSearchTerm] = useState('');
