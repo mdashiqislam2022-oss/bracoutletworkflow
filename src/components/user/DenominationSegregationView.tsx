@@ -639,13 +639,21 @@ export const DenominationSegregationView: React.FC = () => {
           </div>
 
            
-                    <div className="grid grid-cols-2 gap-3 mb-4">
-            <div className={`flex items-center gap-2 rounded-xl border px-2.5 py-1.5 ${inputBg}`}>
+                                 <div className="grid grid-cols-2 gap-3 mb-4">
+            <div className={`relative flex items-center gap-2 rounded-xl border px-2.5 py-1.5 ${inputBg}`}>
               <div className="flex flex-col leading-tight">
                                 <span className="text-[11px] font-bold text-rose-500 flex items-center gap-1">
                   <ArrowUpCircle size={11} /> Return Amount
                 </span>
               </div>
+              <button
+                type="button"
+                onClick={() => setShowReturnPopup((v) => !v)}
+                className="ml-auto text-slate-400 hover:text-emerald-500 shrink-0"
+                title="Break down return amount by denomination"
+              >
+                <ChevronDown size={14} className={`transition-transform ${showReturnPopup ? 'rotate-180' : ''}`} />
+              </button>
               <input
                 type="number"
                 min={0}
@@ -653,8 +661,37 @@ export const DenominationSegregationView: React.FC = () => {
                 onChange={(e) => setReturnAmount(Math.max(0, parseInt(e.target.value || '0', 10)))}
                 onKeyDown={handleReturnAmountKeyDown}
                 placeholder="0"
-                className={`w-28 ml-auto rounded-lg border px-1.5 py-1 text-xs text-right ${inputBg}`}
+                className={`w-24 rounded-lg border px-1.5 py-1 text-xs text-right ${inputBg}`}
               />
+
+              {showReturnPopup && (
+                <div className={`absolute z-30 bottom-full left-0 right-0 mb-2 rounded-xl border shadow-lg p-3 ${cardBg}`}>
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-xs font-bold text-rose-500">Return Denomination Breakdown</span>
+                    <button onClick={() => setShowReturnPopup(false)} className="text-slate-400">
+                      <X size={14} />
+                    </button>
+                  </div>
+                  <div className="grid grid-cols-2 gap-2">
+                    {[...DENOM_LEFT, ...DENOM_RIGHT].map((d) => (
+                      <div key={d.key} className="flex items-center gap-1.5">
+                        <span className="text-[10px] w-9 font-semibold text-slate-500">Tk{d.value}</span>
+                        <input
+                          type="number"
+                          min={0}
+                          value={returnDenoms[d.key] || ''}
+                          onChange={(e) => handleReturnDenomChange(d.key, e.target.value)}
+                          placeholder="0"
+                          className={`w-full rounded-lg border px-1.5 py-1 text-xs ${inputBg}`}
+                        />
+                      </div>
+                    ))}
+                  </div>
+                  <div className="text-right text-[11px] font-bold text-rose-500 mt-2">
+                    Total Return: ৳ {returnDenomTotal.toLocaleString()}
+                  </div>
+                </div>
+              )}
             </div>
                         <button
               onClick={handleCopyAmount}
