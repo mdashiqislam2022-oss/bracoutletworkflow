@@ -40,6 +40,16 @@ export const TotalCashAnalysisView: React.FC = () => {
   const [viewOutlet, setViewOutlet] = useState('ALL');
   const [outletDropdownOpen, setOutletDropdownOpen] = useState(false);
     const [expandedHistoryId, setExpandedHistoryId] = useState<string | null>(null);
+    const [historyDateFilter, setHistoryDateFilter] = useState('');
+  const [historyDatePickerOpen, setHistoryDatePickerOpen] = useState(false);
+  const [historyCalendarMonth, setHistoryCalendarMonth] = useState(() => {
+    const d = new Date();
+    return { year: d.getFullYear(), month: d.getMonth() };
+  });
+  const [historyMonthDropdownOpen, setHistoryMonthDropdownOpen] = useState(false);
+  const [historyYearDropdownOpen, setHistoryYearDropdownOpen] = useState(false);
+  const historyMonthNamesList = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  const historyYearOptionsList = Array.from({ length: 20 }, (_, i) => 2020 + i);
 
   const [motherOutlet, setMotherOutlet] = useState('');
     const [motherOutletDropdownOpen, setMotherOutletDropdownOpen] = useState(false);
