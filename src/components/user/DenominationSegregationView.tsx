@@ -118,6 +118,14 @@ export const DenominationSegregationView: React.FC = () => {
   const [newCustTitle, setNewCustTitle] = useState('');
   const [newCustMobile, setNewCustMobile] = useState('');
   const [newCustCategory, setNewCustCategory] = useState<'SAVINGS' | 'CURRENT'>('SAVINGS');
+  
+  const crossOutlet = outlets.find((o) => o.id === crossOutletId);
+  const filteredCrossOutlets = useMemo(() => {
+    const term = crossOutletSearch.trim().toLowerCase();
+    const list = outlets.filter((o) => o.id !== currentUser?.outletId);
+    if (!term) return list;
+    return list.filter((o) => o.name.toLowerCase().includes(term) || o.code?.toLowerCase().includes(term));
+  }, [outlets, crossOutletSearch, currentUser]);
 
   // ---------- Derived: Totals ----------
   const totalReceivedAmount = useMemo(() => {
