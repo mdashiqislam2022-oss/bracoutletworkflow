@@ -182,9 +182,21 @@ export const TransferView: React.FC = () => {
   return (
     <div className="space-y-4 md:space-y-6">
       <div className={`rounded-2xl border p-4 md:p-5 ${cardBg}`}>
-        <h2 className={`font-bold text-lg flex items-center gap-2 mb-1 ${isDark ? 'text-slate-100' : 'text-slate-900'}`}>
-          <ArrowRightLeft className="text-emerald-500" size={20} /> Transfer
-               </h2>
+                <div className="flex items-center justify-between mb-1">
+          <h2 className={`font-bold text-lg flex items-center gap-2 ${isDark ? 'text-slate-100' : 'text-slate-900'}`}>
+            <ArrowRightLeft className="text-emerald-500" size={20} /> Transfer & Analysis
+          </h2>
+          <button
+            type="button"
+            onClick={() => setActiveTab((prev) => (prev === 'transfer' ? 'history' : 'transfer'))}
+            className={`flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-xs font-bold ${
+              activeTab === 'history' ? 'bg-emerald-500 text-white border-emerald-500' : inputBg
+            }`}
+          >
+            <History size={14} />
+            {activeTab === 'history' ? 'Transfer' : 'History'}
+          </button>
+        </div>
 
         <OutletCashSummaryPanel outletId={currentUser?.outletId || ''} isDark={isDark} />
 
