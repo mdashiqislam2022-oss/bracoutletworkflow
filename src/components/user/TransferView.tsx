@@ -221,8 +221,10 @@ export const TransferView: React.FC = () => {
             <History size={14} />
             {activeTab === 'history' ? 'Transfer' : 'History'}
           </button>
-        </div>
+               </div>
 
+        {activeTab === 'transfer' && (
+          <>
         <OutletCashSummaryPanel outletId={currentUser?.outletId || ''} isDark={isDark} />
 
                {/* 3 Summary Boxes */}
