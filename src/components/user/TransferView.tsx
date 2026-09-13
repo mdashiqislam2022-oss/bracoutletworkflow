@@ -14,7 +14,7 @@ import {
   Copy,
   Check
 } from 'lucide-react';
-import { CashTransferType } from '../../types';
+import { CashTransferType, SegregationTransactionType } from '../../types';
 
 type DenomKey = 'note1' | 'note2' | 'note5' | 'note10' | 'note20' | 'note50' | 'note100' | 'note200' | 'note500' | 'note1000';
 
