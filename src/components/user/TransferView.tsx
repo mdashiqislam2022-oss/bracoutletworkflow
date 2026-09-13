@@ -460,6 +460,258 @@ export const TransferView: React.FC = () => {
         </div>
         )}
 
+        {activeTab === 'history' && (
+          <div>
+            <div className="flex items-center justify-between gap-2 mb-3 flex-wrap">
+              <div className="relative">
+                <button
+                  type="button"
+                  onClick={() => setHistoryTypeDropdownOpen((v) => !v)}
+                  className={`flex items-center gap-1.5 rounded-lg border px-2.5 py-1.5 text-[11px] font-semibold ${inputBg}`}
+                >
+                  {historyTypeFilter === 'ALL' ? 'All Types' : historyTypeFilter}
+                  <ChevronDown size={12} className="text-slate-400" />
+                </button>
+                {historyTypeDropdownOpen && (
+                  <div className={`absolute left-0 z-20 mt-1 w-40 rounded-xl border shadow-lg max-h-64 overflow-y-auto ${cardBg}`}>
+                    {['ALL', 'CD', 'CW', 'ID', 'LD', 'LR', 'BC', 'RTGS', 'MOVE_MONEY', 'TRANSFER_TO_OUTLET'].map((tp) => (
+                      <button
+                        key={tp}
+                        type="button"
+                        onClick={() => { setHistoryTypeFilter(tp); setHistoryTypeDropdownOpen(false); }}
+                        className={`w-full text-left px-3 py-2 text-xs font-semibold hover:bg-emerald-500/10 ${historyTypeFilter === tp ? 'text-emerald-500' : ''}`}
+                      >
+                        {tp === 'ALL' ? 'All Types' : tp}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              <div className="relative">
+                <button
+                  onClick={() => setDatePickerOpen((v) => !v)}
+                  className={`flex items-center gap-1.5 rounded-lg border px-2.5 py-1.5 text-[11px] font-semibold ${inputBg}`}
+                >
+                  <Calendar size={12} className="text-emerald-500" />
+                  {dateFilter
+                    ? new Date(dateFilter + 'T00:00:00').toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })
+                    : 'All Dates'}
+                  <ChevronDown size={12} className="text-slate-400" />
+                </button>
+
+                <div
+                  className={`absolute right-0 z-30 mt-2 w-72 rounded-2xl border shadow-lg p-3 origin-top-right transition-all duration-150 ease-out ${cardBg} ${
+                    datePickerOpen ? 'opacity-100 scale-100 pointer-events-auto' : 'opacity-0 scale-95 pointer-events-none'
+                  }`}
+                >
+                  <div className="flex items-center justify-between mb-2">
+                    <button
+                      onClick={() =>
+                        setCalendarMonth((prev) => {
+                          const m = prev.month === 0 ? 11 : prev.month - 1;
+                          const y = prev.month === 0 ? prev.year - 1 : prev.year;
+                          return { year: y, month: m };
+                        })
+                      }
+                      className="p-1 rounded-lg hover:bg-emerald-500/10 text-slate-500"
+                    >
+                      <ChevronLeft size={16} />
+                    </button>
+                    <div className="flex items-center gap-1">
+                      <div className="relative">
+                        <button
+                          type="button"
+                          onClick={() => { setMonthDropdownOpen((v) => !v); setYearDropdownOpen(false); }}
+                          className={`text-xs font-bold py-1 px-2 rounded-md border cursor-pointer flex items-center gap-1 ${
+                            isDark ? 'bg-slate-900 border-slate-700 text-white' : 'bg-slate-50 border-slate-200 text-slate-900'
+                          }`}
+                        >
+                          {monthNamesList[calendarMonth.month]}
+                          <span className="text-[9px] opacity-60">▼</span>
+                        </button>
+                        {monthDropdownOpen && (
+                          <div
+                            className={`absolute left-0 top-full mt-1 z-50 max-h-48 overflow-y-auto rounded-lg border shadow-xl w-32 ${
+                              isDark ? 'bg-[#1E293B] border-slate-700' : 'bg-white border-slate-200'
+                            }`}
+                          >
+                            {monthNamesList.map((mName, idx) => (
+                              <button
+                                key={mName}
+                                type="button"
+                                onClick={() => {
+                                  setCalendarMonth((prev) => ({ ...prev, month: idx }));
+                                  setMonthDropdownOpen(false);
+                                }}
+                                className={`w-full text-left text-xs font-semibold px-3 py-1.5 cursor-pointer ${
+                                  idx === calendarMonth.month
+                                    ? 'bg-emerald-600 text-white'
+                                    : isDark
+                                    ? 'text-slate-200 hover:bg-slate-800'
+                                    : 'text-slate-800 hover:bg-slate-100'
+                                }`}
+                              >
+                                {mName}
+                              </button>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+
+                      <div className="relative">
+                        <button
+                          type="button"
+                          onClick={() => { setYearDropdownOpen((v) => !v); setMonthDropdownOpen(false); }}
+                          className={`text-xs font-bold py-1 px-2 rounded-md border cursor-pointer font-mono flex items-center gap-1 ${
+                            isDark ? 'bg-slate-900 border-slate-700 text-white' : 'bg-slate-50 border-slate-200 text-slate-900'
+                          }`}
+                        >
+                          {calendarMonth.year}
+                          <span className="text-[9px] opacity-60">▼</span>
+                        </button>
+                        {yearDropdownOpen && (
+                          <div
+                            className={`absolute left-0 top-full mt-1 z-50 max-h-48 overflow-y-auto rounded-lg border shadow-xl w-20 ${
+                              isDark ? 'bg-[#1E293B] border-slate-700' : 'bg-white border-slate-200'
+                            }`}
+                          >
+                            {yearOptionsList.map((y) => (
+                              <button
+                                key={y}
+                                type="button"
+                                onClick={() => {
+                                  setCalendarMonth((prev) => ({ ...prev, year: y }));
+                                  setYearDropdownOpen(false);
+                                }}
+                                className={`w-full text-left text-xs font-semibold px-3 py-1.5 cursor-pointer font-mono ${
+                                  y === calendarMonth.year
+                                    ? 'bg-emerald-600 text-white'
+                                    : isDark
+                                    ? 'text-slate-200 hover:bg-slate-800'
+                                    : 'text-slate-800 hover:bg-slate-100'
+                                }`}
+                              >
+                                {y}
+                              </button>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                    <button
+                      onClick={() =>
+                        setCalendarMonth((prev) => {
+                          const m = prev.month === 11 ? 0 : prev.month + 1;
+                          const y = prev.month === 11 ? prev.year + 1 : prev.year;
+                          return { year: y, month: m };
+                        })
+                      }
+                      className="p-1 rounded-lg hover:bg-emerald-500/10 text-slate-500"
+                    >
+                      <ChevronRight size={16} />
+                    </button>
+                  </div>
+
+                  <div className="grid grid-cols-7 gap-1 mb-1">
+                    {['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'].map((d, i) => (
+                      <div
+                        key={d}
+                        className={`text-center text-[10px] font-bold ${i === 5 || i === 6 ? 'text-rose-500' : 'text-slate-400'}`}
+                      >
+                        {d}
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="grid grid-cols-7 gap-1">
+                    {Array.from({ length: new Date(calendarMonth.year, calendarMonth.month, 1).getDay() }).map((_, i) => (
+                      <div key={`blank-${i}`} />
+                    ))}
+                    {Array.from({ length: new Date(calendarMonth.year, calendarMonth.month + 1, 0).getDate() }).map((_, i) => {
+                      const day = i + 1;
+                      const dow = new Date(calendarMonth.year, calendarMonth.month, day).getDay();
+                      const isWeekend = dow === 5 || dow === 6;
+                      const dateStr = `${calendarMonth.year}-${String(calendarMonth.month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                      const isSelected = dateFilter === dateStr;
+                      const isToday = dateStr === new Date().toLocaleDateString('en-CA');
+                      return (
+                        <button
+                          key={day}
+                          onClick={() => {
+                            setDateFilter(dateStr);
+                            setDatePickerOpen(false);
+                          }}
+                          className={`h-8 rounded-lg text-xs font-semibold transition ${
+                            isSelected
+                              ? 'bg-emerald-500 text-white'
+                              : isToday
+                              ? 'border border-emerald-500 text-emerald-500'
+                              : isWeekend
+                              ? 'text-rose-500 hover:bg-rose-500/10'
+                              : 'hover:bg-emerald-500/10'
+                          }`}
+                        >
+                          {day}
+                        </button>
+                      );
+                    })}
+                  </div>
+
+                  <div className="flex items-center justify-between mt-2 pt-2 border-t border-slate-700/20">
+                    <button
+                      onClick={() => {
+                        setDateFilter('');
+                        setDatePickerOpen(false);
+                      }}
+                      className="text-xs font-semibold text-rose-500"
+                    >
+                      Clear
+                    </button>
+                    <button
+                      onClick={() => {
+                        const t = new Date();
+                        setCalendarMonth({ year: t.getFullYear(), month: t.getMonth() });
+                        setDateFilter(t.toLocaleDateString('en-CA'));
+                        setDatePickerOpen(false);
+                      }}
+                      className="text-xs font-semibold text-emerald-500"
+                    >
+                      Today
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className={`flex items-center justify-between rounded-lg border px-3 py-2 mb-2 text-[11px] font-bold ${inputBg}`}>
+              <span>
+                Total ({historyTypeFilter === 'ALL' ? 'All Types' : historyTypeFilter} ·{' '}
+                {dateFilter
+                  ? new Date(dateFilter + 'T00:00:00').toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })
+                  : 'All Dates'})
+              </span>
+              <span>৳ {combinedHistoryTotal.toLocaleString()}</span>
+            </div>
+
+            <div className="space-y-1.5 max-h-96 overflow-y-auto">
+              {combinedUserHistory.length === 0 && (
+                <div className="text-xs text-slate-500 text-center py-6">No transaction history found.</div>
+              )}
+              {combinedUserHistory.map((h) => (
+                <div key={h.id} className={`flex items-center justify-between rounded-lg border px-3 py-2 text-[11px] ${inputBg}`}>
+                  <div>
+                    <span className="font-bold">{h.historyType}</span>
+                    {h.note ? <span className="text-slate-500"> ({h.note})</span> : null}
+                    <div className="text-slate-500">{new Date(h.createdAt).toLocaleString()}</div>
+                  </div>
+                  <div className="font-extrabold">৳ {h.amount.toLocaleString()}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
       </div>
     </div>
   );
