@@ -109,6 +109,42 @@ export const TransferView: React.FC = () => {
     if (transferType === 'TRANSFER_TO_OUTLET' && !destinationOutletId) return false;
     return true;
   }, [amountInput, transferType, segregatedTotal, destinationOutletId, rtgsChargeEnabled, rtgsChargeAmount]);
+  
+  const [historyTypeFilter, setHistoryTypeFilter] = useState<string>('ALL');
+  const [historyTypeDropdownOpen, setHistoryTypeDropdownOpen] = useState(false);
+
+  const mySegregations = useMemo(() => {
+    return segregationRecords.filter((r) => !currentUser || r.userId === currentUser.id);
+  }, [segregationRecords, currentUser]);
+
+  const combinedUserHistory = useMemo(() => {
+    const segItems = mySegregations.map((r) => ({
+      id: r.id,
+      historyType: r.transactionType as string,
+      amount: r.actualAmount,
+      note: r.accountTitle,
+      createdAt: r.createdAt
+    }));
+    const transferItems = myTransfers.map((t) => ({
+      id: t.id,
+      historyType: t.transferType as string,
+      amount: t.amount,
+      note: t.transferType === 'TRANSFER_TO_OUTLET' ? `To ${t.destinationOutletName || 'Outlet'}` : (t.note || ''),
+      createdAt: t.createdAt
+    }));
+    let items = [...segItems, ...transferItems];
+    if (dateFilter) {
+      items = items.filter((i) => new Date(i.createdAt).toLocaleDateString('en-CA') === dateFilter);
+    }
+    if (historyTypeFilter !== 'ALL') {
+      items = items.filter((i) => i.historyType === historyTypeFilter);
+    }
+    return items.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+  }, [mySegregations, myTransfers, dateFilter, historyTypeFilter]);
+
+  const combinedHistoryTotal = useMemo(() => {
+    return combinedUserHistory.reduce((sum, i) => sum + i.amount, 0);
+  }, [combinedUserHistory]);
 
 
        const handleDenomChange = (key: DenomKey, value: string) => {
