@@ -150,7 +150,7 @@ export const DenominationSegregationAdmin: React.FC = () => {
             >
               <List size={13} /> All Entries
             </button>
-            <button
+                       <button
               onClick={() => setActiveSubPage('ANALYSIS')}
               className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition ${
                 activeSubPage === 'ANALYSIS'
@@ -159,6 +159,16 @@ export const DenominationSegregationAdmin: React.FC = () => {
               }`}
             >
               <BarChart3 size={13} /> Total Cash Analysis
+            </button>
+            <button
+              onClick={() => setActiveSubPage('HISTORY')}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition ${
+                activeSubPage === 'HISTORY'
+                  ? `${isDark ? 'bg-[#1A2333] text-slate-100' : 'bg-white text-slate-900'} shadow-sm`
+                  : 'text-slate-400'
+              }`}
+            >
+              <History size={13} /> History
             </button>
           </div>
         </div>
