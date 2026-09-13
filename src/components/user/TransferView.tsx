@@ -451,13 +451,14 @@ export const TransferView: React.FC = () => {
                       ? 'border-slate-700 text-slate-400 hover:text-slate-200'
                       : 'border-slate-200 text-slate-500 hover:text-slate-800'
                   }`}
-                >
+                               >
                   {copiedTotal ? <Check size={12} /> : <Copy size={12} />}
                 </button>
                 Segregated Total: ৳ {segregatedTotal.toLocaleString()}
               </div>
             </div>
         </div>
+        )}
 
       </div>
     </div>
