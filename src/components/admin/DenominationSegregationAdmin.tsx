@@ -16,10 +16,12 @@ import {
   ChevronRight,
   X,
   BarChart3,
+  History,
   List
 } from 'lucide-react';
 import { SegregationTransactionType } from '../../types';
 import { TotalCashAnalysisView } from './TotalCashAnalysisView';
+import { CashHistoryView } from './CashHistoryView';
 
 const TX_LABELS: Record<SegregationTransactionType, { label: string; icon: React.ElementType; color: string }> = {
   CD: { label: 'Cash Deposit', icon: ArrowDownCircle, color: 'text-emerald-500' },
@@ -33,7 +35,7 @@ const TX_LABELS: Record<SegregationTransactionType, { label: string; icon: React
 export const DenominationSegregationAdmin: React.FC = () => {
   const { segregationRecords, outlets, userPreferences } = useApp();
   const isDark = userPreferences.theme === 'dark';
-  const [activeSubPage, setActiveSubPage] = useState<'ENTRIES' | 'ANALYSIS'>('ENTRIES');
+  const [activeSubPage, setActiveSubPage] = useState<'ENTRIES' | 'ANALYSIS' | 'HISTORY'>('ENTRIES');
 
     const [searchTerm, setSearchTerm] = useState('');
   const [typeFilter, setTypeFilter] = useState<'ALL' | SegregationTransactionType>('ALL');
@@ -130,7 +132,11 @@ export const DenominationSegregationAdmin: React.FC = () => {
         <div className="flex items-center justify-between flex-wrap gap-2 mb-1">
           <h2 className={`font-bold text-lg flex items-center gap-2 ${isDark ? 'text-slate-100' : 'text-slate-900'}`}>
             <Banknote className="text-emerald-500" size={20} />
-            {activeSubPage === 'ENTRIES' ? 'Denomination Segregation — All Entries' : 'Total Cash Analysis'}
+            {activeSubPage === 'ENTRIES'
+              ? 'Denomination Segregation — All Entries'
+              : activeSubPage === 'ANALYSIS'
+              ? 'Total Cash Analysis'
+              : 'Cash & Mother Amount History'}
           </h2>
 
           <div className={`flex items-center gap-1 p-1 rounded-xl ${isDark ? 'bg-[#0F172A]' : 'bg-slate-100'}`}>
