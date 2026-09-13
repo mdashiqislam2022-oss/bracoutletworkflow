@@ -48,6 +48,7 @@ export const TransferView: React.FC = () => {
     : 'bg-white border-slate-200 text-slate-900';
 
     const [transferType, setTransferType] = useState<CashTransferType>('RTGS');
+      const [activeTab, setActiveTab] = useState<'transfer' | 'history'>('transfer');
   const [amountInput, setAmountInput] = useState('');
   const [rtgsChargeEnabled, setRtgsChargeEnabled] = useState(false);
   const [rtgsChargeAmount, setRtgsChargeAmount] = useState('100');
