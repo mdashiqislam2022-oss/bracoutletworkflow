@@ -249,8 +249,7 @@ export const TransferView: React.FC = () => {
           </div>
         </div>
 
-                {activeTab === 'transfer' && (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           {/* Left: Transfer form */}
           <div className={`rounded-xl border p-3 space-y-2 ${inputBg}`}>
             <div className="text-xs font-bold flex items-center gap-1.5 text-emerald-600">
