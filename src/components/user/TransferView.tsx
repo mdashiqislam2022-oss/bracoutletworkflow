@@ -457,8 +457,9 @@ export const TransferView: React.FC = () => {
                 </button>
                 Segregated Total: ৳ {segregatedTotal.toLocaleString()}
               </div>
-            </div>
+                      </div>
         </div>
+          </>
         )}
 
         {activeTab === 'history' && (
