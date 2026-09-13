@@ -459,11 +459,11 @@ export const TransferView: React.FC = () => {
               </div>
                       </div>
         </div>
-          </>
+                  </div>
         )}
 
         {activeTab === 'history' && (
-          <div>
+          <div className="animate-tab-fade">
             <div className="flex items-center justify-between gap-2 mb-3 flex-wrap">
               <div className="relative">
                 <button
