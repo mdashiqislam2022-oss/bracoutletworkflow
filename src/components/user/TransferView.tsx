@@ -224,7 +224,7 @@ export const TransferView: React.FC = () => {
                </div>
 
         {activeTab === 'transfer' && (
-          <>
+                   <div className="animate-tab-fade">
         <OutletCashSummaryPanel outletId={currentUser?.outletId || ''} isDark={isDark} />
 
                {/* 3 Summary Boxes */}
