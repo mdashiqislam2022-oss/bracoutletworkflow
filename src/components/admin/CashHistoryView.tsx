@@ -298,3 +298,78 @@ export const CashHistoryView: React.FC = () => {
                     setHistoryDateFilter(t.toLocaleDateString('en-CA'));
                     setHistoryDatePickerOpen(false);
                   }}
+                  className="text-xs font-semibold text-emerald-500"
+                >
+                  Today
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="text-xs text-slate-500 mb-2">{combinedHistory.length} entries found</div>
+
+        <div className="space-y-1.5 max-h-[70vh] overflow-y-auto">
+          {combinedHistory.length === 0 && (
+            <div className="text-xs text-slate-500 text-center py-6">No history found.</div>
+          )}
+          {combinedHistory.map((h) => {
+            const hasDenoms = (h.kind === 'RTGS Transfer' || h.kind === 'Transfer to Outlet') && !!(h as any).denominations;
+            const isOpen = expandedHistoryId === h.id;
+            const motherTag = h.kind === 'Mother Amount' ? getMotherAmountReasonTag(h.note) : '';
+            return (
+              <div key={`${h.kind}-${h.id}`} className={`rounded-lg border ${inputBg}`}>
+                <button
+                  type="button"
+                  onClick={() => hasDenoms && setExpandedHistoryId(isOpen ? null : h.id)}
+                  className={`w-full flex items-center justify-between px-3 py-2 text-[11px] text-left ${
+                    hasDenoms ? 'cursor-pointer' : 'cursor-default'
+                  }`}
+                >
+                  <div>
+                    <span className="font-bold">{h.kind}</span> — {h.outletName}
+                    {h.kind === 'Transfer to Outlet' && (h as any).destinationOutletName ? (
+                      <span className="text-teal-600 font-semibold"> → {(h as any).destinationOutletName}</span>
+                    ) : null}
+                    {h.kind === 'Mother Amount' ? (
+                      <span className={`ml-1 inline-block px-1.5 py-0.5 rounded text-[9px] font-bold align-middle ${
+                        motherTag === 'CW' || motherTag === 'LD' ? 'bg-red-500/10 text-red-600' : 'bg-emerald-500/10 text-emerald-600'
+                      }`}>
+                        {motherTag}
+                      </span>
+                    ) : (
+                      h.note ? <span className="text-slate-500"> ({h.note})</span> : null
+                    )}
+                    {h.kind === 'Mother Amount' && (
+                      <div className="text-slate-500">
+                        Before: ৳{getPreviousMotherAmount(h).toLocaleString()} → After: ৳{h.amount.toLocaleString()}{' '}
+                        <span className={h.amount >= getPreviousMotherAmount(h) ? 'text-emerald-600 font-semibold' : 'text-red-500 font-semibold'}>
+                          ({h.amount >= getPreviousMotherAmount(h) ? '+' : ''}{(h.amount - getPreviousMotherAmount(h)).toLocaleString()})
+                        </span>
+                      </div>
+                    )}
+                    <div className="text-slate-500">{new Date(h.createdAt).toLocaleString()} · {h.setByUserName}</div>
+                  </div>
+                  <div className={`font-extrabold ${h.kind === 'Mother Amount' ? (h.amount >= getPreviousMotherAmount(h) ? 'text-emerald-600' : 'text-red-500') : ''}`}>
+                    {h.kind === 'Mother Amount' ? (h.amount >= getPreviousMotherAmount(h) ? '+ ' : '− ') : ''}৳ {h.amount.toLocaleString()}
+                  </div>
+                </button>
+                {isOpen && hasDenoms && (
+                  <div className="px-3 pb-2 pt-1 border-t border-slate-700/20">
+                    <div className="grid grid-cols-2 md:grid-cols-5 gap-2 text-[10px]">
+                      {DENOM_LIST.map((d) => (
+                        <div key={d.key} className="rounded-lg bg-black/5 dark:bg-white/5 px-2 py-1">
+                          <span className="font-semibold">Tk{d.value}:</span> {(h as any).denominations?.[d.key] || 0}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  );
+};
