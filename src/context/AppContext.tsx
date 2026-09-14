@@ -28,8 +28,11 @@ import {
   CashTransferRecord,
   CashTransferType,
   DenominationCounts,
-    NoteRecord,
-  RuleRecord
+       NoteRecord,
+  RuleRecord,
+  SupportingRecord,
+  SupportingFundingSource,
+  SupportingStatus
 } from '../types';
 import {
   SupabaseService,
