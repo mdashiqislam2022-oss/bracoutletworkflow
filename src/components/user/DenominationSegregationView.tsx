@@ -196,13 +196,18 @@ export const DenominationSegregationView: React.FC = () => {
     return map;
   }, [segregationRecords, currentUser]);
 
-  // Total charge amount collected from CD (Cash Deposit) transactions only
+    // Total charge amount collected from CD (Cash Deposit) transactions only — today only
   const totalChargeAmount = useMemo(() => {
+    const todayStr = new Date().toLocaleDateString('en-CA');
     return segregationRecords
-      .filter((r) => (!currentUser || r.userId === currentUser.id) && r.transactionType === 'CD')
+      .filter(
+        (r) =>
+          (!currentUser || r.userId === currentUser.id) &&
+          r.transactionType === 'CD' &&
+          new Date(r.createdAt).toLocaleDateString('en-CA') === todayStr
+      )
       .reduce((sum, r) => sum + (r.chargeAmount || 0), 0);
   }, [segregationRecords, currentUser]);
-
   // ---------- Derived: Unified Account Search Results ----------
   const searchResults = useMemo((): UnifiedAccount[] => {
     const term = searchTerm.trim().toLowerCase();
