@@ -24,7 +24,7 @@ interface OutletCashSummaryPanelProps {
 }
 
 export const OutletCashSummaryPanel: React.FC<OutletCashSummaryPanelProps> = ({ outletId, isDark }) => {
-  const { segregationRecords, motherAmounts, outletTransfers, cashTransfers } = useApp();
+ const { segregationRecords, motherAmounts, outletTransfers, cashTransfers, supportingRecords } = useApp();
 
   const cardBg = isDark ? 'bg-[#1A2333] border-slate-800' : 'bg-white border-slate-200';
 
