@@ -438,33 +438,31 @@ export interface CashTransferRecord {
 
 // ==================== Supporting Module ====================
 
-export type SupportingPaymentMethod = 'CASH' | 'BALANCE';
+export type SupportingFundingSource = 'CASH' | 'BALANCE';
 export type SupportingStatus = 'PENDING' | 'RECOVERED';
 
 export interface SupportingRecord {
   id: string;
-  supportingToName: string;
-  phoneNumber?: string;
+  fundingSource: SupportingFundingSource;
+  denominations?: DenominationCounts;
+  amount: number;
+  recipientName: string;
+  mobileNumber?: string;
   smeOfficerName?: string;
   accountNumber?: string;
   accountTitle?: string;
   purpose: string;
-  supportDate: string;
-  paymentMethod: SupportingPaymentMethod;
-  denominations?: DenominationCounts;
-  amount: number;
+  supportingDate: string;
+  status: SupportingStatus;
+  recoveredAt?: string;
+  recoveredBy?: string;
   outletId: string;
   outletName: string;
   userId: string;
   userName: string;
-  status: SupportingStatus;
-  recoveredAt?: string;
-  recoveredByUserId?: string;
-  recoveredByUserName?: string;
   notes?: string;
   createdAt: string;
 }
-
 // ==================== Note & Rule Module ====================
 
 export interface NoteRecord {
