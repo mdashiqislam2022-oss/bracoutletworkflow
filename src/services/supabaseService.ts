@@ -20,8 +20,9 @@ import {
   OutletTransferRecord,
     OutletVaultRecord,
   CashTransferRecord,
-  NoteRecord,
-  RuleRecord
+   NoteRecord,
+  RuleRecord,
+  SupportingRecord
 } from '../types';
 /**
  * Maps database snake_case or JSON record to TypeScript ChequeCardEntry
