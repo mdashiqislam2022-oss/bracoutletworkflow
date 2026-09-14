@@ -3661,9 +3661,12 @@ if (sessionStatus.isActive) {
                 addRule,
         updateRuleOutlets,
         deleteRule,
-                cashTransfers,
+                       cashTransfers,
         addCashTransfer,
         updateCashTransferNote,
+        supportingRecords,
+        addSupportingRecord,
+        markSupportingRecovered,
         
         // Add/Edit Entry Modal controls
         isAddEntryModalOpen,
