@@ -117,6 +117,9 @@ export const DenominationSegregationView: React.FC = () => {
   const [crossOutletDirection, setCrossOutletDirection] = useState<'HERE' | 'THERE'>('HERE');
   const [crossOutletSearch, setCrossOutletSearch] = useState('');
   const [crossOutletDropdownOpen, setCrossOutletDropdownOpen] = useState(false);
+    const [isChangeMode, setIsChangeMode] = useState(false);
+  const [showChangePopup, setShowChangePopup] = useState(false);
+  const [changeReceivedDenoms, setChangeReceivedDenoms] = useState<Record<DenomKey, number>>(emptyDenoms());
   
   // ---------- Account Search State ----------
   const [searchTerm, setSearchTerm] = useState('');
