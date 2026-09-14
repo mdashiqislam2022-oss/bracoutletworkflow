@@ -9,10 +9,11 @@ import {
   ChevronDown,
   ChevronLeft,
   ChevronRight,
-  History,
+   History,
   Send,
   Copy,
-  Check
+  Check,
+  StickyNote
 } from 'lucide-react';
 import { CashTransferType, SegregationTransactionType } from '../../types';
 
