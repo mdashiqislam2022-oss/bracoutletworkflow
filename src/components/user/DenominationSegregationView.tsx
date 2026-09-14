@@ -120,7 +120,7 @@ export const DenominationSegregationView: React.FC = () => {
   const [newCustAccNo, setNewCustAccNo] = useState('');
   const [newCustTitle, setNewCustTitle] = useState('');
   const [newCustMobile, setNewCustMobile] = useState('');
-  const [newCustCategory, setNewCustCategory] = useState<'SAVINGS' | 'CURRENT'>('SAVINGS');
+   const [newCustCategory, setNewCustCategory] = useState<'SAVINGS' | 'CURRENT'>('CURRENT');
   
   const crossOutlet = outlets.find((o) => o.id === crossOutletId);
   const filteredCrossOutlets = useMemo(() => {
