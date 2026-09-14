@@ -573,3 +573,45 @@ ALTER TABLE public.denomination_segregations ADD COLUMN IF NOT EXISTS change_not
 ALTER TABLE public.denomination_segregations ADD COLUMN IF NOT EXISTS change_note_200 INTEGER DEFAULT 0;
 ALTER TABLE public.denomination_segregations ADD COLUMN IF NOT EXISTS change_note_500 INTEGER DEFAULT 0;
 ALTER TABLE public.denomination_segregations ADD COLUMN IF NOT EXISTS change_note_1000 INTEGER DEFAULT 0;
+
+-- ==============================================================================
+-- SUPPORTING MODULE
+-- ==============================================================================
+
+CREATE TABLE IF NOT EXISTS public.supporting_records (
+    id TEXT PRIMARY KEY,
+    funding_source TEXT NOT NULL DEFAULT 'CASH' CHECK (funding_source IN ('CASH', 'BALANCE')),
+    note_1 INTEGER DEFAULT 0,
+    note_2 INTEGER DEFAULT 0,
+    note_5 INTEGER DEFAULT 0,
+    note_10 INTEGER DEFAULT 0,
+    note_20 INTEGER DEFAULT 0,
+    note_50 INTEGER DEFAULT 0,
+    note_100 INTEGER DEFAULT 0,
+    note_200 INTEGER DEFAULT 0,
+    note_500 INTEGER DEFAULT 0,
+    note_1000 INTEGER DEFAULT 0,
+    amount NUMERIC NOT NULL DEFAULT 0,
+    recipient_name TEXT NOT NULL,
+    mobile_number TEXT,
+    sme_officer_name TEXT,
+    account_number TEXT,
+    account_title TEXT,
+    purpose TEXT,
+    supporting_date TEXT NOT NULL,
+    status TEXT NOT NULL DEFAULT 'PENDING' CHECK (status IN ('PENDING', 'RECOVERED')),
+    recovered_at TIMESTAMPTZ,
+    recovered_by TEXT,
+    outlet_id TEXT NOT NULL,
+    outlet_name TEXT NOT NULL,
+    user_id TEXT,
+    user_name TEXT,
+    notes TEXT,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT timezone('utc'::text, now())
+);
+
+ALTER TABLE public.supporting_records ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "select_supporting_records" ON public.supporting_records FOR SELECT USING (true);
+CREATE POLICY "insert_supporting_records" ON public.supporting_records FOR INSERT WITH CHECK (true);
+CREATE POLICY "update_supporting_records" ON public.supporting_records FOR UPDATE USING (true) WITH CHECK (true);
