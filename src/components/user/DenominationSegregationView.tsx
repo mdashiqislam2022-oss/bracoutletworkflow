@@ -101,6 +101,9 @@ export const DenominationSegregationView: React.FC = () => {
     const saved = localStorage.getItem('lastSegregationType');
     return (saved as SegregationTransactionType) || 'CD';
   });
+    useEffect(() => {
+    localStorage.setItem('lastSegregationType', activeType);
+  }, [activeType]);
   const [denoms, setDenoms] = useState<Record<DenomKey, number>>(emptyDenoms());
   const [chargeApplied, setChargeApplied] = useState(false);
   const [showChargeSheet, setShowChargeSheet] = useState(false);
