@@ -97,7 +97,10 @@ export const DenominationSegregationView: React.FC = () => {
   const isDark = userPreferences.theme === 'dark';
 
     // ---------- Calculator State ----------
-  const [activeType, setActiveType] = useState<SegregationTransactionType>('CD');
+   const [activeType, setActiveType] = useState<SegregationTransactionType>(() => {
+    const saved = localStorage.getItem('lastSegregationType');
+    return (saved as SegregationTransactionType) || 'CD';
+  });
   const [denoms, setDenoms] = useState<Record<DenomKey, number>>(emptyDenoms());
   const [chargeApplied, setChargeApplied] = useState(false);
   const [showChargeSheet, setShowChargeSheet] = useState(false);
