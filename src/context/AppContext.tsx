@@ -3058,10 +3058,14 @@ if (sessionStatus.isActive) {
         accountTitle: string;
     customerName: string;
     mobileNumber: string;
-    bearerName?: string;
+       bearerName?: string;
     notes?: string;
     crossOutletId?: string;
     crossOutletDirection?: 'HERE' | 'THERE';
+    changeReceivedDenominations?: {
+      note1: number; note2: number; note5: number; note10: number; note20: number;
+      note50: number; note100: number; note200: number; note500: number; note1000: number;
+    };
   }): DenominationSegregationRecord => {
     const user = currentUser || {
       id: 'USR-AFO-001',
