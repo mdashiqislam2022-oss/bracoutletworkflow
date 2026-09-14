@@ -172,10 +172,13 @@ export const DenominationSegregationView: React.FC = () => {
     return Math.max(0, totalReceivedAmount - returnAmount - computedChargeAmount);
   }, [totalReceivedAmount, returnAmount, computedChargeAmount]);
 
-  // ---------- Derived: Top Summary Cards ----------
+    // ---------- Derived: Top Summary Cards ----------
   const summaryByType = useMemo(() => {
+    const todayStr = new Date().toLocaleDateString('en-CA');
     const scoped = segregationRecords.filter(
-      (r) => !currentUser || r.userId === currentUser.id
+      (r) =>
+        (!currentUser || r.userId === currentUser.id) &&
+        new Date(r.createdAt).toLocaleDateString('en-CA') === todayStr
     );
         const map: Record<SegregationTransactionType, { amount: number; count: number }> = {
       CD: { amount: 0, count: 0 },
