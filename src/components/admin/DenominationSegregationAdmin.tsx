@@ -30,7 +30,8 @@ const TX_LABELS: Record<SegregationTransactionType, { label: string; icon: React
   ID: { label: 'Initial Deposit', icon: Wallet, color: 'text-blue-500' },
   LD: { label: 'Loan Disbursement', icon: Banknote, color: 'text-amber-500' },
   LR: { label: 'Loan Repayment', icon: RefreshCcw, color: 'text-purple-500' },
-  BC: { label: 'Bill Collection', icon: CreditCard, color: 'text-teal-500' }
+  BC: { label: 'Bill Collection', icon: CreditCard, color: 'text-teal-500' },
+  CHG: { label: 'Change (Vangti)', icon: Shuffle, color: 'text-indigo-500' }
 };
 
 export const DenominationSegregationAdmin: React.FC = () => {
