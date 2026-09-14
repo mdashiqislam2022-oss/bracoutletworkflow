@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { AppProvider, useApp } from './context/AppContext';
 import { AuthPage } from './components/auth/AuthPage';
 import { Header } from './components/common/Header';
