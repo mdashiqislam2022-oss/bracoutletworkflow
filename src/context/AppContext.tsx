@@ -538,6 +538,7 @@ if (cloudData.rules && cloudData.rules.length) setRules(cloudData.rules);
             if (cloudData.customerAccounts) setCustomerAccounts(cloudData.customerAccounts);
             if (cloudData.segregationRecords) setSegregationRecords(cloudData.segregationRecords);
              if (cloudData.motherAmounts) setMotherAmounts(cloudData.motherAmounts);
+                        if (cloudData.supportingRecords) setSupportingRecords(cloudData.supportingRecords);
             if (cloudData.outletTransfers && cloudData.outletTransfers.length) setOutletTransfers(cloudData.outletTransfers);
             if (cloudData.outletVaults && cloudData.outletVaults.length) setOutletVaults(cloudData.outletVaults);
             if (cloudData.notes && cloudData.notes.length) setNotes(cloudData.notes);
