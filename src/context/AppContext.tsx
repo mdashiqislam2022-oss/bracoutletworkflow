@@ -463,6 +463,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
           if (cloudData.governanceSettings) setGovernanceSettings(cloudData.governanceSettings);
           if (cloudData.segregationRecords) setSegregationRecords(cloudData.segregationRecords);
                   if (cloudData.motherAmounts) setMotherAmounts(cloudData.motherAmounts);
+                    if (cloudData.supportingRecords) setSupportingRecords(cloudData.supportingRecords);
           if (cloudData.outletTransfers && cloudData.outletTransfers.length) setOutletTransfers(cloudData.outletTransfers);
           if (cloudData.outletVaults && cloudData.outletVaults.length) setOutletVaults(cloudData.outletVaults);
           if (cloudData.notes && cloudData.notes.length) setNotes(cloudData.notes);
