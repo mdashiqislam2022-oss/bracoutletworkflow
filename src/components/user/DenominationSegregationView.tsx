@@ -368,7 +368,7 @@ export const DenominationSegregationView: React.FC = () => {
         linkedAccountSource: 'CUSTOMER_ACCOUNT',
         linkedAccountId: '',
         accountNumber: 'N/A',
-        accountTitle: 'Cash Change (Vangti)',
+                accountTitle: 'Cash Change',
         customerName: 'Walk-in Customer',
         mobileNumber: '',
         notes: note.trim() || undefined,
