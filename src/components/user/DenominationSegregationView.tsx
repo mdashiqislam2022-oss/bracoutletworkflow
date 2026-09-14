@@ -116,7 +116,7 @@ export const DenominationSegregationView: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [searchTab, setSearchTab] = useState<'ALL' | 'SAVINGS' | 'LOAN' | 'CARDS'>('ALL');
   const [selectedAccount, setSelectedAccount] = useState<UnifiedAccount | null>(null);
-  const [showAddCustomer, setShowAddCustomer] = useState(false);
+    const [showAddCustomer, setShowAddCustomer] = useState(true);
   const [newCustAccNo, setNewCustAccNo] = useState('');
   const [newCustTitle, setNewCustTitle] = useState('');
   const [newCustMobile, setNewCustMobile] = useState('');
