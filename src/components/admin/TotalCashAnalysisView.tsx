@@ -196,7 +196,7 @@ export const TotalCashAnalysisView: React.FC = () => {
     });
         const vault = afoCash - transfer;
     return { mother, afoCash, transfer, vault, receivedFromOutlet };
-  }, [relevantOutlets, motherAmounts, outletTransfers, segregationRecords, cashTransfers]);
+   }, [relevantOutlets, motherAmounts, outletTransfers, segregationRecords, cashTransfers, supportingRecords]);
   const selectedOutletName = viewOutlet === 'ALL' ? 'All Outlets' : outlets.find((o) => o.id === viewOutlet)?.name || 'All Outlets';
 
     // ---------- Combined History (latest 15) ----------
