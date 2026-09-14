@@ -3049,9 +3049,10 @@ if (sessionStatus.isActive) {
     linkedAccountSource: 'LOAN_ACCOUNT' | 'CHEQUE_CARD' | 'CUSTOMER_ACCOUNT';
     linkedAccountId: string;
     accountNumber: string;
-    accountTitle: string;
+        accountTitle: string;
     customerName: string;
     mobileNumber: string;
+    bearerName?: string;
     notes?: string;
     crossOutletId?: string;
     crossOutletDirection?: 'HERE' | 'THERE';
