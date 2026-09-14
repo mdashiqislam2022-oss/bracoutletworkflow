@@ -101,7 +101,10 @@ export const TotalCashAnalysisView: React.FC = () => {
     const transferIn = cashTransfers
       .filter((t) => t.destinationOutletId === outletId && t.transferType === 'TRANSFER_TO_OUTLET')
       .reduce((sum, t) => sum + t.amount, 0);
-    return net - rtgsOut - transferOut + transferIn;
+      const supportingCashOut = supportingRecords
+      .filter((s) => s.outletId === outletId && s.fundingSource === 'CASH')
+      .reduce((sum, s) => sum + s.amount, 0);
+    return net - rtgsOut - transferOut + transferIn - supportingCashOut;
   };
 
   const relevantOutlets = useMemo(() => {
