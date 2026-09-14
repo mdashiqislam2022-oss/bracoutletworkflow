@@ -46,7 +46,8 @@ import {
     mapDbToOutletVault,
   mapDbToCashTransfer,
     mapDbToNote,
-  mapDbToRule
+  mapDbToRule,
+  mapDbToSupporting
 } from '../services/supabaseService';
 import { supabase } from '../lib/supabase';
 import confetti from 'canvas-confetti';
