@@ -126,11 +126,12 @@ export const TransferView: React.FC = () => {
       bearerName: r.bearerName,
       createdAt: r.createdAt
     }));
-    const transferItems = myTransfers.map((t) => ({
+        const transferItems = myTransfers.map((t) => ({
       id: t.id,
       historyType: t.transferType as string,
       amount: t.amount,
       note: t.transferType === 'TRANSFER_TO_OUTLET' ? `To ${t.destinationOutletName || 'Outlet'}` : (t.note || ''),
+      bearerName: undefined as string | undefined,
       createdAt: t.createdAt
     }));
     let items = [...segItems, ...transferItems];
