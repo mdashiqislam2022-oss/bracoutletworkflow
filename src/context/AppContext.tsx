@@ -3081,6 +3081,7 @@ if (sessionStatus.isActive) {
       accountTitle: data.accountTitle,
       customerName: data.customerName,
       mobileNumber: data.mobileNumber,
+            bearerName: data.bearerName,
       outletId: user.outletId || 'OUT-DHK-001',
       outletName: user.outletName || 'Motijheel Commercial SME Outlet',
       userId: user.id,
