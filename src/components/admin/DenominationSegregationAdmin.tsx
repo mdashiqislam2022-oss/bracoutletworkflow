@@ -550,21 +550,62 @@ export const DenominationSegregationAdmin: React.FC = () => {
                   </div>
                 </button>
 
-                {isOpen && (
+                               {isOpen && (
                   <div className="px-3 pb-3 pt-1 border-t border-slate-700/20">
-                    <div className="grid grid-cols-2 md:grid-cols-5 gap-2 mb-2 text-[11px]">
-                      {[
-                        ['Tk1', r.denominations.note1], ['Tk2', r.denominations.note2],
-                        ['Tk5', r.denominations.note5], ['Tk10', r.denominations.note10],
-                        ['Tk20', r.denominations.note20], ['Tk50', r.denominations.note50],
-                        ['Tk100', r.denominations.note100], ['Tk200', r.denominations.note200],
-                        ['Tk500', r.denominations.note500], ['Tk1000', r.denominations.note1000]
-                      ].map(([label, count]) => (
-                        <div key={label as string} className="rounded-lg bg-black/5 dark:bg-white/5 px-2 py-1">
-                          <span className="font-semibold">{label}:</span> {count as number}
+                    {r.transactionType === 'CHG' ? (
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-2">
+                        <div>
+                          <div className="text-[11px] font-bold text-indigo-600 mb-1">Received from Customer</div>
+                          <div className="grid grid-cols-2 gap-2 text-[11px]">
+                            {[
+                              ['Tk1', r.changeReceivedDenominations?.note1], ['Tk2', r.changeReceivedDenominations?.note2],
+                              ['Tk5', r.changeReceivedDenominations?.note5], ['Tk10', r.changeReceivedDenominations?.note10],
+                              ['Tk20', r.changeReceivedDenominations?.note20], ['Tk50', r.changeReceivedDenominations?.note50],
+                              ['Tk100', r.changeReceivedDenominations?.note100], ['Tk200', r.changeReceivedDenominations?.note200],
+                              ['Tk500', r.changeReceivedDenominations?.note500], ['Tk1000', r.changeReceivedDenominations?.note1000]
+                            ]
+                              .filter(([, count]) => (count as number) > 0)
+                              .map(([label, count]) => (
+                                <div key={label as string} className="rounded-lg bg-black/5 dark:bg-white/5 px-2 py-1">
+                                  <span className="font-semibold">{label}:</span> {count as number}
+                                </div>
+                              ))}
+                          </div>
                         </div>
-                      ))}
-                    </div>
+                        <div>
+                          <div className="text-[11px] font-bold text-rose-500 mb-1">Given to Customer</div>
+                          <div className="grid grid-cols-2 gap-2 text-[11px]">
+                            {[
+                              ['Tk1', r.denominations.note1], ['Tk2', r.denominations.note2],
+                              ['Tk5', r.denominations.note5], ['Tk10', r.denominations.note10],
+                              ['Tk20', r.denominations.note20], ['Tk50', r.denominations.note50],
+                              ['Tk100', r.denominations.note100], ['Tk200', r.denominations.note200],
+                              ['Tk500', r.denominations.note500], ['Tk1000', r.denominations.note1000]
+                            ]
+                              .filter(([, count]) => (count as number) > 0)
+                              .map(([label, count]) => (
+                                <div key={label as string} className="rounded-lg bg-black/5 dark:bg-white/5 px-2 py-1">
+                                  <span className="font-semibold">{label}:</span> {count as number}
+                                </div>
+                              ))}
+                          </div>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="grid grid-cols-2 md:grid-cols-5 gap-2 mb-2 text-[11px]">
+                        {[
+                          ['Tk1', r.denominations.note1], ['Tk2', r.denominations.note2],
+                          ['Tk5', r.denominations.note5], ['Tk10', r.denominations.note10],
+                          ['Tk20', r.denominations.note20], ['Tk50', r.denominations.note50],
+                          ['Tk100', r.denominations.note100], ['Tk200', r.denominations.note200],
+                          ['Tk500', r.denominations.note500], ['Tk1000', r.denominations.note1000]
+                        ].map(([label, count]) => (
+                          <div key={label as string} className="rounded-lg bg-black/5 dark:bg-white/5 px-2 py-1">
+                            <span className="font-semibold">{label}:</span> {count as number}
+                          </div>
+                        ))}
+                      </div>
+                    )}
                                         <div className="grid grid-cols-2 md:grid-cols-4 gap-2 text-[11px] text-slate-500">
                                            <div>Mobile: <span className="font-semibold">{r.mobileNumber}</span></div>
                       {r.bearerName && (
