@@ -151,6 +151,7 @@ export interface AppContextType {
     crossOutletId?: string;
     crossOutletDirection?: 'HERE' | 'THERE';
   }) => DenominationSegregationRecord;
+    updateSegregationNote: (id: string, note: string) => void;
 
   // Total Cash Analysis Module
   motherAmounts: MotherAmountRecord[];
