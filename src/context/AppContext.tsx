@@ -179,7 +179,25 @@ export interface AppContextType {
   deleteRule: (id: string) => void;
     cashTransfers: CashTransferRecord[];
       addCashTransfer: (data: { outletId: string; transferType: CashTransferType; amount: number; chargeAmount?: number; denominations?: DenominationCounts; note?: string; destinationOutletId?: string }) => CashTransferRecord;
-        updateCashTransferNote: (id: string, note: string) => void;
+         updateCashTransferNote: (id: string, note: string) => void;
+
+  // Supporting Module
+  supportingRecords: SupportingRecord[];
+  addSupportingRecord: (data: {
+    fundingSource: SupportingFundingSource;
+    denominations?: DenominationCounts;
+    amount: number;
+    recipientName: string;
+    mobileNumber?: string;
+    smeOfficerName?: string;
+    accountNumber?: string;
+    accountTitle?: string;
+    purpose: string;
+    supportingDate: string;
+    outletId: string;
+    notes?: string;
+  }) => SupportingRecord;
+  markSupportingRecovered: (id: string) => void;
 
   // Add/Edit Entry Modal controls
   isAddEntryModalOpen: boolean;
