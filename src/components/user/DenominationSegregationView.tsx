@@ -626,13 +626,17 @@ export const DenominationSegregationView: React.FC = () => {
               >
                 Change
               </button>
-              <button
+                           <button
                 type="button"
                 disabled={!isChangeMode}
                 onClick={() => isChangeMode && setShowChangePopup((v) => !v)}
-                className={`p-1 rounded-md shrink-0 ${isChangeMode ? 'text-indigo-500 hover:text-indigo-600' : 'text-slate-300 cursor-not-allowed'}`}
+                className={`flex items-center justify-center w-7 h-7 rounded-lg border shrink-0 transition-all duration-150 ${
+                  isChangeMode
+                    ? 'text-indigo-500 border-indigo-300 hover:text-indigo-600 hover:border-indigo-500 active:scale-90'
+                    : 'text-slate-300 border-slate-200 dark:border-slate-600 cursor-not-allowed'
+                }`}
               >
-                <ChevronDown size={14} className={`transition-transform ${showChangePopup ? 'rotate-180' : ''}`} />
+                <ChevronDown size={18} className={`transition-transform duration-200 ${showChangePopup ? 'rotate-180' : ''}`} />
               </button>
               {isChangeMode && (
                 <input
