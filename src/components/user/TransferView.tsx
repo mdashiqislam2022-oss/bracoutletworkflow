@@ -722,19 +722,60 @@ export const TransferView: React.FC = () => {
               {combinedUserHistory.length === 0 && (
                 <div className="text-xs text-slate-500 text-center py-6">No transaction history found.</div>
               )}
-              {combinedUserHistory.map((h) => (
-                <div key={h.id} className={`flex items-center justify-between rounded-lg border px-3 py-2 text-[11px] ${inputBg}`}>
-                  <div>
-                                        <span className="font-bold">{h.historyType}</span>
-                    {h.note ? <span className="text-slate-500"> ({h.note})</span> : null}
-                    {h.bearerName ? (
-                      <span className="ml-1 inline-block px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-600 text-[9px] font-bold align-middle">
-                        Bearer: {h.bearerName}
-                      </span>
-                    ) : null}
-                    <div className="text-slate-500">{new Date(h.createdAt).toLocaleString()}</div>
+                            {combinedUserHistory.map((h) => (
+                <div key={h.id} className={`relative rounded-lg border px-3 py-2 text-[11px] ${inputBg}`}>
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <span className="font-bold">{h.historyType}</span>
+                      {h.note ? <span className="text-slate-500"> ({h.note})</span> : null}
+                      {h.bearerName ? (
+                        <span className="ml-1 inline-block px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-600 text-[9px] font-bold align-middle">
+                          Bearer: {h.bearerName}
+                        </span>
+                      ) : null}
+                      <div className="text-slate-500">{new Date(h.createdAt).toLocaleString()}</div>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setNoteEditRowId(noteEditRowId === h.id ? null : h.id);
+                          setNoteInputText('');
+                        }}
+                        className="text-slate-400 hover:text-emerald-500"
+                      >
+                        <StickyNote size={14} />
+                      </button>
+                      <div className="font-extrabold">৳ {h.amount.toLocaleString()}</div>
+                    </div>
                   </div>
-                  <div className="font-extrabold">৳ {h.amount.toLocaleString()}</div>
+                  {noteEditRowId === h.id && (
+                    <div className={`absolute right-0 top-full z-30 mt-1 w-64 rounded-xl border shadow-lg p-2.5 ${cardBg}`}>
+                      <textarea
+                        value={noteInputText}
+                        onChange={(e) => setNoteInputText(e.target.value)}
+                        placeholder="যেমন: এটা CW হওয়ার কথা ছিল, ভুলে CD হয়ে গেছে"
+                        rows={3}
+                        className={`w-full rounded-lg border px-2 py-1.5 text-xs mb-2 ${inputBg}`}
+                      />
+                      <div className="flex gap-2">
+                        <button
+                          type="button"
+                          onClick={() => setNoteEditRowId(null)}
+                          className={`flex-1 py-1.5 rounded-lg text-xs font-semibold border ${inputBg}`}
+                        >
+                          Cancel
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => handleSubmitRowNote(h)}
+                          className="flex-1 py-1.5 rounded-lg bg-emerald-500 text-white text-xs font-bold"
+                        >
+                          Submit
+                        </button>
+                      </div>
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
