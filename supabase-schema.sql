@@ -558,3 +558,18 @@ ALTER TABLE public.cash_transfers ADD COLUMN IF NOT EXISTS destination_outlet_na
 ALTER TABLE public.denomination_segregations ADD COLUMN IF NOT EXISTS cross_outlet_id TEXT;
 ALTER TABLE public.denomination_segregations ADD COLUMN IF NOT EXISTS cross_outlet_name TEXT;
 ALTER TABLE public.denomination_segregations ADD COLUMN IF NOT EXISTS cross_outlet_direction TEXT;
+
+-- ==============================================================================
+-- CHANGE (VANGTI) TRANSACTION SUPPORT — Received Denomination columns
+-- ==============================================================================
+
+ALTER TABLE public.denomination_segregations ADD COLUMN IF NOT EXISTS change_note_1 INTEGER DEFAULT 0;
+ALTER TABLE public.denomination_segregations ADD COLUMN IF NOT EXISTS change_note_2 INTEGER DEFAULT 0;
+ALTER TABLE public.denomination_segregations ADD COLUMN IF NOT EXISTS change_note_5 INTEGER DEFAULT 0;
+ALTER TABLE public.denomination_segregations ADD COLUMN IF NOT EXISTS change_note_10 INTEGER DEFAULT 0;
+ALTER TABLE public.denomination_segregations ADD COLUMN IF NOT EXISTS change_note_20 INTEGER DEFAULT 0;
+ALTER TABLE public.denomination_segregations ADD COLUMN IF NOT EXISTS change_note_50 INTEGER DEFAULT 0;
+ALTER TABLE public.denomination_segregations ADD COLUMN IF NOT EXISTS change_note_100 INTEGER DEFAULT 0;
+ALTER TABLE public.denomination_segregations ADD COLUMN IF NOT EXISTS change_note_200 INTEGER DEFAULT 0;
+ALTER TABLE public.denomination_segregations ADD COLUMN IF NOT EXISTS change_note_500 INTEGER DEFAULT 0;
+ALTER TABLE public.denomination_segregations ADD COLUMN IF NOT EXISTS change_note_1000 INTEGER DEFAULT 0;
