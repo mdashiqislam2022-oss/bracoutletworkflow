@@ -31,6 +31,17 @@ const MainLayout: React.FC = () => {
    const { authMode, activeNavTab, userPreferences, isAddEntryModalOpen, closeAddEntryModal, initialAddEntryType, currentAdmin } = useApp();
   const isDark = userPreferences.theme === 'dark';
 
+  useEffect(() => {
+    const handleWheel = (e: WheelEvent) => {
+      const active = document.activeElement as HTMLElement | null;
+      if (active && active.tagName === 'INPUT' && (active as HTMLInputElement).type === 'number') {
+        active.blur();
+      }
+    };
+    document.addEventListener('wheel', handleWheel, { passive: true });
+    return () => document.removeEventListener('wheel', handleWheel);
+  }, []);
+
   if (authMode === 'NONE') {
     return (
       <div className={`min-h-screen flex items-center justify-center p-3 sm:p-6 ${
