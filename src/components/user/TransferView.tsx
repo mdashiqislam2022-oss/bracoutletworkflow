@@ -705,8 +705,13 @@ export const TransferView: React.FC = () => {
               {combinedUserHistory.map((h) => (
                 <div key={h.id} className={`flex items-center justify-between rounded-lg border px-3 py-2 text-[11px] ${inputBg}`}>
                   <div>
-                    <span className="font-bold">{h.historyType}</span>
+                                        <span className="font-bold">{h.historyType}</span>
                     {h.note ? <span className="text-slate-500"> ({h.note})</span> : null}
+                    {h.bearerName ? (
+                      <span className="ml-1 inline-block px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-600 text-[9px] font-bold align-middle">
+                        Bearer: {h.bearerName}
+                      </span>
+                    ) : null}
                     <div className="text-slate-500">{new Date(h.createdAt).toLocaleString()}</div>
                   </div>
                   <div className="font-extrabold">৳ {h.amount.toLocaleString()}</div>
