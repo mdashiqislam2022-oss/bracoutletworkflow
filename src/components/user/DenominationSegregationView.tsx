@@ -298,7 +298,7 @@ export const DenominationSegregationView: React.FC = () => {
     }
   };
 
-               const handleClear = () => {
+                  const handleClear = () => {
     setDenoms(emptyDenoms());
     setChargeApplied(false);
     setShowChargeSheet(false);
@@ -308,6 +308,9 @@ export const DenominationSegregationView: React.FC = () => {
     setBearerName('');
     setCrossOutletId('');
     setCrossOutletDirection('HERE');
+    setIsChangeMode(false);
+    setShowChangePopup(false);
+    setChangeReceivedDenoms(emptyDenoms());
   };
     const handleCopyAmount = () => {
     if (actualAmount <= 0) return;
