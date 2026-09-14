@@ -3409,6 +3409,87 @@ if (sessionStatus.isActive) {
       return updated;
     });
   };
+  
+  const addSupportingRecord = (data: {
+    fundingSource: SupportingFundingSource;
+    denominations?: DenominationCounts;
+    amount: number;
+    recipientName: string;
+    mobileNumber?: string;
+    smeOfficerName?: string;
+    accountNumber?: string;
+    accountTitle?: string;
+    purpose: string;
+    supportingDate: string;
+    outletId: string;
+    notes?: string;
+  }): SupportingRecord => {
+    const user = currentUser || { id: 'USR-AFO-001', fullName: 'Master Administrator' };
+    const outlet = outlets.find((o) => o.id === data.outletId);
+    const newRecord: SupportingRecord = {
+      id: createUniqueId('SUP'),
+      fundingSource: data.fundingSource,
+      denominations: data.fundingSource === 'CASH' ? data.denominations : undefined,
+      amount: data.amount,
+      recipientName: data.recipientName,
+      mobileNumber: data.mobileNumber,
+      smeOfficerName: data.smeOfficerName,
+      accountNumber: data.accountNumber,
+      accountTitle: data.accountTitle,
+      purpose: data.purpose,
+      supportingDate: data.supportingDate,
+      status: 'PENDING',
+      outletId: data.outletId,
+      outletName: outlet?.name || '',
+      userId: user.id,
+      userName: user.fullName,
+      notes: data.notes,
+      createdAt: new Date().toISOString()
+    };
+    setSupportingRecords((prev) => [newRecord, ...prev]);
+    SupabaseService.saveSupportingRecord(newRecord);
+
+    if (data.fundingSource === 'BALANCE') {
+      const latestMother = motherAmounts
+        .filter((m) => m.outletId === data.outletId)
+        .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())[0];
+      const currentMotherAmount = latestMother?.amount || 0;
+      addMotherAmount({
+        outletId: data.outletId,
+        amount: currentMotherAmount - data.amount,
+        note: `Supporting to ${data.recipientName} (Balance) - ৳${data.amount}`
+      });
+    }
+
+    addAuditEntry(
+      'SUPPORTING_ADDED',
+      `Supporting of ৳${data.amount} (${data.fundingSource}) given to ${data.recipientName} from ${outlet?.name}`,
+      outlet?.name
+    );
+    showToast({ message: 'Supporting record saved.', type: 'success' });
+    return newRecord;
+  };
+
+  const markSupportingRecovered = (id: string) => {
+    const user = currentUser || { id: 'USR-AFO-001', fullName: 'Master Administrator' };
+    const target = supportingRecords.find((r) => r.id === id);
+    setSupportingRecords((prev) => {
+      const updated = prev.map((r) =>
+        r.id === id
+          ? { ...r, status: 'RECOVERED' as SupportingStatus, recoveredAt: new Date().toISOString(), recoveredBy: user.fullName }
+          : r
+      );
+      const record = updated.find((r) => r.id === id);
+      if (record) SupabaseService.saveSupportingRecord(record);
+      return updated;
+    });
+    addAuditEntry(
+      'SUPPORTING_RECOVERED',
+      `Supporting of ৳${target?.amount || 0} to ${target?.recipientName || ''} marked recovered`,
+      target?.outletName
+    );
+    showToast({ message: 'Supporting marked as recovered.', type: 'success' });
+  };
 
   const resetAllDemoData = () => {
     if (SupabaseService.isAvailable()) {
