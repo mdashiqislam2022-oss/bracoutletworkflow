@@ -3523,8 +3523,9 @@ if (sessionStatus.isActive) {
         // Denomination Segregation Module
                 customerAccounts,
         segregationRecords,
-        addCustomerAccount,
+                addCustomerAccount,
         addSegregationRecord,
+        updateSegregationNote,
 
                 // Total Cash Analysis Module
         motherAmounts,
