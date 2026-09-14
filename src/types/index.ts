@@ -357,6 +357,7 @@ export interface DenominationSegregationRecord {
   id: string;
   transactionType: SegregationTransactionType;
   denominations: DenominationCounts;
+  changeReceivedDenominations?: DenominationCounts;
   totalReceivedAmount: number;
   chargeApplied: boolean;
   chargeAmount: number;
