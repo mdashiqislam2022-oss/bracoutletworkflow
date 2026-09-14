@@ -113,6 +113,21 @@ export const TransferView: React.FC = () => {
   
   const [historyTypeFilter, setHistoryTypeFilter] = useState<string>('ALL');
   const [historyTypeDropdownOpen, setHistoryTypeDropdownOpen] = useState(false);
+    const [noteEditRowId, setNoteEditRowId] = useState<string | null>(null);
+  const [noteInputText, setNoteInputText] = useState('');
+
+  const handleSubmitRowNote = (item: { id: string; source: 'segregation' | 'transfer'; rawNote: string }) => {
+    if (!noteInputText.trim()) return;
+    const merged = item.rawNote ? `${item.rawNote} | ${noteInputText.trim()}` : noteInputText.trim();
+    if (item.source === 'segregation') {
+      updateSegregationNote(item.id, merged);
+    } else {
+      updateCashTransferNote(item.id, merged);
+    }
+    setNoteEditRowId(null);
+    setNoteInputText('');
+    showToast({ message: 'Note added.', type: 'success' });
+  };
 
   const mySegregations = useMemo(() => {
     return segregationRecords.filter((r) => !currentUser || r.userId === currentUser.id);
