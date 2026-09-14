@@ -594,12 +594,76 @@ export const DenominationSegregationView: React.FC = () => {
                       Cash Received at {crossOutlet?.name}
                     </button>
                   </div>
-                  <button type="button" onClick={() => setCrossOutletId('')} className="text-rose-500 shrink-0">
+                                   <button type="button" onClick={() => setCrossOutletId('')} className="text-rose-500 shrink-0">
                     <X size={14} />
                   </button>
                 </>
               )}
+
+              <div className="w-px h-5 bg-teal-500/30 mx-1 shrink-0" />
+
+              <button
+                type="button"
+                onClick={() => {
+                  setIsChangeMode((v) => !v);
+                  if (isChangeMode) {
+                    setShowChangePopup(false);
+                    setChangeReceivedDenoms(emptyDenoms());
+                  }
+                }}
+                className={`px-2.5 py-1 rounded-lg text-[11px] font-bold border flex items-center gap-1 shrink-0 ${
+                  isChangeMode ? 'bg-indigo-500 text-white border-indigo-500' : `${inputBg} text-slate-500`
+                }`}
+              >
+                Change
+              </button>
+              <button
+                type="button"
+                disabled={!isChangeMode}
+                onClick={() => isChangeMode && setShowChangePopup((v) => !v)}
+                className={`p-1 rounded-md shrink-0 ${isChangeMode ? 'text-indigo-500 hover:text-indigo-600' : 'text-slate-300 cursor-not-allowed'}`}
+              >
+                <ChevronDown size={14} className={`transition-transform ${showChangePopup ? 'rotate-180' : ''}`} />
+              </button>
+              {isChangeMode && (
+                <input
+                  type="number"
+                  readOnly
+                  value={changeReceivedTotal || ''}
+                  placeholder="0"
+                  className={`w-20 rounded-lg border px-2 py-1 text-xs text-right font-bold shrink-0 ${inputBg}`}
+                />
+              )}
             </div>
+
+            {isChangeMode && showChangePopup && (
+              <div className={`mt-2 rounded-xl border shadow-lg p-3 ${cardBg}`}>
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-xs font-bold text-indigo-600">Received Denomination (from Customer)</span>
+                  <button onClick={() => setShowChangePopup(false)} className="text-slate-400">
+                    <X size={14} />
+                  </button>
+                </div>
+                <div className="grid grid-cols-2 gap-2">
+                  {[...DENOM_LEFT, ...DENOM_RIGHT].map((d) => (
+                    <div key={d.key} className="flex items-center gap-1.5">
+                      <span className="text-[10px] w-9 font-semibold text-slate-500">Tk{d.value}</span>
+                      <input
+                        type="number"
+                        min={0}
+                        value={changeReceivedDenoms[d.key] || ''}
+                        onChange={(e) => handleChangeReceivedDenomChange(d.key, e.target.value)}
+                        placeholder="0"
+                        className={`w-full rounded-lg border px-1.5 py-1 text-xs ${inputBg}`}
+                      />
+                    </div>
+                  ))}
+                </div>
+                <div className="text-right text-[11px] font-bold text-indigo-600 mt-2">
+                  Total Received: ৳ {changeReceivedTotal.toLocaleString()}
+                </div>
+              </div>
+            )}
 
             {crossOutletDropdownOpen && (
               <div className={`absolute z-30 mt-1 w-full rounded-xl border shadow-lg ${cardBg}`}>
