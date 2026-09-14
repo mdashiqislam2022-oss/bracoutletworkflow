@@ -526,8 +526,13 @@ export const DenominationSegregationAdmin: React.FC = () => {
                   <div className="flex items-center gap-3">
                     <tx.icon size={18} className={tx.color} />
                     <div>
-                      <div className="text-sm font-bold">
+                                            <div className="text-sm font-bold">
                         {r.accountTitle} — {r.accountNumber}
+                        {r.bearerName && (
+                          <span className="ml-2 inline-block px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-600 text-[9px] font-bold align-middle">
+                            Bearer: {r.bearerName}
+                          </span>
+                        )}
                       </div>
                       <div className="text-[11px] text-slate-500 flex items-center gap-2 flex-wrap">
                         <span className="flex items-center gap-1"><Building2 size={11} /> {r.outletName}</span>
