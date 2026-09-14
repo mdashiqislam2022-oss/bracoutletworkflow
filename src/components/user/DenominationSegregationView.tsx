@@ -345,7 +345,8 @@ export const DenominationSegregationView: React.FC = () => {
       accountNumber: selectedAccount.accountNumber,
       accountTitle: selectedAccount.accountTitle,
       customerName: selectedAccount.accountTitle,
-      mobileNumber: selectedAccount.mobileNumber,
+            mobileNumber: selectedAccount.mobileNumber,
+      bearerName: activeType === 'CD' ? (bearerName.trim() || undefined) : undefined,
       notes: note.trim() || undefined,
       crossOutletId: crossOutletId || undefined,
       crossOutletDirection: crossOutletId ? crossOutletDirection : undefined
