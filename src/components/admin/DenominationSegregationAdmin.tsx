@@ -17,7 +17,8 @@ import {
   X,
   BarChart3,
   History,
-  List
+   List,
+  Shuffle
 } from 'lucide-react';
 import { SegregationTransactionType } from '../../types';
 import { TotalCashAnalysisView } from './TotalCashAnalysisView';
