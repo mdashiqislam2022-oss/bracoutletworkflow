@@ -563,7 +563,10 @@ export const DenominationSegregationAdmin: React.FC = () => {
                       ))}
                     </div>
                                         <div className="grid grid-cols-2 md:grid-cols-4 gap-2 text-[11px] text-slate-500">
-                      <div>Mobile: <span className="font-semibold">{r.mobileNumber}</span></div>
+                                           <div>Mobile: <span className="font-semibold">{r.mobileNumber}</span></div>
+                      {r.bearerName && (
+                        <div>Bearer: <span className="font-semibold text-amber-600">{r.bearerName}</span></div>
+                      )}
                       <div>Total RCVD: <span className="font-semibold">৳{r.totalReceivedAmount.toLocaleString()}</span></div>
                       <div>Charge: <span className="font-semibold">{r.chargeApplied ? `৳${r.chargeAmount}` : 'No'}</span></div>
                       <div>Return: <span className="font-semibold">৳{r.returnAmount.toLocaleString()}</span></div>
