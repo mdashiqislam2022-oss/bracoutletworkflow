@@ -118,11 +118,12 @@ export const TransferView: React.FC = () => {
   }, [segregationRecords, currentUser]);
 
   const combinedUserHistory = useMemo(() => {
-    const segItems = mySegregations.map((r) => ({
+        const segItems = mySegregations.map((r) => ({
       id: r.id,
       historyType: r.transactionType as string,
       amount: r.actualAmount,
       note: r.accountTitle,
+      bearerName: r.bearerName,
       createdAt: r.createdAt
     }));
     const transferItems = myTransfers.map((t) => ({
