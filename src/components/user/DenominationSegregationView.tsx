@@ -727,7 +727,12 @@ export const DenominationSegregationView: React.FC = () => {
               <div className="text-lg font-extrabold">৳ {totalReceivedAmount.toLocaleString()}</div>
               <div className="text-[10px] text-slate-500">{totalPieces} notes</div>
             </div>
-            <div className="rounded-xl border border-emerald-500/40 bg-emerald-500/10 p-3">
+                        <div className="relative rounded-xl border border-emerald-500/40 bg-emerald-500/10 p-3">
+              <span className={`absolute top-2 right-2 px-1.5 py-0.5 rounded text-[9px] font-bold ${
+                activeType === 'CW' || activeType === 'LD' ? 'bg-red-500/15 text-red-600' : 'bg-emerald-500/20 text-emerald-700'
+              }`}>
+                {activeType}
+              </span>
               <div className="text-[11px] text-emerald-600 font-semibold">ACTUAL AMT</div>
               <div className="text-lg font-extrabold text-emerald-600">৳ {actualAmount.toLocaleString()}</div>
               <div className="text-[10px] text-emerald-600">Net posted amount</div>
