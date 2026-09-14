@@ -70,12 +70,18 @@ export const OutletCashSummaryPanel: React.FC<OutletCashSummaryPanelProps> = ({ 
       note1: 0, note2: 0, note5: 0, note10: 0, note20: 0,
       note50: 0, note100: 0, note200: 0, note500: 0, note1000: 0
     };
-       segregationRecords
+          segregationRecords
       .filter((r) => {
         const effectiveId = r.crossOutletDirection === 'THERE' && r.crossOutletId ? r.crossOutletId : r.outletId;
         return effectiveId === outletId;
       })
       .forEach((r) => {
+        if (r.transactionType === 'CHG') {
+          DENOM_LIST.forEach((d) => {
+            totalsMap[d.key] += (r.changeReceivedDenominations?.[d.key] || 0) - (r.denominations?.[d.key] || 0);
+          });
+          return;
+        }
         const sign = CASH_IN_TYPES.includes(r.transactionType) ? 1 : -1;
         DENOM_LIST.forEach((d) => {
           totalsMap[d.key] += sign * (r.denominations?.[d.key] || 0);
