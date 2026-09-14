@@ -183,7 +183,8 @@ export const DenominationSegregationView: React.FC = () => {
       ID: { amount: 0, count: 0 },
       LD: { amount: 0, count: 0 },
       LR: { amount: 0, count: 0 },
-      BC: { amount: 0, count: 0 }
+      BC: { amount: 0, count: 0 },
+      CHG: { amount: 0, count: 0 }
     };
         scoped.forEach((r) => {
       map[r.transactionType].amount += r.actualAmount;
