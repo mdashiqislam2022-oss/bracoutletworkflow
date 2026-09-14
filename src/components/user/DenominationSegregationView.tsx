@@ -345,7 +345,39 @@ export const DenominationSegregationView: React.FC = () => {
     setShowAddCustomer(false);
   };
 
-  const handleSave = () => {
+    const handleSave = () => {
+    if (isChangeMode) {
+      if (changeReceivedTotal <= 0) {
+        showToast({ message: 'Please enter the denomination received from customer.', type: 'error' });
+        return;
+      }
+      if (changeReceivedTotal !== totalReceivedAmount) {
+        showToast({ message: 'Received amount and Given amount must match exactly.', type: 'error' });
+        return;
+      }
+      addSegregationRecord({
+        transactionType: 'CHG',
+        denominations: denoms,
+        changeReceivedDenominations: changeReceivedDenoms,
+        totalReceivedAmount: changeReceivedTotal,
+        chargeApplied: false,
+        chargeAmount: 0,
+        returnAmount: 0,
+        actualAmount: changeReceivedTotal,
+        linkedAccountSource: 'CUSTOMER_ACCOUNT',
+        linkedAccountId: '',
+        accountNumber: 'N/A',
+        accountTitle: 'Cash Change (Vangti)',
+        customerName: 'Walk-in Customer',
+        mobileNumber: '',
+        notes: note.trim() || undefined,
+        crossOutletId: crossOutletId || undefined,
+        crossOutletDirection: crossOutletId ? crossOutletDirection : undefined
+      });
+      handleClear();
+      return;
+    }
+
     if (!selectedAccount) {
       showToast({ message: 'Please select an account first.', type: 'error' });
       return;
