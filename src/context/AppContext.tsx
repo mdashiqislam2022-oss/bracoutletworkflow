@@ -150,6 +150,10 @@ export interface AppContextType {
         notes?: string;
     crossOutletId?: string;
     crossOutletDirection?: 'HERE' | 'THERE';
+    changeReceivedDenominations?: {
+      note1: number; note2: number; note5: number; note10: number; note20: number;
+      note50: number; note100: number; note200: number; note500: number; note1000: number;
+    };
   }) => DenominationSegregationRecord;
     updateSegregationNote: (id: string, note: string) => void;
 
