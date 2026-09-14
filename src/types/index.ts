@@ -366,8 +366,9 @@ export interface DenominationSegregationRecord {
   linkedAccountId: string;
   accountNumber: string;
   accountTitle: string;
-  customerName: string;
+    customerName: string;
   mobileNumber: string;
+  bearerName?: string;
   outletId: string;
   outletName: string;
   userId: string;
