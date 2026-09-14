@@ -3359,9 +3359,18 @@ if (sessionStatus.isActive) {
       message: `${
         data.transferType === 'RTGS' ? 'RTGS' : data.transferType === 'MOVE_MONEY' ? 'Move Money' : 'Transfer to Outlet'
       } transfer saved.`,
-      type: 'success'
+            type: 'success'
     });
     return newRecord;
+  };
+
+  const updateCashTransferNote = (id: string, note: string) => {
+    setCashTransfers((prev) => {
+      const updated = prev.map((t) => (t.id === id ? { ...t, note } : t));
+      const record = updated.find((t) => t.id === id);
+      if (record) SupabaseService.saveCashTransfer(record);
+      return updated;
+    });
   };
 
   const resetAllDemoData = () => {
