@@ -785,7 +785,7 @@ export const DenominationSegregationView: React.FC = () => {
                 placeholder="Customer / Account Title"
                 className={`w-full rounded-lg border px-2 py-1.5 text-sm ${inputBg}`}
               />
-                           <input
+                                           <input
                 value={newCustMobile}
                 onChange={(e) => setNewCustMobile(e.target.value.replace(/\D/g, '').slice(0, 11))}
                 inputMode="numeric"
@@ -793,6 +793,14 @@ export const DenominationSegregationView: React.FC = () => {
                 placeholder="Mobile Number (11 digits)"
                 className={`w-full rounded-lg border px-2 py-1.5 text-sm ${inputBg}`}
               />
+              {activeType === 'CD' && (
+                <input
+                  value={bearerName}
+                  onChange={(e) => setBearerName(e.target.value)}
+                  placeholder="Bearer Name (optional)"
+                  className={`w-full rounded-lg border px-2 py-1.5 text-sm ${inputBg}`}
+                />
+              )}
               <div className="flex gap-2">
                                 <button
                   onClick={() => setNewCustCategory('SAVINGS')}
