@@ -1043,6 +1043,41 @@ export const SupabaseService = {
     }
   },
   
+  // Save/Upsert Supporting Record
+  async saveSupportingRecord(record: SupportingRecord) {
+    if (!this.isAvailable() || !supabase) return;
+    try {
+      const dbRow = mapSupportingToDb(record);
+      await supabase.from('supporting_records').upsert(dbRow);
+    } catch (err) {
+      console.warn('Error saving supporting record to Supabase:', err);
+    }
+  },
+
+  // Mark a Supporting Record as Recovered
+  async markSupportingRecovered(id: string, recoveredBy: string) {
+    if (!this.isAvailable() || !supabase) return;
+    try {
+      await supabase.from('supporting_records').update({
+        status: 'RECOVERED',
+        recovered_at: new Date().toISOString(),
+        recovered_by: recoveredBy
+      }).eq('id', id);
+    } catch (err) {
+      console.warn('Error marking supporting record recovered in Supabase:', err);
+    }
+  },
+
+  // Delete Supporting Record
+  async deleteSupportingRecord(id: string) {
+    if (!this.isAvailable() || !supabase) return;
+    try {
+      await supabase.from('supporting_records').delete().eq('id', id);
+    } catch (err) {
+      console.warn('Error deleting supporting record from Supabase:', err);
+    }
+  },
+  
   // Save Mother Amount Entry
   async saveMotherAmount(record: MotherAmountRecord) {
     if (!this.isAvailable() || !supabase) return;
