@@ -300,6 +300,76 @@ export const mapSegregationToDb = (record: DenominationSegregationRecord) => {
     cross_outlet_direction: record.crossOutletDirection || null
   };
 };
+// ---------- Supporting Module ----------
+
+export const mapDbToSupporting = (row: any): SupportingRecord => {
+  return {
+    id: row.id,
+    fundingSource: row.funding_source || 'CASH',
+    denominations: row.funding_source === 'CASH' ? {
+      note1: Number(row.note_1 || 0),
+      note2: Number(row.note_2 || 0),
+      note5: Number(row.note_5 || 0),
+      note10: Number(row.note_10 || 0),
+      note20: Number(row.note_20 || 0),
+      note50: Number(row.note_50 || 0),
+      note100: Number(row.note_100 || 0),
+      note200: Number(row.note_200 || 0),
+      note500: Number(row.note_500 || 0),
+      note1000: Number(row.note_1000 || 0)
+    } : undefined,
+    amount: Number(row.amount || 0),
+    recipientName: row.recipient_name || '',
+    mobileNumber: row.mobile_number || undefined,
+    smeOfficerName: row.sme_officer_name || undefined,
+    accountNumber: row.account_number || undefined,
+    accountTitle: row.account_title || undefined,
+    purpose: row.purpose || '',
+    supportingDate: row.supporting_date || '',
+    status: row.status || 'PENDING',
+    recoveredAt: row.recovered_at || undefined,
+    recoveredBy: row.recovered_by || undefined,
+    outletId: row.outlet_id || '',
+    outletName: row.outlet_name || '',
+    userId: row.user_id,
+    userName: row.user_name,
+    notes: row.notes || undefined,
+    createdAt: row.created_at || new Date().toISOString()
+  };
+};
+
+export const mapSupportingToDb = (record: SupportingRecord) => {
+  return {
+    id: record.id,
+    funding_source: record.fundingSource,
+    note_1: record.denominations?.note1 || 0,
+    note_2: record.denominations?.note2 || 0,
+    note_5: record.denominations?.note5 || 0,
+    note_10: record.denominations?.note10 || 0,
+    note_20: record.denominations?.note20 || 0,
+    note_50: record.denominations?.note50 || 0,
+    note_100: record.denominations?.note100 || 0,
+    note_200: record.denominations?.note200 || 0,
+    note_500: record.denominations?.note500 || 0,
+    note_1000: record.denominations?.note1000 || 0,
+    amount: record.amount,
+    recipient_name: record.recipientName,
+    mobile_number: record.mobileNumber || null,
+    sme_officer_name: record.smeOfficerName || null,
+    account_number: record.accountNumber || null,
+    account_title: record.accountTitle || null,
+    purpose: record.purpose || null,
+    supporting_date: record.supportingDate,
+    status: record.status,
+    recovered_at: record.recoveredAt || null,
+    recovered_by: record.recoveredBy || null,
+    outlet_id: record.outletId,
+    outlet_name: record.outletName,
+    user_id: record.userId,
+    user_name: record.userName,
+    notes: record.notes || null
+  };
+};
 
 // ---------- Total Cash Analysis Module ----------
 
