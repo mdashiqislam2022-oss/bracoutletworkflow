@@ -3152,10 +3152,19 @@ if (sessionStatus.isActive) {
     try {
       confetti({ particleCount: 45, spread: 50, origin: { y: 0.8 } });
     } catch {}
-    showToast({ message: `Transaction saved successfully for "${data.accountTitle}"!`, type: 'success' });
+       showToast({ message: `Transaction saved successfully for "${data.accountTitle}"!`, type: 'success' });
     return newRecord;
   };
-  
+
+  const updateSegregationNote = (id: string, note: string) => {
+    setSegregationRecords((prev) => {
+      const updated = prev.map((r) => (r.id === id ? { ...r, notes: note } : r));
+      const record = updated.find((r) => r.id === id);
+      if (record) SupabaseService.saveSegregationRecord(record);
+      return updated;
+    });
+  };
+
   // Total Cash Analysis Module
   const addMotherAmount = (data: { outletId: string; amount: number; note?: string }): MotherAmountRecord => {
     const user = currentUser || { id: 'USR-AFO-001', fullName: 'Master Administrator' };
