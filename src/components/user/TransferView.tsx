@@ -754,7 +754,7 @@ export const TransferView: React.FC = () => {
                       <textarea
                         value={noteInputText}
                         onChange={(e) => setNoteInputText(e.target.value)}
-                        placeholder="যেমন: এটা CW হওয়ার কথা ছিল, ভুলে CD হয়ে গেছে"
+                                                placeholder="Note your correction..."
                         rows={3}
                         className={`w-full rounded-lg border px-2 py-1.5 text-xs mb-2 ${inputBg}`}
                       />
