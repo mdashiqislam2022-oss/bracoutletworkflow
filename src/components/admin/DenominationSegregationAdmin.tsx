@@ -82,13 +82,14 @@ export const DenominationSegregationAdmin: React.FC = () => {
   }, [segregationRecords, outletFilter, dateFilter]);
 
   const summaryByType = useMemo(() => {
-    const map: Record<SegregationTransactionType, { amount: number; count: number }> = {
+       const map: Record<SegregationTransactionType, { amount: number; count: number }> = {
       CD: { amount: 0, count: 0 },
       CW: { amount: 0, count: 0 },
       ID: { amount: 0, count: 0 },
       LD: { amount: 0, count: 0 },
       LR: { amount: 0, count: 0 },
-      BC: { amount: 0, count: 0 }
+      BC: { amount: 0, count: 0 },
+      CHG: { amount: 0, count: 0 }
     };
     scopedForSummary.forEach((r) => {
       map[r.transactionType].amount += r.actualAmount;
