@@ -212,8 +212,20 @@ export const mapDbToSegregation = (row: any): DenominationSegregationRecord => {
       note100: Number(row.note_100 || 0),
       note200: Number(row.note_200 || 0),
       note500: Number(row.note_500 || 0),
-      note1000: Number(row.note_1000 || 0)
+            note1000: Number(row.note_1000 || 0)
     },
+    changeReceivedDenominations: row.change_note_1 !== undefined || row.change_note_1000 !== undefined ? {
+      note1: Number(row.change_note_1 || 0),
+      note2: Number(row.change_note_2 || 0),
+      note5: Number(row.change_note_5 || 0),
+      note10: Number(row.change_note_10 || 0),
+      note20: Number(row.change_note_20 || 0),
+      note50: Number(row.change_note_50 || 0),
+      note100: Number(row.change_note_100 || 0),
+      note200: Number(row.change_note_200 || 0),
+      note500: Number(row.change_note_500 || 0),
+      note1000: Number(row.change_note_1000 || 0)
+    } : undefined,
     totalReceivedAmount: Number(row.total_received_amount || 0),
     chargeApplied: row.charge_applied || false,
     chargeAmount: Number(row.charge_amount || 0),
