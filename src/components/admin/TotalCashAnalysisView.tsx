@@ -85,10 +85,10 @@ export const TotalCashAnalysisView: React.FC = () => {
   };
 
               const getAfoCash = (outletId: string) => {
-    const net = segregationRecords
+        const net = segregationRecords
       .filter((r) => {
         const effectiveId = r.crossOutletDirection === 'THERE' && r.crossOutletId ? r.crossOutletId : r.outletId;
-        return effectiveId === outletId;
+        return effectiveId === outletId && r.transactionType !== 'CHG';
       })
       .reduce((sum, r) => sum + (CASH_IN_TYPES.includes(r.transactionType) ? r.actualAmount : -r.actualAmount), 0);
     const rtgsOut = cashTransfers
