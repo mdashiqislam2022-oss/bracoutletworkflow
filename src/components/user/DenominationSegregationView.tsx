@@ -151,6 +151,15 @@ export const DenominationSegregationView: React.FC = () => {
   const returnDenomTotal = useMemo(() => {
     return [...DENOM_LEFT, ...DENOM_RIGHT].reduce((sum, d) => sum + returnDenoms[d.key] * d.value, 0);
   }, [returnDenoms]);
+  
+  const changeReceivedTotal = useMemo(() => {
+    return [...DENOM_LEFT, ...DENOM_RIGHT].reduce((sum, d) => sum + changeReceivedDenoms[d.key] * d.value, 0);
+  }, [changeReceivedDenoms]);
+
+  const handleChangeReceivedDenomChange = (key: DenomKey, value: string) => {
+    const num = parseInt(value, 10);
+    setChangeReceivedDenoms((prev) => ({ ...prev, [key]: isNaN(num) ? 0 : Math.max(0, num) }));
+  };
 
     const chargeIsApplicable = activeType === 'CD' || activeType === 'CW';
 
