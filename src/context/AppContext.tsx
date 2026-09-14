@@ -407,6 +407,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const [loanRecords, setLoanRecords] = useState<LoanAccountRecord[]>([]);
     const [customerAccounts, setCustomerAccounts] = useState<CustomerAccountRecord[]>([]);
   const [segregationRecords, setSegregationRecords] = useState<DenominationSegregationRecord[]>([]);
+    const [supportingRecords, setSupportingRecords] = useState<SupportingRecord[]>([]);
     const [motherAmounts, setMotherAmounts] = useState<MotherAmountRecord[]>([]);
   const [outletTransfers, setOutletTransfers] = useState<OutletTransferRecord[]>([]);
   const [outletVaults, setOutletVaults] = useState<OutletVaultRecord[]>([]);
