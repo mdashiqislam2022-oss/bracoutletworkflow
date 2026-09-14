@@ -168,8 +168,15 @@ export const TotalCashAnalysisView: React.FC = () => {
           });
         }
       });
+      supportingRecords
+      .filter((s) => relevantIds.includes(s.outletId) && s.fundingSource === 'CASH' && s.denominations)
+      .forEach((s) => {
+        DENOM_LIST.forEach((d) => {
+          totals[d.key] -= s.denominations?.[d.key] || 0;
+        });
+      });
     return totals;
-  }, [segregationRecords, cashTransfers, relevantOutlets]);
+  }, [segregationRecords, cashTransfers, relevantOutlets, supportingRecords]);
             const totals = useMemo(() => {
     let mother = 0;
     let afoCash = 0;
