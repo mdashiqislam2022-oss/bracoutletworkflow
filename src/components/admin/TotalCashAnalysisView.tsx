@@ -375,24 +375,67 @@ export const TotalCashAnalysisView: React.FC = () => {
           </div>
         </div>
 
-        {/* Denomination-wise Note Count (Outlet scoped) */}
+                {/* Denomination-wise Note Count (Outlet scoped) */}
         <div className="mb-6">
           <div className="text-xs font-bold text-slate-500 mb-2">Denomination-wise Note Count</div>
           <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
-            {DENOM_LIST.map((d) => (
-              <div key={d.key} className={`rounded-xl border p-3 ${cardBg}`}>
-                <div className="text-[11px] font-semibold text-slate-500 mb-1">Tk{d.value}</div>
-                <div className="text-xl font-extrabold text-slate-800 dark:text-slate-100">
-                  {denomTotals[d.key].toLocaleString()}
+            {DENOM_LIST.map((d) => {
+              const isEditing = editingDenomKey === d.key;
+              const canEdit = governanceSettings.allowDenominationManualEdit && viewOutlet !== 'ALL';
+              return (
+                <div key={d.key} className={`relative rounded-xl border p-3 ${cardBg}`}>
+                  {canEdit && !isEditing && (
+                    <button
+                      onClick={() => {
+                        setEditingDenomKey(d.key);
+                        setEditDenomValue(String(denomTotals[d.key]));
+                      }}
+                      className="absolute top-1.5 right-1.5 text-[9px] font-bold text-emerald-500 hover:text-emerald-600"
+                    >
+                      Change
+                    </button>
+                  )}
+                  <div className="text-[11px] font-semibold text-slate-500 mb-1">Tk{d.value}</div>
+                  {isEditing ? (
+                    <>
+                      <input
+                        type="number"
+                        min={0}
+                        autoFocus
+                        value={editDenomValue}
+                        onChange={(e) => setEditDenomValue(e.target.value)}
+                        className={`w-full rounded-lg border px-2 py-1 text-sm font-bold mb-1 ${inputBg}`}
+                      />
+                      <div className="flex gap-1">
+                        <button
+                          onClick={() => setEditingDenomKey(null)}
+                          className={`flex-1 py-1 rounded-md text-[10px] font-bold ${inputBg}`}
+                        >
+                          Cancel
+                        </button>
+                        <button
+                          onClick={() => handleSaveDenomAdjustment(d.key, d.value)}
+                          className="flex-1 py-1 rounded-md text-[10px] font-bold bg-emerald-500 text-white"
+                        >
+                          Save
+                        </button>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <div className="text-xl font-extrabold text-slate-800 dark:text-slate-100">
+                        {denomTotals[d.key].toLocaleString()}
+                      </div>
+                      <div className="text-[11px] text-emerald-600 font-semibold mt-0.5">
+                        ৳ {(denomTotals[d.key] * d.value).toLocaleString()}
+                      </div>
+                    </>
+                  )}
                 </div>
-                <div className="text-[11px] text-emerald-600 font-semibold mt-0.5">
-                  ৳ {(denomTotals[d.key] * d.value).toLocaleString()}
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
-
                        {/* Update Forms */}
         <div className="grid grid-cols-1 mb-6">
                    {/* Set Mother Amount */}
