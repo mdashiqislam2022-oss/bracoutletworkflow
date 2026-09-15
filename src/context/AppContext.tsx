@@ -168,7 +168,9 @@ export interface AppContextType {
   outletVaults: OutletVaultRecord[];
   addMotherAmount: (data: { outletId: string; amount: number; note?: string }) => MotherAmountRecord;
   addOutletTransfer: (data: { outletId: string; amount: number; note?: string }) => OutletTransferRecord;
-  addOutletVault: (data: { outletId: string; amount: number; note?: string }) => OutletVaultRecord;
+   addOutletVault: (data: { outletId: string; amount: number; note?: string }) => OutletVaultRecord;
+  denominationAdjustments: DenominationAdjustmentRecord[];
+  addDenominationAdjustment: (data: { outletId: string; denomKey: string; denomValue: number; newCount: number }) => DenominationAdjustmentRecord;
   
   // Note & Rule Module
   notes: NoteRecord[];
