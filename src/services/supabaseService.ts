@@ -459,6 +459,33 @@ export const mapOutletVaultToDb = (record: OutletVaultRecord) => ({
   outlet_name: record.outletName,
   amount: record.amount,
   note: record.note || null,
+    set_by_user_id: record.setByUserId,
+  set_by_user_name: record.setByUserName
+});
+
+export const mapDbToDenominationAdjustment = (row: any): DenominationAdjustmentRecord => ({
+  id: row.id,
+  outletId: row.outlet_id || '',
+  outletName: row.outlet_name || '',
+  denomKey: row.denom_key || '',
+  denomValue: Number(row.denom_value || 0),
+  previousCount: Number(row.previous_count || 0),
+  newCount: Number(row.new_count || 0),
+  changeAmount: Number(row.change_amount || 0),
+  setByUserId: row.set_by_user_id,
+  setByUserName: row.set_by_user_name,
+  createdAt: row.created_at || new Date().toISOString()
+});
+
+export const mapDenominationAdjustmentToDb = (record: DenominationAdjustmentRecord) => ({
+  id: record.id,
+  outlet_id: record.outletId,
+  outlet_name: record.outletName,
+  denom_key: record.denomKey,
+  denom_value: record.denomValue,
+  previous_count: record.previousCount,
+  new_count: record.newCount,
+  change_amount: record.changeAmount,
   set_by_user_id: record.setByUserId,
   set_by_user_name: record.setByUserName
 });
