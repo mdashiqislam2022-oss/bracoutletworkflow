@@ -317,6 +317,7 @@ export interface PortalGovernanceSettings {
   systemBroadcastNotice: string;
   systemBroadcastType: 'INFO' | 'WARNING' | 'ALERT';
   enableBroadcastBanner: boolean;
+  allowDenominationManualEdit: boolean;
 }
 
 // ==================== Denomination Segregation Module ====================
