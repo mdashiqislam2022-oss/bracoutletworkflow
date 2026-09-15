@@ -986,7 +986,8 @@ export const SupabaseService = {
           ipAddress: l.ip_address,
           timestamp: l.timestamp
         })),
-        governanceSettings: governanceRes?.data?.[0]?.settings as PortalGovernanceSettings | null
+               governanceSettings: governanceRes?.data?.[0]?.settings as PortalGovernanceSettings | null,
+        denominationAdjustments: (denominationAdjustmentsRes.data || []).map(mapDbToDenominationAdjustment)
       };
     } catch (err) {
       console.warn('Supabase fetch error:', err);
