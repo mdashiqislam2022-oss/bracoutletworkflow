@@ -965,7 +965,10 @@ export const SupportingView: React.FC = () => {
               </button>
               <button
                 type="button"
-                disabled={recoverFundingSource === 'CASH' && recoverSegregatedTotal === 0}
+                                disabled={
+                  recoverFundingSource === 'CASH' &&
+                  recoverSegregatedTotal !== (mySupportingRecords.find((r) => r.id === recoverConfirmId)?.amount || 0)
+                }
                 onClick={() => {
                   if (recoverConfirmId) {
                     markSupportingRecovered(recoverConfirmId, {
