@@ -356,8 +356,20 @@ export const CashHistoryView: React.FC = () => {
                     )}
                     <div className="text-slate-500">{new Date(h.createdAt).toLocaleString()} · {h.setByUserName}</div>
                   </div>
-                  <div className={`font-extrabold ${h.kind === 'Mother Amount' ? (h.amount >= getPreviousMotherAmount(h) ? 'text-emerald-600' : 'text-red-500') : ''}`}>
-                    {h.kind === 'Mother Amount' ? (h.amount >= getPreviousMotherAmount(h) ? '+ ' : '− ') : ''}৳ {h.amount.toLocaleString()}
+                                   <div
+                    className={`font-extrabold ${
+                      h.kind === 'Mother Amount'
+                        ? h.amount >= getPreviousMotherAmount(h)
+                          ? 'text-emerald-600'
+                          : 'text-red-500'
+                        : h.kind === 'Denomination Adjustment'
+                        ? (h.amount >= 0 ? 'text-emerald-600' : 'text-red-500')
+                        : ''
+                    }`}
+                  >
+                    {h.kind === 'Mother Amount' ? (h.amount >= getPreviousMotherAmount(h) ? '+ ' : '− ') : ''}
+                    {h.kind === 'Denomination Adjustment' ? (h.amount >= 0 ? '+ ' : '− ') : ''}
+                    ৳ {Math.abs(h.amount).toLocaleString()}
                   </div>
                 </button>
                 {isOpen && hasDenoms && (
