@@ -841,7 +841,8 @@ export const SupabaseService = {
         supabase.from('password_reset_requests').select('*').order('requested_at', { ascending: false }),
         supabase.from('afo_transfers').select('*').order('transferred_at', { ascending: false }),
         supabase.from('audit_logs').select('*').order('timestamp', { ascending: false }).limit(100),
-        supabase.from('portal_governance').select('*').limit(1)
+                supabase.from('portal_governance').select('*').limit(1),
+        supabase.from('denomination_adjustments').select('*').order('created_at', { ascending: false })
       ]);
 
       return {
