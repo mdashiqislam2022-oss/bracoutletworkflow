@@ -42,6 +42,8 @@ export const TotalCashAnalysisView: React.FC = () => {
 
   const [viewOutlet, setViewOutlet] = useState('ALL');
   const [outletDropdownOpen, setOutletDropdownOpen] = useState(false);
+    const [editingDenomKey, setEditingDenomKey] = useState<string | null>(null);
+  const [editDenomValue, setEditDenomValue] = useState('');
     const [expandedHistoryId, setExpandedHistoryId] = useState<string | null>(null);
     const [historyDateFilter, setHistoryDateFilter] = useState('');
   const [historyDatePickerOpen, setHistoryDatePickerOpen] = useState(false);
