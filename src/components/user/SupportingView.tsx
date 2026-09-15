@@ -241,7 +241,8 @@ export const SupportingView: React.FC = () => {
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
               {/* Left: Segregation / Balance Amount + Save */}
-              <div className={`rounded-xl border p-3 space-y-2 ${inputBg}`}>
+                           <div className={`rounded-xl border p-3 space-y-2 ${inputBg}`}>
+                <div key={fundingSource} className="animate-tab-fade">
                 {fundingSource === 'CASH' ? (
                   <>
                     <div className="text-xs font-bold flex items-center gap-1.5 text-blue-600 mb-1">
