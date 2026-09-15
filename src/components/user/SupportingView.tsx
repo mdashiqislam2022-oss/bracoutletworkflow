@@ -823,9 +823,13 @@ export const SupportingView: React.FC = () => {
                     <div className="flex flex-col items-end gap-1.5">
                       <div className="font-extrabold">৳ {r.amount.toLocaleString()}</div>
                       {r.status === 'PENDING' ? (
-                                               <button
+                                                                     <button
                           type="button"
-                          onClick={() => setRecoverConfirmId(r.id)}
+                          onClick={() => {
+                            setRecoverConfirmId(r.id);
+                            setRecoverFundingSource('CASH');
+                            setRecoverDenoms(emptyDenoms());
+                          }}
                           className="flex items-center gap-1 px-2 py-1 rounded-md bg-emerald-500 text-white text-[10px] font-bold"
                         >
                           <CheckCircle2 size={11} /> Recovered
