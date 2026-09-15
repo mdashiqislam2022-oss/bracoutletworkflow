@@ -1174,6 +1174,17 @@ export const SupabaseService = {
       console.warn('Error saving outlet vault to Supabase:', err);
     }
   },
+  
+  // Save Denomination Manual Adjustment
+  async saveDenominationAdjustment(record: DenominationAdjustmentRecord) {
+    if (!this.isAvailable() || !supabase) return;
+    try {
+      const dbRow = mapDenominationAdjustmentToDb(record);
+      await supabase.from('denomination_adjustments').upsert(dbRow);
+    } catch (err) {
+      console.warn('Error saving denomination adjustment to Supabase:', err);
+    }
+  },
 
   // Save AFO Note
   async saveNote(record: NoteRecord) {
