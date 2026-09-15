@@ -923,9 +923,27 @@ export const SupportingView: React.FC = () => {
                       ))}
                     </div>
                   </div>
-                  <div className={`flex items-center justify-between rounded-lg border px-3 py-2 text-[11px] font-bold mt-2 ${cardBg}`}>
+                                   <div className={`flex items-center justify-between rounded-lg border px-3 py-2 text-[11px] font-bold mt-2 ${cardBg}`}>
                     <span className="text-slate-500">Recovered Amount</span>
                     <span className="text-emerald-600">৳ {recoverSegregatedTotal.toLocaleString()}</span>
+                  </div>
+                  <div className={`flex items-center justify-between rounded-lg border px-3 py-2 text-[11px] font-bold mt-2 ${cardBg}`}>
+                    <span className="text-slate-500">Total Supporting Amount</span>
+                    <span className="text-blue-600">
+                      ৳ {(mySupportingRecords.find((r) => r.id === recoverConfirmId)?.amount || 0).toLocaleString()}
+                    </span>
+                  </div>
+                  <div className={`flex items-center justify-between rounded-lg border px-3 py-2 text-[11px] font-bold mt-2 ${cardBg}`}>
+                    <span className="text-slate-500">Due Amount</span>
+                    <span
+                      className={
+                        (mySupportingRecords.find((r) => r.id === recoverConfirmId)?.amount || 0) - recoverSegregatedTotal === 0
+                          ? 'text-emerald-600'
+                          : 'text-rose-500'
+                      }
+                    >
+                      ৳ {((mySupportingRecords.find((r) => r.id === recoverConfirmId)?.amount || 0) - recoverSegregatedTotal).toLocaleString()}
+                    </span>
                   </div>
                 </div>
               ) : (
