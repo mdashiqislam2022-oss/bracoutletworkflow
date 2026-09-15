@@ -76,7 +76,7 @@ export const OutletCashSummaryPanel: React.FC<OutletCashSummaryPanelProps> = ({ 
          const vault = afoCash - transfer;
 
       return { mother, afoCash, transfer, vault, receivedFromOutlet: transferIn };
-  }, [outletId, motherAmounts, segregationRecords, outletTransfers, cashTransfers, supportingRecords]);
+   }, [outletId, motherAmounts, segregationRecords, outletTransfers, cashTransfers, supportingRecords, denominationAdjustments]);
   const denomTotals = useMemo(() => {
     const totalsMap: Record<string, number> = {
       note1: 0, note2: 0, note5: 0, note10: 0, note20: 0,
