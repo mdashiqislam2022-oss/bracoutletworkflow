@@ -197,7 +197,14 @@ export interface AppContextType {
     outletId: string;
     notes?: string;
   }) => SupportingRecord;
-  markSupportingRecovered: (id: string) => void;
+  markSupportingRecovered: (
+    id: string,
+    data: {
+      recoveredFundingSource: SupportingFundingSource;
+      recoveredDenominations?: DenominationCounts;
+      recoveredAmount?: number;
+    }
+  ) => void;
 
   // Add/Edit Entry Modal controls
   isAddEntryModalOpen: boolean;
