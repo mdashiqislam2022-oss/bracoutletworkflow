@@ -11,7 +11,7 @@ const DENOM_LIST: { key: keyof DenominationCounts; value: number }[] = [
 ];
 
 export const CashHistoryView: React.FC = () => {
-  const { outlets, motherAmounts, outletTransfers, cashTransfers, userPreferences } = useApp();
+  const { outlets, motherAmounts, outletTransfers, cashTransfers, denominationAdjustments, userPreferences } = useApp();
   const isDark = userPreferences.theme === 'dark';
   const cardBg = isDark ? 'bg-[#1A2333] border-slate-800' : 'bg-white border-slate-200';
   const inputBg = isDark ? 'bg-[#0F172A] border-slate-700 text-slate-100' : 'bg-white border-slate-200 text-slate-900';
