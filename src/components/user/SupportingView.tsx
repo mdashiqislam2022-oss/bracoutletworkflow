@@ -87,6 +87,7 @@ export const SupportingView: React.FC = () => {
   });
   const [historyMonthDropdownOpen, setHistoryMonthDropdownOpen] = useState(false);
   const [historyYearDropdownOpen, setHistoryYearDropdownOpen] = useState(false);
+  const [recoverConfirmId, setRecoverConfirmId] = useState<string | null>(null);
 
   const handleDenomChange = (key: DenomKey, value: string) => {
     const num = parseInt(value, 10);
