@@ -491,3 +491,19 @@ export interface RuleRecord {
   createdByUserName: string;
   createdAt: string;
 }
+
+// ==================== Denomination Manual Adjustment Module ====================
+
+export interface DenominationAdjustmentRecord {
+  id: string;
+  outletId: string;
+  outletName: string;
+  denomKey: string;
+  denomValue: number;
+  previousCount: number;
+  newCount: number;
+  changeAmount: number;
+  setByUserId: string;
+  setByUserName: string;
+  createdAt: string;
+}
