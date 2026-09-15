@@ -127,15 +127,20 @@ export const OutletCashSummaryPanel: React.FC<OutletCashSummaryPanelProps> = ({ 
           totalsMap[d.key] -= s.denominations?.[d.key] || 0;
         });
       });
-    supportingRecords
+        supportingRecords
       .filter((s) => s.outletId === outletId && s.status === 'RECOVERED' && s.recoveredFundingSource === 'CASH' && s.recoveredDenominations)
       .forEach((s) => {
         DENOM_LIST.forEach((d) => {
           totalsMap[d.key] += s.recoveredDenominations?.[d.key] || 0;
         });
       });
+    denominationAdjustments
+      .filter((a) => a.outletId === outletId)
+      .forEach((a) => {
+        totalsMap[a.denomKey] += a.newCount - a.previousCount;
+      });
     return totalsMap;
-  }, [outletId, segregationRecords, cashTransfers, supportingRecords]);
+  }, [outletId, segregationRecords, cashTransfers, supportingRecords, denominationAdjustments]);
   return (
     <div className="mb-5">
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-4">
