@@ -3277,6 +3277,58 @@ if (sessionStatus.isActive) {
     return newRecord;
   };
   
+  const addDenominationAdjustment = (data: {
+    outletId: string;
+    denomKey: string;
+    denomValue: number;
+    newCount: number;
+  }): DenominationAdjustmentRecord => {
+    const user = currentUser || currentAdmin || { id: 'USR-ADMIN-001', fullName: 'Master Administrator' };
+    const outlet = outlets.find((o) => o.id === data.outletId);
+
+    const previousCount = segregationRecords
+      .filter((r) => {
+        const effectiveId = r.crossOutletDirection === 'THERE' && r.crossOutletId ? r.crossOutletId : r.outletId;
+        return effectiveId === data.outletId;
+      })
+      .reduce((sum, r) => {
+        if (r.transactionType === 'CHG') {
+          return sum + ((r.changeReceivedDenominations as any)?.[data.denomKey] || 0) - ((r.denominations as any)?.[data.denomKey] || 0);
+        }
+        const sign = ['CD', 'ID', 'LR', 'BC'].includes(r.transactionType) ? 1 : -1;
+        return sum + sign * ((r.denominations as any)?.[data.denomKey] || 0);
+      }, 0)
+      + denominationAdjustments
+        .filter((a) => a.outletId === data.outletId && a.denomKey === data.denomKey)
+        .reduce((sum, a) => sum + (a.newCount - a.previousCount), 0);
+
+    const changeAmount = (data.newCount - previousCount) * data.denomValue;
+
+    const newRecord: DenominationAdjustmentRecord = {
+      id: createUniqueId('DADJ'),
+      outletId: data.outletId,
+      outletName: outlet?.name || '',
+      denomKey: data.denomKey,
+      denomValue: data.denomValue,
+      previousCount,
+      newCount: data.newCount,
+      changeAmount,
+      setByUserId: user.id,
+      setByUserName: user.fullName,
+      createdAt: new Date().toISOString()
+    };
+
+    setDenominationAdjustments((prev) => [newRecord, ...prev]);
+    SupabaseService.saveDenominationAdjustment(newRecord);
+    addAuditEntry(
+      'DENOMINATION_MANUALLY_ADJUSTED',
+      `${data.denomKey} count for ${outlet?.name} changed from ${previousCount} to ${data.newCount} (৳${changeAmount >= 0 ? '+' : ''}${changeAmount.toLocaleString()})`,
+      outlet?.name
+    );
+    showToast({ message: `${data.denomKey} updated for ${outlet?.name}.`, type: 'success' });
+    return newRecord;
+  };
+  
   // Note & Rule Module
   const addNote = (data: { title: string; contentHtml: string; noteDate: string }): NoteRecord => {
     const user = currentUser || { id: 'USR-AFO-001', fullName: 'Ashiqul Islam', outletId: 'OUT-DHK-001', outletName: 'Kalaroa' };
