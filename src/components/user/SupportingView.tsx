@@ -232,9 +232,11 @@ export const SupportingView: React.FC = () => {
                     fundingSource === 'BALANCE' ? 'bg-purple-500 text-white border-purple-500' : `${inputBg}`
                   }`}
                 >
-                  <Landmark size={13} /> Balance
+                                   <Landmark size={13} /> Balance
                 </button>
               </div>
+              </div>
+              <div className="hidden lg:block" />
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
