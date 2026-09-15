@@ -445,6 +445,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const [rules, setRules] = useState<RuleRecord[]>([]);
   const [passwordResetRequests, setPasswordResetRequests] = useState<PasswordResetRequest[]>([]);
   const [governanceSettings, setGovernanceSettings] = useState<PortalGovernanceSettings>(defaultGovernanceSettings);
+    const [denominationAdjustments, setDenominationAdjustments] = useState<DenominationAdjustmentRecord[]>([]);
   const [afoTransfers, setAfoTransfers] = useState<AfoTransferRecord[]>([]);
 
   // Current session
