@@ -56,7 +56,7 @@ export const CashHistoryView: React.FC = () => {
     return 'Adjustment';
   };
 
-  const combinedHistory = useMemo(() => {
+    const combinedHistory = useMemo(() => {
     const items = [
       ...motherAmounts.map((m) => ({ ...m, kind: 'Mother Amount' as const })),
       ...outletTransfers.map((t) => ({ ...t, kind: 'Transfer' as const })),
@@ -65,7 +65,13 @@ export const CashHistoryView: React.FC = () => {
         .map((t) => ({ ...t, setByUserName: t.userName, kind: 'RTGS Transfer' as const })),
       ...cashTransfers
         .filter((t) => t.transferType === 'TRANSFER_TO_OUTLET')
-        .map((t) => ({ ...t, setByUserName: t.userName, kind: 'Transfer to Outlet' as const }))
+        .map((t) => ({ ...t, setByUserName: t.userName, kind: 'Transfer to Outlet' as const })),
+      ...denominationAdjustments.map((a) => ({
+        ...a,
+        amount: a.changeAmount,
+        note: `Tk${a.denomValue}: ${a.previousCount} → ${a.newCount}`,
+        kind: 'Denomination Adjustment' as const
+      }))
     ];
     let scoped =
       viewOutlet === 'ALL'
