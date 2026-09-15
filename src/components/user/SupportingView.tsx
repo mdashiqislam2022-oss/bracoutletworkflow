@@ -209,8 +209,9 @@ export const SupportingView: React.FC = () => {
               </div>
             </div>
 
-            {/* Funding Source Selector */}
-            <div className="max-w-2xl mb-3">
+                       {/* Funding Source Selector - width matches Money Segregation box below */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-3">
+              <div>
               <div className="text-xs font-bold flex items-center gap-1.5 text-slate-500 mb-1.5">
                 Supporting Source
               </div>
