@@ -171,11 +171,18 @@ export const TotalCashAnalysisView: React.FC = () => {
           });
         }
       });
-      supportingRecords
+           supportingRecords
       .filter((s) => relevantIds.includes(s.outletId) && s.fundingSource === 'CASH' && s.denominations)
       .forEach((s) => {
         DENOM_LIST.forEach((d) => {
           totals[d.key] -= s.denominations?.[d.key] || 0;
+        });
+      });
+    supportingRecords
+      .filter((s) => relevantIds.includes(s.outletId) && s.status === 'RECOVERED' && s.recoveredFundingSource === 'CASH' && s.recoveredDenominations)
+      .forEach((s) => {
+        DENOM_LIST.forEach((d) => {
+          totals[d.key] += s.recoveredDenominations?.[d.key] || 0;
         });
       });
     return totals;
