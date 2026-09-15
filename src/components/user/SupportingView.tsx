@@ -826,11 +826,46 @@ export const SupportingView: React.FC = () => {
                     </div>
                   </div>
                 </div>
-              ))}
+                           ))}
             </div>
           </div>
         )}
       </div>
+
+      {/* Recovered Confirmation Popup */}
+      {recoverConfirmId && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
+          <div className={`w-full max-w-sm rounded-2xl border p-4 shadow-xl ${cardBg}`}>
+            <div className={`text-sm font-bold mb-2 ${isDark ? 'text-slate-100' : 'text-slate-900'}`}>
+              টাকা ফেরত পাওয়া নিশ্চিত করুন
+            </div>
+            <div className="text-xs text-slate-500 mb-4">
+              এই সাপোর্টিং-এর ৳{' '}
+              {(mySupportingRecords.find((r) => r.id === recoverConfirmId)?.amount || 0).toLocaleString()}{' '}
+              টাকা সঠিকভাবে ফেরত (recover) পাওয়া হয়েছে কি না?
+            </div>
+            <div className="flex gap-2">
+              <button
+                type="button"
+                onClick={() => setRecoverConfirmId(null)}
+                className={`flex-1 py-1.5 rounded-lg text-xs font-bold border ${inputBg}`}
+              >
+                No
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  if (recoverConfirmId) markSupportingRecovered(recoverConfirmId);
+                  setRecoverConfirmId(null);
+                }}
+                className="flex-1 py-1.5 rounded-lg bg-emerald-500 text-white text-xs font-bold"
+              >
+                Yes
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
