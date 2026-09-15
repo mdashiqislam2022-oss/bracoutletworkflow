@@ -205,8 +205,8 @@ export const SupportingView: React.FC = () => {
 
         {activeTab === 'entry' && (
           <div className="animate-tab-fade">
-            {/* Summary Boxes */}
-            <div className="grid grid-cols-2 gap-3 mb-6 max-w-2xl">
+                       {/* Summary Boxes */}
+            <div className="grid grid-cols-3 gap-3 mb-6 max-w-3xl">
               <div className="rounded-xl border p-3 border-blue-500/40 bg-blue-500/10">
                 <div className="flex items-center gap-1.5 text-[11px] font-semibold text-blue-600">
                   <Wallet size={13} /> Total Supported Amount
@@ -225,6 +225,19 @@ export const SupportingView: React.FC = () => {
                 </div>
                 <div className="text-[10px] text-emerald-600/70 font-semibold mt-0.5">{recoveredStats.count} entries</div>
               </div>
+              <button
+                type="button"
+                onClick={() => setActiveTab('history')}
+                className="text-left rounded-xl border p-3 border-amber-500/40 bg-amber-500/10 hover:bg-amber-500/20 transition-colors cursor-pointer"
+              >
+                <div className="flex items-center gap-1.5 text-[11px] font-semibold text-amber-600">
+                  <Clock3 size={13} /> Pending Supporting
+                </div>
+                <div className="text-lg font-extrabold mt-1 text-amber-600">
+                  ৳ {pendingStats.amount.toLocaleString()}
+                </div>
+                <div className="text-[10px] text-amber-600/70 font-semibold mt-0.5">{pendingStats.count} entries</div>
+              </button>
             </div>
 
                        {/* Funding Source Selector - width matches Money Segregation box below */}
