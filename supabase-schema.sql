@@ -628,3 +628,27 @@ ALTER TABLE public.supporting_records ADD COLUMN IF NOT EXISTS recovered_note_10
 ALTER TABLE public.supporting_records ADD COLUMN IF NOT EXISTS recovered_note_200 INTEGER DEFAULT 0;
 ALTER TABLE public.supporting_records ADD COLUMN IF NOT EXISTS recovered_note_500 INTEGER DEFAULT 0;
 ALTER TABLE public.supporting_records ADD COLUMN IF NOT EXISTS recovered_note_1000 INTEGER DEFAULT 0;
+
+-- ==============================================================================
+-- DENOMINATION MANUAL ADJUSTMENT MODULE
+-- ==============================================================================
+
+CREATE TABLE IF NOT EXISTS public.denomination_adjustments (
+    id TEXT PRIMARY KEY,
+    outlet_id TEXT NOT NULL,
+    outlet_name TEXT NOT NULL,
+    denom_key TEXT NOT NULL,
+    denom_value NUMERIC NOT NULL,
+    previous_count INTEGER NOT NULL DEFAULT 0,
+    new_count INTEGER NOT NULL DEFAULT 0,
+    change_amount NUMERIC NOT NULL DEFAULT 0,
+    set_by_user_id TEXT,
+    set_by_user_name TEXT,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT timezone('utc'::text, now())
+);
+
+ALTER TABLE public.denomination_adjustments ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "select_denomination_adjustments" ON public.denomination_adjustments FOR SELECT USING (true);
+CREATE POLICY "insert_denomination_adjustments" ON public.denomination_adjustments FOR INSERT WITH CHECK (true);
+
+ALTER TABLE public.portal_governance ADD COLUMN IF NOT EXISTS allow_denomination_manual_edit BOOLEAN DEFAULT false;
