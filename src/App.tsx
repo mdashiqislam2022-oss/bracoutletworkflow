@@ -15,6 +15,7 @@ import { UserSettingsView } from './components/user/UserSettings';
 import { DenominationSegregationView } from './components/user/DenominationSegregationView';
 import { NoteAndRuleView } from './components/user/NoteAndRuleView';
 import { TransferView } from './components/user/TransferView';
+import { SupportingView } from './components/user/SupportingView';
 
 // Admin views
 import { AdminDashboard } from './components/admin/AdminDashboard';
