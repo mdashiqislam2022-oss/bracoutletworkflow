@@ -31,7 +31,7 @@ const PRESET_AVATARS = [
 ];
 
 export const SystemSettings: React.FC = () => {
-  const {
+    const {
     outlets,
     addNewOutlet,
     resetDemoData,
@@ -40,7 +40,9 @@ export const SystemSettings: React.FC = () => {
     currentAdmin,
     currentUser,
     updateAdminProfile,
-    showToast
+    showToast,
+    governanceSettings,
+    updateGovernanceSettings
   } = useApp();
 
   const isDark = userPreferences.theme === 'dark';
