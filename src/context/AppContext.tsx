@@ -3753,7 +3753,8 @@ if (sessionStatus.isActive) {
         outletVaults,
         addMotherAmount,
         addOutletTransfer,
-        addOutletVault,
+               denominationAdjustments,
+        addDenominationAdjustment,
 
         // Note & Rule Module
         notes,
