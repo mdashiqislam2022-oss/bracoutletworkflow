@@ -42,6 +42,11 @@ const todayStr = () => new Date().toLocaleDateString('en-CA');
 const monthNamesList = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 const yearOptionsList = Array.from({ length: 20 }, (_, i) => 2020 + i);
 
+// Only letters, spaces, and common name punctuation allowed
+const stripDigits = (val: string) => val.replace(/[0-9]/g, '');
+// Only digits allowed
+const stripNonDigits = (val: string) => val.replace(/\D/g, '');
+
 export const SupportingView: React.FC = () => {
   const { currentUser, userPreferences, supportingRecords, addSupportingRecord, markSupportingRecovered, showToast } = useApp();
   const isDark = userPreferences.theme === 'dark';
@@ -61,6 +66,7 @@ export const SupportingView: React.FC = () => {
   const [accountNumber, setAccountNumber] = useState('');
   const [accountTitle, setAccountTitle] = useState('');
   const [purpose, setPurpose] = useState('');
+  const [notes, setNotes] = useState('');
   const [supportingDate, setSupportingDate] = useState(todayStr());
 
   // Entry-form date picker state
@@ -97,16 +103,17 @@ export const SupportingView: React.FC = () => {
     return parseFloat(balanceAmount) || 0;
   }, [fundingSource, segregatedTotal, balanceAmount]);
 
+  // Save button enables ONLY when Supporting To (Name) and Purpose are filled — everything else optional
   const canSaveSupporting = useMemo(() => {
-    if (!recipientName.trim() || !purpose.trim() || !supportingDate) return false;
+    if (!recipientName.trim() || !purpose.trim()) return false;
     if (supportingAmount <= 0) return false;
     return true;
-  }, [recipientName, purpose, supportingDate, supportingAmount]);
+  }, [recipientName, purpose, supportingAmount]);
 
   const handleSaveSupporting = () => {
     if (!currentUser) return;
     if (!canSaveSupporting) {
-      showToast({ message: 'অনুগ্রহ করে সব প্রয়োজনীয় তথ্য পূরণ করুন।', type: 'error' });
+      showToast({ message: 'অনুগ্রহ করে Supporting To Name ও Purpose পূরণ করুন এবং amount দিন।', type: 'error' });
       return;
     }
     addSupportingRecord({
@@ -120,7 +127,8 @@ export const SupportingView: React.FC = () => {
       accountTitle: accountTitle.trim() || undefined,
       purpose: purpose.trim(),
       supportingDate,
-      outletId: currentUser.outletId
+      outletId: currentUser.outletId,
+      notes: notes.trim() || undefined
     });
     // Reset form
     setDenoms(emptyDenoms());
@@ -131,6 +139,7 @@ export const SupportingView: React.FC = () => {
     setAccountNumber('');
     setAccountTitle('');
     setPurpose('');
+    setNotes('');
     setSupportingDate(todayStr());
   };
 
@@ -300,234 +309,250 @@ export const SupportingView: React.FC = () => {
 
               {/* Right: Details Form */}
               <div className={`rounded-xl border p-3 space-y-2 ${inputBg}`}>
-                <div className="text-xs font-bold flex items-center gap-1.5 text-emerald-600 mb-1">
-                  Supporting Details
+                <div className="flex items-center justify-between mb-1">
+                  <div className="text-xs font-bold flex items-center gap-1.5 text-emerald-600">
+                    Supporting Details
+                  </div>
+
+                  {/* Date Picker - moved to top right corner */}
+                  <div className="relative">
+                    <button
+                      type="button"
+                      onClick={() => setEntryDatePickerOpen((v) => !v)}
+                      className={`flex items-center gap-1 rounded-lg border px-2 py-1 text-[10px] font-semibold ${inputBg}`}
+                    >
+                      <Calendar size={11} className="text-emerald-500" />
+                      {supportingDate
+                        ? new Date(supportingDate + 'T00:00:00').toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })
+                        : 'Select Date'}
+                      <ChevronDown size={11} className="text-slate-400" />
+                    </button>
+
+                    <div
+                      className={`absolute right-0 z-30 mt-2 w-72 rounded-2xl border shadow-lg p-3 origin-top-right transition-all duration-150 ease-out ${cardBg} ${
+                        entryDatePickerOpen ? 'opacity-100 scale-100 pointer-events-auto' : 'opacity-0 scale-95 pointer-events-none'
+                      }`}
+                    >
+                      <div className="flex items-center justify-between mb-2">
+                        <button
+                          onClick={() =>
+                            setEntryCalendarMonth((prev) => {
+                              const m = prev.month === 0 ? 11 : prev.month - 1;
+                              const y = prev.month === 0 ? prev.year - 1 : prev.year;
+                              return { year: y, month: m };
+                            })
+                          }
+                          className="p-1 rounded-lg hover:bg-emerald-500/10 text-slate-500"
+                        >
+                          <ChevronLeft size={16} />
+                        </button>
+                        <div className="flex items-center gap-1">
+                          <div className="relative">
+                            <button
+                              type="button"
+                              onClick={() => { setEntryMonthDropdownOpen((v) => !v); setEntryYearDropdownOpen(false); }}
+                              className={`text-xs font-bold py-1 px-2 rounded-md border cursor-pointer flex items-center gap-1 ${
+                                isDark ? 'bg-slate-900 border-slate-700 text-white' : 'bg-slate-50 border-slate-200 text-slate-900'
+                              }`}
+                            >
+                              {monthNamesList[entryCalendarMonth.month]}
+                              <span className="text-[9px] opacity-60">▼</span>
+                            </button>
+                            {entryMonthDropdownOpen && (
+                              <div
+                                className={`absolute left-0 top-full mt-1 z-50 max-h-48 overflow-y-auto rounded-lg border shadow-xl w-32 ${
+                                  isDark ? 'bg-[#1E293B] border-slate-700' : 'bg-white border-slate-200'
+                                }`}
+                              >
+                                {monthNamesList.map((mName, idx) => (
+                                  <button
+                                    key={mName}
+                                    type="button"
+                                    onClick={() => {
+                                      setEntryCalendarMonth((prev) => ({ ...prev, month: idx }));
+                                      setEntryMonthDropdownOpen(false);
+                                    }}
+                                    className={`w-full text-left text-xs font-semibold px-3 py-1.5 cursor-pointer ${
+                                      idx === entryCalendarMonth.month
+                                        ? 'bg-emerald-600 text-white'
+                                        : isDark
+                                        ? 'text-slate-200 hover:bg-slate-800'
+                                        : 'text-slate-800 hover:bg-slate-100'
+                                    }`}
+                                  >
+                                    {mName}
+                                  </button>
+                                ))}
+                              </div>
+                            )}
+                          </div>
+
+                          <div className="relative">
+                            <button
+                              type="button"
+                              onClick={() => { setEntryYearDropdownOpen((v) => !v); setEntryMonthDropdownOpen(false); }}
+                              className={`text-xs font-bold py-1 px-2 rounded-md border cursor-pointer font-mono flex items-center gap-1 ${
+                                isDark ? 'bg-slate-900 border-slate-700 text-white' : 'bg-slate-50 border-slate-200 text-slate-900'
+                              }`}
+                            >
+                              {entryCalendarMonth.year}
+                              <span className="text-[9px] opacity-60">▼</span>
+                            </button>
+                            {entryYearDropdownOpen && (
+                              <div
+                                className={`absolute left-0 top-full mt-1 z-50 max-h-48 overflow-y-auto rounded-lg border shadow-xl w-20 ${
+                                  isDark ? 'bg-[#1E293B] border-slate-700' : 'bg-white border-slate-200'
+                                }`}
+                              >
+                                {yearOptionsList.map((y) => (
+                                  <button
+                                    key={y}
+                                    type="button"
+                                    onClick={() => {
+                                      setEntryCalendarMonth((prev) => ({ ...prev, year: y }));
+                                      setEntryYearDropdownOpen(false);
+                                    }}
+                                    className={`w-full text-left text-xs font-semibold px-3 py-1.5 cursor-pointer font-mono ${
+                                      y === entryCalendarMonth.year
+                                        ? 'bg-emerald-600 text-white'
+                                        : isDark
+                                        ? 'text-slate-200 hover:bg-slate-800'
+                                        : 'text-slate-800 hover:bg-slate-100'
+                                    }`}
+                                  >
+                                    {y}
+                                  </button>
+                                ))}
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                        <button
+                          onClick={() =>
+                            setEntryCalendarMonth((prev) => {
+                              const m = prev.month === 11 ? 0 : prev.month + 1;
+                              const y = prev.month === 11 ? prev.year + 1 : prev.year;
+                              return { year: y, month: m };
+                            })
+                          }
+                          className="p-1 rounded-lg hover:bg-emerald-500/10 text-slate-500"
+                        >
+                          <ChevronRight size={16} />
+                        </button>
+                      </div>
+
+                      <div className="grid grid-cols-7 gap-1 mb-1">
+                        {['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'].map((d, i) => (
+                          <div
+                            key={d}
+                            className={`text-center text-[10px] font-bold ${i === 5 || i === 6 ? 'text-rose-500' : 'text-slate-400'}`}
+                          >
+                            {d}
+                          </div>
+                        ))}
+                      </div>
+
+                      <div className="grid grid-cols-7 gap-1">
+                        {Array.from({ length: new Date(entryCalendarMonth.year, entryCalendarMonth.month, 1).getDay() }).map((_, i) => (
+                          <div key={`blank-${i}`} />
+                        ))}
+                        {Array.from({ length: new Date(entryCalendarMonth.year, entryCalendarMonth.month + 1, 0).getDate() }).map((_, i) => {
+                          const day = i + 1;
+                          const dow = new Date(entryCalendarMonth.year, entryCalendarMonth.month, day).getDay();
+                          const isWeekend = dow === 5 || dow === 6;
+                          const dateStr = `${entryCalendarMonth.year}-${String(entryCalendarMonth.month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                          const isSelected = supportingDate === dateStr;
+                          const isToday = dateStr === todayStr();
+                          return (
+                            <button
+                              key={day}
+                              onClick={() => {
+                                setSupportingDate(dateStr);
+                                setEntryDatePickerOpen(false);
+                              }}
+                              className={`h-8 rounded-lg text-xs font-semibold transition ${
+                                isSelected
+                                  ? 'bg-emerald-500 text-white'
+                                  : isToday
+                                  ? 'border border-emerald-500 text-emerald-500'
+                                  : isWeekend
+                                  ? 'text-rose-500 hover:bg-rose-500/10'
+                                  : 'hover:bg-emerald-500/10'
+                              }`}
+                            >
+                              {day}
+                            </button>
+                          );
+                        })}
+                      </div>
+
+                      <div className="flex items-center justify-between mt-2 pt-2 border-t border-slate-700/20">
+                        <span className="text-[10px] text-slate-500 font-medium">Selected Date</span>
+                        <button
+                          onClick={() => {
+                            const t = new Date();
+                            setEntryCalendarMonth({ year: t.getFullYear(), month: t.getMonth() });
+                            setSupportingDate(todayStr());
+                            setEntryDatePickerOpen(false);
+                          }}
+                          className="text-xs font-semibold text-emerald-500 flex items-center gap-1"
+                        >
+                          <Sparkles size={11} /> Today
+                        </button>
+                      </div>
+                    </div>
+                  </div>
                 </div>
+
                 <input
                   value={recipientName}
-                  onChange={(e) => setRecipientName(e.target.value)}
+                  onChange={(e) => setRecipientName(stripDigits(e.target.value))}
                   placeholder="Supporting To (Name)"
                   className={`w-full rounded-lg border px-2 py-1.5 text-xs ${inputBg}`}
                 />
                 <input
+                  type="tel"
+                  inputMode="numeric"
                   value={mobileNumber}
-                  onChange={(e) => setMobileNumber(e.target.value)}
+                  onChange={(e) => setMobileNumber(stripNonDigits(e.target.value))}
                   placeholder="Number (Mobile)"
                   className={`w-full rounded-lg border px-2 py-1.5 text-xs ${inputBg}`}
                 />
                 <input
                   value={smeOfficerName}
-                  onChange={(e) => setSmeOfficerName(e.target.value)}
+                  onChange={(e) => setSmeOfficerName(stripDigits(e.target.value))}
                   placeholder="SME Officer Name"
                   className={`w-full rounded-lg border px-2 py-1.5 text-xs ${inputBg}`}
                 />
                 <input
+                  type="text"
+                  inputMode="numeric"
                   value={accountNumber}
-                  onChange={(e) => setAccountNumber(e.target.value)}
+                  onChange={(e) => setAccountNumber(stripNonDigits(e.target.value))}
                   placeholder="Account Number"
                   className={`w-full rounded-lg border px-2 py-1.5 text-xs ${inputBg}`}
                 />
                 <input
                   value={accountTitle}
-                  onChange={(e) => setAccountTitle(e.target.value)}
+                  onChange={(e) => setAccountTitle(stripDigits(e.target.value))}
                   placeholder="Account Title"
                   className={`w-full rounded-lg border px-2 py-1.5 text-xs ${inputBg}`}
                 />
                 <input
                   value={purpose}
-                  onChange={(e) => setPurpose(e.target.value)}
-                  placeholder="Supporting Purpose (কিসের জন্য দেওয়া হচ্ছে)"
+                  onChange={(e) => setPurpose(stripDigits(e.target.value))}
+                  placeholder="Supporting Purpose"
                   className={`w-full rounded-lg border px-2 py-1.5 text-xs ${inputBg}`}
                 />
 
-                {/* Entry Date Picker (dropdown-calendar style) */}
-                <div className="relative">
-                  <button
-                    type="button"
-                    onClick={() => setEntryDatePickerOpen((v) => !v)}
-                    className={`w-full flex items-center gap-1.5 rounded-lg border px-2.5 py-1.5 text-[11px] font-semibold ${inputBg}`}
-                  >
-                    <Calendar size={12} className="text-emerald-500" />
-                    {supportingDate
-                      ? new Date(supportingDate + 'T00:00:00').toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })
-                      : 'Select Date'}
-                    <ChevronDown size={12} className="text-slate-400 ml-auto" />
-                  </button>
-
-                  <div
-                    className={`absolute left-0 z-30 mt-2 w-72 rounded-2xl border shadow-lg p-3 origin-top-left transition-all duration-150 ease-out ${cardBg} ${
-                      entryDatePickerOpen ? 'opacity-100 scale-100 pointer-events-auto' : 'opacity-0 scale-95 pointer-events-none'
-                    }`}
-                  >
-                    <div className="flex items-center justify-between mb-2">
-                      <button
-                        onClick={() =>
-                          setEntryCalendarMonth((prev) => {
-                            const m = prev.month === 0 ? 11 : prev.month - 1;
-                            const y = prev.month === 0 ? prev.year - 1 : prev.year;
-                            return { year: y, month: m };
-                          })
-                        }
-                        className="p-1 rounded-lg hover:bg-emerald-500/10 text-slate-500"
-                      >
-                        <ChevronLeft size={16} />
-                      </button>
-                      <div className="flex items-center gap-1">
-                        <div className="relative">
-                          <button
-                            type="button"
-                            onClick={() => { setEntryMonthDropdownOpen((v) => !v); setEntryYearDropdownOpen(false); }}
-                            className={`text-xs font-bold py-1 px-2 rounded-md border cursor-pointer flex items-center gap-1 ${
-                              isDark ? 'bg-slate-900 border-slate-700 text-white' : 'bg-slate-50 border-slate-200 text-slate-900'
-                            }`}
-                          >
-                            {monthNamesList[entryCalendarMonth.month]}
-                            <span className="text-[9px] opacity-60">▼</span>
-                          </button>
-                          {entryMonthDropdownOpen && (
-                            <div
-                              className={`absolute left-0 top-full mt-1 z-50 max-h-48 overflow-y-auto rounded-lg border shadow-xl w-32 ${
-                                isDark ? 'bg-[#1E293B] border-slate-700' : 'bg-white border-slate-200'
-                              }`}
-                            >
-                              {monthNamesList.map((mName, idx) => (
-                                <button
-                                  key={mName}
-                                  type="button"
-                                  onClick={() => {
-                                    setEntryCalendarMonth((prev) => ({ ...prev, month: idx }));
-                                    setEntryMonthDropdownOpen(false);
-                                  }}
-                                  className={`w-full text-left text-xs font-semibold px-3 py-1.5 cursor-pointer ${
-                                    idx === entryCalendarMonth.month
-                                      ? 'bg-emerald-600 text-white'
-                                      : isDark
-                                      ? 'text-slate-200 hover:bg-slate-800'
-                                      : 'text-slate-800 hover:bg-slate-100'
-                                  }`}
-                                >
-                                  {mName}
-                                </button>
-                              ))}
-                            </div>
-                          )}
-                        </div>
-
-                        <div className="relative">
-                          <button
-                            type="button"
-                            onClick={() => { setEntryYearDropdownOpen((v) => !v); setEntryMonthDropdownOpen(false); }}
-                            className={`text-xs font-bold py-1 px-2 rounded-md border cursor-pointer font-mono flex items-center gap-1 ${
-                              isDark ? 'bg-slate-900 border-slate-700 text-white' : 'bg-slate-50 border-slate-200 text-slate-900'
-                            }`}
-                          >
-                            {entryCalendarMonth.year}
-                            <span className="text-[9px] opacity-60">▼</span>
-                          </button>
-                          {entryYearDropdownOpen && (
-                            <div
-                              className={`absolute left-0 top-full mt-1 z-50 max-h-48 overflow-y-auto rounded-lg border shadow-xl w-20 ${
-                                isDark ? 'bg-[#1E293B] border-slate-700' : 'bg-white border-slate-200'
-                              }`}
-                            >
-                              {yearOptionsList.map((y) => (
-                                <button
-                                  key={y}
-                                  type="button"
-                                  onClick={() => {
-                                    setEntryCalendarMonth((prev) => ({ ...prev, year: y }));
-                                    setEntryYearDropdownOpen(false);
-                                  }}
-                                  className={`w-full text-left text-xs font-semibold px-3 py-1.5 cursor-pointer font-mono ${
-                                    y === entryCalendarMonth.year
-                                      ? 'bg-emerald-600 text-white'
-                                      : isDark
-                                      ? 'text-slate-200 hover:bg-slate-800'
-                                      : 'text-slate-800 hover:bg-slate-100'
-                                  }`}
-                                >
-                                  {y}
-                                </button>
-                              ))}
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                      <button
-                        onClick={() =>
-                          setEntryCalendarMonth((prev) => {
-                            const m = prev.month === 11 ? 0 : prev.month + 1;
-                            const y = prev.month === 11 ? prev.year + 1 : prev.year;
-                            return { year: y, month: m };
-                          })
-                        }
-                        className="p-1 rounded-lg hover:bg-emerald-500/10 text-slate-500"
-                      >
-                        <ChevronRight size={16} />
-                      </button>
-                    </div>
-
-                    <div className="grid grid-cols-7 gap-1 mb-1">
-                      {['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'].map((d, i) => (
-                        <div
-                          key={d}
-                          className={`text-center text-[10px] font-bold ${i === 5 || i === 6 ? 'text-rose-500' : 'text-slate-400'}`}
-                        >
-                          {d}
-                        </div>
-                      ))}
-                    </div>
-
-                    <div className="grid grid-cols-7 gap-1">
-                      {Array.from({ length: new Date(entryCalendarMonth.year, entryCalendarMonth.month, 1).getDay() }).map((_, i) => (
-                        <div key={`blank-${i}`} />
-                      ))}
-                      {Array.from({ length: new Date(entryCalendarMonth.year, entryCalendarMonth.month + 1, 0).getDate() }).map((_, i) => {
-                        const day = i + 1;
-                        const dow = new Date(entryCalendarMonth.year, entryCalendarMonth.month, day).getDay();
-                        const isWeekend = dow === 5 || dow === 6;
-                        const dateStr = `${entryCalendarMonth.year}-${String(entryCalendarMonth.month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-                        const isSelected = supportingDate === dateStr;
-                        const isToday = dateStr === todayStr();
-                        return (
-                          <button
-                            key={day}
-                            onClick={() => {
-                              setSupportingDate(dateStr);
-                              setEntryDatePickerOpen(false);
-                            }}
-                            className={`h-8 rounded-lg text-xs font-semibold transition ${
-                              isSelected
-                                ? 'bg-emerald-500 text-white'
-                                : isToday
-                                ? 'border border-emerald-500 text-emerald-500'
-                                : isWeekend
-                                ? 'text-rose-500 hover:bg-rose-500/10'
-                                : 'hover:bg-emerald-500/10'
-                            }`}
-                          >
-                            {day}
-                          </button>
-                        );
-                      })}
-                    </div>
-
-                    <div className="flex items-center justify-between mt-2 pt-2 border-t border-slate-700/20">
-                      <span className="text-[10px] text-slate-500 font-medium">Selected Date</span>
-                      <button
-                        onClick={() => {
-                          const t = new Date();
-                          setEntryCalendarMonth({ year: t.getFullYear(), month: t.getMonth() });
-                          setSupportingDate(todayStr());
-                          setEntryDatePickerOpen(false);
-                        }}
-                        className="text-xs font-semibold text-emerald-500 flex items-center gap-1"
-                      >
-                        <Sparkles size={11} /> Today
-                      </button>
-                    </div>
-                  </div>
-                </div>
+                {/* Note box - placed where date picker used to be */}
+                <textarea
+                  value={notes}
+                  onChange={(e) => setNotes(e.target.value)}
+                  placeholder="Note (optional)"
+                  rows={2}
+                  className={`w-full rounded-lg border px-2 py-1.5 text-xs resize-none ${inputBg}`}
+                />
               </div>
             </div>
           </div>
@@ -772,6 +797,7 @@ export const SupportingView: React.FC = () => {
                       <div className="text-slate-500">
                         {new Date(r.supportingDate + 'T00:00:00').toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}
                         {r.smeOfficerName ? ` · SME: ${r.smeOfficerName}` : ''}
+                        {r.notes ? ` · Note: ${r.notes}` : ''}
                       </div>
                     </div>
                     <div className="flex flex-col items-end gap-1.5">
