@@ -81,7 +81,7 @@ export const CashHistoryView: React.FC = () => {
       scoped = scoped.filter((i) => new Date(i.createdAt).toLocaleDateString('en-CA') === historyDateFilter);
     }
     return scoped.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
-  }, [motherAmounts, outletTransfers, cashTransfers, viewOutlet, historyDateFilter]);
+   }, [motherAmounts, outletTransfers, cashTransfers, denominationAdjustments, viewOutlet, historyDateFilter]);
 
   return (
     <div className="space-y-4 md:space-y-6">
