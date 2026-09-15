@@ -453,9 +453,12 @@ export interface SupportingRecord {
   accountTitle?: string;
   purpose: string;
   supportingDate: string;
-  status: SupportingStatus;
+   status: SupportingStatus;
   recoveredAt?: string;
   recoveredBy?: string;
+  recoveredFundingSource?: SupportingFundingSource;
+  recoveredDenominations?: DenominationCounts;
+  recoveredAmount?: number;
   outletId: string;
   outletName: string;
   userId: string;
