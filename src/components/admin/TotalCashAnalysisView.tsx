@@ -264,6 +264,8 @@ export const TotalCashAnalysisView: React.FC = () => {
     if (note.includes('Cross-outlet')) return 'Cross-Outlet';
     return 'Adjustment';
   };
+   
+  // ---------- Handlers ----------
     const handleSaveDenomAdjustment = (denomKey: string, denomValue: number) => {
     const num = parseInt(editDenomValue, 10);
     if (viewOutlet === 'ALL' || isNaN(num) || num < 0) return;
@@ -273,9 +275,6 @@ export const TotalCashAnalysisView: React.FC = () => {
   };
 
   const handleSetMother = () => {
-
-  // ---------- Handlers ----------
-    const handleSetMother = () => {
     const amt = parseFloat(motherAmountInput);
     if (!motherOutlet || isNaN(amt) || amt <= 0) return;
     const newTotal = motherAmountSign === '+'
