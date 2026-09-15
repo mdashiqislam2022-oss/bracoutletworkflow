@@ -294,8 +294,9 @@ export const SupportingView: React.FC = () => {
                       placeholder="Amount from Balance"
                       className={`w-full rounded-lg border px-2 py-1.5 text-xs ${inputBg}`}
                     />
-                  </>
+                                  </>
                 )}
+                </div>
 
                 <div className={`flex items-center justify-between rounded-lg border px-3 py-2 text-[11px] font-bold mt-2 ${cardBg}`}>
                   <span className="text-slate-500">Supporting Amount</span>
