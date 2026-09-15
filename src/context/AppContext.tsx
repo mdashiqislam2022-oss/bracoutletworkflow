@@ -491,6 +491,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
           if (cloudData.afoTransfers) setAfoTransfers(cloudData.afoTransfers);
           if (cloudData.auditLogs) setAuditLogs(cloudData.auditLogs);
           if (cloudData.governanceSettings) setGovernanceSettings(cloudData.governanceSettings);
+          if (cloudData.denominationAdjustments) setDenominationAdjustments(cloudData.denominationAdjustments);
           if (cloudData.segregationRecords) setSegregationRecords(cloudData.segregationRecords);
                   if (cloudData.motherAmounts) setMotherAmounts(cloudData.motherAmounts);
                     if (cloudData.supportingRecords) setSupportingRecords(cloudData.supportingRecords);
@@ -580,7 +581,8 @@ if (cloudData.rules && cloudData.rules.length) setRules(cloudData.rules);
             if (cloudData.passwordResetRequests) setPasswordResetRequests(cloudData.passwordResetRequests);
             if (cloudData.afoTransfers) setAfoTransfers(cloudData.afoTransfers);
             if (cloudData.auditLogs) setAuditLogs(cloudData.auditLogs);
-                        if (cloudData.governanceSettings) setGovernanceSettings(cloudData.governanceSettings);
+            if (cloudData.governanceSettings) setGovernanceSettings(cloudData.governanceSettings);
+            if (cloudData.denominationAdjustments) setDenominationAdjustments(cloudData.denominationAdjustments);
 
             // Restore admin login session after refresh (if a valid Supabase Auth session exists)
             if (SupabaseService.isAvailable() && supabase) {
@@ -3554,6 +3556,7 @@ if (sessionStatus.isActive) {
           if (cloudData.afoTransfers) setAfoTransfers(cloudData.afoTransfers);
           if (cloudData.auditLogs) setAuditLogs(cloudData.auditLogs);
           if (cloudData.governanceSettings) setGovernanceSettings(cloudData.governanceSettings);
+          if (cloudData.denominationAdjustments) setDenominationAdjustments(cloudData.denominationAdjustments);
         }
       }).catch((e) => console.warn('Supabase sync error:', e));
     }
