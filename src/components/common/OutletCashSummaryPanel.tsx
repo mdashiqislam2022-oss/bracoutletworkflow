@@ -59,7 +59,11 @@ export const OutletCashSummaryPanel: React.FC<OutletCashSummaryPanelProps> = ({ 
       .filter((s) => s.outletId === outletId && s.status === 'RECOVERED' && s.recoveredFundingSource === 'CASH')
       .reduce((sum, s) => sum + (s.recoveredAmount || 0), 0);
 
-    const afoCash = net - rtgsOut - transferOut + transferIn - supportingCashOut + supportingCashRecoveredIn;
+       const manualAdjustment = denominationAdjustments
+      .filter((a) => a.outletId === outletId)
+      .reduce((sum, a) => sum + a.changeAmount, 0);
+
+    const afoCash = net - rtgsOut - transferOut + transferIn - supportingCashOut + supportingCashRecoveredIn + manualAdjustment;
 
     const transfer = outletTransfers
       .filter((t) => t.outletId === outletId)
