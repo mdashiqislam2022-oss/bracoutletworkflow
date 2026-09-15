@@ -615,3 +615,16 @@ ALTER TABLE public.supporting_records ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "select_supporting_records" ON public.supporting_records FOR SELECT USING (true);
 CREATE POLICY "insert_supporting_records" ON public.supporting_records FOR INSERT WITH CHECK (true);
 CREATE POLICY "update_supporting_records" ON public.supporting_records FOR UPDATE USING (true) WITH CHECK (true);
+
+ALTER TABLE public.supporting_records ADD COLUMN IF NOT EXISTS recovered_funding_source TEXT;
+ALTER TABLE public.supporting_records ADD COLUMN IF NOT EXISTS recovered_amount NUMERIC DEFAULT 0;
+ALTER TABLE public.supporting_records ADD COLUMN IF NOT EXISTS recovered_note_1 INTEGER DEFAULT 0;
+ALTER TABLE public.supporting_records ADD COLUMN IF NOT EXISTS recovered_note_2 INTEGER DEFAULT 0;
+ALTER TABLE public.supporting_records ADD COLUMN IF NOT EXISTS recovered_note_5 INTEGER DEFAULT 0;
+ALTER TABLE public.supporting_records ADD COLUMN IF NOT EXISTS recovered_note_10 INTEGER DEFAULT 0;
+ALTER TABLE public.supporting_records ADD COLUMN IF NOT EXISTS recovered_note_20 INTEGER DEFAULT 0;
+ALTER TABLE public.supporting_records ADD COLUMN IF NOT EXISTS recovered_note_50 INTEGER DEFAULT 0;
+ALTER TABLE public.supporting_records ADD COLUMN IF NOT EXISTS recovered_note_100 INTEGER DEFAULT 0;
+ALTER TABLE public.supporting_records ADD COLUMN IF NOT EXISTS recovered_note_200 INTEGER DEFAULT 0;
+ALTER TABLE public.supporting_records ADD COLUMN IF NOT EXISTS recovered_note_500 INTEGER DEFAULT 0;
+ALTER TABLE public.supporting_records ADD COLUMN IF NOT EXISTS recovered_note_1000 INTEGER DEFAULT 0;
