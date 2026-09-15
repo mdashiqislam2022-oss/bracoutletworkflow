@@ -396,8 +396,9 @@ const defaultGovernanceSettings: PortalGovernanceSettings = {
   allowOfficerProfileEdit: true,
   requireOutletOnSignup: true,
   systemBroadcastNotice: 'Welcome to BRAC Bank Field Officer Central Workflow System.',
-  systemBroadcastType: 'INFO',
+   systemBroadcastType: 'INFO',
   enableBroadcastBanner: true,
+  allowDenominationManualEdit: false,
 };
 
 const defaultPreferences: UserPreferences = {
