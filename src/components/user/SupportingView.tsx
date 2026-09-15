@@ -165,12 +165,17 @@ export const SupportingView: React.FC = () => {
     return { amount, count: mySupportingRecords.length };
   }, [mySupportingRecords]);
 
-  const recoveredStats = useMemo(() => {
+   const recoveredStats = useMemo(() => {
     const recovered = mySupportingRecords.filter((r) => r.status === 'RECOVERED');
     const amount = recovered.reduce((sum, r) => sum + r.amount, 0);
     return { amount, count: recovered.length };
   }, [mySupportingRecords]);
 
+  const pendingStats = useMemo(() => {
+    const pending = mySupportingRecords.filter((r) => r.status === 'PENDING');
+    const amount = pending.reduce((sum, r) => sum + r.amount, 0);
+    return { amount, count: pending.length };
+  }, [mySupportingRecords]);
   const filteredHistory = useMemo(() => {
     let items = [...mySupportingRecords];
     if (historyDateFilter) {
