@@ -264,6 +264,15 @@ export const TotalCashAnalysisView: React.FC = () => {
     if (note.includes('Cross-outlet')) return 'Cross-Outlet';
     return 'Adjustment';
   };
+    const handleSaveDenomAdjustment = (denomKey: string, denomValue: number) => {
+    const num = parseInt(editDenomValue, 10);
+    if (viewOutlet === 'ALL' || isNaN(num) || num < 0) return;
+    addDenominationAdjustment({ outletId: viewOutlet, denomKey, denomValue, newCount: num });
+    setEditingDenomKey(null);
+    setEditDenomValue('');
+  };
+
+  const handleSetMother = () => {
 
   // ---------- Handlers ----------
     const handleSetMother = () => {
