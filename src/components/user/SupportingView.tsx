@@ -510,12 +510,20 @@ export const SupportingView: React.FC = () => {
                   </div>
                 </div>
 
-                <input
+                              <input
                   value={recipientName}
                   onChange={(e) => setRecipientName(stripDigits(e.target.value))}
                   placeholder="Supporting To (Name)"
                   className={`w-full rounded-lg border px-2 py-1.5 text-xs ${inputBg}`}
                 />
+                <div className="text-[9px] font-bold text-rose-500 -mt-1.5 ml-0.5">* Required</div>
+                <input
+                  value={purpose}
+                  onChange={(e) => setPurpose(stripDigits(e.target.value))}
+                  placeholder="Supporting Purpose"
+                  className={`w-full rounded-lg border px-2 py-1.5 text-xs ${inputBg}`}
+                />
+                <div className="text-[9px] font-bold text-rose-500 -mt-1.5 ml-0.5">* Required</div>
                 <input
                   type="tel"
                   inputMode="numeric"
@@ -542,12 +550,6 @@ export const SupportingView: React.FC = () => {
                   value={accountTitle}
                   onChange={(e) => setAccountTitle(stripDigits(e.target.value))}
                   placeholder="Account Title"
-                  className={`w-full rounded-lg border px-2 py-1.5 text-xs ${inputBg}`}
-                />
-                <input
-                  value={purpose}
-                  onChange={(e) => setPurpose(stripDigits(e.target.value))}
-                  placeholder="Supporting Purpose"
                   className={`w-full rounded-lg border px-2 py-1.5 text-xs ${inputBg}`}
                 />
 
