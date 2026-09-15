@@ -116,11 +116,18 @@ export const OutletCashSummaryPanel: React.FC<OutletCashSummaryPanelProps> = ({ 
           });
         }
       });
-     supportingRecords
+         supportingRecords
       .filter((s) => s.outletId === outletId && s.fundingSource === 'CASH' && s.denominations)
       .forEach((s) => {
         DENOM_LIST.forEach((d) => {
           totalsMap[d.key] -= s.denominations?.[d.key] || 0;
+        });
+      });
+    supportingRecords
+      .filter((s) => s.outletId === outletId && s.status === 'RECOVERED' && s.recoveredFundingSource === 'CASH' && s.recoveredDenominations)
+      .forEach((s) => {
+        DENOM_LIST.forEach((d) => {
+          totalsMap[d.key] += s.recoveredDenominations?.[d.key] || 0;
         });
       });
     return totalsMap;
