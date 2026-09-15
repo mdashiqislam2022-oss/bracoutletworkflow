@@ -836,13 +836,13 @@ export const SupportingView: React.FC = () => {
       {recoverConfirmId && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
           <div className={`w-full max-w-sm rounded-2xl border p-4 shadow-xl ${cardBg}`}>
-            <div className={`text-sm font-bold mb-2 ${isDark ? 'text-slate-100' : 'text-slate-900'}`}>
-              টাকা ফেরত পাওয়া নিশ্চিত করুন
+                       <div className={`text-sm font-bold mb-2 ${isDark ? 'text-slate-100' : 'text-slate-900'}`}>
+              Confirm Recovery
             </div>
             <div className="text-xs text-slate-500 mb-4">
-              এই সাপোর্টিং-এর ৳{' '}
+              Has the supporting amount of ৳{' '}
               {(mySupportingRecords.find((r) => r.id === recoverConfirmId)?.amount || 0).toLocaleString()}{' '}
-              টাকা সঠিকভাবে ফেরত (recover) পাওয়া হয়েছে কি না?
+              been properly recovered?
             </div>
             <div className="flex gap-2">
               <button
