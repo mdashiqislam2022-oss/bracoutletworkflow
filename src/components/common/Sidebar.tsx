@@ -18,9 +18,10 @@ import {
   ShieldCheck,
   Zap,
   ArrowRightLeft,
-  Calculator,
+   Calculator,
        BarChart3,
-  StickyNote
+  StickyNote,
+  HandCoins
 } from 'lucide-react';
 import { t } from '../../utils/translations';
 import { SupportModal } from './SupportModal';
