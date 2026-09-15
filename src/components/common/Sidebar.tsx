@@ -60,7 +60,8 @@ export const Sidebar: React.FC = () => {
         { id: 'cheque_cards', icon: CreditCard, label: langText.chequeCardRegistry },
         { id: 'loan_accounts', icon: Landmark, label: langText.loanAccounts },
                                 { id: 'denomination_segregation', icon: Calculator, label: 'Cash Counting' },
-                { id: 'cash_transfer', icon: ArrowRightLeft, label: 'Transfer & Analysis' },
+                      { id: 'cash_transfer', icon: ArrowRightLeft, label: 'Transfer & Analysis' },
+        { id: 'supporting', icon: HandCoins, label: 'Supporting' },
         { id: 'note_rule', icon: StickyNote, label: 'Note & Rule' }
       ]
     },
