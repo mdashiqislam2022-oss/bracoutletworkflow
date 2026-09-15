@@ -509,6 +509,41 @@ export const SystemSettings: React.FC = () => {
                 <span className={isDark ? 'text-slate-400' : 'text-slate-500'}>App Version</span>
                 <span className={`font-mono ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>v2.4.0 (Aesthetic)</span>
               </div>
+                        </div>
+          </div>
+
+          <div className={`rounded-[28px] p-6 border transition-all space-y-3 ${
+            isDark
+              ? 'bg-slate-900/90 border-slate-700/80 shadow-lg text-white'
+              : 'bg-white border-slate-100 shadow-xs text-slate-900'
+          }`}>
+            <h3 className={`text-sm font-bold pb-2 border-b ${
+              isDark ? 'text-white border-slate-800' : 'text-slate-900 border-slate-100'
+            }`}>
+              Denomination Manual Edit
+            </h3>
+            <div className="flex items-center justify-between gap-3">
+              <p className="text-xs text-slate-400 leading-relaxed">
+                Allow admins to manually edit denomination note counts from the Cash Analysis section.
+              </p>
+              <button
+                onClick={() =>
+                  updateGovernanceSettings({ allowDenominationManualEdit: !governanceSettings.allowDenominationManualEdit })
+                }
+                className={`shrink-0 relative w-12 h-6 rounded-full transition-colors ${
+                  governanceSettings.allowDenominationManualEdit
+                    ? 'bg-emerald-500'
+                    : isDark
+                    ? 'bg-slate-700'
+                    : 'bg-slate-300'
+                }`}
+              >
+                <span
+                  className={`absolute top-0.5 left-0.5 w-5 h-5 rounded-full bg-white shadow transition-transform ${
+                    governanceSettings.allowDenominationManualEdit ? 'translate-x-6' : 'translate-x-0'
+                  }`}
+                />
+              </button>
             </div>
           </div>
 
