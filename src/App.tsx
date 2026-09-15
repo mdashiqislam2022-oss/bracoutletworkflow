@@ -67,8 +67,10 @@ const MainLayout: React.FC = () => {
           return <DenominationSegregationView />;
         case 'note_rule':
           return <NoteAndRuleView />;
-        case 'cash_transfer':
+               case 'cash_transfer':
           return <TransferView />;
+        case 'supporting':
+          return <SupportingView />;
         case 'profile':
           return <UserProfileView />;
         case 'settings':
