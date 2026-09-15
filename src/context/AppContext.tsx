@@ -3477,22 +3477,57 @@ if (sessionStatus.isActive) {
     return newRecord;
   };
 
-  const markSupportingRecovered = (id: string) => {
+    const markSupportingRecovered = (
+    id: string,
+    data: {
+      recoveredFundingSource: SupportingFundingSource;
+      recoveredDenominations?: DenominationCounts;
+      recoveredAmount?: number;
+    }
+  ) => {
     const user = currentUser || { id: 'USR-AFO-001', fullName: 'Master Administrator' };
     const target = supportingRecords.find((r) => r.id === id);
+    const recoveredAmt = data.recoveredFundingSource === 'CASH' ? (data.recoveredAmount || 0) : (target?.amount || 0);
+
     setSupportingRecords((prev) => {
       const updated = prev.map((r) =>
         r.id === id
-          ? { ...r, status: 'RECOVERED' as SupportingStatus, recoveredAt: new Date().toISOString(), recoveredBy: user.fullName }
+          ? {
+              ...r,
+              status: 'RECOVERED' as SupportingStatus,
+              recoveredAt: new Date().toISOString(),
+              recoveredBy: user.fullName,
+              recoveredFundingSource: data.recoveredFundingSource,
+              recoveredDenominations: data.recoveredFundingSource === 'CASH' ? data.recoveredDenominations : undefined,
+              recoveredAmount: recoveredAmt
+            }
           : r
       );
       const record = updated.find((r) => r.id === id);
       if (record) SupabaseService.saveSupportingRecord(record);
       return updated;
     });
+
+    // Balance recovery adds the amount back to Mother Amount only.
+    // Cash recovery does NOT touch Mother Amount — it adds back to AFO Cash/Vault
+    // via the recoveredDenominations, which OutletCashSummaryPanel & TotalCashAnalysisView read directly.
+    if (data.recoveredFundingSource === 'BALANCE' && target) {
+      const latestMother = motherAmounts
+        .filter((m) => m.outletId === target.outletId)
+        .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())[0];
+      const currentMotherAmount = latestMother?.amount || 0;
+      addMotherAmount({
+        outletId: target.outletId,
+        amount: currentMotherAmount + (target.amount || 0),
+        note: `Supporting recovered from ${target.recipientName} (Balance) + ৳${target.amount}`
+      });
+    }
+
     addAuditEntry(
       'SUPPORTING_RECOVERED',
-      `Supporting of ৳${target?.amount || 0} to ${target?.recipientName || ''} marked recovered`,
+      `Supporting of ৳${target?.amount || 0} to ${target?.recipientName || ''} marked recovered (${data.recoveredFundingSource}${
+        data.recoveredFundingSource === 'CASH' ? ` - ৳${recoveredAmt}` : ''
+      })`,
       target?.outletName
     );
     showToast({ message: 'Supporting marked as recovered.', type: 'success' });
