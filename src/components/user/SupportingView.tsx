@@ -848,18 +848,95 @@ export const SupportingView: React.FC = () => {
         )}
       </div>
 
-      {/* Recovered Confirmation Popup */}
+           {/* Recovered Confirmation Popup */}
       {recoverConfirmId && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
           <div className={`w-full max-w-sm rounded-2xl border p-4 shadow-xl ${cardBg}`}>
                        <div className={`text-sm font-bold mb-2 ${isDark ? 'text-slate-100' : 'text-slate-900'}`}>
               Confirm Recovery
             </div>
-            <div className="text-xs text-slate-500 mb-4">
+            <div className="text-xs text-slate-500 mb-3">
               Has the supporting amount of ৳{' '}
               {(mySupportingRecords.find((r) => r.id === recoverConfirmId)?.amount || 0).toLocaleString()}{' '}
               been properly recovered?
             </div>
+
+            <div className="text-xs font-bold flex items-center gap-1.5 text-slate-500 mb-1.5">
+              Recovered Via
+            </div>
+            <div className="flex gap-2 mb-3">
+              <button
+                type="button"
+                onClick={() => setRecoverFundingSource('CASH')}
+                className={`flex-1 py-1.5 rounded-lg text-xs font-bold border flex items-center justify-center gap-1.5 ${
+                  recoverFundingSource === 'CASH' ? 'bg-blue-500 text-white border-blue-500' : `${inputBg}`
+                }`}
+              >
+                <Wallet size={13} /> Cash
+              </button>
+              <button
+                type="button"
+                onClick={() => setRecoverFundingSource('BALANCE')}
+                className={`flex-1 py-1.5 rounded-lg text-xs font-bold border flex items-center justify-center gap-1.5 ${
+                  recoverFundingSource === 'BALANCE' ? 'bg-purple-500 text-white border-purple-500' : `${inputBg}`
+                }`}
+              >
+                <Landmark size={13} /> Balance
+              </button>
+            </div>
+
+            <div key={recoverFundingSource} className="animate-tab-fade">
+              {recoverFundingSource === 'CASH' ? (
+                <div className={`rounded-xl border p-3 space-y-2 mb-3 ${inputBg}`}>
+                  <div className="text-xs font-bold flex items-center gap-1.5 text-blue-600 mb-1">
+                    Money Segregation
+                  </div>
+                  <div className="grid grid-cols-2 gap-3">
+                    <div className="space-y-1.5">
+                      {DENOM_LEFT.map((d) => (
+                        <div key={d.key} className="flex items-center gap-1.5">
+                          <span className="text-[10px] w-9 font-semibold text-slate-500">Tk{d.value}</span>
+                          <input
+                            type="number"
+                            min={0}
+                            value={recoverDenoms[d.key] || ''}
+                            onChange={(e) => handleRecoverDenomChange(d.key, e.target.value)}
+                            placeholder="0"
+                            className={`w-full rounded-lg border px-2 py-1 text-xs ${inputBg}`}
+                          />
+                        </div>
+                      ))}
+                    </div>
+                    <div className="space-y-1.5">
+                      {DENOM_RIGHT.map((d) => (
+                        <div key={d.key} className="flex items-center gap-1.5">
+                          <span className="text-[10px] w-9 font-semibold text-slate-500">Tk{d.value}</span>
+                          <input
+                            type="number"
+                            min={0}
+                            value={recoverDenoms[d.key] || ''}
+                            onChange={(e) => handleRecoverDenomChange(d.key, e.target.value)}
+                            placeholder="0"
+                            className={`w-full rounded-lg border px-2 py-1 text-xs ${inputBg}`}
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  <div className={`flex items-center justify-between rounded-lg border px-3 py-2 text-[11px] font-bold mt-2 ${cardBg}`}>
+                    <span className="text-slate-500">Recovered Amount</span>
+                    <span className="text-emerald-600">৳ {recoverSegregatedTotal.toLocaleString()}</span>
+                  </div>
+                </div>
+              ) : (
+                <div className="text-xs text-slate-500 mb-3">
+                  The full supporting amount of ৳{' '}
+                  {(mySupportingRecords.find((r) => r.id === recoverConfirmId)?.amount || 0).toLocaleString()}{' '}
+                  will be added back to Mother Amount.
+                </div>
+              )}
+            </div>
+
             <div className="flex gap-2">
               <button
                 type="button"
@@ -870,11 +947,18 @@ export const SupportingView: React.FC = () => {
               </button>
               <button
                 type="button"
+                disabled={recoverFundingSource === 'CASH' && recoverSegregatedTotal === 0}
                 onClick={() => {
-                  if (recoverConfirmId) markSupportingRecovered(recoverConfirmId);
+                  if (recoverConfirmId) {
+                    markSupportingRecovered(recoverConfirmId, {
+                      recoveredFundingSource: recoverFundingSource,
+                      recoveredDenominations: recoverFundingSource === 'CASH' ? recoverDenoms : undefined,
+                      recoveredAmount: recoverFundingSource === 'CASH' ? recoverSegregatedTotal : undefined
+                    });
+                  }
                   setRecoverConfirmId(null);
                 }}
-                className="flex-1 py-1.5 rounded-lg bg-emerald-500 text-white text-xs font-bold"
+                className="flex-1 py-1.5 rounded-lg bg-emerald-500 text-white text-xs font-bold disabled:opacity-40 disabled:cursor-not-allowed"
               >
                 Yes
               </button>
