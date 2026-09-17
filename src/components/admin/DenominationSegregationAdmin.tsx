@@ -523,20 +523,21 @@ export const DenominationSegregationAdmin: React.FC = () => {
                             {Array.from({ length: new Date(exportCalendarMonth.year, exportCalendarMonth.month, 1).getDay() }).map((_, i) => (
                               <div key={`blank-${i}`} />
                             ))}
-                            {Array.from({ length: new Date(exportCalendarMonth.year, exportCalendarMonth.month + 1, 0).getDate() }).map((_, i) => {
+                                                        {Array.from({ length: new Date(exportCalendarMonth.year, exportCalendarMonth.month + 1, 0).getDate() }).map((_, i) => {
                               const day = i + 1;
                               const dateStr = `${exportCalendarMonth.year}-${String(exportCalendarMonth.month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
                               const isSelected = exportSelectedDates.includes(dateStr);
+                              const isAnchor = rangeAnchorDate === dateStr;
                               return (
                                 <button
                                   key={day}
-                                  onClick={() => {
-                                    setExportSelectedDates((prev) =>
-                                      prev.includes(dateStr) ? prev.filter((d) => d !== dateStr) : [...prev, dateStr]
-                                    );
-                                  }}
+                                  onClick={() => handleDayClick(dateStr)}
                                   className={`h-7 rounded-lg text-[11px] font-semibold transition ${
-                                    isSelected ? 'bg-emerald-500 text-white' : 'hover:bg-emerald-500/10'
+                                    isAnchor
+                                      ? 'bg-amber-500 text-white'
+                                      : isSelected
+                                      ? 'bg-emerald-500 text-white'
+                                      : 'hover:bg-emerald-500/10'
                                   }`}
                                 >
                                   {day}
