@@ -515,8 +515,8 @@ export const DenominationSegregationAdmin: React.FC = () => {
                     </div>
                   )}
 
-                  <button
-                    onClick={() => {}}
+                                   <button
+                    onClick={handleDownloadCsv}
                     className="w-full py-1.5 rounded-lg bg-emerald-500 text-white text-xs font-bold"
                   >
                     Download CSV
