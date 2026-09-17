@@ -259,11 +259,42 @@ export const DenominationSegregationAdmin: React.FC = () => {
         s.mobileNumber || '',
         s.notes || ''
       ]);
-    return buildCsvSection(
+        return buildCsvSection(
       'SUPPORTING HISTORY',
       ['Date/Time', 'Outlet', 'AFO', 'Recipient', 'Purpose', 'Funding Source', 'Amount', 'Status', 'Recovered Amount', 'Recovered Source', 'Mobile', 'Note'],
       rows
     );
+  };
+
+  const handleDownloadCsv = () => {
+    const dates = exportDateMode === 'SPECIFIC' ? exportSelectedDates : [];
+    if (exportDateMode === 'SPECIFIC' && dates.length === 0) {
+      showToast({ message: 'Please select at least one date, or switch to All Dates.', type: 'error' });
+      return;
+    }
+    let csvContent = '';
+    if (exportSections.ENTRIES) csvContent += buildAllEntriesCsv(dates);
+    if (exportSections.ANALYSIS) csvContent += buildTotalCashAnalysisCsv();
+    if (exportSections.HISTORY) csvContent += buildHistoryCsv(dates);
+    if (exportSections.SUPPORTING) csvContent += buildSupportingCsv(dates);
+
+    if (!csvContent.trim()) {
+      showToast({ message: 'Please select at least one section to export.', type: 'error' });
+      return;
+    }
+
+    const blob = new Blob(['\uFEFF' + csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    const dateLabel = exportDateMode === 'SPECIFIC' ? dates.join('_') : 'all-dates';
+    link.href = url;
+    link.download = `cash-analysis-export-${dateLabel}-${Date.now()}.csv`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+    setExportPopupOpen(false);
+    showToast({ message: 'CSV exported successfully.', type: 'success' });
   };
 
     return (
