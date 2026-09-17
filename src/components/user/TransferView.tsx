@@ -750,7 +750,7 @@ export const TransferView: React.FC = () => {
                     </div>
                   </div>
                   {noteEditRowId === h.id && (
-                    <div className={`absolute right-0 top-full z-30 mt-1 w-64 rounded-xl border shadow-lg p-2.5 ${cardBg}`}>
+                                      <div className={`absolute right-0 bottom-full z-30 mb-1 w-64 rounded-xl border shadow-lg p-2.5 ${cardBg}`}>
                       <textarea
                         value={noteInputText}
                         onChange={(e) => setNoteInputText(e.target.value)}
