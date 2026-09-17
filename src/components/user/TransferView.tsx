@@ -13,7 +13,8 @@ import {
   Send,
   Copy,
   Check,
-  StickyNote
+   StickyNote,
+  X
 } from 'lucide-react';
 import { CashTransferType, SegregationTransactionType } from '../../types';
 
