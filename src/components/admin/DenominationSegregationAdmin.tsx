@@ -198,8 +198,10 @@ export const DenominationSegregationAdmin: React.FC = () => {
 
                 {activeSubPage === 'ANALYSIS' ? (
           <TotalCashAnalysisView />
-        ) : activeSubPage === 'HISTORY' ? (
+               ) : activeSubPage === 'HISTORY' ? (
           <CashHistoryView />
+        ) : activeSubPage === 'SUPPORTING' ? (
+          <SupportingHistoryView />
         ) : (
           <>
         {/* Outlet Selector (with its own search) */}
