@@ -77,6 +77,41 @@ export const DenominationSegregationAdmin: React.FC = () => {
   });
   const [exportMonthDropdownOpen, setExportMonthDropdownOpen] = useState(false);
   const [exportYearDropdownOpen, setExportYearDropdownOpen] = useState(false);
+    const [isDragSelecting, setIsDragSelecting] = useState(false);
+  const [dragAnchorDate, setDragAnchorDate] = useState<string | null>(null);
+  const [dragCurrentDate, setDragCurrentDate] = useState<string | null>(null);
+
+  const getDateRange = (a: string, b: string): string[] => {
+    const start = new Date(a < b ? a : b);
+    const end = new Date(a < b ? b : a);
+    const result: string[] = [];
+    const cur = new Date(start);
+    while (cur <= end) {
+      result.push(cur.toLocaleDateString('en-CA'));
+      cur.setDate(cur.getDate() + 1);
+    }
+    return result;
+  };
+
+  useEffect(() => {
+    if (!isDragSelecting) return;
+    const handleMouseUp = () => {
+      if (dragAnchorDate && dragCurrentDate) {
+        if (dragAnchorDate === dragCurrentDate) {
+          setExportSelectedDates((prev) =>
+            prev.includes(dragAnchorDate) ? prev.filter((d) => d !== dragAnchorDate) : [...prev, dragAnchorDate]
+          );
+        } else {
+          setExportSelectedDates(getDateRange(dragAnchorDate, dragCurrentDate));
+        }
+      }
+      setIsDragSelecting(false);
+      setDragAnchorDate(null);
+      setDragCurrentDate(null);
+    };
+    window.addEventListener('mouseup', handleMouseUp);
+    return () => window.removeEventListener('mouseup', handleMouseUp);
+  }, [isDragSelecting, dragAnchorDate, dragCurrentDate]);
   const cardBg = isDark ? 'bg-[#1A2333] border-slate-800' : 'bg-white border-slate-200';
   const inputBg = isDark
     ? 'bg-[#0F172A] border-slate-700 text-slate-100'
