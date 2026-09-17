@@ -139,9 +139,11 @@ export const DenominationSegregationAdmin: React.FC = () => {
             <Banknote className="text-emerald-500" size={20} />
             {activeSubPage === 'ENTRIES'
               ? 'Denomination Segregation — All Entries'
-              : activeSubPage === 'ANALYSIS'
+                            : activeSubPage === 'ANALYSIS'
               ? 'Total Cash Analysis'
-              : 'Cash & Mother Amount History'}
+              : activeSubPage === 'HISTORY'
+              ? 'Cash & Mother Amount History'
+              : 'Supporting History'}
           </h2>
 
           <div className={`flex items-center gap-1 p-1 rounded-xl ${isDark ? 'bg-[#0F172A]' : 'bg-slate-100'}`}>
