@@ -14,11 +14,12 @@ import {
   ChevronDown,
   ChevronLeft,
   ChevronRight,
-  X,
+    X,
   BarChart3,
   History,
    List,
-  Shuffle
+  Shuffle,
+  HandCoins
 } from 'lucide-react';
 import { SegregationTransactionType } from '../../types';
 import { TotalCashAnalysisView } from './TotalCashAnalysisView';
