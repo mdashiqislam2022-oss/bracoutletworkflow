@@ -533,8 +533,9 @@ export const DenominationSegregationAdmin: React.FC = () => {
                   : 'text-slate-400'
               }`}
             >
-              <HandCoins size={13} /> Supporting History
+                          <HandCoins size={13} /> Supporting History
             </button>
+          </div>
           </div>
         </div>
 
