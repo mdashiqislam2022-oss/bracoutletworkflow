@@ -795,12 +795,7 @@ export const TransferView: React.FC = () => {
               </div>
             </div>
           );
-        })()}
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
+              })()}
 
       </div>
     </div>
