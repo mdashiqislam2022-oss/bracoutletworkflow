@@ -37,7 +37,7 @@ const TX_LABELS: Record<SegregationTransactionType, { label: string; icon: React
 };
 
 export const DenominationSegregationAdmin: React.FC = () => {
-  const { segregationRecords, outlets, userPreferences } = useApp();
+   const { segregationRecords, outlets, userPreferences, motherAmounts, outletTransfers, cashTransfers, supportingRecords, denominationAdjustments } = useApp();
   const isDark = userPreferences.theme === 'dark';
     const [activeSubPage, setActiveSubPage] = useState<'ENTRIES' | 'ANALYSIS' | 'HISTORY' | 'SUPPORTING'>('ENTRIES');
 
