@@ -131,6 +131,122 @@ export const DenominationSegregationAdmin: React.FC = () => {
 
   const totalAmount = useMemo(() => filtered.reduce((sum, r) => sum + r.actualAmount, 0), [filtered]);
 
+  // ==================== CSV Export Logic ====================
+  const csvEscape = (val: any): string => {
+    const str = String(val ?? '');
+    if (str.includes(',') || str.includes('"') || str.includes('\n')) {
+      return '"' + str.replace(/"/g, '""') + '"';
+    }
+    return str;
+  };
+
+  const buildCsvSection = (title: string, headers: string[], rows: (string | number)[][]): string => {
+    const lines = [`=== ${title} ===`, headers.map(csvEscape).join(',')];
+    rows.forEach((row) => lines.push(row.map(csvEscape).join(',')));
+    lines.push('');
+    return lines.join('\n');
+  };
+
+  const dateMatches = (iso: string, dates: string[]): boolean => {
+    if (dates.length === 0) return true;
+    return dates.includes(new Date(iso).toLocaleDateString('en-CA'));
+  };
+
+  const buildAllEntriesCsv = (dates: string[]): string => {
+    const rows = segregationRecords
+      .filter((r) => dateMatches(r.createdAt, dates))
+      .map((r) => [
+        new Date(r.createdAt).toLocaleString(),
+        r.outletName,
+        r.userName,
+        r.transactionType,
+        r.accountTitle,
+        r.accountNumber,
+        r.mobileNumber,
+        r.actualAmount,
+        r.chargeApplied ? r.chargeAmount : 0,
+        r.bearerName || '',
+        r.notes || ''
+      ]);
+    return buildCsvSection(
+      'ALL ENTRIES (DENOMINATION SEGREGATION)',
+      ['Date/Time', 'Outlet', 'AFO', 'Type', 'Account Title', 'Account No', 'Mobile', 'Amount', 'Charge', 'Bearer Name', 'Note'],
+      rows
+    );
+  };
+
+  const buildTotalCashAnalysisCsv = (): string => {
+    const rows = outlets.map((o) => {
+      const mother =
+        motherAmounts
+          .filter((m) => m.outletId === o.id)
+          .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())[0]?.amount || 0;
+      const net = segregationRecords
+        .filter((r) => {
+          const effectiveId = r.crossOutletDirection === 'THERE' && r.crossOutletId ? r.crossOutletId : r.outletId;
+          return effectiveId === o.id && r.transactionType !== 'CHG';
+        })
+        .reduce((sum, r) => sum + (['CD', 'ID', 'LR', 'BC'].includes(r.transactionType) ? r.actualAmount : -r.actualAmount), 0);
+      const rtgsOut = cashTransfers.filter((t) => t.outletId === o.id && t.transferType === 'RTGS').reduce((s, t) => s + t.amount, 0);
+      const transferOut = cashTransfers.filter((t) => t.outletId === o.id && t.transferType === 'TRANSFER_TO_OUTLET').reduce((s, t) => s + t.amount, 0);
+      const transferIn = cashTransfers.filter((t) => t.destinationOutletId === o.id && t.transferType === 'TRANSFER_TO_OUTLET').reduce((s, t) => s + t.amount, 0);
+      const supportingCashOut = supportingRecords.filter((s) => s.outletId === o.id && s.fundingSource === 'CASH').reduce((s, r) => s + r.amount, 0);
+      const supportingCashRecoveredIn = supportingRecords.filter((s) => s.outletId === o.id && s.status === 'RECOVERED' && s.recoveredFundingSource === 'CASH').reduce((s, r) => s + (r.recoveredAmount || 0), 0);
+      const manualAdjustment = denominationAdjustments.filter((a) => a.outletId === o.id).reduce((s, a) => s + a.changeAmount, 0);
+      const afoCash = net - rtgsOut - transferOut + transferIn - supportingCashOut + supportingCashRecoveredIn + manualAdjustment;
+      const transfer = outletTransfers.filter((t) => t.outletId === o.id).reduce((s, t) => s + t.amount, 0);
+      const vault = afoCash - transfer;
+      return [o.name, mother, afoCash, transferIn, vault];
+    });
+    return buildCsvSection(
+      'TOTAL CASH ANALYSIS (CURRENT SNAPSHOT PER OUTLET)',
+      ['Outlet', 'Total Mother Amount', 'Total AFO Cash Amount', 'Total Received From Outlet', 'Total Vault Amount'],
+      rows
+    );
+  };
+
+  const buildHistoryCsv = (dates: string[]): string => {
+    const items: { date: string; kind: string; outlet: string; who: string; amount: number; detail: string }[] = [];
+    motherAmounts.forEach((m) => items.push({ date: m.createdAt, kind: 'Mother Amount', outlet: m.outletName, who: m.setByUserName, amount: m.amount, detail: m.note || '' }));
+    outletTransfers.forEach((t) => items.push({ date: t.createdAt, kind: 'Transfer', outlet: t.outletName, who: t.setByUserName, amount: t.amount, detail: t.note || '' }));
+    cashTransfers.filter((t) => t.transferType === 'RTGS').forEach((t) => items.push({ date: t.createdAt, kind: 'RTGS Transfer', outlet: t.outletName, who: t.userName, amount: t.amount, detail: t.note || '' }));
+    cashTransfers.filter((t) => t.transferType === 'TRANSFER_TO_OUTLET').forEach((t) => items.push({ date: t.createdAt, kind: 'Transfer to Outlet', outlet: t.outletName, who: t.userName, amount: t.amount, detail: `To ${t.destinationOutletName || ''}` }));
+    denominationAdjustments.forEach((a) => items.push({ date: a.createdAt, kind: 'Denomination Adjustment', outlet: a.outletName, who: a.setByUserName, amount: a.changeAmount, detail: `${a.denomKey} count ${a.previousCount} to ${a.newCount}` }));
+    const rows = items
+      .filter((i) => dateMatches(i.date, dates))
+      .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+      .map((i) => [new Date(i.date).toLocaleString(), i.kind, i.outlet, i.who, i.amount, i.detail]);
+    return buildCsvSection(
+      'CASH & MOTHER AMOUNT HISTORY',
+      ['Date/Time', 'Type', 'Outlet', 'By', 'Amount', 'Detail'],
+      rows
+    );
+  };
+
+  const buildSupportingCsv = (dates: string[]): string => {
+    const rows = supportingRecords
+      .filter((s) => dateMatches(s.createdAt, dates))
+      .map((s) => [
+        new Date(s.createdAt).toLocaleString(),
+        s.outletName,
+        s.userName,
+        s.recipientName,
+        s.purpose,
+        s.fundingSource,
+        s.amount,
+        s.status,
+        s.status === 'RECOVERED' ? (s.recoveredAmount || 0) : '',
+        s.status === 'RECOVERED' ? (s.recoveredFundingSource || '') : '',
+        s.mobileNumber || '',
+        s.notes || ''
+      ]);
+    return buildCsvSection(
+      'SUPPORTING HISTORY',
+      ['Date/Time', 'Outlet', 'AFO', 'Recipient', 'Purpose', 'Funding Source', 'Amount', 'Status', 'Recovered Amount', 'Recovered Source', 'Mobile', 'Note'],
+      rows
+    );
+  };
+
     return (
     <div className="space-y-4 md:space-y-6">
       <div className={`rounded-2xl border p-4 md:p-5 ${cardBg}`}>
