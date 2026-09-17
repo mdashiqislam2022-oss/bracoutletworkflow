@@ -279,9 +279,222 @@ export const DenominationSegregationAdmin: React.FC = () => {
               : activeSubPage === 'HISTORY'
               ? 'Cash & Mother Amount History'
               : 'Supporting History'}
-          </h2>
+                    </h2>
 
-          <div className={`flex items-center gap-1 p-1 rounded-xl ${isDark ? 'bg-[#0F172A]' : 'bg-slate-100'}`}>
+          <div className="flex items-center gap-2 flex-wrap">
+            <div className="relative">
+              <button
+                onClick={() => setExportPopupOpen((v) => !v)}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold border ${inputBg}`}
+              >
+                <Download size={13} className="text-emerald-500" /> Export CSV
+                <ChevronDown size={12} className="text-slate-400" />
+              </button>
+
+              {exportPopupOpen && (
+                <div className={`absolute left-0 z-30 mt-2 w-80 rounded-2xl border shadow-lg p-3 ${cardBg}`}>
+                  <div className="text-xs font-bold mb-2 text-slate-500">Select sections to export</div>
+                  <div className="space-y-1.5 mb-3">
+                    {[
+                      { key: 'ENTRIES', label: 'All Entries' },
+                      { key: 'ANALYSIS', label: 'Total Cash Analysis' },
+                      { key: 'HISTORY', label: 'Cash & Mother Amount History' },
+                      { key: 'SUPPORTING', label: 'Supporting History' }
+                    ].map((sec) => (
+                      <label key={sec.key} className="flex items-center gap-2 text-xs font-semibold cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={exportSections[sec.key]}
+                          onChange={(e) => setExportSections((prev) => ({ ...prev, [sec.key]: e.target.checked }))}
+                          className="rounded"
+                        />
+                        {sec.label}
+                      </label>
+                    ))}
+                  </div>
+
+                  <div className="text-xs font-bold mb-2 text-slate-500">Date range</div>
+                  <div className="flex gap-2 mb-2">
+                    <button
+                      onClick={() => setExportDateMode('ALL')}
+                      className={`flex-1 py-1.5 rounded-lg text-xs font-bold border ${
+                        exportDateMode === 'ALL' ? 'bg-emerald-500 text-white border-emerald-500' : inputBg
+                      }`}
+                    >
+                      All Dates
+                    </button>
+                    <button
+                      onClick={() => setExportDateMode('SPECIFIC')}
+                      className={`flex-1 py-1.5 rounded-lg text-xs font-bold border ${
+                        exportDateMode === 'SPECIFIC' ? 'bg-emerald-500 text-white border-emerald-500' : inputBg
+                      }`}
+                    >
+                      Specific Date(s)
+                    </button>
+                  </div>
+
+                  {exportDateMode === 'SPECIFIC' && (
+                    <div className="mb-3">
+                      <button
+                        onClick={() => setExportDatePickerOpen((v) => !v)}
+                        className={`w-full flex items-center justify-between rounded-lg border px-2.5 py-1.5 text-xs font-semibold mb-2 ${inputBg}`}
+                      >
+                        <span className="flex items-center gap-1.5">
+                          <Calendar size={12} className="text-emerald-500" />
+                          {exportSelectedDates.length === 0
+                            ? 'Pick date(s)'
+                            : `${exportSelectedDates.length} date(s) selected`}
+                        </span>
+                        <ChevronDown size={12} className="text-slate-400" />
+                      </button>
+
+                      {exportDatePickerOpen && (
+                        <div className={`rounded-xl border p-2 ${inputBg}`}>
+                          <div className="flex items-center justify-between mb-2">
+                            <button
+                              onClick={() =>
+                                setExportCalendarMonth((prev) => {
+                                  const m = prev.month === 0 ? 11 : prev.month - 1;
+                                  const y = prev.month === 0 ? prev.year - 1 : prev.year;
+                                  return { year: y, month: m };
+                                })
+                              }
+                              className="p-1 rounded-lg hover:bg-emerald-500/10 text-slate-500"
+                            >
+                              <ChevronLeft size={14} />
+                            </button>
+                            <div className="flex items-center gap-1">
+                              <div className="relative">
+                                <button
+                                  type="button"
+                                  onClick={() => { setExportMonthDropdownOpen((v) => !v); setExportYearDropdownOpen(false); }}
+                                  className="text-xs font-bold py-1 px-2 rounded-md border cursor-pointer flex items-center gap-1"
+                                >
+                                  {monthNamesList[exportCalendarMonth.month]}
+                                  <span className="text-[9px] opacity-60">▼</span>
+                                </button>
+                                {exportMonthDropdownOpen && (
+                                  <div className={`absolute left-0 top-full mt-1 z-50 max-h-40 overflow-y-auto rounded-lg border shadow-xl w-28 ${cardBg}`}>
+                                    {monthNamesList.map((mName, idx) => (
+                                      <button
+                                        key={mName}
+                                        type="button"
+                                        onClick={() => {
+                                          setExportCalendarMonth((prev) => ({ ...prev, month: idx }));
+                                          setExportMonthDropdownOpen(false);
+                                        }}
+                                        className={`w-full text-left text-xs font-semibold px-3 py-1.5 cursor-pointer ${
+                                          idx === exportCalendarMonth.month ? 'bg-emerald-600 text-white' : ''
+                                        }`}
+                                      >
+                                        {mName}
+                                      </button>
+                                    ))}
+                                  </div>
+                                )}
+                              </div>
+                              <div className="relative">
+                                <button
+                                  type="button"
+                                  onClick={() => { setExportYearDropdownOpen((v) => !v); setExportMonthDropdownOpen(false); }}
+                                  className="text-xs font-bold py-1 px-2 rounded-md border cursor-pointer font-mono flex items-center gap-1"
+                                >
+                                  {exportCalendarMonth.year}
+                                  <span className="text-[9px] opacity-60">▼</span>
+                                </button>
+                                {exportYearDropdownOpen && (
+                                  <div className={`absolute left-0 top-full mt-1 z-50 max-h-40 overflow-y-auto rounded-lg border shadow-xl w-16 ${cardBg}`}>
+                                    {yearOptionsList.map((y) => (
+                                      <button
+                                        key={y}
+                                        type="button"
+                                        onClick={() => {
+                                          setExportCalendarMonth((prev) => ({ ...prev, year: y }));
+                                          setExportYearDropdownOpen(false);
+                                        }}
+                                        className={`w-full text-left text-xs font-semibold px-3 py-1.5 cursor-pointer font-mono ${
+                                          y === exportCalendarMonth.year ? 'bg-emerald-600 text-white' : ''
+                                        }`}
+                                      >
+                                        {y}
+                                      </button>
+                                    ))}
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+                            <button
+                              onClick={() =>
+                                setExportCalendarMonth((prev) => {
+                                  const m = prev.month === 11 ? 0 : prev.month + 1;
+                                  const y = prev.month === 11 ? prev.year + 1 : prev.year;
+                                  return { year: y, month: m };
+                                })
+                              }
+                              className="p-1 rounded-lg hover:bg-emerald-500/10 text-slate-500"
+                            >
+                              <ChevronRight size={14} />
+                            </button>
+                          </div>
+
+                          <div className="grid grid-cols-7 gap-1 mb-1">
+                            {['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'].map((d, i) => (
+                              <div key={d} className={`text-center text-[9px] font-bold ${i === 5 || i === 6 ? 'text-rose-500' : 'text-slate-400'}`}>
+                                {d}
+                              </div>
+                            ))}
+                          </div>
+
+                          <div className="grid grid-cols-7 gap-1">
+                            {Array.from({ length: new Date(exportCalendarMonth.year, exportCalendarMonth.month, 1).getDay() }).map((_, i) => (
+                              <div key={`blank-${i}`} />
+                            ))}
+                            {Array.from({ length: new Date(exportCalendarMonth.year, exportCalendarMonth.month + 1, 0).getDate() }).map((_, i) => {
+                              const day = i + 1;
+                              const dateStr = `${exportCalendarMonth.year}-${String(exportCalendarMonth.month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                              const isSelected = exportSelectedDates.includes(dateStr);
+                              return (
+                                <button
+                                  key={day}
+                                  onClick={() => {
+                                    setExportSelectedDates((prev) =>
+                                      prev.includes(dateStr) ? prev.filter((d) => d !== dateStr) : [...prev, dateStr]
+                                    );
+                                  }}
+                                  className={`h-7 rounded-lg text-[11px] font-semibold transition ${
+                                    isSelected ? 'bg-emerald-500 text-white' : 'hover:bg-emerald-500/10'
+                                  }`}
+                                >
+                                  {day}
+                                </button>
+                              );
+                            })}
+                          </div>
+
+                          {exportSelectedDates.length > 0 && (
+                            <button
+                              onClick={() => setExportSelectedDates([])}
+                              className="w-full mt-2 text-[10px] font-semibold text-rose-500"
+                            >
+                              Clear selected dates
+                            </button>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  )}
+
+                  <button
+                    onClick={() => {}}
+                    className="w-full py-1.5 rounded-lg bg-emerald-500 text-white text-xs font-bold"
+                  >
+                    Download CSV
+                  </button>
+                </div>
+              )}
+            </div>
+
+            <div className={`flex items-center gap-1 p-1 rounded-xl ${isDark ? 'bg-[#0F172A]' : 'bg-slate-100'}`}>
             <button
               onClick={() => setActiveSubPage('ENTRIES')}
               className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition ${
