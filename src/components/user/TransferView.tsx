@@ -749,33 +749,53 @@ export const TransferView: React.FC = () => {
                       <div className="font-extrabold">৳ {h.amount.toLocaleString()}</div>
                     </div>
                   </div>
-                  {noteEditRowId === h.id && (
-                                      <div className={`absolute right-0 bottom-full z-30 mb-1 w-64 rounded-xl border shadow-lg p-2.5 ${cardBg}`}>
-                      <textarea
-                        value={noteInputText}
-                        onChange={(e) => setNoteInputText(e.target.value)}
-                                                placeholder="Note your correction..."
-                        rows={3}
-                        className={`w-full rounded-lg border px-2 py-1.5 text-xs mb-2 ${inputBg}`}
-                      />
-                      <div className="flex gap-2">
-                        <button
-                          type="button"
-                          onClick={() => setNoteEditRowId(null)}
-                          className={`flex-1 py-1.5 rounded-lg text-xs font-semibold border ${inputBg}`}
-                        >
-                          Cancel
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => handleSubmitRowNote(h)}
-                          className="flex-1 py-1.5 rounded-lg bg-emerald-500 text-white text-xs font-bold"
-                        >
-                          Submit
-                        </button>
-                      </div>
-                    </div>
-                  )}
+                                  </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Note Popup — rendered as a centered modal, outside the scrollable list */}
+        {noteEditRowId && (() => {
+          const targetRow = combinedUserHistory.find((h) => h.id === noteEditRowId);
+          if (!targetRow) return null;
+          return (
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4">
+              <div className={`rounded-2xl border shadow-lg p-4 max-w-sm w-full ${cardBg}`}>
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-sm font-bold">Add Note</span>
+                  <button type="button" onClick={() => setNoteEditRowId(null)} className="text-slate-400">
+                    <X size={16} />
+                  </button>
+                </div>
+                <textarea
+                  value={noteInputText}
+                  onChange={(e) => setNoteInputText(e.target.value)}
+                  placeholder="Note your correction..."
+                  rows={3}
+                  autoFocus
+                  className={`w-full rounded-lg border px-2 py-1.5 text-xs mb-3 ${inputBg}`}
+                />
+                <div className="flex gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setNoteEditRowId(null)}
+                    className={`flex-1 py-1.5 rounded-lg text-xs font-semibold border ${inputBg}`}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleSubmitRowNote(targetRow)}
+                    className="flex-1 py-1.5 rounded-lg bg-emerald-500 text-white text-xs font-bold"
+                  >
+                    Submit
+                  </button>
+                </div>
+              </div>
+            </div>
+          );
+        })()}
                 </div>
               ))}
             </div>
