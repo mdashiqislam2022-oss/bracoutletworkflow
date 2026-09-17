@@ -175,7 +175,17 @@ export const DenominationSegregationAdmin: React.FC = () => {
                   : 'text-slate-400'
               }`}
             >
-              <History size={13} /> History
+                          <History size={13} /> History
+            </button>
+            <button
+              onClick={() => setActiveSubPage('SUPPORTING')}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition ${
+                activeSubPage === 'SUPPORTING'
+                  ? `${isDark ? 'bg-[#1A2333] text-slate-100' : 'bg-white text-slate-900'} shadow-sm`
+                  : 'text-slate-400'
+              }`}
+            >
+              <HandCoins size={13} /> Supporting History
             </button>
           </div>
         </div>
