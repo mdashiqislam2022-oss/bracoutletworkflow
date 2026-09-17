@@ -18,8 +18,9 @@ import {
   BarChart3,
   History,
    List,
-  Shuffle,
-  HandCoins
+    Shuffle,
+  HandCoins,
+  Download
 } from 'lucide-react';
 import { SegregationTransactionType } from '../../types';
 import { TotalCashAnalysisView } from './TotalCashAnalysisView';
