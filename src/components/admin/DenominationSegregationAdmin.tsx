@@ -58,6 +58,24 @@ export const DenominationSegregationAdmin: React.FC = () => {
   const [yearDropdownOpen, setYearDropdownOpen] = useState(false);
   const monthNamesList = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
   const yearOptionsList = Array.from({ length: 20 }, (_, i) => 2020 + i);
+  
+  // ==================== CSV Export State ====================
+  const [exportPopupOpen, setExportPopupOpen] = useState(false);
+  const [exportSections, setExportSections] = useState<Record<string, boolean>>({
+    ENTRIES: true,
+    ANALYSIS: true,
+    HISTORY: true,
+    SUPPORTING: true
+  });
+  const [exportDateMode, setExportDateMode] = useState<'ALL' | 'SPECIFIC'>('ALL');
+  const [exportSelectedDates, setExportSelectedDates] = useState<string[]>([]);
+  const [exportDatePickerOpen, setExportDatePickerOpen] = useState(false);
+  const [exportCalendarMonth, setExportCalendarMonth] = useState(() => {
+    const d = new Date();
+    return { year: d.getFullYear(), month: d.getMonth() };
+  });
+  const [exportMonthDropdownOpen, setExportMonthDropdownOpen] = useState(false);
+  const [exportYearDropdownOpen, setExportYearDropdownOpen] = useState(false);
   const cardBg = isDark ? 'bg-[#1A2333] border-slate-800' : 'bg-white border-slate-200';
   const inputBg = isDark
     ? 'bg-[#0F172A] border-slate-700 text-slate-100'
