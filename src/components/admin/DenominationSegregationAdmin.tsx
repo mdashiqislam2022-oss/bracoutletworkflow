@@ -24,6 +24,7 @@ import {
 import { SegregationTransactionType } from '../../types';
 import { TotalCashAnalysisView } from './TotalCashAnalysisView';
 import { CashHistoryView } from './CashHistoryView';
+import { SupportingHistoryView } from './SupportingHistoryView';
 
 const TX_LABELS: Record<SegregationTransactionType, { label: string; icon: React.ElementType; color: string }> = {
   CD: { label: 'Cash Deposit', icon: ArrowDownCircle, color: 'text-emerald-500' },
