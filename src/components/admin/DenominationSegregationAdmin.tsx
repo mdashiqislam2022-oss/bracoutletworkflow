@@ -171,7 +171,7 @@ export const DenominationSegregationAdmin: React.FC = () => {
     return dates.includes(new Date(iso).toLocaleDateString('en-CA'));
   };
 
-  const buildAllEntriesCsv = (dates: string[]): string => {
+    const buildAllEntriesCsv = (dates: string[]): string => {
     const rows = segregationRecords
       .filter((r) => dateMatches(r.createdAt, dates))
       .map((r) => [
@@ -185,11 +185,21 @@ export const DenominationSegregationAdmin: React.FC = () => {
         r.actualAmount,
         r.chargeApplied ? r.chargeAmount : 0,
         r.bearerName || '',
-        r.notes || ''
+        r.notes || '',
+        r.denominations?.note1 || 0,
+        r.denominations?.note2 || 0,
+        r.denominations?.note5 || 0,
+        r.denominations?.note10 || 0,
+        r.denominations?.note20 || 0,
+        r.denominations?.note50 || 0,
+        r.denominations?.note100 || 0,
+        r.denominations?.note200 || 0,
+        r.denominations?.note500 || 0,
+        r.denominations?.note1000 || 0
       ]);
     return buildCsvSection(
       'ALL ENTRIES (DENOMINATION SEGREGATION)',
-      ['Date/Time', 'Outlet', 'AFO', 'Type', 'Account Title', 'Account No', 'Mobile', 'Amount', 'Charge', 'Bearer Name', 'Note'],
+      ['Date/Time', 'Outlet', 'AFO', 'Type', 'Account Title', 'Account No', 'Mobile', 'Amount', 'Charge', 'Bearer Name', 'Note', 'Tk1', 'Tk2', 'Tk5', 'Tk10', 'Tk20', 'Tk50', 'Tk100', 'Tk200', 'Tk500', 'Tk1000'],
       rows
     );
   };
