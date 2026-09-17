@@ -422,8 +422,20 @@ export const DenominationSegregationAdmin: React.FC = () => {
                         <ChevronDown size={12} className="text-slate-400" />
                       </button>
 
-                      {exportDatePickerOpen && (
+                                            {exportDatePickerOpen && (
                         <div className={`rounded-xl border p-2 ${inputBg}`}>
+                          <label className="flex items-center gap-2 text-[11px] font-semibold mb-2 cursor-pointer">
+                            <input
+                              type="checkbox"
+                              checked={rangeSelectMode}
+                              onChange={(e) => {
+                                setRangeSelectMode(e.target.checked);
+                                setRangeAnchorDate(null);
+                              }}
+                              className="rounded"
+                            />
+                            Select a range (click start date, then end date)
+                          </label>
                           <div className="flex items-center justify-between mb-2">
                             <button
                               onClick={() =>
