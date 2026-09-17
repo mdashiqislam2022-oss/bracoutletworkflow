@@ -77,9 +77,8 @@ export const DenominationSegregationAdmin: React.FC = () => {
   });
   const [exportMonthDropdownOpen, setExportMonthDropdownOpen] = useState(false);
   const [exportYearDropdownOpen, setExportYearDropdownOpen] = useState(false);
-    const [isDragSelecting, setIsDragSelecting] = useState(false);
-  const [dragAnchorDate, setDragAnchorDate] = useState<string | null>(null);
-  const [dragCurrentDate, setDragCurrentDate] = useState<string | null>(null);
+    const [rangeSelectMode, setRangeSelectMode] = useState(false);
+  const [rangeAnchorDate, setRangeAnchorDate] = useState<string | null>(null);
 
   const getDateRange = (a: string, b: string): string[] => {
     const start = new Date(a < b ? a : b);
@@ -93,25 +92,24 @@ export const DenominationSegregationAdmin: React.FC = () => {
     return result;
   };
 
-  useEffect(() => {
-    if (!isDragSelecting) return;
-    const handleMouseUp = () => {
-      if (dragAnchorDate && dragCurrentDate) {
-        if (dragAnchorDate === dragCurrentDate) {
-          setExportSelectedDates((prev) =>
-            prev.includes(dragAnchorDate) ? prev.filter((d) => d !== dragAnchorDate) : [...prev, dragAnchorDate]
-          );
-        } else {
-          setExportSelectedDates(getDateRange(dragAnchorDate, dragCurrentDate));
-        }
-      }
-      setIsDragSelecting(false);
-      setDragAnchorDate(null);
-      setDragCurrentDate(null);
-    };
-    window.addEventListener('mouseup', handleMouseUp);
-    return () => window.removeEventListener('mouseup', handleMouseUp);
-  }, [isDragSelecting, dragAnchorDate, dragCurrentDate]);
+  const handleDayClick = (dateStr: string) => {
+    if (!rangeSelectMode) {
+      setExportSelectedDates((prev) =>
+        prev.includes(dateStr) ? prev.filter((d) => d !== dateStr) : [...prev, dateStr]
+      );
+      return;
+    }
+    if (!rangeAnchorDate) {
+      setRangeAnchorDate(dateStr);
+      return;
+    }
+    if (rangeAnchorDate === dateStr) {
+      setRangeAnchorDate(null);
+      return;
+    }
+    setExportSelectedDates(getDateRange(rangeAnchorDate, dateStr));
+    setRangeAnchorDate(null);
+  };
   const cardBg = isDark ? 'bg-[#1A2333] border-slate-800' : 'bg-white border-slate-200';
   const inputBg = isDark
     ? 'bg-[#0F172A] border-slate-700 text-slate-100'
