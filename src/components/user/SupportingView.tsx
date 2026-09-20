@@ -177,13 +177,16 @@ export const SupportingView: React.FC = () => {
     const amount = pending.reduce((sum, r) => sum + r.amount, 0);
     return { amount, count: pending.length };
   }, [mySupportingRecords]);
-  const filteredHistory = useMemo(() => {
+    const filteredHistory = useMemo(() => {
     let items = [...mySupportingRecords];
     if (historyDateFilter) {
       items = items.filter((r) => r.supportingDate === historyDateFilter);
     }
+    if (historyStatusFilter !== 'ALL') {
+      items = items.filter((r) => r.status === historyStatusFilter);
+    }
     return items.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
-  }, [mySupportingRecords, historyDateFilter]);
+  }, [mySupportingRecords, historyDateFilter, historyStatusFilter]);
 
   return (
     <div className="space-y-4 md:space-y-6">
