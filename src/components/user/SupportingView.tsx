@@ -229,9 +229,9 @@ export const SupportingView: React.FC = () => {
                 </div>
                 <div className="text-[10px] text-emerald-600/70 font-semibold mt-0.5">{recoveredStats.count} entries</div>
               </div>
-              <button
+                            <button
                 type="button"
-                onClick={() => setActiveTab('history')}
+                onClick={() => { setHistoryStatusFilter('PENDING'); setActiveTab('history'); }}
                 className="text-left rounded-xl border p-3 border-amber-500/40 bg-amber-500/10 hover:bg-amber-500/20 transition-colors cursor-pointer"
               >
                 <div className="flex items-center gap-1.5 text-[11px] font-semibold text-amber-600">
