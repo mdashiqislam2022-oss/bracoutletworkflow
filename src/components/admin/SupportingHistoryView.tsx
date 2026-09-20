@@ -33,21 +33,30 @@ export const SupportingHistoryView: React.FC = () => {
 
   const selectedOutletName = viewOutlet === 'ALL' ? 'All Outlets' : outlets.find((o) => o.id === viewOutlet)?.name || 'All Outlets';
 
-  const filtered = useMemo(() => {
+    const [statusFilter, setStatusFilter] = useState<'ALL' | 'PENDING' | 'RECOVERED'>('ALL');
+
+  const outletAndDateFiltered = useMemo(() => {
     let list = viewOutlet === 'ALL' ? supportingRecords : supportingRecords.filter((s) => s.outletId === viewOutlet);
     if (dateFilter) {
       list = list.filter((s) => new Date(s.createdAt).toLocaleDateString('en-CA') === dateFilter);
     }
-    return list.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+    return list;
   }, [supportingRecords, viewOutlet, dateFilter]);
 
-  const totals = useMemo(() => {
-    const total = filtered.reduce((sum, s) => sum + s.amount, 0);
-    const recovered = filtered.filter((s) => s.status === 'RECOVERED').reduce((sum, s) => sum + (s.recoveredAmount || s.amount), 0);
-    const pending = filtered.filter((s) => s.status === 'PENDING').reduce((sum, s) => sum + s.amount, 0);
-    return { total, recovered, pending };
-  }, [filtered]);
+  const filtered = useMemo(() => {
+    let list = outletAndDateFiltered;
+    if (statusFilter !== 'ALL') {
+      list = list.filter((s) => s.status === statusFilter);
+    }
+    return list.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+  }, [outletAndDateFiltered, statusFilter]);
 
+  const totals = useMemo(() => {
+    const total = outletAndDateFiltered.reduce((sum, s) => sum + s.amount, 0);
+    const recovered = outletAndDateFiltered.filter((s) => s.status === 'RECOVERED').reduce((sum, s) => sum + (s.recoveredAmount || s.amount), 0);
+    const pending = outletAndDateFiltered.filter((s) => s.status === 'PENDING').reduce((sum, s) => sum + s.amount, 0);
+    return { total, recovered, pending };
+  }, [outletAndDateFiltered]);
   return (
     <div className="space-y-4 md:space-y-6">
       <div className={`rounded-2xl border p-4 md:p-5 ${cardBg}`}>
