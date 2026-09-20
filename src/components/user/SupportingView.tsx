@@ -195,9 +195,12 @@ export const SupportingView: React.FC = () => {
           <h2 className={`font-bold text-lg flex items-center gap-2 ${isDark ? 'text-slate-100' : 'text-slate-900'}`}>
             <HandCoins className="text-emerald-500" size={20} /> Supporting
           </h2>
-          <button
+                   <button
             type="button"
-            onClick={() => setActiveTab((prev) => (prev === 'entry' ? 'history' : 'entry'))}
+            onClick={() => {
+              setActiveTab((prev) => (prev === 'entry' ? 'history' : 'entry'));
+              setHistoryStatusFilter('ALL');
+            }}
             className={`flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-xs font-bold ${
               activeTab === 'history' ? 'bg-emerald-500 text-white border-emerald-500' : inputBg
             }`}
