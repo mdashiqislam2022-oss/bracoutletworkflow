@@ -37,7 +37,7 @@ import { ChequeCardEntry, ChequeBookRecord, DebitCardRecord } from '../../types'
 import { DestructionModal } from './DestructionModal';
 import { PrintableSlipSection } from './PrintableSlipSection';
 import { ValidityCrossBanner } from './ValidityCrossBanner';
-import { generateChequeCardCSVContent, downloadCSVFile, getDaysInVault } from '../../utils/chequeCardCsvExport';
+import { generateChequeCardCSVContent, downloadCSVFile, getDaysInVault, generatePendingSmsText } from '../../utils/chequeCardCsvExport';
 
 export type RegistryFilterType =
   | 'ALL'
