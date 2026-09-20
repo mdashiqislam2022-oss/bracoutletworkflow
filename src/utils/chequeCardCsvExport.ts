@@ -24,6 +24,67 @@ export const getDaysInVault = (receivedDateStr?: string, endDateStr?: string): n
 };
 
 /**
+ * Generates a formatted, categorized SMS-style text report of all pending
+ * (RECEIVED but not yet delivered) cheque books & debit cards for an outlet.
+ */
+export const generatePendingSmsText = (
+  pendingItems: ChequeCardEntry[],
+  meta: { outletName: string; outletCode: string; officerName: string }
+): string => {
+  const chequeCount = pendingItems.filter((e) => e.type === 'CHEQUE').length;
+  const cardCount = pendingItems.filter((e) => e.type === 'CARD').length;
+
+  const todayLabel = new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+
+  const withDeadline = pendingItems.map((item) => {
+    const daysElapsed = getDaysInVault(item.receivedDate);
+    const daysLeft = 90 - daysElapsed;
+    const [ry, rm, rd] = item.receivedDate.split('-').map(Number);
+    const deadlineDateObj = new Date(ry, rm - 1, rd);
+    deadlineDateObj.setDate(deadlineDateObj.getDate() + 90);
+    return { item, daysLeft, deadlineDateObj };
+  });
+
+  withDeadline.sort((a, b) => a.daysLeft - b.daysLeft);
+
+  const lines: string[] = [];
+  lines.push(`Outlet Workflow - ${meta.outletName} (${meta.outletCode})`);
+  lines.push('Pending Cheque & Card Report');
+  lines.push(`Date: ${todayLabel}`);
+  lines.push('');
+  lines.push(`TOTAL PENDING: ${pendingItems.length}`);
+  lines.push(`- Cheque Books: ${chequeCount}`);
+  lines.push(`- Debit Cards: ${cardCount}`);
+  lines.push('');
+  lines.push('--------------------------------');
+
+  withDeadline.forEach(({ item, daysLeft, deadlineDateObj }, idx) => {
+    const [ry, rm, rd] = item.receivedDate.split('-').map(Number);
+    const receivedLabel = new Date(ry, rm - 1, rd).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+    const deadlineLabel = deadlineDateObj.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+    const deadlineText = daysLeft < 0 ? 'OVERDUE' : `${daysLeft} days left`;
+
+    lines.push(`${idx + 1}) ${item.type}`);
+    if (item.type === 'CHEQUE') {
+      lines.push(`Account: ${(item as ChequeBookRecord).accountTitle}`);
+    } else {
+      lines.push(`Card: ${(item as DebitCardRecord).cardName}`);
+    }
+    lines.push(`A/C No: ${item.accountNumber}`);
+    lines.push(`Mobile: ${item.mobileNumber}`);
+    lines.push(`>> Received: ${receivedLabel}`);
+    lines.push(`>> Deadline: ${deadlineLabel} (${deadlineText})`);
+    lines.push('');
+  });
+
+  lines.push('--------------------------------');
+  lines.push('');
+  lines.push(`From AFO ${meta.officerName}`);
+
+  return lines.join('\n');
+};
+
+/**
  * Escapes values for RFC 4180 CSV compliance
  */
 const escapeCSV = (val: any): string => {
