@@ -874,8 +874,8 @@ export const ChequeCardModal: React.FC<ChequeCardModalProps> = ({
                 </div>
               </div>
 
-              {/* Card Type Variant */}
-              <div>
+                            {/* Card Type Variant — Searchable Dropdown */}
+              <div className="relative">
                 <label
                   className={`block text-xs font-black mb-1.5 ${
                     isDark ? 'text-slate-200' : 'text-slate-900'
@@ -883,22 +883,106 @@ export const ChequeCardModal: React.FC<ChequeCardModalProps> = ({
                 >
                   Card Type / Product
                 </label>
-                <select
-                  value={cardForm.cardType}
-                  onChange={(e) => setCardForm({ ...cardForm, cardType: e.target.value })}
-                  className={`w-full px-3.5 py-2.5 rounded-xl border text-xs font-extrabold focus:outline-none focus:ring-2 transition-all cursor-pointer ${
+                <button
+                  type="button"
+                  onClick={() => setCardTypeDropdownOpen((v) => !v)}
+                  className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl border text-xs font-extrabold focus:outline-none focus:ring-2 transition-all cursor-pointer ${
                     isDark
                       ? 'bg-slate-900 border-slate-700 focus:border-blue-500 text-white'
                       : 'bg-white border-slate-300 focus:border-blue-500 text-slate-900 shadow-2xs'
                   }`}
                 >
-                  <option value="VISA Contactless Debit">VISA Contactless Debit</option>
-                  <option value="VISA Priority Debit">VISA Priority Debit</option>
-                  <option value="Mastercard Titanium Debit">Mastercard Titanium Debit</option>
-                  <option value="Mastercard Contactless Debit">Mastercard Contactless Debit</option>
-                  <option value="UnionPay Global Debit">UnionPay Global Debit</option>
-                  <option value="TakaPay National Debit">TakaPay National Debit</option>
-                </select>
+                  <span className="truncate text-left">{cardForm.cardType}</span>
+                  <ChevronDown size={15} className={`shrink-0 transition-transform ${cardTypeDropdownOpen ? 'rotate-180' : ''}`} />
+                </button>
+
+                {cardTypeDropdownOpen && (
+                  <div
+                    className={`absolute z-30 mt-1 w-full rounded-xl border shadow-lg ${
+                      isDark ? 'bg-slate-900 border-slate-700' : 'bg-white border-slate-200'
+                    }`}
+                  >
+                    <div className={`p-2 border-b ${isDark ? 'border-slate-700' : 'border-slate-100'}`}>
+                      <div className="relative">
+                        <Search size={13} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400" />
+                        <input
+                          autoFocus
+                          value={cardTypeSearch}
+                          onChange={(e) => setCardTypeSearch(e.target.value)}
+                          placeholder="Search card type..."
+                          className={`w-full pl-8 pr-2 py-1.5 rounded-lg border text-xs font-semibold focus:outline-none ${
+                            isDark ? 'bg-slate-800 border-slate-700 text-white' : 'bg-slate-50 border-slate-200 text-slate-900'
+                          }`}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="max-h-64 overflow-y-auto py-1">
+                      {!cardTypeSearch.trim() && (
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setCardForm({ ...cardForm, cardType: DEFAULT_CARD_TYPE });
+                            setCardTypeDropdownOpen(false);
+                            setCardTypeSearch('');
+                          }}
+                          className={`w-full flex items-center justify-between text-left px-3 py-2 text-xs font-bold ${
+                            cardForm.cardType === DEFAULT_CARD_TYPE
+                              ? 'text-emerald-500'
+                              : isDark
+                              ? 'text-slate-100 hover:bg-slate-800'
+                              : 'text-slate-900 hover:bg-slate-50'
+                          }`}
+                        >
+                          {DEFAULT_CARD_TYPE}
+                          {cardForm.cardType === DEFAULT_CARD_TYPE && <Check size={13} />}
+                        </button>
+                      )}
+
+                      {CARD_TYPE_GROUPS.map((g) => {
+                        const term = cardTypeSearch.trim().toLowerCase();
+                        const matchedItems = g.items.filter((item) => item.toLowerCase().includes(term));
+                        if (matchedItems.length === 0) return null;
+                        return (
+                          <div key={g.group}>
+                            <div className={`px-3 pt-2 pb-1 text-[10px] font-bold uppercase tracking-wide ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>
+                              {g.group}
+                            </div>
+                            {matchedItems.map((item) => (
+                              <button
+                                key={item}
+                                type="button"
+                                onClick={() => {
+                                  setCardForm({ ...cardForm, cardType: item });
+                                  setCardTypeDropdownOpen(false);
+                                  setCardTypeSearch('');
+                                }}
+                                className={`w-full flex items-center justify-between text-left px-3 py-2 text-xs font-semibold ${
+                                  cardForm.cardType === item
+                                    ? 'text-emerald-500'
+                                    : isDark
+                                    ? 'text-slate-200 hover:bg-slate-800'
+                                    : 'text-slate-800 hover:bg-slate-50'
+                                }`}
+                              >
+                                <span className="truncate pr-2">{item}</span>
+                                {cardForm.cardType === item && <Check size={13} className="shrink-0" />}
+                              </button>
+                            ))}
+                          </div>
+                        );
+                      })}
+
+                      {cardTypeSearch.trim() &&
+                        DEFAULT_CARD_TYPE.toLowerCase().includes(cardTypeSearch.trim().toLowerCase()) === false &&
+                        CARD_TYPE_GROUPS.every(
+                          (g) => g.items.filter((item) => item.toLowerCase().includes(cardTypeSearch.trim().toLowerCase())).length === 0
+                        ) && (
+                          <div className="text-xs text-slate-500 text-center py-4">No matching card type found.</div>
+                        )}
+                    </div>
+                  </div>
+                )}
               </div>
 
               {/* Remarks */}
