@@ -29,8 +29,9 @@ import {
   Flame,
   RotateCcw,
   FileSpreadsheet,
-  ShieldAlert,
-  X
+    ShieldAlert,
+  X,
+  MessageSquareText
 } from 'lucide-react';
 import { ChequeCardEntry, ChequeBookRecord, DebitCardRecord } from '../../types';
 import { DestructionModal } from './DestructionModal';
