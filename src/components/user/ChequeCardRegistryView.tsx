@@ -717,8 +717,22 @@ export const ChequeCardRegistryView: React.FC = () => {
             </p>
           </div>
 
-          {/* Action Buttons */}
+                   {/* Action Buttons */}
           <div className="flex items-center gap-2.5 flex-wrap">
+            <button
+              type="button"
+              onClick={handleGenerateSms}
+              title={isBn ? 'পেন্ডিং চেক ও কার্ডের SMS রিপোর্ট তৈরি করুন' : 'Generate SMS report of pending cheques & cards'}
+              className={`flex items-center gap-1.5 px-3.5 py-2 rounded-2xl text-xs font-bold border transition-all cursor-pointer ${
+                isDark
+                  ? 'bg-slate-800 hover:bg-slate-700 border-slate-700 text-slate-200'
+                  : 'bg-white hover:bg-slate-50 border-slate-200/90 text-slate-700'
+              }`}
+            >
+              <MessageSquareText className="w-3.5 h-3.5 text-emerald-500" />
+              <span>{isBn ? 'SMS তৈরি করুন' : 'SMS Generate'}</span>
+            </button>
+
             {/* Export CSV Dropdown Group */}
             <div className="relative" ref={exportDropdownRef}>
               <div className="inline-flex rounded-2xl shadow-2xs">
