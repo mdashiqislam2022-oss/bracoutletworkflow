@@ -1917,6 +1917,38 @@ export const ChequeCardRegistryView: React.FC = () => {
           </div>
         </div>
       )}
+            {isSmsPopupOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
+          <div className={`w-full max-w-lg rounded-2xl border shadow-xl p-4 ${isDark ? 'bg-[#182234] border-slate-700' : 'bg-white border-slate-200'}`}>
+            <div className="flex items-center justify-between mb-3">
+              <h3 className={`text-sm font-bold flex items-center gap-1.5 ${isDark ? 'text-white' : 'text-slate-900'}`}>
+                <MessageSquareText className="w-4 h-4 text-emerald-500" />
+                {isBn ? 'পেন্ডিং SMS রিপোর্ট' : 'Pending SMS Report'}
+              </h3>
+              <button onClick={() => setIsSmsPopupOpen(false)} className="text-slate-400 hover:text-slate-600">
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+            <textarea
+              readOnly
+              value={smsText}
+              rows={14}
+              className={`w-full rounded-lg border px-3 py-2 text-xs font-mono mb-3 ${
+                isDark ? 'bg-slate-900 border-slate-700 text-slate-200' : 'bg-slate-50 border-slate-200 text-slate-800'
+              }`}
+            />
+            <button
+              onClick={handleCopySms}
+              className="w-full py-2 rounded-lg bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-bold flex items-center justify-center gap-1.5"
+            >
+              {smsCopied ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
+              {smsCopied ? (isBn ? 'কপি হয়েছে!' : 'Copied!') : (isBn ? 'কপি করুন' : 'Copy Text')}
+            </button>
+          </div>
+        </div>
+      )}
+
+      <DestructionModal
 
       {/* Physical Destruction Modal with Date Picker (User Request) */}
       {destroyPromptEntry && (
