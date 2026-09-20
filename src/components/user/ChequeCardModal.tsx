@@ -101,9 +101,12 @@ export const ChequeCardModal: React.FC<ChequeCardModalProps> = ({
     accountNumber: '',
     mobileNumber: '',
     receivedDate: new Date().toISOString().split('T')[0],
-    cardType: 'VISA Contactless Debit',
+        cardType: DEFAULT_CARD_TYPE,
     notes: ''
   });
+
+  const [cardTypeDropdownOpen, setCardTypeDropdownOpen] = useState(false);
+  const [cardTypeSearch, setCardTypeSearch] = useState('');
 
   const [errors, setErrors] = useState<Record<string, string>>({});
 
