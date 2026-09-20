@@ -1920,7 +1920,6 @@ export const ChequeCardRegistryView: React.FC = () => {
 
       {/* Physical Destruction Modal with Date Picker (User Request) */}
       {destroyPromptEntry && (
-      <DestructionModal
         <DestructionModal
           entry={destroyPromptEntry}
           onClose={() => setDestroyPromptEntry(null)}
