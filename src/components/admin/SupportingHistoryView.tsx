@@ -287,20 +287,38 @@ export const SupportingHistoryView: React.FC = () => {
           </div>
         </div>
 
-        {/* Summary */}
+                {/* Summary */}
         <div className="grid grid-cols-3 gap-3 mb-4">
-          <div className="rounded-xl border p-3 border-blue-500/40 bg-blue-500/10">
+          <button
+            type="button"
+            onClick={() => setStatusFilter('ALL')}
+            className={`text-left rounded-xl border p-3 border-blue-500/40 bg-blue-500/10 transition ${
+              statusFilter === 'ALL' ? 'ring-2 ring-blue-500' : ''
+            }`}
+          >
             <div className="text-[11px] font-semibold text-blue-600">Total Supported</div>
             <div className="text-lg font-extrabold text-blue-600">৳ {totals.total.toLocaleString()}</div>
-          </div>
-          <div className="rounded-xl border p-3 border-emerald-500/40 bg-emerald-500/10">
+          </button>
+          <button
+            type="button"
+            onClick={() => setStatusFilter((prev) => (prev === 'RECOVERED' ? 'ALL' : 'RECOVERED'))}
+            className={`text-left rounded-xl border p-3 border-emerald-500/40 bg-emerald-500/10 transition ${
+              statusFilter === 'RECOVERED' ? 'ring-2 ring-emerald-500' : ''
+            }`}
+          >
             <div className="text-[11px] font-semibold text-emerald-600">Recovered</div>
             <div className="text-lg font-extrabold text-emerald-600">৳ {totals.recovered.toLocaleString()}</div>
-          </div>
-          <div className="rounded-xl border p-3 border-amber-500/40 bg-amber-500/10">
+          </button>
+          <button
+            type="button"
+            onClick={() => setStatusFilter((prev) => (prev === 'PENDING' ? 'ALL' : 'PENDING'))}
+            className={`text-left rounded-xl border p-3 border-amber-500/40 bg-amber-500/10 transition ${
+              statusFilter === 'PENDING' ? 'ring-2 ring-amber-500' : ''
+            }`}
+          >
             <div className="text-[11px] font-semibold text-amber-600">Pending</div>
             <div className="text-lg font-extrabold text-amber-600">৳ {totals.pending.toLocaleString()}</div>
-          </div>
+          </button>
         </div>
 
         <div className="text-xs text-slate-500 mb-2">{filtered.length} entries found</div>
