@@ -612,8 +612,18 @@ export const SupportingView: React.FC = () => {
                     ? new Date(historyDateFilter + 'T00:00:00').toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })
                     : 'All Dates'})
                 </span>
-                <span className="ml-2">৳ {filteredHistory.reduce((s, r) => s + r.amount, 0).toLocaleString()}</span>
+                                <span className="ml-2">৳ {filteredHistory.reduce((s, r) => s + r.amount, 0).toLocaleString()}</span>
               </div>
+
+              {historyStatusFilter !== 'ALL' && (
+                <button
+                  type="button"
+                  onClick={() => setHistoryStatusFilter('ALL')}
+                  className="flex items-center gap-1.5 rounded-lg border border-amber-500/40 bg-amber-500/10 px-3 py-2 text-[11px] font-bold text-amber-600"
+                >
+                  Showing: {historyStatusFilter === 'PENDING' ? 'Pending only' : 'Recovered only'} ✕
+                </button>
+              )}
 
               <div className="relative">
                 <button
