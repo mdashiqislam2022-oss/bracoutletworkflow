@@ -80,6 +80,7 @@ export const SupportingView: React.FC = () => {
 
   // History filter date picker state
   const [historyDateFilter, setHistoryDateFilter] = useState('');
+    const [historyStatusFilter, setHistoryStatusFilter] = useState<'ALL' | 'PENDING' | 'RECOVERED'>('ALL');
   const [historyDatePickerOpen, setHistoryDatePickerOpen] = useState(false);
   const [historyCalendarMonth, setHistoryCalendarMonth] = useState(() => {
     const d = new Date();
