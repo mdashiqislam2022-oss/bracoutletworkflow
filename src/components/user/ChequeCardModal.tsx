@@ -16,6 +16,46 @@ import {
   Check
 } from 'lucide-react';
 import { ChequeLeafCount } from '../../types';
+
+const DEFAULT_CARD_TYPE = 'VISA MULTI-CURRENCY BUSINESS DEBIT CARD';
+
+const CARD_TYPE_GROUPS: { group: string; items: string[] }[] = [
+  {
+    group: 'Visa Credit Cards',
+    items: [
+      'Visa Infinite Credit Card',
+      'Visa Signature Credit Card',
+      'Visa Platinum Credit Card',
+      'Visa Platinum Flexi Credit Card',
+      'Visa TARA Platinum Credit Card',
+      'Visa Gold Credit Card',
+      'Visa Gold Flexi Credit Card',
+      'Visa Classic Credit Card',
+      'Visa Cashback Credit Card',
+      'BASIS-BRAC Bank Co-Branded Credit Card (Visa)',
+      'Visa Corporate Credit Card'
+    ]
+  },
+  {
+    group: 'Visa Debit Cards',
+    items: [
+      'Visa Signature Multicurrency Premium Banking Plus Debit Card',
+      'Visa Platinum Multicurrency Premium Banking Senior Debit Card',
+      'Visa Platinum Multi-Currency TARA Debit Card',
+      'Visa Platinum Medical Quota Debit Card',
+      'Visa AGAMI Debit Card',
+      'Visa Multi-Currency Debit Card',
+      'Visa Local Currency Debit Card'
+    ]
+  },
+  {
+    group: 'Visa Prepaid Cards',
+    items: [
+      'Visa Multi-Currency Prepaid Card',
+      'Visa TARA Multi-Currency Prepaid Card'
+    ]
+  }
+];
 import { CustomDatePicker } from '../common/CustomDatePicker';
 
 interface ChequeCardModalProps {
