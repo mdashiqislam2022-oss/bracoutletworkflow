@@ -107,6 +107,38 @@ export const ChequeCardRegistryView: React.FC = () => {
 
   // Export dropdown state
   const [isExportDropdownOpen, setIsExportDropdownOpen] = useState<boolean>(false);
+    const [isSmsPopupOpen, setIsSmsPopupOpen] = useState<boolean>(false);
+  const [smsText, setSmsText] = useState('');
+  const [smsCopied, setSmsCopied] = useState(false);
+
+  const handleGenerateSms = () => {
+    const pendingItems = chequeCardEntries.filter((e) => e.status === 'RECEIVED');
+    if (pendingItems.length === 0) {
+      setToast({
+        message: isBn ? 'স্টেশন ভল্টে বর্তমানে কোন পেন্ডিং আইটেম নেই।' : 'No pending items found in station vault.',
+        type: 'info'
+      });
+      return;
+    }
+    const text = generatePendingSmsText(pendingItems, {
+      outletName: currentUser?.outletName || '',
+      outletCode: (currentUser as any)?.outletCode || '',
+      officerName: currentUser?.fullName || ''
+    });
+    setSmsText(text);
+    setSmsCopied(false);
+    setIsSmsPopupOpen(true);
+  };
+
+  const handleCopySms = async () => {
+    try {
+      await navigator.clipboard.writeText(smsText);
+      setSmsCopied(true);
+      setTimeout(() => setSmsCopied(false), 2000);
+    } catch {
+      setToast({ message: isBn ? 'কপি করা যায়নি।' : 'Could not copy text.', type: 'error' });
+    }
+  };
   const exportDropdownRef = useRef<HTMLDivElement>(null);
 
   // Click outside listener for date picker & export dropdowns
