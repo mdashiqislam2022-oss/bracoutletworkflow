@@ -185,7 +185,7 @@ export const ChequeCardModal: React.FC<ChequeCardModalProps> = ({
     });
   };
 
-  const handleLeafCountChange = (count: ChequeLeafCount) => {
+    const handleLeafCountChange = (count: number) => {
     setChequeForm((prev) => {
       const updated = { ...prev, leafCount: count };
       if (prev.startCchNumber) {
