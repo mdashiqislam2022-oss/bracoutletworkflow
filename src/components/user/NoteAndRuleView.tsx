@@ -8,11 +8,13 @@ import {
   Plus,
   Trash2,
   X,
-  Calendar
+  Calendar,
+  Copy,
+  Pencil
 } from 'lucide-react';
 
 export const NoteAndRuleView: React.FC = () => {
-  const { currentUser, notes, rules, addNote, deleteNote, userPreferences } = useApp();
+  const { currentUser, notes, rules, addNote, updateNote, deleteNote, showToast, userPreferences } = useApp();
   const isDark = userPreferences.theme === 'dark';
 
   const cardBg = isDark ? 'bg-[#1A2333] border-slate-800' : 'bg-white border-slate-200';
