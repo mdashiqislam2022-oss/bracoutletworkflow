@@ -107,6 +107,8 @@ export const ChequeCardModal: React.FC<ChequeCardModalProps> = ({
 
   const [cardTypeDropdownOpen, setCardTypeDropdownOpen] = useState(false);
   const [cardTypeSearch, setCardTypeSearch] = useState('');
+    const [leafCountDropdownOpen, setLeafCountDropdownOpen] = useState(false);
+  const [customLeafInput, setCustomLeafInput] = useState('');
 
   const [errors, setErrors] = useState<Record<string, string>>({});
 
