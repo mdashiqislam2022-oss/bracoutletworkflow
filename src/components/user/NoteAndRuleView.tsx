@@ -181,12 +181,29 @@ export const NoteAndRuleView: React.FC = () => {
                         <Calendar size={11} /> {formatDate(n.noteDate)}
                       </div>
                     </div>
-                    <button
-                      onClick={(e) => { e.stopPropagation(); setDeleteTargetId(n.id); }}
-                      className="text-rose-500 shrink-0"
-                    >
-                      <Trash2 size={15} />
-                    </button>
+                                       <div className="flex items-center gap-2 shrink-0">
+                      <button
+                        onClick={(e) => { e.stopPropagation(); handleCopyNote(n); }}
+                        className="text-slate-400 hover:text-emerald-500"
+                        title="Copy note"
+                      >
+                        <Copy size={14} />
+                      </button>
+                      <button
+                        onClick={(e) => { e.stopPropagation(); handleEditNote(n); }}
+                        className="text-slate-400 hover:text-blue-500"
+                        title="Edit note"
+                      >
+                        <Pencil size={14} />
+                      </button>
+                      <button
+                        onClick={(e) => { e.stopPropagation(); setDeleteTargetId(n.id); }}
+                        className="text-rose-500"
+                        title="Delete note"
+                      >
+                        <Trash2 size={15} />
+                      </button>
+                    </div>
                   </div>
                   <div
                     className="text-sm mt-2 leading-relaxed break-words line-clamp-4"
