@@ -154,12 +154,12 @@ export const NoteAndRuleView: React.FC = () => {
                   placeholder="Write your note here..."
                   isDark={isDark}
                 />
-                <button
+                               <button
                   onClick={handleSaveNote}
                   disabled={!title.trim() || !contentHtml.trim()}
                   className="w-full py-2 rounded-xl bg-emerald-500 text-white text-sm font-bold disabled:opacity-40"
                 >
-                  Save Note
+                  {editingNoteId ? 'Update Note' : 'Save Note'}
                 </button>
               </div>
             )}
