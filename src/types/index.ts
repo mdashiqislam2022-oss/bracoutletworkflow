@@ -181,8 +181,7 @@ export type ServiceCategory =
   | 'REMITTANCE_CLEARANCE'
   | 'MERCHANT_POS_SERVICES';
 
-export type ChequeLeafCount = 10 | 20 | 25 | 50 | 100;
-
+export type ChequeLeafCount = number;
 export type LoanStatus = 'ACTIVE' | 'CLOSED' | 'OVERDUE' | 'DEFAULTED';
 
 export interface LoanAccountRecord {
