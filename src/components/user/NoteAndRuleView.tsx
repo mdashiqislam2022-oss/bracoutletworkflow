@@ -43,13 +43,32 @@ export const NoteAndRuleView: React.FC = () => {
       .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
   }, [rules, currentUser]);
 
-  const handleSaveNote = () => {
+    const handleSaveNote = () => {
     if (!title.trim() || !contentHtml.trim()) return;
-    addNote({ title: title.trim(), contentHtml, noteDate });
+    if (editingNoteId) {
+      updateNote(editingNoteId, { title: title.trim(), contentHtml, noteDate });
+    } else {
+      addNote({ title: title.trim(), contentHtml, noteDate });
+    }
     setTitle('');
     setContentHtml('');
     setNoteDate(new Date().toISOString().slice(0, 10));
     setShowAddForm(false);
+    setEditingNoteId(null);
+  };
+
+  const handleEditNote = (n: (typeof myNotes)[number]) => {
+    setEditingNoteId(n.id);
+    setTitle(n.title);
+    setContentHtml(n.contentHtml);
+    setNoteDate(n.noteDate);
+    setShowAddForm(true);
+  };
+
+  const handleCopyNote = (n: (typeof myNotes)[number]) => {
+    const plainText = n.contentHtml.replace(/<[^>]*>/g, '');
+    navigator.clipboard.writeText(`${n.title}\n\n${plainText}`);
+    showToast({ message: 'Note copied to clipboard!', type: 'success' });
   };
 
   const formatDate = (dateStr: string) => {
