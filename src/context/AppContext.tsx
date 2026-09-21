@@ -3769,9 +3769,10 @@ if (sessionStatus.isActive) {
         addDenominationAdjustment,
 
         // Note & Rule Module
-        notes,
+                notes,
         rules,
         addNote,
+        updateNote,
         deleteNote,
                 addRule,
         updateRuleOutlets,
