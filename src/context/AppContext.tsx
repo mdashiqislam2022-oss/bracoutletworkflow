@@ -175,7 +175,8 @@ export interface AppContextType {
   // Note & Rule Module
   notes: NoteRecord[];
   rules: RuleRecord[];
-  addNote: (data: { title: string; contentHtml: string; noteDate: string }) => NoteRecord;
+    addNote: (data: { title: string; contentHtml: string; noteDate: string }) => NoteRecord;
+  updateNote: (id: string, data: { title: string; contentHtml: string; noteDate: string }) => void;
   deleteNote: (id: string) => void;
     addRule: (data: { title: string; sector: string; contentHtml: string; ruleDate: string; outletIds: string[] }) => RuleRecord;
   updateRuleOutlets: (ruleId: string, outletIds: string[]) => void;
