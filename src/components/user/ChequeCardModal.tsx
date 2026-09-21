@@ -615,7 +615,7 @@ export const ChequeCardModal: React.FC<ChequeCardModalProps> = ({
                   />
                 </div>
 
-                <div>
+                                <div className="relative">
                   <label
                     className={`block text-xs font-black mb-1.5 ${
                       isDark ? 'text-slate-200' : 'text-slate-900'
@@ -623,28 +623,89 @@ export const ChequeCardModal: React.FC<ChequeCardModalProps> = ({
                   >
                     5) LVS (Leaf Count Selection) <span className="text-rose-500">*</span>
                   </label>
-                  <div className="relative">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setLeafCountDropdownOpen((v) => !v);
+                      setCustomLeafInput(String(chequeForm.leafCount));
+                    }}
+                    className={`w-full flex items-center justify-between pl-10 pr-3.5 py-2.5 rounded-xl border text-xs font-extrabold focus:outline-none focus:ring-2 transition-all cursor-pointer relative ${
+                      isDark
+                        ? 'bg-slate-900 border-slate-700 focus:border-emerald-500 focus:ring-emerald-500/20 text-white'
+                        : 'bg-white border-slate-300 focus:border-emerald-500 focus:ring-emerald-500/20 text-slate-900 shadow-2xs'
+                    }`}
+                  >
                     <Layers
                       className={`w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none ${
                         isDark ? 'text-slate-400' : 'text-slate-600'
                       }`}
                     />
-                    <select
-                      value={chequeForm.leafCount}
-                      onChange={(e) => handleLeafCountChange(parseInt(e.target.value, 10) as ChequeLeafCount)}
-                      className={`w-full pl-10 pr-3.5 py-2.5 rounded-xl border text-xs font-extrabold focus:outline-none focus:ring-2 transition-all cursor-pointer ${
-                        isDark
-                          ? 'bg-slate-900 border-slate-700 focus:border-emerald-500 focus:ring-emerald-500/20 text-white'
-                          : 'bg-white border-slate-300 focus:border-emerald-500 focus:ring-emerald-500/20 text-slate-900 shadow-2xs'
+                    <span>{chequeForm.leafCount} Leaves (LVS)</span>
+                    <ChevronDown size={14} className={`transition-transform ${leafCountDropdownOpen ? 'rotate-180' : ''}`} />
+                  </button>
+
+                  {leafCountDropdownOpen && (
+                    <div
+                      className={`absolute z-30 mt-1 w-full rounded-xl border shadow-lg p-2 ${
+                        isDark ? 'bg-slate-900 border-slate-700' : 'bg-white border-slate-200'
                       }`}
                     >
-                      <option value={10}>10 Leaves (LVS)</option>
-                      <option value={20}>20 Leaves (LVS)</option>
-                      <option value={25}>25 Leaves (LVS)</option>
-                      <option value={50}>50 Leaves (LVS)</option>
-                      <option value={100}>100 Leaves (LVS)</option>
-                    </select>
-                  </div>
+                      <label className={`block text-[10px] font-bold mb-1 ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
+                        Type Custom Leaf Count
+                      </label>
+                      <input
+                        type="number"
+                        min={1}
+                        autoFocus
+                        value={customLeafInput}
+                        onChange={(e) => {
+                          setCustomLeafInput(e.target.value);
+                          const num = parseInt(e.target.value, 10);
+                          if (!isNaN(num) && num > 0) {
+                            handleLeafCountChange(num);
+                          }
+                        }}
+                        placeholder="e.g. 30"
+                        className={`w-full px-3 py-1.5 rounded-lg border text-xs font-bold mb-2 focus:outline-none ${
+                          isDark ? 'bg-slate-800 border-slate-700 text-white' : 'bg-slate-50 border-slate-200 text-slate-900'
+                        }`}
+                      />
+
+                      <div className={`text-[10px] font-bold px-1 pb-1 uppercase tracking-wide ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>
+                        Or Choose Preset
+                      </div>
+                      <div className="grid grid-cols-3 gap-1.5">
+                        {[10, 20, 25, 50, 100].map((count) => (
+                          <button
+                            key={count}
+                            type="button"
+                            onClick={() => {
+                              handleLeafCountChange(count);
+                              setCustomLeafInput(String(count));
+                              setLeafCountDropdownOpen(false);
+                            }}
+                            className={`py-1.5 rounded-lg text-[11px] font-bold border ${
+                              chequeForm.leafCount === count
+                                ? 'bg-emerald-500 text-white border-emerald-500'
+                                : isDark
+                                ? 'bg-slate-800 border-slate-700 text-slate-200 hover:bg-slate-700'
+                                : 'bg-slate-50 border-slate-200 text-slate-700 hover:bg-slate-100'
+                            }`}
+                          >
+                            {count}
+                          </button>
+                        ))}
+                      </div>
+
+                      <button
+                        type="button"
+                        onClick={() => setLeafCountDropdownOpen(false)}
+                        className="w-full mt-2 py-1.5 rounded-lg text-xs font-bold bg-emerald-500 text-white"
+                      >
+                        Done
+                      </button>
+                    </div>
+                  )}
                 </div>
               </div>
 
