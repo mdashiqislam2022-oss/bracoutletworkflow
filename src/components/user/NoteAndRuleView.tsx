@@ -123,11 +123,19 @@ export const NoteAndRuleView: React.FC = () => {
               </button>
             )}
 
-            {showAddForm && (
+                        {showAddForm && (
               <div className={`rounded-xl border p-3 mb-4 space-y-3 ${inputBg}`}>
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-bold">New Note</span>
-                  <button onClick={() => setShowAddForm(false)} className="text-slate-400">
+                  <span className="text-xs font-bold">{editingNoteId ? 'Edit Note' : 'New Note'}</span>
+                  <button
+                    onClick={() => {
+                      setShowAddForm(false);
+                      setEditingNoteId(null);
+                      setTitle('');
+                      setContentHtml('');
+                    }}
+                    className="text-slate-400"
+                  >
                     <X size={15} />
                   </button>
                 </div>
