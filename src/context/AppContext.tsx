@@ -3355,6 +3355,17 @@ if (sessionStatus.isActive) {
     SupabaseService.deleteNote(id);
     showToast({ message: 'Note deleted.', type: 'info' });
   };
+    const updateNote = (id: string, data: { title: string; contentHtml: string; noteDate: string }) => {
+    setNotes((prev) =>
+      prev.map((n) => {
+        if (n.id !== id) return n;
+        const updated = { ...n, title: data.title, contentHtml: data.contentHtml, noteDate: data.noteDate };
+        SupabaseService.saveNote(updated);
+        return updated;
+      })
+    );
+    showToast({ message: 'Note updated successfully!', type: 'success' });
+  };
 
   const addRule = (data: {
     title: string;
