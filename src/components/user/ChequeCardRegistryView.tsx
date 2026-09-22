@@ -534,7 +534,7 @@ export const ChequeCardRegistryView: React.FC = () => {
   };
 
   // Helper calendar renderer
-  const renderCalendarPicker = (
+    const renderCalendarPicker = (
     currentSelectedDate: string,
     viewDate: Date,
     setViewDate: (d: Date) => void,
@@ -547,6 +547,7 @@ export const ChequeCardRegistryView: React.FC = () => {
       'January', 'February', 'March', 'April', 'May', 'June',
       'July', 'August', 'September', 'October', 'November', 'December'
     ];
+    const yearOptions = Array.from({ length: 20 }, (_, i) => 2020 + i);
 
     const daysInMonth = new Date(year, month + 1, 0).getDate();
     const firstDayOfWeek = new Date(year, month, 1).getDay();
@@ -566,56 +567,114 @@ export const ChequeCardRegistryView: React.FC = () => {
 
     return (
       <div
-        className={`absolute right-0 top-full mt-2 z-50 w-[260px] rounded-3xl border p-3 shadow-2xl animate-in fade-in zoom-in-95 duration-150 ${
+        className={`absolute right-0 top-full mt-2 z-50 w-[260px] rounded-2xl border p-3 shadow-xl animate-in fade-in zoom-in-95 duration-150 ${
           isDark ? 'bg-[#182234] border-slate-700 text-white' : 'bg-white border-slate-200 text-slate-900'
         }`}
       >
         {/* Month & Year Selection */}
-        <div className="flex items-center justify-between mb-2 pb-2 border-b border-slate-100 dark:border-slate-800">
+        <div className="flex items-center justify-between mb-2">
           <button
             type="button"
             onClick={() => setViewDate(new Date(year, month - 1, 1))}
-            className="p-1 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer"
+            className="p-1 rounded-lg hover:bg-emerald-500/10 text-slate-500 cursor-pointer"
           >
-            <ChevronLeft className="w-3.5 h-3.5" />
+            <ChevronLeft className="w-4 h-4" />
           </button>
 
           <div className="flex items-center gap-1">
-            <select
-              value={month}
-              onChange={(e) => setViewDate(new Date(year, parseInt(e.target.value, 10), 1))}
-              className={`text-xs font-black py-0.5 px-1.5 rounded-lg border cursor-pointer ${
-                isDark ? 'bg-slate-900 border-slate-700 text-white' : 'bg-slate-50 border-slate-200 text-slate-900'
-              }`}
-            >
-              {monthNames.map((mName, idx) => (
-                <option key={mName} value={idx}>
-                  {mName.slice(0, 3)}
-                </option>
-              ))}
-            </select>
+            <div className="relative">
+              <button
+                type="button"
+                onClick={() => {
+                  setCalendarMonthDropdownOpen((v) => !v);
+                  setCalendarYearDropdownOpen(false);
+                }}
+                className={`text-xs font-bold py-1 px-2 rounded-md border cursor-pointer flex items-center gap-1 ${
+                  isDark ? 'bg-slate-900 border-slate-700 text-white' : 'bg-slate-50 border-slate-200 text-slate-900'
+                }`}
+              >
+                {monthNames[month]}
+                <span className="text-[9px] opacity-60">▼</span>
+              </button>
+              {calendarMonthDropdownOpen && (
+                <div
+                  className={`absolute left-0 top-full mt-1 z-50 max-h-40 overflow-y-auto rounded-lg border shadow-xl w-28 ${
+                    isDark ? 'bg-[#1E293B] border-slate-700' : 'bg-white border-slate-200'
+                  }`}
+                >
+                  {monthNames.map((mName, idx) => (
+                    <button
+                      key={mName}
+                      type="button"
+                      onClick={() => {
+                        setViewDate(new Date(year, idx, 1));
+                        setCalendarMonthDropdownOpen(false);
+                      }}
+                      className={`w-full text-left text-xs font-semibold px-3 py-1.5 cursor-pointer ${
+                        idx === month
+                          ? 'bg-emerald-600 text-white'
+                          : isDark
+                          ? 'text-slate-200 hover:bg-slate-800'
+                          : 'text-slate-800 hover:bg-slate-100'
+                      }`}
+                    >
+                      {mName}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
 
-            <select
-              value={year}
-              onChange={(e) => setViewDate(new Date(parseInt(e.target.value, 10), month, 1))}
-              className={`text-xs font-mono font-black py-0.5 px-1.5 rounded-lg border cursor-pointer ${
-                isDark ? 'bg-slate-900 border-slate-700 text-white' : 'bg-slate-50 border-slate-200 text-slate-900'
-              }`}
-            >
-              {Array.from({ length: 20 }, (_, i) => 2020 + i).map((y) => (
-                <option key={y} value={y}>
-                  {y}
-                </option>
-              ))}
-            </select>
+            <div className="relative">
+              <button
+                type="button"
+                onClick={() => {
+                  setCalendarYearDropdownOpen((v) => !v);
+                  setCalendarMonthDropdownOpen(false);
+                }}
+                className={`text-xs font-bold py-1 px-2 rounded-md border cursor-pointer font-mono flex items-center gap-1 ${
+                  isDark ? 'bg-slate-900 border-slate-700 text-white' : 'bg-slate-50 border-slate-200 text-slate-900'
+                }`}
+              >
+                {year}
+                <span className="text-[9px] opacity-60">▼</span>
+              </button>
+              {calendarYearDropdownOpen && (
+                <div
+                  className={`absolute left-0 top-full mt-1 z-50 max-h-40 overflow-y-auto rounded-lg border shadow-xl w-16 ${
+                    isDark ? 'bg-[#1E293B] border-slate-700' : 'bg-white border-slate-200'
+                  }`}
+                >
+                  {yearOptions.map((y) => (
+                    <button
+                      key={y}
+                      type="button"
+                      onClick={() => {
+                        setViewDate(new Date(y, month, 1));
+                        setCalendarYearDropdownOpen(false);
+                      }}
+                      className={`w-full text-left text-xs font-semibold px-3 py-1.5 cursor-pointer font-mono ${
+                        y === year
+                          ? 'bg-emerald-600 text-white'
+                          : isDark
+                          ? 'text-slate-200 hover:bg-slate-800'
+                          : 'text-slate-800 hover:bg-slate-100'
+                      }`}
+                    >
+                      {y}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
 
           <button
             type="button"
             onClick={() => setViewDate(new Date(year, month + 1, 1))}
-            className="p-1 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer"
+            className="p-1 rounded-lg hover:bg-emerald-500/10 text-slate-500 cursor-pointer"
           >
-            <ChevronRight className="w-3.5 h-3.5" />
+            <ChevronRight className="w-4 h-4" />
           </button>
         </div>
 
@@ -625,7 +684,7 @@ export const ChequeCardRegistryView: React.FC = () => {
             <div
               key={d}
               className={`text-[9px] font-bold ${
-                i === 5 ? 'text-rose-500' : 'text-slate-400 dark:text-slate-500'
+                i === 5 || i === 6 ? 'text-rose-500' : 'text-slate-400 dark:text-slate-500'
               }`}
             >
               {d}
@@ -636,12 +695,14 @@ export const ChequeCardRegistryView: React.FC = () => {
         {/* Days Grid */}
         <div className="grid grid-cols-7 gap-0.5 text-center">
           {blanksArray.map((_, i) => (
-            <div key={`blank-${i}`} className="h-6 w-6" />
+            <div key={`blank-${i}`} className="h-7 w-7" />
           ))}
 
           {daysArray.map((day) => {
             const selected = isSelected(day);
             const current = isCurrentDay(day);
+            const dow = new Date(year, month, day).getDay();
+            const isWeekend = dow === 5 || dow === 6;
 
             return (
               <button
@@ -653,14 +714,16 @@ export const ChequeCardRegistryView: React.FC = () => {
                   onSelectDate(`${year}-${mStr}-${dStr}`);
                   onClose();
                 }}
-                className={`h-6 w-6 rounded-md text-[11px] font-bold flex items-center justify-center transition-all cursor-pointer ${
+                className={`h-7 w-7 rounded-lg text-[11px] font-semibold flex items-center justify-center transition-all cursor-pointer ${
                   selected
-                    ? 'bg-emerald-600 text-white shadow-xs'
+                    ? 'bg-emerald-500 text-white'
                     : current
-                    ? 'bg-emerald-50 text-emerald-800 font-extrabold dark:bg-emerald-950/60 dark:text-emerald-300 border border-emerald-400'
+                    ? 'border border-emerald-500 text-emerald-500'
+                    : isWeekend
+                    ? 'text-rose-500 hover:bg-rose-500/10'
                     : isDark
-                    ? 'text-slate-200 hover:bg-slate-800'
-                    : 'text-slate-800 hover:bg-slate-100'
+                    ? 'text-slate-200 hover:bg-emerald-500/10'
+                    : 'text-slate-800 hover:bg-emerald-500/10'
                 }`}
               >
                 {day}
@@ -669,8 +732,8 @@ export const ChequeCardRegistryView: React.FC = () => {
           })}
         </div>
 
-        {/* Quick Buttons: Today & Close */}
-        <div className="mt-2.5 pt-2 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
+        {/* Footer */}
+        <div className="flex items-center justify-between mt-2 pt-2 border-t border-slate-100 dark:border-slate-800">
           <button
             type="button"
             onClick={() => {
@@ -678,16 +741,14 @@ export const ChequeCardRegistryView: React.FC = () => {
               setViewDate(new Date());
               onClose();
             }}
-            className="px-2.5 py-1 rounded-lg text-[10px] font-extrabold bg-emerald-600 hover:bg-emerald-500 text-white flex items-center gap-1 cursor-pointer"
+            className="text-[11px] font-semibold text-emerald-500 cursor-pointer"
           >
-            <Sparkles className="w-2.5 h-2.5" />
-            <span>Today</span>
+            Today
           </button>
-
           <button
             type="button"
             onClick={() => onClose()}
-            className="px-2.5 py-1 rounded-lg text-[10px] font-bold border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer"
+            className="text-[11px] font-semibold text-slate-400 hover:text-slate-600 cursor-pointer"
           >
             Close
           </button>
