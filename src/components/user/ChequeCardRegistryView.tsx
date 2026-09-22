@@ -93,6 +93,7 @@ export const ChequeCardRegistryView: React.FC = () => {
 
   // Destruction Modal state (for 90+ days validity crossed items)
   const [destroyPromptEntry, setDestroyPromptEntry] = useState<ChequeCardEntry | null>(null);
+    const [revertToPendingPromptEntry, setRevertToPendingPromptEntry] = useState<ChequeCardEntry | null>(null);
 
   // Intake Date Picker State
   const [intakeFilterDate, setIntakeFilterDate] = useState<string>(todayStr);
