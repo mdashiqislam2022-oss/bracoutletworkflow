@@ -29,9 +29,10 @@ export const TotalCashAnalysisView: React.FC = () => {
     addMotherAmount,
     addOutletTransfer,
     addOutletVault,
-    userPreferences,
+       userPreferences,
       governanceSettings,
-    addDenominationAdjustment
+    addDenominationAdjustment,
+    denominationAdjustments
   } = useApp();
 
   const isDark = userPreferences.theme === 'dark';
