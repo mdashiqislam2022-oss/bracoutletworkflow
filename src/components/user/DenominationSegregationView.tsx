@@ -591,7 +591,7 @@ export const DenominationSegregationView: React.FC = () => {
                         crossOutletDirection === 'HERE' ? 'bg-teal-500 text-white' : 'text-slate-500'
                       }`}
                     >
-                      Cash Received Here
+                                         {activeType === 'CW' || activeType === 'LD' ? 'Cash Paid From Here' : 'Cash Received Here'}
                     </button>
                     <button
                       type="button"
