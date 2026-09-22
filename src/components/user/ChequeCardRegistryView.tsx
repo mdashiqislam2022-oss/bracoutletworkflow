@@ -1883,24 +1883,50 @@ export const ChequeCardRegistryView: React.FC = () => {
               </div>
             </div>
 
-            <div className="space-y-3 my-4">
-              <div>
+                        <div className="space-y-3 my-4">
+              <div ref={deliveryPickerRef} className="relative">
                 <label className="block text-xs font-bold mb-1.5 text-slate-700 dark:text-slate-300">
                   Select Delivery Date:
                 </label>
-                <input
-                  type="date"
-                  value={customDeliveryDate}
-                  onChange={(e) => setCustomDeliveryDate(e.target.value)}
-                  className={`w-full px-3.5 py-2.5 rounded-xl border text-xs font-bold focus:outline-none focus:ring-2 transition-all ${
+
+                {/* Custom Date Trigger Button */}
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsDeliveryPickerOpen(!isDeliveryPickerOpen);
+                    setDeliveryViewDate(new Date(customDeliveryDate || todayStr));
+                  }}
+                  className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl border text-xs font-bold focus:outline-none focus:ring-2 transition-all cursor-pointer ${
                     isDark
-                      ? 'bg-slate-900 border-slate-700 focus:border-emerald-500 text-white'
-                      : 'bg-white border-slate-300 focus:border-emerald-500 text-slate-900 shadow-2xs'
+                      ? 'bg-slate-900 border-slate-700 focus:border-emerald-500 text-white hover:bg-slate-800'
+                      : 'bg-white border-slate-300 focus:border-emerald-500 text-slate-900 shadow-2xs hover:bg-slate-50'
                   }`}
-                />
+                >
+                  <span className="flex items-center gap-2">
+                    <Calendar className="w-3.5 h-3.5 text-emerald-500" aria-hidden="true" />
+                    <span className="font-mono">
+                      {customDeliveryDate
+                        ? new Date(customDeliveryDate + 'T00:00:00').toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })
+                        : 'Select Date'}
+                    </span>
+                  </span>
+                  <ChevronDown className={`w-3.5 h-3.5 text-slate-400 transition-transform ${isDeliveryPickerOpen ? 'rotate-180' : ''}`} aria-hidden="true" />
+                </button>
+
+                {/* Custom Calendar Popup */}
+                {isDeliveryPickerOpen &&
+                  renderCalendarPicker(
+                    customDeliveryDate,
+                    deliveryViewDate,
+                    setDeliveryViewDate,
+                    (dateStr) => {
+                      setCustomDeliveryDate(dateStr);
+                      setToast({ message: `Delivery date selected: ${dateStr}`, type: 'info' });
+                    },
+                    () => setIsDeliveryPickerOpen(false)
+                  )}
               </div>
             </div>
-
             <div className="flex items-center justify-end gap-2.5 pt-2 border-t border-slate-200 dark:border-slate-800">
               <button
                 type="button"
