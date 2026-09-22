@@ -3182,14 +3182,18 @@ if (sessionStatus.isActive) {
       // physically hold the cash) only gets its Mother Amount reduced.
       // The EFFECTIVE outlet (which received the Total AFO Cash/Vault/Denomination
       // effect) gets NO Mother Amount change at all in a cross-outlet transaction.
-      if (otherOutletId) {
+            if (otherOutletId) {
         const latestMotherForOther = motherAmounts
           .filter((m) => m.outletId === otherOutletId)
           .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())[0];
         const currentMotherForOther = latestMotherForOther?.amount || 0;
+        const isCashOutTypeForOther = data.transactionType === 'CW' || data.transactionType === 'LD';
+        const updatedMotherForOther = isCashOutTypeForOther
+          ? currentMotherForOther + data.actualAmount
+          : currentMotherForOther - data.actualAmount;
         addMotherAmount({
           outletId: otherOutletId,
-          amount: currentMotherForOther - data.actualAmount,
+          amount: updatedMotherForOther,
           note: `Cross-outlet adjustment for ${data.transactionType} transaction (${data.accountTitle})`
         });
       }
