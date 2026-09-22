@@ -1978,9 +1978,6 @@ export const ChequeCardRegistryView: React.FC = () => {
 
       {/* Quick Delivery Date Confirmation Prompt Modal */}
       {deliveryDatePromptId && (
-
-      {/* Quick Delivery Date Confirmation Prompt Modal */}
-      {deliveryDatePromptId && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-150 no-print">
           <div
             className={`w-full max-w-sm rounded-3xl border shadow-2xl p-6 transition-all ${
