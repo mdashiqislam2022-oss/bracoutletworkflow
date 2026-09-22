@@ -85,8 +85,10 @@ export const ChequeCardRegistryView: React.FC = () => {
   const [customDeliveryDate, setCustomDeliveryDate] = useState<string>(todayStr);
 
   // Delivery Date Picker (Calendar Popup) State
-  const [isDeliveryPickerOpen, setIsDeliveryPickerOpen] = useState<boolean>(false);
+    const [isDeliveryPickerOpen, setIsDeliveryPickerOpen] = useState<boolean>(false);
   const [deliveryViewDate, setDeliveryViewDate] = useState<Date>(new Date());
+  const [calendarMonthDropdownOpen, setCalendarMonthDropdownOpen] = useState<boolean>(false);
+  const [calendarYearDropdownOpen, setCalendarYearDropdownOpen] = useState<boolean>(false);
   const deliveryPickerRef = useRef<HTMLDivElement>(null);
 
   // Destruction Modal state (for 90+ days validity crossed items)
