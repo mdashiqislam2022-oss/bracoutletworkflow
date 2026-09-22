@@ -1759,20 +1759,18 @@ export const ChequeCardRegistryView: React.FC = () => {
                             </button>
                           )}
 
-                          {/* Revert to Pending Action (User Request - allows fixing accidental deliveries) */}
+                                                   {/* Revert to Pending Action (User Request - allows fixing accidental deliveries) */}
                           {isDelivered && (
                             <button
                               id={`revert-pending-btn-${item.id}`}
-                              onClick={() => handleRevertToPending(item)}
+                              onClick={() => setRevertToPendingPromptEntry(item)}
                               aria-label={`Revert ${titleOrName} delivered status back to pending in vault`}
                               title="Revert Delivered status back to Pending in Vault"
-                              className="px-2.5 py-1.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-white text-[11px] font-bold shadow-xs transition-colors cursor-pointer flex items-center gap-1"
+                              className="p-1.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-white shadow-xs transition-colors cursor-pointer flex items-center justify-center"
                             >
-                              <RotateCcw className="w-3 h-3" aria-hidden="true" />
-                              <span>Pending</span>
+                              <RotateCcw className="w-3.5 h-3.5" aria-hidden="true" />
                             </button>
                           )}
-
                           {/* Destroy Button for 90+ Days Expired Items (User Request) */}
                           {(isValidityCrossed || isPending) && (
                             <button
