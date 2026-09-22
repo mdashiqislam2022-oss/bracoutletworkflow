@@ -155,8 +155,11 @@ export const ChequeCardRegistryView: React.FC = () => {
       if (deliveredPickerRef.current && !deliveredPickerRef.current.contains(e.target as Node)) {
         setIsDeliveredPickerOpen(false);
       }
-      if (destroyedPickerRef.current && !destroyedPickerRef.current.contains(e.target as Node)) {
+            if (destroyedPickerRef.current && !destroyedPickerRef.current.contains(e.target as Node)) {
         setIsDestroyedPickerOpen(false);
+      }
+      if (deliveryPickerRef.current && !deliveryPickerRef.current.contains(e.target as Node)) {
+        setIsDeliveryPickerOpen(false);
       }
       if (exportDropdownRef.current && !exportDropdownRef.current.contains(e.target as Node)) {
         setIsExportDropdownOpen(false);
