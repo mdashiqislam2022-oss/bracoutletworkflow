@@ -109,10 +109,13 @@ export const TotalCashAnalysisView: React.FC = () => {
            const supportingCashOut = supportingRecords
       .filter((s) => s.outletId === outletId && s.fundingSource === 'CASH')
       .reduce((sum, s) => sum + s.amount, 0);
-    const supportingCashRecoveredIn = supportingRecords
+       const supportingCashRecoveredIn = supportingRecords
       .filter((s) => s.outletId === outletId && s.status === 'RECOVERED' && s.recoveredFundingSource === 'CASH')
       .reduce((sum, s) => sum + (s.recoveredAmount || 0), 0);
-    return net - rtgsOut - transferOut + transferIn - supportingCashOut + supportingCashRecoveredIn;
+    const manualAdjustment = denominationAdjustments
+      .filter((a) => a.outletId === outletId)
+      .reduce((sum, a) => sum + a.changeAmount, 0);
+    return net - rtgsOut - transferOut + transferIn - supportingCashOut + supportingCashRecoveredIn + manualAdjustment;
   };
 
   const relevantOutlets = useMemo(() => {
