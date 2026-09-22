@@ -1922,6 +1922,62 @@ export const ChequeCardRegistryView: React.FC = () => {
           </div>
         </div>
       )}
+            {/* Revert to Pending Confirmation Prompt Modal */}
+      {revertToPendingPromptEntry && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-150 no-print">
+          <div
+            className={`w-full max-w-sm rounded-3xl border shadow-2xl p-6 transition-all ${
+              isDark
+                ? 'bg-[#182234] border-slate-700 text-white'
+                : 'bg-white border-slate-200 text-slate-900'
+            }`}
+          >
+            <div className="flex items-center gap-2.5 mb-3">
+              <div className="w-9 h-9 rounded-2xl bg-amber-500/15 text-amber-600 dark:text-amber-400 flex items-center justify-center font-bold">
+                <RotateCcw className="w-5 h-5" />
+              </div>
+              <div>
+                <h3 className="text-sm font-black text-slate-900 dark:text-white">
+                  Revert to Pending?
+                </h3>
+                <p className="text-[11px] font-semibold text-slate-500">Confirm status change</p>
+              </div>
+            </div>
+
+            <p className="text-xs font-semibold text-slate-600 dark:text-slate-300 mb-5">
+              This {revertToPendingPromptEntry.type === 'CHEQUE' ? 'Cheque Book' : 'Debit Card'} has already been delivered. Do you want to revert it back to Pending status?
+            </p>
+
+            <div className="flex items-center justify-end gap-2.5 pt-2 border-t border-slate-200 dark:border-slate-800">
+              <button
+                type="button"
+                onClick={() => setRevertToPendingPromptEntry(null)}
+                className={`px-3.5 py-2 rounded-xl text-xs font-bold border cursor-pointer ${
+                  isDark
+                    ? 'border-slate-700 text-slate-300 hover:bg-slate-800'
+                    : 'border-slate-200 text-slate-600 hover:bg-slate-50'
+                }`}
+              >
+                No
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  handleRevertToPending(revertToPendingPromptEntry);
+                  setRevertToPendingPromptEntry(null);
+                }}
+                className="px-4 py-2 rounded-xl text-xs font-black bg-amber-500 hover:bg-amber-400 text-white shadow-md cursor-pointer flex items-center gap-1.5"
+              >
+                <RotateCcw className="w-4 h-4" />
+                <span>Yes, Revert</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Quick Delivery Date Confirmation Prompt Modal */}
+      {deliveryDatePromptId && (
 
       {/* Quick Delivery Date Confirmation Prompt Modal */}
       {deliveryDatePromptId && (
