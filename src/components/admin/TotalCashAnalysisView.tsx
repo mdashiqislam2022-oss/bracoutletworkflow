@@ -186,15 +186,20 @@ export const TotalCashAnalysisView: React.FC = () => {
           totals[d.key] -= s.denominations?.[d.key] || 0;
         });
       });
-    supportingRecords
+       supportingRecords
       .filter((s) => relevantIds.includes(s.outletId) && s.status === 'RECOVERED' && s.recoveredFundingSource === 'CASH' && s.recoveredDenominations)
       .forEach((s) => {
         DENOM_LIST.forEach((d) => {
           totals[d.key] += s.recoveredDenominations?.[d.key] || 0;
         });
       });
+    denominationAdjustments
+      .filter((a) => relevantIds.includes(a.outletId))
+      .forEach((a) => {
+        totals[a.denomKey] += a.newCount - a.previousCount;
+      });
     return totals;
-  }, [segregationRecords, cashTransfers, relevantOutlets, supportingRecords]);
+  }, [segregationRecords, cashTransfers, relevantOutlets, supportingRecords, denominationAdjustments]);
             const totals = useMemo(() => {
     let mother = 0;
     let afoCash = 0;
