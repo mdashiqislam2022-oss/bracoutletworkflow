@@ -25,6 +25,7 @@ export const UserProfileView: React.FC = () => {
   const isDark = userPreferences.theme === 'dark';
   const currentLang = userPreferences.language || 'en';
   const langText = t[currentLang] || t.en;
+    const myOutlet = outlets.find((o) => o.id === currentUser?.outletId);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [showAvatarPicker, setShowAvatarPicker] = useState(false);
