@@ -21,8 +21,7 @@ import { t } from '../../utils/translations';
    import { SupabaseService } from '../../services/supabaseService';
 
 export const UserProfileView: React.FC = () => {
-  const { currentUser, updateCurrentUserProfile, userPreferences } = useApp();
-
+   const { currentUser, updateCurrentUserProfile, userPreferences, outlets } = useApp();
   const isDark = userPreferences.theme === 'dark';
   const currentLang = userPreferences.language || 'en';
   const langText = t[currentLang] || t.en;
