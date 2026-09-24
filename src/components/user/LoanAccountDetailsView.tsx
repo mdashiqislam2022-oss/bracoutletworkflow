@@ -445,7 +445,10 @@ export const LoanAccountDetailsView: React.FC = () => {
             role="button"
             tabIndex={0}
             aria-label={`${closedLoans.length} closed or settled loans. Click to filter closed loans.`}
-            onClick={() => setStatusFilter('CLOSED')}
+           onClick={() => {
+  setAccountFilter('ALL');
+  setStatusFilter('CLOSED');
+}}
             onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') setStatusFilter('CLOSED'); }}
             className={`p-3.5 rounded-2xl border transition-all cursor-pointer ${
               statusFilter === 'CLOSED'
