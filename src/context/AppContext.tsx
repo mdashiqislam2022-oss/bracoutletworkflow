@@ -128,8 +128,9 @@ export interface AppContextType {
     updateLoanRecord: (record: LoanAccountRecord) => void;
   deleteLoanRecord: (id: string) => void;
 
-  // Denomination Segregation Module
+    // Denomination Segregation Module
   customerAccounts: CustomerAccountRecord[];
+  allAccounts: AllAccountRecord[];
   segregationRecords: DenominationSegregationRecord[];
   addCustomerAccount: (data: {
     accountNumber: string;
