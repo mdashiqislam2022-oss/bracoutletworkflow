@@ -68,7 +68,9 @@ export const LoanAccountDetailsView: React.FC = () => {
 
    const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState<'ALL' | LoanStatus>('ALL');
-  const [accountFilter, setAccountFilter] = useState<'ALL' | 'OUTLET' | 'EXTERNAL'>('ALL');
+  const [accountFilter, setAccountFilter] = useState<
+  'ALL' | 'LOAN' | 'OUTLET' | 'EXTERNAL'
+>('ALL');
   const [selectedRecord, setSelectedRecord] = useState<LoanAccountRecord | null>(null);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [editingRecord, setEditingRecord] = useState<LoanAccountRecord | null>(null);
