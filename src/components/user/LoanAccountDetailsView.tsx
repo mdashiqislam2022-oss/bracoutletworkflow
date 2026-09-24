@@ -365,7 +365,7 @@ export const LoanAccountDetailsView: React.FC = () => {
         </div>
 
         {/* 2. Overview Counting Metric Cards (Total, Active, Closed, Overdue) */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4" role="region" aria-label={isBn ? 'লোন পরিসংখ্যান সামারি' : 'Loan overview summary metrics'}>
+       <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-3 sm:gap-4" role="region" aria-label={isBn ? 'লোন পরিসংখ্যান সামারি' : 'Loan overview summary metrics'}>
           {/* Card 1: Total Loans */}
           <div
             role="button"
