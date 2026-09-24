@@ -30,7 +30,13 @@ import { LoanAccountRecord, LoanStatus } from '../../types';
 import { LoanAccountModal } from './LoanAccountModal';
 
 type UnifiedAccount = {
-  source: 'LOAN' | 'CHEQUE' | 'CARD' | 'CUSTOMER';
+  source:
+    | 'LOAN'
+    | 'CHEQUE'
+    | 'CARD'
+    | 'CUSTOMER'
+    | 'SAVINGS'
+    | 'CURRENT';
   id: string;
   accountNumber: string;
   accountTitle: string;
@@ -48,6 +54,7 @@ type UnifiedAccount = {
   loanTenureYears?: number;
   loanRecord?: LoanAccountRecord;
   isOutsideOutlet?: boolean;
+  allAccountId?: string;
 };
 
 export const LoanAccountDetailsView: React.FC = () => {
