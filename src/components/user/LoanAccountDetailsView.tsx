@@ -513,6 +513,115 @@ export const LoanAccountDetailsView: React.FC = () => {
               {overdueLoans.length > 0 ? (isBn ? 'তাগাদা প্রদান প্রয়োজন' : 'Follow up required') : (isBn ? 'সব কিস্তি নিয়মিত' : 'All accounts clean')}
             </div>
           </div>
+              {/* Card 5: Outlet Accounts */}
+          <div
+            role="button"
+            tabIndex={0}
+            aria-label={`${outletAccounts.length} outlet accounts. Click to show outlet accounts.`}
+            onClick={() => {
+              setAccountFilter('OUTLET');
+              setStatusFilter('ALL');
+            }}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                setAccountFilter('OUTLET');
+                setStatusFilter('ALL');
+              }
+            }}
+            className={`p-3.5 rounded-2xl border transition-all cursor-pointer ${
+              accountFilter === 'OUTLET'
+                ? 'ring-2 ring-cyan-500 shadow-md'
+                : 'hover:border-cyan-500/50'
+            } ${
+              isDark
+                ? 'bg-slate-800/80 border-slate-700/80'
+                : 'bg-white border-slate-200/80 shadow-2xs'
+            }`}
+          >
+            <div className="flex items-center justify-between">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-cyan-600 dark:text-cyan-400">
+                {isBn ? 'আউটলেট অ্যাকাউন্ট' : 'Outlet Accounts'}
+              </span>
+
+              <div
+                className="w-7 h-7 rounded-xl bg-cyan-500/15 flex items-center justify-center text-cyan-500"
+                aria-hidden="true"
+              >
+                <Landmark className="w-3.5 h-3.5" />
+              </div>
+            </div>
+
+            <div className="mt-1.5 flex items-baseline gap-2">
+              <span className="text-xl sm:text-2xl font-black text-cyan-600 dark:text-cyan-400">
+                {outletAccounts.length}
+              </span>
+
+              <span className="text-[10px] text-slate-400 font-medium">
+                {isBn ? 'টি অ্যাকাউন্ট' : 'accounts'}
+              </span>
+            </div>
+
+            <div className="mt-1 text-[11px] text-slate-400 font-medium truncate">
+              {isBn
+                ? 'এই আউটলেটের অ্যাকাউন্ট'
+                : 'Accounts under this outlet'}
+            </div>
+          </div>
+
+          {/* Card 6: External Accounts */}
+          <div
+            role="button"
+            tabIndex={0}
+            aria-label={`${externalAccounts.length} external accounts. Click to show external accounts.`}
+            onClick={() => {
+              setAccountFilter('EXTERNAL');
+              setStatusFilter('ALL');
+            }}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                setAccountFilter('EXTERNAL');
+                setStatusFilter('ALL');
+              }
+            }}
+            className={`p-3.5 rounded-2xl border transition-all cursor-pointer ${
+              accountFilter === 'EXTERNAL'
+                ? 'ring-2 ring-rose-500 shadow-md'
+                : 'hover:border-rose-500/50'
+            } ${
+              isDark
+                ? 'bg-slate-800/80 border-slate-700/80'
+                : 'bg-white border-slate-200/80 shadow-2xs'
+            }`}
+          >
+            <div className="flex items-center justify-between">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-rose-600 dark:text-rose-400">
+                {isBn ? 'বাহিরের অ্যাকাউন্ট' : 'External Accounts'}
+              </span>
+
+              <div
+                className="w-7 h-7 rounded-xl bg-rose-500/15 flex items-center justify-center text-rose-500"
+                aria-hidden="true"
+              >
+                <ArrowUpRight className="w-3.5 h-3.5" />
+              </div>
+            </div>
+
+            <div className="mt-1.5 flex items-baseline gap-2">
+              <span className="text-xl sm:text-2xl font-black text-rose-600 dark:text-rose-400">
+                {externalAccounts.length}
+              </span>
+
+              <span className="text-[10px] text-slate-400 font-medium">
+                {isBn ? 'টি অ্যাকাউন্ট' : 'accounts'}
+              </span>
+            </div>
+
+            <div className="mt-1 text-[11px] text-rose-500 font-medium truncate">
+              {isBn
+                ? 'আউটলেটের বাইরের অ্যাকাউন্ট'
+                : 'Accounts outside this outlet'}
+            </div>
+          </div>
         </div>
 
         {/* 3. Search & Filter Bar */}
