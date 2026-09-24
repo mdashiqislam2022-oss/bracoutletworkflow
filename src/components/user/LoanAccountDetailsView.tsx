@@ -221,15 +221,19 @@ if (accountFilter === 'EXTERNAL' && !item.isOutsideOutlet) {
 }
 
 // Loan status filter
-      if (statusFilter !== 'ALL') {
-        if (item.source !== 'LOAN') {
-          return false;
-        }
+if (statusFilter !== 'ALL') {
+  if (item.source !== 'LOAN') {
+    return false;
+  }
 
-        if (item.status !== statusFilter) {
-          return false;
-        }
-      }
+  if (
+    statusFilter === 'OVERDUE'
+      ? item.status !== 'OVERDUE' && item.status !== 'DEFAULTED'
+      : item.status !== statusFilter
+  ) {
+    return false;
+  }
+}
 
       // Search Filter
       if (searchQuery.trim()) {
