@@ -87,84 +87,81 @@ export const LoanAccountDetailsView: React.FC = () => {
 
   // Overview Counts & Financial Math
     const unifiedAccounts = useMemo<UnifiedAccount[]>(() => {
-    const accounts: UnifiedAccount[] = [];
+  const accounts: UnifiedAccount[] = [];
 
-    // 1. Loan Accounts
-    loanRecords
-      .filter((loan) => !currentUser || loan.outletId === currentUser.outletId)
-      .forEach((loan) => {
-        accounts.push({
-          source: 'LOAN',
-          id: loan.id,
-          accountNumber: loan.loanAccountNumber,
-          accountTitle: loan.accountTitle,
-          customerName: loan.customerName,
-          mobileNumber: loan.mobileNumber,
-          category: 'LOAN ACCOUNT',
-          status: loan.loanStatus,
-          outletId: loan.outletId,
-          outletName: loan.outletName,
-          createdAt: loan.createdAt,
-          loanAmount: loan.loanAmount,
-          monthlyInstallment: loan.monthlyInstallment,
-          disbursementDate: loan.disbursementDate,
-          interestRate: loan.interestRate,
-          loanTenureYears: loan.loanTenureYears,
-          loanRecord: loan,
-          isOutsideOutlet: false
-        });
+  allAccounts
+    .filter(
+      (account) =>
+        !currentUser || account.outletId === currentUser.outletId
+    )
+    .forEach((account) => {
+      accounts.push({
+        source:
+          account.accountType === 'LOAN'
+            ? 'LOAN'
+            : account.accountType === 'CHEQUE'
+            ? 'CHEQUE'
+            : account.accountType === 'DEBIT_CARD' ||
+              account.accountType === 'CREDIT_CARD'
+            ? 'CARD'
+            : account.accountType === 'SAVINGS'
+            ? 'SAVINGS'
+            : 'CURRENT',
+        id: account.id,
+        accountNumber: account.accountNumber,
+        accountTitle: account.accountTitle,
+        customerName:
+          account.customerName || account.accountTitle || 'Customer',
+        mobileNumber: account.mobileNumber || '',
+        category:
+          account.category ||
+          account.accountType,
+        status: account.status || 'ACTIVE',
+        outletId: account.outletId,
+        outletName: account.outletName,
+        createdAt: account.createdAt,
+        loanAmount: account.loanAmount,
+        monthlyInstallment: account.monthlyInstallment,
+        disbursementDate: account.disbursementDate,
+        interestRate: account.interestRate,
+        loanTenureYears: account.loanTenureYears,
+        isOutsideOutlet: account.isOutsideOutlet,
+        allAccountId: account.id
       });
+    });
 
-    // 2. Cheque / Debit / Credit Card Accounts
-    chequeCardEntries
-      .filter((entry) => !currentUser || entry.outletId === currentUser.outletId)
-      .forEach((entry: any) => {
-        accounts.push({
-          source: entry.type === 'CHEQUE' ? 'CHEQUE' : 'CARD',
-          id: entry.id,
-          accountNumber: entry.accountNumber,
-          accountTitle: entry.accountTitle || entry.cardName || 'Customer',
-          customerName: entry.accountTitle || entry.cardName || 'Customer',
-          mobileNumber: entry.mobileNumber,
-          category: entry.type === 'CHEQUE'
-            ? 'CHEQUE BOOK'
-            : 'DEBIT / CREDIT CARD',
-          status: entry.status,
-          outletId: entry.outletId,
-          outletName: entry.outletName,
-          createdAt: entry.createdAt,
-          isOutsideOutlet: false
-        });
-      });
+  /*
+   * Same account number may exist in multiple source tables.
+   * All Accounts page must show it only once.
+   */
+  const uniqueAccounts = new Map<string, UnifiedAccount>();
 
-    // 3. Savings / Current Accounts added from Cash Counting
-    customerAccounts
-      .filter((account) => !currentUser || account.outletId === currentUser.outletId)
-      .forEach((account) => {
-        accounts.push({
-          source: 'CUSTOMER',
-          id: account.id,
-          accountNumber: account.accountNumber,
-          accountTitle: account.accountTitle,
-          customerName: account.accountTitle,
-          mobileNumber: account.mobileNumber,
-          category: account.isOutsideOutlet
-            ? 'EXTERNAL ACCOUNT'
-            : account.accountCategory,
-          status: account.status,
-          outletId: account.outletId,
-          outletName: account.outletName,
-          createdAt: account.createdAt,
-          isOutsideOutlet: account.isOutsideOutlet === true
-        });
-      });
+  accounts.forEach((account) => {
+    const normalizedAccountNumber =
+      account.accountNumber.trim().toLowerCase();
 
-    return accounts.sort(
-      (a, b) =>
-        new Date(b.createdAt).getTime() -
-        new Date(a.createdAt).getTime()
-    );
-  }, [loanRecords, chequeCardEntries, customerAccounts, currentUser]);
+    if (!normalizedAccountNumber) {
+      uniqueAccounts.set(
+        `${account.source}-${account.id}`,
+        account
+      );
+      return;
+    }
+
+    if (!uniqueAccounts.has(normalizedAccountNumber)) {
+      uniqueAccounts.set(
+        normalizedAccountNumber,
+        account
+      );
+    }
+  });
+
+  return Array.from(uniqueAccounts.values()).sort(
+    (a, b) =>
+      new Date(b.createdAt).getTime() -
+      new Date(a.createdAt).getTime()
+  );
+}, [allAccounts, currentUser]);
   const outletLoanRecords = useMemo(
   () =>
     loanRecords.filter(
