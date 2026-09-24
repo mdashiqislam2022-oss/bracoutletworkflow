@@ -695,6 +695,8 @@ export const mapDbToOutlet = (row: any): BRACBankOutlet => {
     managerName: row.manager_name || 'Outlet Manager',
     contactNumber: row.contact_number || row.manager_phone || '+880 1700-000000',
     address: row.address || '',
+    operatingHours: row.operating_hours || undefined,
+    establishedYear: row.established_year || undefined,
     isActive: row.is_active !== false && !row.is_deleted && !row.is_suspended
   };
 };
