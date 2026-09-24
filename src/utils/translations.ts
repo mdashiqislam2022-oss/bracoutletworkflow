@@ -95,7 +95,7 @@ export const t = {
   bn: {
     // Nav & Common
     dashboard: 'ড্যাশবোর্ড',
-    loanAccounts: 'লোন অ্যাকাউন্ট বিবরণী',
+   loanAccounts: 'সকল অ্যাকাউন্ট',
     chequeCardRegistry: 'চেক ও ডেবিট কার্ড রেজিস্ট্রি',
         denominationSegregation: 'নগদ গণনা',
     userDirectory: 'AFO ডিরেক্টরি',
