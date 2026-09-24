@@ -501,7 +501,12 @@ export const LoanAccountDetailsView: React.FC = () => {
   setAccountFilter('ALL');
   setStatusFilter('OVERDUE');
 }}
-            onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') setStatusFilter('OVERDUE'); }}
+            onKeyDown={(e) => {
+  if (e.key === 'Enter' || e.key === ' ') {
+    setAccountFilter('ALL');
+    setStatusFilter('OVERDUE');
+  }
+}}
             className={`p-3.5 rounded-2xl border transition-all cursor-pointer ${
               statusFilter === 'OVERDUE'
                 ? 'ring-2 ring-rose-500 shadow-md'
