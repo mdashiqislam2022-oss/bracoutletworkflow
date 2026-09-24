@@ -170,10 +170,44 @@ export const mapDbToCustomerAccount = (row: any): CustomerAccountRecord => {
     outletName: row.outlet_name || '',
     userId: row.user_id,
     userName: row.user_name,
-        status: row.status || 'ACTIVE',
+    status: row.status || 'ACTIVE',
     notes: row.notes || undefined,
     createdAt: row.created_at || new Date().toISOString(),
     isOutsideOutlet: row.is_outside_outlet || false
+  };
+};
+
+export const mapDbToAllAccount = (row: any): AllAccountRecord => {
+  return {
+    id: row.id,
+    accountType: row.account_type || 'SAVINGS',
+    accountNumber: row.account_number || '',
+    accountTitle: row.account_title || '',
+    customerName: row.customer_name || '',
+    mobileNumber: row.mobile_number || '',
+    category: row.category || '',
+    status: row.status || 'ACTIVE',
+    outletId: row.outlet_id || '',
+    outletName: row.outlet_name || '',
+    userId: row.user_id,
+    userName: row.user_name,
+    isOutsideOutlet: row.is_outside_outlet || false,
+    loanAmount: Number(row.loan_amount || 0),
+    monthlyInstallment: Number(row.monthly_installment || 0),
+    disbursementDate: row.disbursement_date || undefined,
+    interestRate:
+      row.interest_rate !== null && row.interest_rate !== undefined
+        ? Number(row.interest_rate)
+        : undefined,
+    loanTenureYears:
+      row.loan_tenure_years !== null && row.loan_tenure_years !== undefined
+        ? Number(row.loan_tenure_years)
+        : undefined,
+    sourceTable: row.source_table || undefined,
+    sourceId: row.source_id || undefined,
+    notes: row.notes || undefined,
+    createdAt: row.created_at || new Date().toISOString(),
+    updatedAt: row.updated_at || new Date().toISOString()
   };
 };
 
