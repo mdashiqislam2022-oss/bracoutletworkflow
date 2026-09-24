@@ -317,7 +317,7 @@ export const LoanAccountDetailsView: React.FC = () => {
               <span>{isBn ? 'আউটলেট পোর্টাল' : 'Outlet Portal'}</span>
               <span>→</span>
               <span className={isDark ? 'text-amber-400 font-semibold' : 'text-amber-600 font-semibold'}>
-                {isBn ? 'লোন অ্যাকাউন্ট বিবরণী' : 'Loan Account Details'}
+               {isBn ? 'সকল অ্যাকাউন্ট' : 'All Accounts'}
               </span>
             </div>
             <h1 className={`text-xl sm:text-2xl font-extrabold tracking-tight flex items-center gap-2.5 ${
