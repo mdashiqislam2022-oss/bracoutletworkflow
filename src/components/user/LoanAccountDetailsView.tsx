@@ -378,7 +378,7 @@ if (accountFilter === 'EXTERNAL' && !item.isOutsideOutlet) {
             tabIndex={0}
             aria-label={`${totalLoans} total loan records, sanctioned amount ${totalSanctionedAmount.toLocaleString()} BDT. Click to show all loans.`}
            onClick={() => {
-  setAccountFilter('ALL');
+  setAccountFilter('LOAN');
   setStatusFilter('ALL');
 }}
            onKeyDown={(e) => {
