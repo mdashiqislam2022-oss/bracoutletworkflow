@@ -547,40 +547,82 @@ export const LoanAccountDetailsView: React.FC = () => {
         </div>
       </div>
 
-      {/* 4. Loan Account Details Table / List (All 7 required fields clearly formatted) */}
-      <div 
+            {/* 4. All Accounts Directory */}
+      <div
         role="region"
-        aria-label={isBn ? 'লোন অ্যাকাউন্ট তালিকা' : 'Loan accounts table'}
+        aria-label={isBn ? 'সকল অ্যাকাউন্ট তালিকা' : 'All accounts directory'}
         className={`rounded-3xl border overflow-hidden shadow-2xs ${
-        isDark ? 'bg-slate-800/40 border-slate-700/80' : 'bg-white border-slate-200/80'
-      }`}>
+          isDark
+            ? 'bg-slate-800/40 border-slate-700/80'
+            : 'bg-white border-slate-200/80'
+        }`}
+      >
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-xs border-collapse" aria-label={isBn ? 'লোন অ্যাকাউন্ট বিবরণী টেবিল' : 'Loan accounts directory table'}>
+          <table
+            className="w-full text-left text-xs border-collapse"
+            aria-label={isBn ? 'সকল অ্যাকাউন্ট' : 'All accounts table'}
+          >
             <thead>
-              <tr className={`border-b text-[11px] font-black uppercase tracking-wider ${
-                isDark ? 'bg-slate-900/70 border-slate-700/80 text-slate-400' : 'bg-slate-50 border-slate-200 text-slate-500'
-              }`}>
-                <th scope="col" className="py-3.5 px-4">#</th>
-                <th scope="col" className="py-3.5 px-4">{isBn ? '১) অ্যাকাউন্ট টাইটেল ও নাম' : '1) Acc Title & Customer'}</th>
-                <th scope="col" className="py-3.5 px-4">{isBn ? '২) মোবাইল ও লোন অ্যাকাউন্ট' : '2) Mobile & Loan Acc No'}</th>
-                <th scope="col" className="py-3.5 px-4">{isBn ? '৩) লোন অ্যামাউন্ট (টাকা)' : '3) Loan Amount'}</th>
-                <th scope="col" className="py-3.5 px-4">{isBn ? '৪) মাসিক কিস্তি (EMI)' : '4) Monthly Installment'}</th>
-                <th scope="col" className="py-3.5 px-4">{isBn ? '৫) লোন গ্রহণের তারিখ' : '5) Loan Date'}</th>
-                <th scope="col" className="py-3.5 px-4">{isBn ? '৬) সুদের হার ও মেয়াদ' : '6) Rate & Tenure'}</th>
-                <th scope="col" className="py-3.5 px-4">{isBn ? 'স্ট্যাটাস' : 'Status'}</th>
-                <th scope="col" className="py-3.5 px-4 text-right">{isBn ? 'অ্যাকশন' : 'Actions'}</th>
+              <tr
+                className={`border-b text-[11px] font-black uppercase tracking-wider ${
+                  isDark
+                    ? 'bg-slate-900/70 border-slate-700/80 text-slate-400'
+                    : 'bg-slate-50 border-slate-200 text-slate-500'
+                }`}
+              >
+                <th scope="col" className="py-3.5 px-4">
+                  #
+                </th>
+
+                <th scope="col" className="py-3.5 px-4">
+                  {isBn ? 'অ্যাকাউন্ট ও গ্রাহক' : 'Account & Customer'}
+                </th>
+
+                <th scope="col" className="py-3.5 px-4">
+                  {isBn ? 'অ্যাকাউন্ট নম্বর' : 'Account Number'}
+                </th>
+
+                <th scope="col" className="py-3.5 px-4">
+                  {isBn ? 'ক্যাটাগরি' : 'Category'}
+                </th>
+
+                <th scope="col" className="py-3.5 px-4">
+                  {isBn ? 'মোবাইল' : 'Mobile'}
+                </th>
+
+                <th scope="col" className="py-3.5 px-4">
+                  {isBn ? 'স্ট্যাটাস' : 'Status'}
+                </th>
+
+                <th scope="col" className="py-3.5 px-4">
+                  {isBn ? 'আউটলেট' : 'Outlet'}
+                </th>
+
+                <th scope="col" className="py-3.5 px-4 text-right">
+                  {isBn ? 'অ্যাকশন' : 'Actions'}
+                </th>
               </tr>
             </thead>
+
             <tbody className="divide-y divide-slate-200/60 dark:divide-slate-700/60">
-              {filteredLoans.length === 0 ? (
+              {filteredAccounts.length === 0 ? (
                 <tr>
-                  <td colSpan={9} className="py-12 text-center text-slate-400">
-                    <Landmark className="w-10 h-10 mx-auto text-slate-300 dark:text-slate-600 mb-2" aria-hidden="true" />
+                  <td colSpan={8} className="py-12 text-center text-slate-400">
+                    <Landmark
+                      className="w-10 h-10 mx-auto text-slate-300 dark:text-slate-600 mb-2"
+                      aria-hidden="true"
+                    />
+
                     <p className="font-bold text-sm">
                       {searchQuery
-                        ? isBn ? 'এই সার্চে কোন লোন অ্যাকাউন্ট পাওয়া যায়নি' : 'No loan accounts match your search'
-                        : isBn ? 'কোন লোন অ্যাকাউন্ট ডাটা পাওয়া যায়নি' : 'No loan records found'}
+                        ? isBn
+                          ? 'এই সার্চে কোনো অ্যাকাউন্ট পাওয়া যায়নি'
+                          : 'No accounts match your search'
+                        : isBn
+                        ? 'কোনো অ্যাকাউন্ট পাওয়া যায়নি'
+                        : 'No accounts found'}
                     </p>
+
                     <button
                       onClick={() => {
                         setEditingRecord(null);
@@ -588,192 +630,193 @@ export const LoanAccountDetailsView: React.FC = () => {
                       }}
                       className="mt-3 inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 transition-colors cursor-pointer"
                     >
-                      <Plus className="w-3.5 h-3.5" aria-hidden="true" />
-                      <span>{isBn ? 'নতুন লোন ফাইল যোগ করুন' : 'Add First Loan Record'}</span>
+                      <Plus className="w-3.5 h-3.5" />
+                      {isBn ? 'লোন অ্যাকাউন্ট যোগ করুন' : 'Add Loan Account'}
                     </button>
                   </td>
                 </tr>
               ) : (
-                filteredLoans.map((loan, idx) => {
-                  const isActive = loan.loanStatus === 'ACTIVE';
-                  const isClosed = loan.loanStatus === 'CLOSED';
-                  const isOverdue = loan.loanStatus === 'OVERDUE' || loan.loanStatus === 'DEFAULTED';
+                filteredAccounts.map((account, index) => {
+                  const loan = account.loanRecord;
+
+                  const isLoan = account.source === 'LOAN';
+                  const isActive = account.status === 'ACTIVE';
+                  const isClosed = account.status === 'CLOSED';
+                  const isOverdue =
+                    account.status === 'OVERDUE' ||
+                    account.status === 'DEFAULTED';
 
                   return (
                     <tr
-                      key={loan.id}
+                      key={`${account.source}-${account.id}`}
                       className={`transition-colors ${
-                        isDark ? 'hover:bg-slate-800/60' : 'hover:bg-slate-50/80'
+                        isDark
+                          ? 'hover:bg-slate-800/70'
+                          : 'hover:bg-slate-50'
                       }`}
                     >
-                      {/* Row Index */}
-                      <td className="py-3 px-4 text-slate-400 font-mono text-[11px]">
-                        {idx + 1}
+                      {/* # */}
+                      <td className="py-3 px-4 text-slate-400 font-mono">
+                        {index + 1}
                       </td>
 
-                      {/* 1) Customer Acc Title & Name */}
-                      <td className="py-3 px-4">
-                        <div className="font-black text-slate-900 dark:text-white text-xs leading-snug">
-                          {loan.accountTitle}
+                      {/* Account & Customer */}
+                      <td className="py-3 px-4 min-w-[220px]">
+                        <div className="font-bold text-slate-900 dark:text-white">
+                          {account.accountTitle}
                         </div>
-                        <div className="flex items-center gap-1 mt-0.5 text-[11px] text-slate-500 dark:text-slate-400">
-                          <User className="w-3 h-3 text-slate-400" aria-hidden="true" />
-                          <span>{loan.customerName}</span>
+
+                        <div className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">
+                          {account.customerName}
                         </div>
-                        {loan.notes && (
-                          <div className="text-[10px] text-slate-400 italic truncate max-w-xs mt-0.5">
-                            {loan.notes}
-                          </div>
-                        )}
                       </td>
 
-                      {/* 2) Mobile Number & Loan Account Number */}
+                      {/* Account Number */}
                       <td className="py-3 px-4">
-                        <div className="flex items-center gap-1 font-mono text-xs font-bold text-slate-800 dark:text-slate-200">
-                          <Phone className="w-3 h-3 text-amber-500" aria-hidden="true" />
-                          <span>{loan.mobileNumber}</span>
+                        <div className="flex items-center gap-1 font-mono text-[11px] text-slate-600 dark:text-slate-300">
+                          <span>{account.accountNumber}</span>
+
                           <button
-                            onClick={() => handleCopy(loan.mobileNumber, `mob-${loan.id}`)}
-                            aria-label={`Copy phone number ${loan.mobileNumber}`}
-                            title="Copy phone"
-                            className="text-slate-400 hover:text-amber-500 cursor-pointer ml-0.5"
-                          >
-                            {copiedId === `mob-${loan.id}` ? <Check className="w-3 h-3 text-emerald-500" aria-hidden="true" /> : <Copy className="w-2.5 h-2.5" aria-hidden="true" />}
-                          </button>
-                        </div>
-                        <div className="flex items-center gap-1 font-mono text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">
-                          <span>Acc: {loan.loanAccountNumber}</span>
-                          <button
-                            onClick={() => handleCopy(loan.loanAccountNumber, `acc-${loan.id}`)}
-                            aria-label={`Copy loan account number ${loan.loanAccountNumber}`}
+                            onClick={() =>
+                              handleCopy(
+                                account.accountNumber,
+                                `acc-${account.source}-${account.id}`
+                              )
+                            }
+                            aria-label={`Copy account number ${account.accountNumber}`}
                             title="Copy Account No"
                             className="text-slate-400 hover:text-amber-500 cursor-pointer ml-0.5"
                           >
-                            {copiedId === `acc-${loan.id}` ? <Check className="w-3 h-3 text-emerald-500" aria-hidden="true" /> : <Copy className="w-2.5 h-2.5" aria-hidden="true" />}
+                            {copiedId ===
+                            `acc-${account.source}-${account.id}` ? (
+                              <Check
+                                className="w-3 h-3 text-emerald-500"
+                                aria-hidden="true"
+                              />
+                            ) : (
+                              <Copy
+                                className="w-2.5 h-2.5"
+                                aria-hidden="true"
+                              />
+                            )}
                           </button>
                         </div>
                       </td>
 
-                      {/* 3) Customer Loan Amount */}
-                      <td className="py-3 px-4 font-mono font-black text-amber-600 dark:text-amber-400 text-xs">
-                        ৳{loan.loanAmount.toLocaleString()}
-                      </td>
-
-                      {/* 4) Monthly Installment */}
-                      <td className="py-3 px-4 font-mono font-bold text-emerald-600 dark:text-emerald-400 text-xs">
-                        ৳{loan.monthlyInstallment.toLocaleString()}
-                        <span className="text-[10px] font-normal text-slate-400 block">{isBn ? '/মাস' : '/mo'}</span>
-                      </td>
-
-                      {/* 5) Disbursement Date */}
-                      <td className="py-3 px-4 font-mono text-xs text-slate-700 dark:text-slate-300">
-                        <div className="flex items-center gap-1">
-                          <Calendar className="w-3 h-3 text-slate-400" aria-hidden="true" />
-                          <span>{loan.disbursementDate}</span>
-                        </div>
-                      </td>
-
-                      {/* 6) Rate % & Tenure */}
-                      <td className="py-3 px-4 text-xs font-semibold text-slate-800 dark:text-slate-200">
-                        <div className="flex items-center gap-1">
-                          <Percent className="w-3 h-3 text-amber-500" aria-hidden="true" />
-                          <span>{loan.interestRate}% Interest</span>
-                        </div>
-                        <div className="flex items-center gap-1 text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">
-                          <Clock className="w-3 h-3 text-slate-400" aria-hidden="true" />
-                          <span>{loan.loanTenureYears} {isBn ? 'বছর মেয়াদী' : 'Years Tenure'}</span>
-                        </div>
-                      </td>
-
-                      {/* Status Selector / Changer in Row */}
+                      {/* Category */}
                       <td className="py-3 px-4">
-                        <div className="relative inline-flex items-center" role="status" aria-label={`Current loan status: ${loan.loanStatus}`}>
-                          <select
-                            value={loan.loanStatus}
-                            onChange={(e) => handleQuickStatusChange(loan, e.target.value as LoanStatus)}
-                            aria-label={`Status for ${loan.accountTitle}, currently ${loan.loanStatus}. Change status`}
-                            title={isBn ? 'ক্লিক করে স্ট্যাটাস পরিবর্তন করুন (যেমন: Active থেকে Closed)' : 'Click to change loan status'}
-                            className={`appearance-none text-[11px] font-black pl-2.5 pr-6 py-1.5 rounded-xl border transition-all cursor-pointer focus:outline-none focus:ring-2 shadow-2xs ${
-                              isActive
-                                ? 'bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 border-emerald-500/40 hover:bg-emerald-500/25 focus:ring-emerald-500/40'
-                                : isClosed
-                                ? 'bg-indigo-500/15 text-indigo-700 dark:text-indigo-300 border-indigo-500/40 hover:bg-indigo-500/25 focus:ring-indigo-500/40'
-                                : 'bg-rose-500/15 text-rose-700 dark:text-rose-300 border-rose-500/40 hover:bg-rose-500/25 focus:ring-rose-500/40'
-                            }`}
-                          >
-                            <option value="ACTIVE" className="bg-white dark:bg-slate-900 text-emerald-600 dark:text-emerald-400 font-bold">
-                              ● ACTIVE {isBn ? '(চালু)' : ''}
-                            </option>
-                            <option value="CLOSED" className="bg-white dark:bg-slate-900 text-indigo-600 dark:text-indigo-400 font-bold">
-                              ✓ CLOSED {isBn ? '(পরিশোধিত)' : ''}
-                            </option>
-                            <option value="OVERDUE" className="bg-white dark:bg-slate-900 text-rose-600 dark:text-rose-400 font-bold">
-                              ⚠ OVERDUE {isBn ? '(বকেয়া)' : ''}
-                            </option>
-                            <option value="DEFAULTED" className="bg-white dark:bg-slate-900 text-rose-700 dark:text-rose-500 font-bold">
-                              ✕ DEFAULTED {isBn ? '(খেলাপি)' : ''}
-                            </option>
-                          </select>
-                          <ChevronDown aria-hidden="true" className={`w-3.5 h-3.5 absolute right-2 pointer-events-none ${
-                            isActive
-                              ? 'text-emerald-600 dark:text-emerald-400'
-                              : isClosed
-                              ? 'text-indigo-600 dark:text-indigo-400'
-                              : 'text-rose-600 dark:text-rose-400'
-                          }`} />
-                        </div>
+                        <span
+                          className={`inline-flex px-2.5 py-1 rounded-lg text-[10px] font-black border ${
+                            account.source === 'LOAN'
+                              ? 'bg-amber-500/10 text-amber-600 border-amber-500/30'
+                              : account.source === 'CHEQUE'
+                              ? 'bg-blue-500/10 text-blue-600 border-blue-500/30'
+                              : account.source === 'CARD'
+                              ? 'bg-purple-500/10 text-purple-600 border-purple-500/30'
+                              : account.isOutsideOutlet
+                              ? 'bg-rose-500/10 text-rose-600 border-rose-500/30'
+                              : 'bg-emerald-500/10 text-emerald-600 border-emerald-500/30'
+                          }`}
+                        >
+                          {account.category}
+                        </span>
                       </td>
 
-                      {/* Action buttons */}
-                      <td className="py-3 px-4 text-right">
-                        <div className="flex items-center justify-end gap-1.5">
-                          {/* Quick 1-Click Status Switcher (Active <-> Closed) */}
-                          <button
-                            onClick={() => handleQuickStatusChange(loan, isActive ? 'CLOSED' : 'ACTIVE')}
-                            aria-label={
-                              isActive
-                                ? `Mark ${loan.accountTitle} loan as closed/settled`
-                                : `Reactivate ${loan.accountTitle} loan`
-                            }
-                            title={
-                              isActive
-                                ? isBn ? 'লোন পরিশোধ সম্পন্ন / ক্লোজ করুন' : 'Mark as Closed / Settled'
-                                : isBn ? 'পুনরায় এক্টিভ করুন' : 'Reactivate Loan'
-                            }
-                            className={`px-2 py-1 rounded-lg border text-[10px] font-black transition-all cursor-pointer flex items-center gap-1 ${
-                              isActive
-                                ? 'bg-indigo-500/10 hover:bg-indigo-500/20 text-indigo-600 dark:text-indigo-400 border-indigo-500/30'
-                                : 'bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border-emerald-500/30'
-                            }`}
-                          >
-                            <ArrowRightLeft className="w-3 h-3" aria-hidden="true" />
-                            <span>{isActive ? (isBn ? 'ক্লোজ' : 'Close') : (isBn ? 'এক্টিভ' : 'Active')}</span>
-                          </button>
+                      {/* Mobile */}
+                      <td className="py-3 px-4 font-mono text-xs text-slate-600 dark:text-slate-300">
+                        {account.mobileNumber || '—'}
+                      </td>
 
-                          <button
-                            onClick={() => {
-                              setEditingRecord(loan);
-                              setIsAddModalOpen(true);
-                            }}
-                            aria-label={`Edit loan file for ${loan.accountTitle}`}
-                            title="Edit loan file"
-                            className={`p-1.5 rounded-lg border transition-colors cursor-pointer ${
-                              isDark
-                                ? 'bg-slate-800 hover:bg-slate-700 border-slate-700 text-slate-300'
-                                : 'bg-slate-100 hover:bg-slate-200 border-slate-200 text-slate-700'
-                            }`}
-                          >
-                            <Edit3 className="w-3.5 h-3.5" aria-hidden="true" />
-                          </button>
-                          <button
-                            onClick={() => setDeletingRecord(loan)}
-                            aria-label={`Delete loan file for ${loan.accountTitle}`}
-                            title="Delete loan file"
-                            className="p-1.5 rounded-lg border border-rose-500/30 bg-rose-500/10 hover:bg-rose-500/20 text-rose-600 transition-colors cursor-pointer"
-                          >
-                            <Trash2 className="w-3.5 h-3.5" aria-hidden="true" />
-                          </button>
-                        </div>
+                      {/* Status */}
+                      <td className="py-3 px-4">
+                        <span
+                          className={`inline-flex px-2.5 py-1 rounded-lg text-[10px] font-black border ${
+                            isActive
+                              ? 'bg-emerald-500/10 text-emerald-600 border-emerald-500/30'
+                              : isClosed
+                              ? 'bg-indigo-500/10 text-indigo-600 border-indigo-500/30'
+                              : isOverdue
+                              ? 'bg-rose-500/10 text-rose-600 border-rose-500/30'
+                              : 'bg-slate-500/10 text-slate-500 border-slate-500/30'
+                          }`}
+                        >
+                          {account.status}
+                        </span>
+                      </td>
+
+                      {/* Outlet */}
+                      <td className="py-3 px-4 text-xs text-slate-600 dark:text-slate-300">
+                        {account.isOutsideOutlet ? (
+                          <span className="font-bold text-rose-500">
+                            {isBn ? 'বাহিরের অ্যাকাউন্ট' : 'External'}
+                          </span>
+                        ) : (
+                          account.outletName || '—'
+                        )}
+                      </td>
+
+                      {/* Actions */}
+                      <td className="py-3 px-4 text-right">
+                        {isLoan && loan ? (
+                          <div className="flex items-center justify-end gap-1.5">
+                            <button
+                              onClick={() =>
+                                handleQuickStatusChange(
+                                  loan,
+                                  isActive ? 'CLOSED' : 'ACTIVE'
+                                )
+                              }
+                              title={
+                                isActive
+                                  ? 'Mark as Closed / Settled'
+                                  : 'Reactivate Loan'
+                              }
+                              className={`px-2 py-1 rounded-lg border text-[10px] font-black transition-all cursor-pointer flex items-center gap-1 ${
+                                isActive
+                                  ? 'bg-indigo-500/10 hover:bg-indigo-500/20 text-indigo-600 dark:text-indigo-400 border-indigo-500/30'
+                                  : 'bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border-emerald-500/30'
+                              }`}
+                            >
+                              <ArrowRightLeft className="w-3 h-3" />
+                              <span>
+                                {isActive
+                                  ? isBn
+                                    ? 'ক্লোজ'
+                                    : 'Close'
+                                  : isBn
+                                  ? 'এক্টিভ'
+                                  : 'Active'}
+                              </span>
+                            </button>
+
+                            <button
+                              onClick={() => {
+                                setEditingRecord(loan);
+                                setIsAddModalOpen(true);
+                              }}
+                              title="Edit loan file"
+                              className={`p-1.5 rounded-lg border transition-colors cursor-pointer ${
+                                isDark
+                                  ? 'bg-slate-800 hover:bg-slate-700 border-slate-700 text-slate-300'
+                                  : 'bg-slate-100 hover:bg-slate-200 border-slate-200 text-slate-700'
+                              }`}
+                            >
+                              <Edit3 className="w-3.5 h-3.5" />
+                            </button>
+
+                            <button
+                              onClick={() => setDeletingRecord(loan)}
+                              title="Delete loan file"
+                              className="p-1.5 rounded-lg border border-rose-500/30 bg-rose-500/10 hover:bg-rose-500/20 text-rose-600 transition-colors cursor-pointer"
+                            >
+                              <Trash2 className="w-3.5 h-3.5" />
+                            </button>
+                          </div>
+                        ) : (
+                          <span className="text-[10px] font-semibold text-slate-400">
+                            {isBn ? 'শুধু দেখুন' : 'View only'}
+                          </span>
+                        )}
                       </td>
                     </tr>
                   );
