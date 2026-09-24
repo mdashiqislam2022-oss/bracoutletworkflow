@@ -408,7 +408,10 @@ export const LoanAccountDetailsView: React.FC = () => {
             role="button"
             tabIndex={0}
             aria-label={`${activeLoans.length} active loans, monthly EMI ৳${totalMonthlyEmiExpected.toLocaleString()}. Click to filter active loans.`}
-            onClick={() => setStatusFilter('ACTIVE')}
+           onClick={() => {
+  setAccountFilter('ALL');
+  setStatusFilter('ACTIVE');
+}}
             onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') setStatusFilter('ACTIVE'); }}
             className={`p-3.5 rounded-2xl border transition-all cursor-pointer ${
               statusFilter === 'ACTIVE'
