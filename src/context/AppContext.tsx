@@ -639,6 +639,26 @@ if (cloudData.rules && cloudData.rules.length) setRules(cloudData.rules);
           setLoanRecords((prev) => prev.filter((r) => r.id !== payload.old.id));
         }
       },
+            onAllAccountChange: (payload) => {
+        if (payload.eventType === 'INSERT' && payload.new) {
+          const account = mapDbToAllAccount(payload.new);
+
+          setAllAccounts((prev) => [
+            account,
+            ...prev.filter((a) => a.id !== account.id)
+          ]);
+        } else if (payload.eventType === 'UPDATE' && payload.new) {
+          const account = mapDbToAllAccount(payload.new);
+
+          setAllAccounts((prev) =>
+            prev.map((a) => (a.id === account.id ? account : a))
+          );
+        } else if (payload.eventType === 'DELETE' && payload.old) {
+          setAllAccounts((prev) =>
+            prev.filter((a) => a.id !== payload.old.id)
+          );
+        }
+      },
             onSubmissionChange: (payload) => {
         if (payload.eventType === 'INSERT' && payload.new) {
           const sub = mapDbToSubmission(payload.new);
