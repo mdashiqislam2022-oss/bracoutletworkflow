@@ -668,6 +668,8 @@ export const mapOutletToDb = (outlet: BRACBankOutlet) => {
     contact_number: outlet.contactNumber || (outlet as any).managerPhone || null,
     contact_email: (outlet as any).contactEmail || null,
     address: outlet.address,
+    operating_hours: outlet.operatingHours || null,
+    established_year: outlet.establishedYear || null,
     is_active: outlet.isActive !== false,
     is_suspended: (outlet as any).isSuspended || false,
     is_deleted: (outlet as any).isDeleted || false,
@@ -679,7 +681,6 @@ export const mapOutletToDb = (outlet: BRACBankOutlet) => {
     updated_at: new Date().toISOString()
   };
 };
-
 /**
  * Maps DB row to BRACBankOutlet
  */
