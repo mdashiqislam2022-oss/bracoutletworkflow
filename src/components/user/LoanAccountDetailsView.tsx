@@ -323,7 +323,7 @@ export const LoanAccountDetailsView: React.FC = () => {
             <h1 className={`text-xl sm:text-2xl font-extrabold tracking-tight flex items-center gap-2.5 ${
               isDark ? 'text-white' : 'text-slate-900'
             }`}>
-              <span>{isBn ? 'গ্রাহক লোন অ্যাকাউন্ট ও কিস্তি বিবরণী' : 'Outlet Loan Account Directory'}</span>
+             <span>{isBn ? 'সকল অ্যাকাউন্ট ডিরেক্টরি' : 'All Accounts Directory'}</span>
               <span className="text-xs font-bold px-2.5 py-1 rounded-full bg-amber-500/15 text-amber-600 dark:text-amber-400 border border-amber-500/30">
                 {currentUser?.outletName || 'Motijheel SME Outlet'}
               </span>
