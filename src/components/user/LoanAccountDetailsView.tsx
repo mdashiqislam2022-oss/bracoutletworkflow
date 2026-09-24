@@ -29,6 +29,27 @@ import {
 import { LoanAccountRecord, LoanStatus } from '../../types';
 import { LoanAccountModal } from './LoanAccountModal';
 
+type UnifiedAccount = {
+  source: 'LOAN' | 'CHEQUE' | 'CARD' | 'CUSTOMER';
+  id: string;
+  accountNumber: string;
+  accountTitle: string;
+  customerName: string;
+  mobileNumber: string;
+  category: string;
+  status: string;
+  outletId: string;
+  outletName: string;
+  createdAt: string;
+  loanAmount?: number;
+  monthlyInstallment?: number;
+  disbursementDate?: string;
+  interestRate?: number;
+  loanTenureYears?: number;
+  loanRecord?: LoanAccountRecord;
+  isOutsideOutlet?: boolean;
+};
+
 export const LoanAccountDetailsView: React.FC = () => {
   const {
     loanRecords,
