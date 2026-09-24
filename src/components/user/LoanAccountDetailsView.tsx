@@ -411,10 +411,10 @@ if (statusFilter !== 'ALL') {
   }
 }}
             className={`p-3.5 rounded-2xl border transition-all cursor-pointer ${
-              statusFilter === 'ALL'
-                ? 'ring-2 ring-amber-500 shadow-md'
-                : 'hover:border-amber-500/50'
-            } ${isDark ? 'bg-slate-800/80 border-slate-700/80' : 'bg-white border-slate-200/80 shadow-2xs'}`}
+  accountFilter === 'LOAN' && statusFilter === 'ALL'
+    ? 'ring-2 ring-amber-500 shadow-md'
+    : 'hover:border-amber-500/50'
+} ${isDark ? 'bg-slate-800/80 border-slate-700/80' : 'bg-white border-slate-200/80 shadow-2xs'}`}
           >
             <div className="flex items-center justify-between">
               <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
