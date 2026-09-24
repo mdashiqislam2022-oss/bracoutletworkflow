@@ -196,9 +196,13 @@ const overdueLoans = useMemo(
 );
 
   const totalSanctionedAmount = useMemo(
-    () => loanRecords.reduce((acc, curr) => acc + (curr.loanAmount || 0), 0),
-    [loanRecords]
-  );
+  () =>
+    outletLoanRecords.reduce(
+      (acc, curr) => acc + (curr.loanAmount || 0),
+      0
+    ),
+  [outletLoanRecords]
+);
   const totalMonthlyEmiExpected = useMemo(
     () => activeLoans.reduce((acc, curr) => acc + (curr.monthlyInstallment || 0), 0),
     [activeLoans]
