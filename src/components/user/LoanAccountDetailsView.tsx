@@ -157,28 +157,43 @@ export const LoanAccountDetailsView: React.FC = () => {
         new Date(a.createdAt).getTime()
     );
   }, [loanRecords, chequeCardEntries, customerAccounts, currentUser]);
-  const totalLoans = loanRecords.length;
-    const outletAccounts = useMemo(
-    () => unifiedAccounts.filter((account) => !account.isOutsideOutlet),
-    [unifiedAccounts]
-  );
+  const outletLoanRecords = useMemo(
+  () =>
+    loanRecords.filter(
+      (loan) => !currentUser || loan.outletId === currentUser.outletId
+    ),
+  [loanRecords, currentUser]
+);
 
-  const externalAccounts = useMemo(
-    () => unifiedAccounts.filter((account) => account.isOutsideOutlet),
-    [unifiedAccounts]
-  );
-  const activeLoans = useMemo(
-    () => loanRecords.filter((l) => l.loanStatus === 'ACTIVE'),
-    [loanRecords]
-  );
-  const closedLoans = useMemo(
-    () => loanRecords.filter((l) => l.loanStatus === 'CLOSED'),
-    [loanRecords]
-  );
-  const overdueLoans = useMemo(
-    () => loanRecords.filter((l) => l.loanStatus === 'OVERDUE' || l.loanStatus === 'DEFAULTED'),
-    [loanRecords]
-  );
+const totalLoans = outletLoanRecords.length;
+
+const outletAccounts = useMemo(
+  () => unifiedAccounts.filter((account) => !account.isOutsideOutlet),
+  [unifiedAccounts]
+);
+
+const externalAccounts = useMemo(
+  () => unifiedAccounts.filter((account) => account.isOutsideOutlet),
+  [unifiedAccounts]
+);
+
+const activeLoans = useMemo(
+  () => outletLoanRecords.filter((l) => l.loanStatus === 'ACTIVE'),
+  [outletLoanRecords]
+);
+
+const closedLoans = useMemo(
+  () => outletLoanRecords.filter((l) => l.loanStatus === 'CLOSED'),
+  [outletLoanRecords]
+);
+
+const overdueLoans = useMemo(
+  () =>
+    outletLoanRecords.filter(
+      (l) => l.loanStatus === 'OVERDUE' || l.loanStatus === 'DEFAULTED'
+    ),
+  [outletLoanRecords]
+);
 
   const totalSanctionedAmount = useMemo(
     () => loanRecords.reduce((acc, curr) => acc + (curr.loanAmount || 0), 0),
