@@ -2789,8 +2789,29 @@ if (sessionStatus.isActive) {
       createdAt: new Date().toISOString()
     };
 
-    setChequeCardEntries((prev) => [newRecord, ...prev]);
+        setChequeCardEntries((prev) => [newRecord, ...prev]);
     SupabaseService.saveChequeCardEntry(newRecord);
+
+    SupabaseService.saveAllAccount({
+      id: `ALL-CHEQUE-${newRecord.id}`,
+      accountType: 'CHEQUE',
+      accountNumber: newRecord.accountNumber,
+      accountTitle: newRecord.accountTitle,
+      customerName: newRecord.accountTitle,
+      mobileNumber: newRecord.mobileNumber,
+      category: 'CHEQUE BOOK',
+      status: newRecord.status,
+      outletId: newRecord.outletId,
+      outletName: newRecord.outletName,
+      userId: newRecord.userId,
+      userName: newRecord.userName,
+      isOutsideOutlet: false,
+      sourceTable: 'cheque_card_registry',
+      sourceId: newRecord.id,
+      notes: newRecord.notes,
+      createdAt: newRecord.createdAt,
+      updatedAt: newRecord.createdAt
+    });
 
     // Also register in general submissions stream so dashboard syncs
     const newSubmission: WorkSubmission = {
