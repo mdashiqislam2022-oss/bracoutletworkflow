@@ -32,6 +32,8 @@ import { LoanAccountModal } from './LoanAccountModal';
 export const LoanAccountDetailsView: React.FC = () => {
   const {
     loanRecords,
+    chequeCardEntries,
+    customerAccounts,
     addLoanRecord,
     updateLoanRecord,
     deleteLoanRecord,
