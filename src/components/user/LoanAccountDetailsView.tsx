@@ -459,7 +459,12 @@ export const LoanAccountDetailsView: React.FC = () => {
   setAccountFilter('ALL');
   setStatusFilter('CLOSED');
 }}
-            onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') setStatusFilter('CLOSED'); }}
+           onKeyDown={(e) => {
+  if (e.key === 'Enter' || e.key === ' ') {
+    setAccountFilter('ALL');
+    setStatusFilter('CLOSED');
+  }
+}}
             className={`p-3.5 rounded-2xl border transition-all cursor-pointer ${
               statusFilter === 'CLOSED'
                 ? 'ring-2 ring-indigo-500 shadow-md'
