@@ -188,10 +188,18 @@ export const LoanAccountDetailsView: React.FC = () => {
   );
 
   // Filtered Loans based on Search & Status
-    const filteredAccounts = useMemo(() => {
+      const filteredAccounts = useMemo(() => {
     return unifiedAccounts.filter((item) => {
-      // Status filters apply to Loan Accounts.
-      // Other account types remain visible when "ALL" is selected.
+      // Account type filter
+      if (accountFilter === 'OUTLET' && item.isOutsideOutlet) {
+        return false;
+      }
+
+      if (accountFilter === 'EXTERNAL' && !item.isOutsideOutlet) {
+        return false;
+      }
+
+      // Loan status filter
       if (statusFilter !== 'ALL') {
         if (item.source !== 'LOAN') {
           return false;
