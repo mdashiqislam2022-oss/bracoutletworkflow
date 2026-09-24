@@ -330,8 +330,8 @@ export const LoanAccountDetailsView: React.FC = () => {
             </h1>
             <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
               {isBn
-                ? 'আপনার আউটলেটের আওতাধীন গ্রাহকদের চলতি লোন, মাসিক কিস্তি (ইএমআই) এবং বিতরণ হিসাব পর্যবেক্ষণ করুন'
-                : 'Track active customer loan disbursements, monthly installment EMIs, tenure and sanctions under this outlet'}
+               ? 'আপনার আউটলেটের সকল লোন, চেক, কার্ড, সেভিংস ও কারেন্ট অ্যাকাউন্ট এক জায়গা থেকে দেখুন এবং পরিচালনা করুন'
+: 'View and manage all loan, cheque, card, savings and current accounts associated with this outlet'
             </p>
           </div>
 
