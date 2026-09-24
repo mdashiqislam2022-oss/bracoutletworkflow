@@ -482,7 +482,10 @@ export const LoanAccountDetailsView: React.FC = () => {
             role="button"
             tabIndex={0}
             aria-label={`${overdueLoans.length} overdue or defaulted loans. Click to filter overdue loans.`}
-            onClick={() => setStatusFilter('OVERDUE')}
+           onClick={() => {
+  setAccountFilter('ALL');
+  setStatusFilter('OVERDUE');
+}}
             onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') setStatusFilter('OVERDUE'); }}
             className={`p-3.5 rounded-2xl border transition-all cursor-pointer ${
               statusFilter === 'OVERDUE'
