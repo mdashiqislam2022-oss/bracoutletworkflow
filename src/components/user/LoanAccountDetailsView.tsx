@@ -193,15 +193,19 @@ export const LoanAccountDetailsView: React.FC = () => {
       const filteredAccounts = useMemo(() => {
     return unifiedAccounts.filter((item) => {
       // Account type filter
-      if (accountFilter === 'OUTLET' && item.isOutsideOutlet) {
-        return false;
-      }
+if (accountFilter === 'LOAN' && item.source !== 'LOAN') {
+  return false;
+}
 
-      if (accountFilter === 'EXTERNAL' && !item.isOutsideOutlet) {
-        return false;
-      }
+if (accountFilter === 'OUTLET' && item.isOutsideOutlet) {
+  return false;
+}
 
-      // Loan status filter
+if (accountFilter === 'EXTERNAL' && !item.isOutsideOutlet) {
+  return false;
+}
+
+// Loan status filter
       if (statusFilter !== 'ALL') {
         if (item.source !== 'LOAN') {
           return false;
