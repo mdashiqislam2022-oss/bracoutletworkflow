@@ -2954,11 +2954,44 @@ if (sessionStatus.isActive) {
     return newRecord;
   };
 
-  const updateChequeCardEntry = (updatedEntry: ChequeCardEntry) => {
+    const updateChequeCardEntry = (updatedEntry: ChequeCardEntry) => {
     setChequeCardEntries((prev) =>
       prev.map((item) => (item.id === updatedEntry.id ? updatedEntry : item))
     );
     SupabaseService.saveChequeCardEntry(updatedEntry);
+
+    SupabaseService.saveAllAccount({
+      id: updatedEntry.type === 'CHEQUE'
+        ? `ALL-CHEQUE-${updatedEntry.id}`
+        : `ALL-CARD-${updatedEntry.id}`,
+      accountType: updatedEntry.type === 'CHEQUE'
+        ? 'CHEQUE'
+        : 'DEBIT_CARD',
+      accountNumber: updatedEntry.accountNumber,
+      accountTitle:
+        'accountTitle' in updatedEntry
+          ? updatedEntry.accountTitle
+          : updatedEntry.cardName,
+      customerName:
+        'accountTitle' in updatedEntry
+          ? updatedEntry.accountTitle
+          : updatedEntry.cardName,
+      mobileNumber: updatedEntry.mobileNumber,
+      category: updatedEntry.type === 'CHEQUE'
+        ? 'CHEQUE BOOK'
+        : updatedEntry.cardType || 'DEBIT / CREDIT CARD',
+      status: updatedEntry.status,
+      outletId: updatedEntry.outletId,
+      outletName: updatedEntry.outletName,
+      userId: updatedEntry.userId,
+      userName: updatedEntry.userName,
+      isOutsideOutlet: false,
+      sourceTable: 'cheque_card_registry',
+      sourceId: updatedEntry.id,
+      notes: updatedEntry.notes,
+      createdAt: updatedEntry.createdAt,
+      updatedAt: new Date().toISOString()
+    });
     addAuditEntry(
       'REGISTRY_ENTRY_UPDATED',
       `Updated details for ${updatedEntry.type === 'CHEQUE' ? 'Cheque Book' : 'Debit Card'} (${'accountTitle' in updatedEntry ? updatedEntry.accountTitle : updatedEntry.cardName})`
