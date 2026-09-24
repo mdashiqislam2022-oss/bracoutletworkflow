@@ -707,12 +707,15 @@ onKeyDown={(e) => {
           <div className="flex items-center gap-1.5 flex-wrap w-full md:w-auto justify-start md:justify-end" role="tablist" aria-label="Loan status filters">
             <span className="text-[11px] font-bold text-slate-400 mr-1">{isBn ? 'ফিল্টার:' : 'Filter:'}</span>
             {(['ALL', 'ACTIVE', 'CLOSED', 'OVERDUE'] as const).map((filterKey) => (
-              <button
-                key={filterKey}
-                role="tab"
-                aria-selected={statusFilter === filterKey}
-                aria-label={`Filter by ${filterKey} loans`}
-                onClick={() => setStatusFilter(filterKey)}
+  <button
+    key={filterKey}
+    role="tab"
+    aria-selected={statusFilter === filterKey}
+    aria-label={`Filter by ${filterKey} loans`}
+    onClick={() => {
+      setAccountFilter(filterKey === 'ALL' ? 'ALL' : 'LOAN');
+      setStatusFilter(filterKey);
+    }}
                 className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                   statusFilter === filterKey
                     ? 'bg-amber-500 text-slate-950 shadow-xs'
