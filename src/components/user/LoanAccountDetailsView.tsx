@@ -371,7 +371,10 @@ export const LoanAccountDetailsView: React.FC = () => {
             role="button"
             tabIndex={0}
             aria-label={`${totalLoans} total loan records, sanctioned amount ${totalSanctionedAmount.toLocaleString()} BDT. Click to show all loans.`}
-            onClick={() => setStatusFilter('ALL')}
+           onClick={() => {
+  setAccountFilter('ALL');
+  setStatusFilter('ALL');
+}}
             onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') setStatusFilter('ALL'); }}
             className={`p-3.5 rounded-2xl border transition-all cursor-pointer ${
               statusFilter === 'ALL'
