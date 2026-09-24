@@ -495,7 +495,7 @@ export const LoanAccountDetailsView: React.FC = () => {
             <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" aria-hidden="true" />
             <input
               type="text"
-              aria-label={isBn ? 'লোন অ্যাকাউন্ট খুঁজুন' : 'Search loan accounts'}
+             aria-label={isBn ? 'সকল অ্যাকাউন্ট খুঁজুন' : 'Search all accounts'}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder={isBn ? 'অ্যাকাউন্ট টাইটেল, নাম, মোবাইল বা নম্বর খুঁজুন...' : 'Search title, customer, phone, acc no...'}
