@@ -438,18 +438,19 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const [notifications, setNotifications] = useState<StationNotification[]>([]);
   const [chequeCardEntries, setChequeCardEntries] = useState<ChequeCardEntry[]>([]);
   const [loanRecords, setLoanRecords] = useState<LoanAccountRecord[]>([]);
-    const [customerAccounts, setCustomerAccounts] = useState<CustomerAccountRecord[]>([]);
+  const [customerAccounts, setCustomerAccounts] = useState<CustomerAccountRecord[]>([]);
+  const [allAccounts, setAllAccounts] = useState<AllAccountRecord[]>([]);
   const [segregationRecords, setSegregationRecords] = useState<DenominationSegregationRecord[]>([]);
-    const [supportingRecords, setSupportingRecords] = useState<SupportingRecord[]>([]);
-    const [motherAmounts, setMotherAmounts] = useState<MotherAmountRecord[]>([]);
+  const [supportingRecords, setSupportingRecords] = useState<SupportingRecord[]>([]);
+  const [motherAmounts, setMotherAmounts] = useState<MotherAmountRecord[]>([]);
   const [outletTransfers, setOutletTransfers] = useState<OutletTransferRecord[]>([]);
   const [outletVaults, setOutletVaults] = useState<OutletVaultRecord[]>([]);
-    const [cashTransfers, setCashTransfers] = useState<CashTransferRecord[]>([]);
-    const [notes, setNotes] = useState<NoteRecord[]>([]);
+  const [cashTransfers, setCashTransfers] = useState<CashTransferRecord[]>([]);
+  const [notes, setNotes] = useState<NoteRecord[]>([]);
   const [rules, setRules] = useState<RuleRecord[]>([]);
   const [passwordResetRequests, setPasswordResetRequests] = useState<PasswordResetRequest[]>([]);
   const [governanceSettings, setGovernanceSettings] = useState<PortalGovernanceSettings>(defaultGovernanceSettings);
-    const [denominationAdjustments, setDenominationAdjustments] = useState<DenominationAdjustmentRecord[]>([]);
+  const [denominationAdjustments, setDenominationAdjustments] = useState<DenominationAdjustmentRecord[]>([]);
   const [afoTransfers, setAfoTransfers] = useState<AfoTransferRecord[]>([]);
 
   // Current session
