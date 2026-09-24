@@ -38,17 +38,18 @@ import {
 import {
   SupabaseService,
   mapDbToChequeCardEntry,
-    mapDbToLoanRecord,
+  mapDbToLoanRecord,
   mapDbToSubmission,
-    mapDbToCustomerAccount,
+  mapDbToCustomerAccount,
   mapDbToSegregation,
   mapDbToMotherAmount,
   mapDbToOutletTransfer,
-    mapDbToOutletVault,
+  mapDbToOutletVault,
   mapDbToCashTransfer,
-    mapDbToNote,
+  mapDbToNote,
   mapDbToRule,
-  mapDbToSupporting
+  mapDbToSupporting,
+  mapDbToOutlet
 } from '../services/supabaseService';
 import { supabase } from '../lib/supabase';
 import confetti from 'canvas-confetti';
