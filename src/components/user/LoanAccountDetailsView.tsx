@@ -178,24 +178,56 @@ export const LoanAccountDetailsView: React.FC = () => {
   );
 
   // Filtered Loans based on Search & Status
-  const filteredLoans = useMemo(() => {
-    return loanRecords.filter((item) => {
-      // Status Filter
-      if (statusFilter !== 'ALL' && item.loanStatus !== statusFilter) {
-        return false;
+    const filteredAccounts = useMemo(() => {
+    return unifiedAccounts.filter((item) => {
+      // Status filters apply to Loan Accounts.
+      // Other account types remain visible when "ALL" is selected.
+      if (statusFilter !== 'ALL') {
+        if (item.source !== 'LOAN') {
+          return false;
+        }
+
+        if (item.status !== statusFilter) {
+          return false;
+        }
       }
-      // Search Filter: Title, Name, Mobile, Account Number
+
+      // Search Filter
       if (searchQuery.trim()) {
         const q = searchQuery.toLowerCase().trim();
-        const matchTitle = item.accountTitle.toLowerCase().includes(q);
-        const matchName = item.customerName.toLowerCase().includes(q);
-        const matchMobile = item.mobileNumber.includes(q);
-        const matchAccNo = item.loanAccountNumber.includes(q);
-        return matchTitle || matchName || matchMobile || matchAccNo;
+
+        const matchTitle = item.accountTitle
+          .toLowerCase()
+          .includes(q);
+
+        const matchName = item.customerName
+          .toLowerCase()
+          .includes(q);
+
+        const matchMobile = item.mobileNumber
+          .toLowerCase()
+          .includes(q);
+
+        const matchAccNo = item.accountNumber
+          .toLowerCase()
+          .includes(q);
+
+        const matchCategory = item.category
+          .toLowerCase()
+          .includes(q);
+
+        return (
+          matchTitle ||
+          matchName ||
+          matchMobile ||
+          matchAccNo ||
+          matchCategory
+        );
       }
+
       return true;
     });
-  }, [loanRecords, statusFilter, searchQuery]);
+  }, [unifiedAccounts, statusFilter, searchQuery]);
 
   const handleCopy = (text: string, id: string) => {
     navigator.clipboard.writeText(text);
