@@ -3070,8 +3070,34 @@ if (sessionStatus.isActive) {
       createdAt: new Date().toISOString()
     };
 
-    setLoanRecords((prev) => [newRecord, ...prev]);
+        setLoanRecords((prev) => [newRecord, ...prev]);
     SupabaseService.saveLoanRecord(newRecord);
+
+    SupabaseService.saveAllAccount({
+      id: `ALL-LOAN-${newRecord.id}`,
+      accountType: 'LOAN',
+      accountNumber: newRecord.loanAccountNumber,
+      accountTitle: newRecord.accountTitle,
+      customerName: newRecord.customerName,
+      mobileNumber: newRecord.mobileNumber,
+      category: 'LOAN ACCOUNT',
+      status: newRecord.loanStatus,
+      outletId: newRecord.outletId,
+      outletName: newRecord.outletName,
+      userId: newRecord.userId,
+      userName: newRecord.userName,
+      isOutsideOutlet: false,
+      loanAmount: newRecord.loanAmount,
+      monthlyInstallment: newRecord.monthlyInstallment,
+      disbursementDate: newRecord.disbursementDate,
+      interestRate: newRecord.interestRate,
+      loanTenureYears: newRecord.loanTenureYears,
+      sourceTable: 'loan_records',
+      sourceId: newRecord.id,
+      notes: newRecord.notes,
+      createdAt: newRecord.createdAt,
+      updatedAt: newRecord.createdAt
+    });
 
     addAuditEntry(
       'LOAN_ACCOUNT_REGISTERED',
