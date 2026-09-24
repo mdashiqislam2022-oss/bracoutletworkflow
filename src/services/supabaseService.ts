@@ -1890,6 +1890,11 @@ async releaseAfoSession(userId: string, sessionId: string): Promise<boolean> {
         { event: '*', schema: 'public', table: 'afo_transfers' },
         (payload) => callbacks.onTransferChange?.(payload)
       )
+            .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'all_accounts' },
+        (payload) => callbacks.onAllAccountChange?.(payload)
+      )
       .subscribe();
 
     return () => {
