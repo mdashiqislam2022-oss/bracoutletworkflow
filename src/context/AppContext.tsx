@@ -3779,10 +3779,11 @@ if (sessionStatus.isActive) {
         updateLoanRecord,
         deleteLoanRecord,
 
-        // Denomination Segregation Module
-                customerAccounts,
+                // Denomination Segregation Module
+        customerAccounts,
+        allAccounts,
         segregationRecords,
-                addCustomerAccount,
+        addCustomerAccount,
         addSegregationRecord,
         updateSegregationNote,
 
