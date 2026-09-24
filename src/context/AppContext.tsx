@@ -3146,11 +3146,47 @@ if (sessionStatus.isActive) {
     return newRecord;
   };
 
-  const updateLoanRecord = (updatedRecord: LoanAccountRecord) => {
+    const updateLoanRecord = (updatedRecord: LoanAccountRecord) => {
+    const updatedAt = new Date().toISOString();
+
+    const recordToSave = {
+      ...updatedRecord,
+      updatedAt
+    };
+
     setLoanRecords((prev) =>
-      prev.map((item) => (item.id === updatedRecord.id ? { ...updatedRecord, updatedAt: new Date().toISOString() } : item))
+      prev.map((item) =>
+        item.id === updatedRecord.id ? recordToSave : item
+      )
     );
-    SupabaseService.saveLoanRecord(updatedRecord);
+
+    SupabaseService.saveLoanRecord(recordToSave);
+
+    SupabaseService.saveAllAccount({
+      id: `ALL-LOAN-${recordToSave.id}`,
+      accountType: 'LOAN',
+      accountNumber: recordToSave.loanAccountNumber,
+      accountTitle: recordToSave.accountTitle,
+      customerName: recordToSave.customerName,
+      mobileNumber: recordToSave.mobileNumber,
+      category: 'LOAN ACCOUNT',
+      status: recordToSave.loanStatus,
+      outletId: recordToSave.outletId,
+      outletName: recordToSave.outletName,
+      userId: recordToSave.userId,
+      userName: recordToSave.userName,
+      isOutsideOutlet: false,
+      loanAmount: recordToSave.loanAmount,
+      monthlyInstallment: recordToSave.monthlyInstallment,
+      disbursementDate: recordToSave.disbursementDate,
+      interestRate: recordToSave.interestRate,
+      loanTenureYears: recordToSave.loanTenureYears,
+      sourceTable: 'loan_records',
+      sourceId: recordToSave.id,
+      notes: recordToSave.notes,
+      createdAt: recordToSave.createdAt,
+      updatedAt
+    });
     addAuditEntry(
       'LOAN_ACCOUNT_UPDATED',
       `Updated loan record details for ${updatedRecord.accountTitle} (Loan Acc: ${updatedRecord.loanAccountNumber})`
