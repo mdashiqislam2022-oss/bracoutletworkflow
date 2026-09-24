@@ -55,6 +55,7 @@ export const LoanAccountDetailsView: React.FC = () => {
     loanRecords,
     chequeCardEntries,
     customerAccounts,
+    allAccounts,
     addLoanRecord,
     updateLoanRecord,
     deleteLoanRecord,
