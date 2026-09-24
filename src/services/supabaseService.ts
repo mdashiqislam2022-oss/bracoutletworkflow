@@ -835,7 +835,7 @@ export const SupabaseService = {
     if (!this.isAvailable() || !supabase) return null;
 
     try {
-      const [
+            const [
         outletsRes,
         usersRes,
         adminsRes,
@@ -843,7 +843,8 @@ export const SupabaseService = {
         chequeCardRes,
         loanRes,
         customerAccountsRes,
-               segregationsRes,
+        allAccountsRes,
+        segregationsRes,
         supportingRes,
                         motherAmountsRes,
         outletTransfersRes,
