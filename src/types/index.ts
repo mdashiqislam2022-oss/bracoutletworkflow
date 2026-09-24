@@ -353,6 +353,47 @@ export interface CustomerAccountRecord {
   createdAt: string;
   isOutsideOutlet?: boolean;
 }
+export interface AllAccountRecord {
+  id: string;
+  accountType:
+    | 'LOAN'
+    | 'SAVINGS'
+    | 'CURRENT'
+    | 'CHEQUE'
+    | 'DEBIT_CARD'
+    | 'CREDIT_CARD';
+
+  accountNumber: string;
+  accountTitle: string;
+
+  customerName?: string;
+  mobileNumber?: string;
+
+  category?: string;
+  status?: string;
+
+  outletId: string;
+  outletName: string;
+
+  userId?: string;
+  userName?: string;
+
+  isOutsideOutlet: boolean;
+
+  loanAmount?: number;
+  monthlyInstallment?: number;
+  disbursementDate?: string;
+  interestRate?: number;
+  loanTenureYears?: number;
+
+  sourceTable?: string;
+  sourceId?: string;
+
+  notes?: string;
+
+  createdAt: string;
+  updatedAt: string;
+}
 export interface DenominationSegregationRecord {
   id: string;
   transactionType: SegregationTransactionType;
