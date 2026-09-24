@@ -156,6 +156,15 @@ export const LoanAccountDetailsView: React.FC = () => {
     );
   }, [loanRecords, chequeCardEntries, customerAccounts, currentUser]);
   const totalLoans = loanRecords.length;
+    const outletAccounts = useMemo(
+    () => unifiedAccounts.filter((account) => !account.isOutsideOutlet),
+    [unifiedAccounts]
+  );
+
+  const externalAccounts = useMemo(
+    () => unifiedAccounts.filter((account) => account.isOutsideOutlet),
+    [unifiedAccounts]
+  );
   const activeLoans = useMemo(
     () => loanRecords.filter((l) => l.loanStatus === 'ACTIVE'),
     [loanRecords]
