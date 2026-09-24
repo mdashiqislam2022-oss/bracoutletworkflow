@@ -476,13 +476,13 @@ onKeyDown={(e) => {
             role="button"
             tabIndex={0}
             aria-label={`${closedLoans.length} closed or settled loans. Click to filter closed loans.`}
-           onClick={() => {
-  setAccountFilter('ALL');
+          onClick={() => {
+  setAccountFilter('LOAN');
   setStatusFilter('CLOSED');
 }}
-           onKeyDown={(e) => {
+onKeyDown={(e) => {
   if (e.key === 'Enter' || e.key === ' ') {
-    setAccountFilter('ALL');
+    setAccountFilter('LOAN');
     setStatusFilter('CLOSED');
   }
 }}
