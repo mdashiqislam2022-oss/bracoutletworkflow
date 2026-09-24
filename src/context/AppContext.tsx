@@ -2789,8 +2789,29 @@ if (sessionStatus.isActive) {
       createdAt: new Date().toISOString()
     };
 
-        setChequeCardEntries((prev) => [newRecord, ...prev]);
+         setChequeCardEntries((prev) => [newRecord, ...prev]);
     SupabaseService.saveChequeCardEntry(newRecord);
+
+    SupabaseService.saveAllAccount({
+      id: `ALL-CARD-${newRecord.id}`,
+      accountType: 'DEBIT_CARD',
+      accountNumber: newRecord.accountNumber,
+      accountTitle: newRecord.cardName,
+      customerName: newRecord.cardName,
+      mobileNumber: newRecord.mobileNumber,
+      category: newRecord.cardType || 'DEBIT / CREDIT CARD',
+      status: newRecord.status,
+      outletId: newRecord.outletId,
+      outletName: newRecord.outletName,
+      userId: newRecord.userId,
+      userName: newRecord.userName,
+      isOutsideOutlet: false,
+      sourceTable: 'cheque_card_registry',
+      sourceId: newRecord.id,
+      notes: newRecord.notes,
+      createdAt: newRecord.createdAt,
+      updatedAt: newRecord.createdAt
+    });
 
     SupabaseService.saveAllAccount({
       id: `ALL-CHEQUE-${newRecord.id}`,
