@@ -519,12 +519,12 @@ onKeyDown={(e) => {
             tabIndex={0}
             aria-label={`${overdueLoans.length} overdue or defaulted loans. Click to filter overdue loans.`}
            onClick={() => {
-  setAccountFilter('ALL');
+  setAccountFilter('LOAN');
   setStatusFilter('OVERDUE');
 }}
-            onKeyDown={(e) => {
+onKeyDown={(e) => {
   if (e.key === 'Enter' || e.key === ' ') {
-    setAccountFilter('ALL');
+    setAccountFilter('LOAN');
     setStatusFilter('OVERDUE');
   }
 }}
