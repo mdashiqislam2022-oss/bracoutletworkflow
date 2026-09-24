@@ -298,35 +298,75 @@ if (statusFilter !== 'ALL') {
   };
 
   const handleExportCsv = () => {
-    if (loanRecords.length === 0) {
-      alert(isBn ? 'এক্সপোর্ট করার জন্য কোন লোন ডাটা নেই।' : 'No loan records to export.');
-      return;
-    }
-    const headers = ['Account Title', 'Customer Name', 'Mobile Number', 'Loan Account No', 'Loan Amount (BDT)', 'Monthly Installment (BDT)', 'Disbursement Date', 'Interest Rate (%)', 'Tenure (Years)', 'Status', 'Notes'];
-    const rows = loanRecords.map((l) => [
-      `"${l.accountTitle.replace(/"/g, '""')}"`,
-      `"${l.customerName.replace(/"/g, '""')}"`,
-      `"${l.mobileNumber}"`,
-      `"${l.loanAccountNumber}"`,
-      l.loanAmount,
-      l.monthlyInstallment,
-      l.disbursementDate,
-      `${l.interestRate}%`,
-      l.loanTenureYears,
-      l.loanStatus,
-      `"${(l.notes || '').replace(/"/g, '""')}"`
-    ]);
+  if (filteredAccounts.length === 0) {
+    alert(
+      isBn
+        ? 'এক্সপোর্ট করার জন্য কোনো অ্যাকাউন্ট ডাটা নেই।'
+        : 'No account records to export.'
+    );
+    return;
+  }
 
-    const csvContent = 'data:text/csv;charset=utf-8,\uFEFF' + [headers.join(','), ...rows.map((r) => r.join(','))].join('\n');
-    const encodedUri = encodeURI(csvContent);
-    const link = document.createElement('a');
-    link.setAttribute('href', encodedUri);
-    link.setAttribute('download', `Loan_Accounts_Registry_${new Date().toISOString().split('T')[0]}.csv`);
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    setToast({ message: isBn ? 'CSV রিপোর্ট ডাউনলোড সম্পন্ন!' : 'Loan CSV export completed!', type: 'success' });
-  };
+  const headers = [
+    'Account Type',
+    'Account Number',
+    'Account Title',
+    'Customer Name',
+    'Mobile Number',
+    'Category',
+    'Status',
+    'Outlet Name',
+    'Created At',
+    'Loan Amount (BDT)',
+    'Monthly Installment (BDT)',
+    'Disbursement Date',
+    'Interest Rate (%)',
+    'Tenure (Years)',
+    'Outside Outlet'
+  ];
+
+  const rows = filteredAccounts.map((account) => [
+    `"${account.source.replace(/"/g, '""')}"`,
+    `"${account.accountNumber.replace(/"/g, '""')}"`,
+    `"${account.accountTitle.replace(/"/g, '""')}"`,
+    `"${account.customerName.replace(/"/g, '""')}"`,
+    `"${account.mobileNumber.replace(/"/g, '""')}"`,
+    `"${account.category.replace(/"/g, '""')}"`,
+    `"${account.status.replace(/"/g, '""')}"`,
+    `"${account.outletName.replace(/"/g, '""')}"`,
+    `"${account.createdAt}"`,
+    account.loanAmount ?? '',
+    account.monthlyInstallment ?? '',
+    account.disbursementDate ?? '',
+    account.interestRate ?? '',
+    account.loanTenureYears ?? '',
+    account.isOutsideOutlet ? 'Yes' : 'No'
+  ]);
+
+  const csvContent =
+    'data:text/csv;charset=utf-8,\uFEFF' +
+    [headers.join(','), ...rows.map((row) => row.join(','))].join('\n');
+
+  const encodedUri = encodeURI(csvContent);
+  const link = document.createElement('a');
+
+  link.setAttribute('href', encodedUri);
+  link.setAttribute(
+    'download',
+    `All_Accounts_Registry_${new Date().toISOString().split('T')[0]}.csv`
+  );
+
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+
+  setToast({
+    message: isBn
+      ? 'সকল অ্যাকাউন্টের CSV রিপোর্ট ডাউনলোড সম্পন্ন!'
+      : 'All Accounts CSV export completed!',
+    type: 'success'
+  });
+};
 
   return (
     <div className="space-y-4 animate-in fade-in duration-200">
