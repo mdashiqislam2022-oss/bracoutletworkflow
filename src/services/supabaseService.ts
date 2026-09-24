@@ -1834,6 +1834,7 @@ async releaseAfoSession(userId: string, sessionId: string): Promise<boolean> {
     onMailChange?: (payload: any) => void;
     onResetRequestChange?: (payload: any) => void;
     onTransferChange?: (payload: any) => void;
+    onAllAccountChange?: (payload: any) => void;
   }) {
     if (!this.isAvailable() || !supabase) return () => {};
 
