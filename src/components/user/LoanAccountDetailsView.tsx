@@ -75,6 +75,85 @@ export const LoanAccountDetailsView: React.FC = () => {
   const [copiedId, setCopiedId] = useState<string | null>(null);
 
   // Overview Counts & Financial Math
+    const unifiedAccounts = useMemo<UnifiedAccount[]>(() => {
+    const accounts: UnifiedAccount[] = [];
+
+    // 1. Loan Accounts
+    loanRecords
+      .filter((loan) => !currentUser || loan.outletId === currentUser.outletId)
+      .forEach((loan) => {
+        accounts.push({
+          source: 'LOAN',
+          id: loan.id,
+          accountNumber: loan.loanAccountNumber,
+          accountTitle: loan.accountTitle,
+          customerName: loan.customerName,
+          mobileNumber: loan.mobileNumber,
+          category: 'LOAN ACCOUNT',
+          status: loan.loanStatus,
+          outletId: loan.outletId,
+          outletName: loan.outletName,
+          createdAt: loan.createdAt,
+          loanAmount: loan.loanAmount,
+          monthlyInstallment: loan.monthlyInstallment,
+          disbursementDate: loan.disbursementDate,
+          interestRate: loan.interestRate,
+          loanTenureYears: loan.loanTenureYears,
+          loanRecord: loan,
+          isOutsideOutlet: false
+        });
+      });
+
+    // 2. Cheque / Debit / Credit Card Accounts
+    chequeCardEntries
+      .filter((entry) => !currentUser || entry.outletId === currentUser.outletId)
+      .forEach((entry: any) => {
+        accounts.push({
+          source: entry.type === 'CHEQUE' ? 'CHEQUE' : 'CARD',
+          id: entry.id,
+          accountNumber: entry.accountNumber,
+          accountTitle: entry.accountTitle || entry.cardName || 'Customer',
+          customerName: entry.accountTitle || entry.cardName || 'Customer',
+          mobileNumber: entry.mobileNumber,
+          category: entry.type === 'CHEQUE'
+            ? 'CHEQUE BOOK'
+            : 'DEBIT / CREDIT CARD',
+          status: entry.status,
+          outletId: entry.outletId,
+          outletName: entry.outletName,
+          createdAt: entry.createdAt,
+          isOutsideOutlet: false
+        });
+      });
+
+    // 3. Savings / Current Accounts added from Cash Counting
+    customerAccounts
+      .filter((account) => !currentUser || account.outletId === currentUser.outletId)
+      .forEach((account) => {
+        accounts.push({
+          source: 'CUSTOMER',
+          id: account.id,
+          accountNumber: account.accountNumber,
+          accountTitle: account.accountTitle,
+          customerName: account.accountTitle,
+          mobileNumber: account.mobileNumber,
+          category: account.isOutsideOutlet
+            ? 'EXTERNAL ACCOUNT'
+            : account.accountCategory,
+          status: account.status,
+          outletId: account.outletId,
+          outletName: account.outletName,
+          createdAt: account.createdAt,
+          isOutsideOutlet: account.isOutsideOutlet === true
+        });
+      });
+
+    return accounts.sort(
+      (a, b) =>
+        new Date(b.createdAt).getTime() -
+        new Date(a.createdAt).getTime()
+    );
+  }, [loanRecords, chequeCardEntries, customerAccounts, currentUser]);
   const totalLoans = loanRecords.length;
   const activeLoans = useMemo(
     () => loanRecords.filter((l) => l.loanStatus === 'ACTIVE'),
