@@ -646,6 +646,24 @@ if (cloudData.rules && cloudData.rules.length) setRules(cloudData.rules);
           setSubmissions((prev) => prev.filter((s) => s.id !== payload.old.id));
         }
       },
+            onOutletChange: (payload) => {
+        if (payload.eventType === 'INSERT' && payload.new) {
+          const outlet = mapDbToOutlet(payload.new);
+          setOutlets((prev) => [
+            ...prev.filter((o) => o.id !== outlet.id),
+            outlet
+          ]);
+        } else if (payload.eventType === 'UPDATE' && payload.new) {
+          const outlet = mapDbToOutlet(payload.new);
+          setOutlets((prev) =>
+            prev.map((o) => (o.id === outlet.id ? outlet : o))
+          );
+        } else if (payload.eventType === 'DELETE' && payload.old) {
+          setOutlets((prev) =>
+            prev.filter((o) => o.id !== payload.old.id)
+          );
+        }
+      },
             onUserChange: (payload) => {
         if (payload.eventType === 'INSERT' && payload.new) {
           const u = payload.new;
