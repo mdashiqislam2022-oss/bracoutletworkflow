@@ -381,9 +381,9 @@ if (accountFilter === 'EXTERNAL' && !item.isOutsideOutlet) {
   setAccountFilter('LOAN');
   setStatusFilter('ALL');
 }}
-           onKeyDown={(e) => {
+ onKeyDown={(e) => {
   if (e.key === 'Enter' || e.key === ' ') {
-    setAccountFilter('ALL');
+    setAccountFilter('LOAN');
     setStatusFilter('ALL');
   }
 }}
