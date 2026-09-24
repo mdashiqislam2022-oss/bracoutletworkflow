@@ -245,8 +245,7 @@ export const LoanAccountDetailsView: React.FC = () => {
 
       return true;
     });
-  }, [unifiedAccounts, statusFilter, searchQuery]);
-
+    }, [unifiedAccounts, accountFilter, statusFilter, searchQuery]);
   const handleCopy = (text: string, id: string) => {
     navigator.clipboard.writeText(text);
     setCopiedId(id);
