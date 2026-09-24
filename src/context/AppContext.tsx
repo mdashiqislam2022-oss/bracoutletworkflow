@@ -3160,8 +3160,31 @@ if (sessionStatus.isActive) {
       isOutsideOutlet: true
     };
 
-    setCustomerAccounts((prev) => [newRecord, ...prev]);
+        setCustomerAccounts((prev) => [newRecord, ...prev]);
     SupabaseService.saveCustomerAccount(newRecord);
+
+    SupabaseService.saveAllAccount({
+      id: `ALL-CUSTOMER-${newRecord.id}`,
+      accountType: newRecord.accountCategory,
+      accountNumber: newRecord.accountNumber,
+      accountTitle: newRecord.accountTitle,
+      customerName: newRecord.accountTitle,
+      mobileNumber: newRecord.mobileNumber,
+      category: newRecord.isOutsideOutlet
+        ? 'EXTERNAL ACCOUNT'
+        : newRecord.accountCategory,
+      status: newRecord.status,
+      outletId: newRecord.outletId,
+      outletName: newRecord.outletName,
+      userId: newRecord.userId,
+      userName: newRecord.userName,
+      isOutsideOutlet: newRecord.isOutsideOutlet === true,
+      sourceTable: 'customer_accounts',
+      sourceId: newRecord.id,
+      notes: newRecord.notes,
+      createdAt: newRecord.createdAt,
+      updatedAt: newRecord.createdAt
+    });
     addAuditEntry(
       'CUSTOMER_ACCOUNT_ADDED',
       `New ${data.accountCategory} account added: ${data.accountTitle} (Acc: ${data.accountNumber})`,
