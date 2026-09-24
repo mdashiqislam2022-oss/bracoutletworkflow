@@ -232,6 +232,33 @@ export const mapCustomerAccountToDb = (record: CustomerAccountRecord) => {
     updated_at: new Date().toISOString()
   };
 };
+export const mapAllAccountToDb = (record: AllAccountRecord) => {
+  return {
+    id: record.id,
+    account_type: record.accountType,
+    account_number: record.accountNumber,
+    account_title: record.accountTitle,
+    customer_name: record.customerName || null,
+    mobile_number: record.mobileNumber || null,
+    category: record.category || null,
+    status: record.status || null,
+    outlet_id: record.outletId,
+    outlet_name: record.outletName,
+    user_id: record.userId || null,
+    user_name: record.userName || null,
+    is_outside_outlet: record.isOutsideOutlet || false,
+    loan_amount: record.loanAmount || 0,
+    monthly_installment: record.monthlyInstallment || 0,
+    disbursement_date: record.disbursementDate || null,
+    interest_rate: record.interestRate ?? null,
+    loan_tenure_years: record.loanTenureYears ?? null,
+    source_table: record.sourceTable || null,
+    source_id: record.sourceId || null,
+    notes: record.notes || null,
+    created_at: record.createdAt,
+    updated_at: record.updatedAt || new Date().toISOString()
+  };
+};
 /**
  * Maps DB row to DenominationSegregationRecord
  */
