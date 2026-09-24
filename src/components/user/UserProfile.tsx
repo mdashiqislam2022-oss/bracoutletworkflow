@@ -623,6 +623,28 @@ export const UserProfileView: React.FC = () => {
               }`}>
                 <strong>{myOutlet?.contactNumber || 'Not Set'}</strong>
               </div>
+                       </div>
+
+            <div>
+              <label className={`block text-[11px] font-semibold mb-1 ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
+                Operating Hours (Fixed)
+              </label>
+              <div className={`p-3.5 rounded-xl border text-xs flex items-center gap-2 ${
+                isDark ? 'bg-slate-800/80 border-slate-700 text-slate-200' : 'bg-[#F4F6F8] border-slate-200/60 text-slate-700'
+              }`}>
+                <strong>{myOutlet?.operatingHours || 'Not Set'}</strong>
+              </div>
+            </div>
+
+            <div>
+              <label className={`block text-[11px] font-semibold mb-1 ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
+                Established Year (Fixed)
+              </label>
+              <div className={`p-3.5 rounded-xl border text-xs flex items-center gap-2 ${
+                isDark ? 'bg-slate-800/80 border-slate-700 text-slate-200' : 'bg-[#F4F6F8] border-slate-200/60 text-slate-700'
+              }`}>
+                <strong>{myOutlet?.establishedYear || 'Not Set'}</strong>
+              </div>
             </div>
 
             <div className="sm:col-span-2">
