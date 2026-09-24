@@ -434,13 +434,13 @@ if (accountFilter === 'EXTERNAL' && !item.isOutsideOutlet) {
             role="button"
             tabIndex={0}
             aria-label={`${activeLoans.length} active loans, monthly EMI ৳${totalMonthlyEmiExpected.toLocaleString()}. Click to filter active loans.`}
-           onClick={() => {
-  setAccountFilter('ALL');
+          onClick={() => {
+  setAccountFilter('LOAN');
   setStatusFilter('ACTIVE');
 }}
-            onKeyDown={(e) => {
+onKeyDown={(e) => {
   if (e.key === 'Enter' || e.key === ' ') {
-    setAccountFilter('ALL');
+    setAccountFilter('LOAN');
     setStatusFilter('ACTIVE');
   }
 }}
