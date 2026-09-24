@@ -331,7 +331,7 @@ export const LoanAccountDetailsView: React.FC = () => {
             <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
               {isBn
                ? 'আপনার আউটলেটের সকল লোন, চেক, কার্ড, সেভিংস ও কারেন্ট অ্যাকাউন্ট এক জায়গা থেকে দেখুন এবং পরিচালনা করুন'
-: 'View and manage all loan, cheque, card, savings and current accounts associated with this outlet'
+               : 'View and manage all loan, cheque, card, savings and current accounts associated with this outlet'}
             </p>
           </div>
 
