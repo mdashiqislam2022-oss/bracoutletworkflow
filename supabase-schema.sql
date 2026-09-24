@@ -20,6 +20,8 @@ CREATE TABLE IF NOT EXISTS public.outlets (
     contact_email TEXT,
     address TEXT NOT NULL,
     is_active BOOLEAN NOT NULL DEFAULT true,
+        operating_hours TEXT,
+    established_year TEXT,
     is_suspended BOOLEAN NOT NULL DEFAULT false,
     is_deleted BOOLEAN NOT NULL DEFAULT false,
     status TEXT NOT NULL DEFAULT 'ACTIVE',
