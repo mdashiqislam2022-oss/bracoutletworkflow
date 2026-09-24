@@ -498,7 +498,7 @@ export const LoanAccountDetailsView: React.FC = () => {
              aria-label={isBn ? 'সকল অ্যাকাউন্ট খুঁজুন' : 'Search all accounts'}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder={isBn ? 'অ্যাকাউন্ট টাইটেল, নাম, মোবাইল বা নম্বর খুঁজুন...' : 'Search title, customer, phone, acc no...'}
+             placeholder={isBn ? 'অ্যাকাউন্ট, নাম, মোবাইল, নম্বর বা ক্যাটাগরি খুঁজুন...' : 'Search account, customer, phone, number or category...'}
               className={`w-full text-xs font-semibold pl-9 pr-8 py-2 rounded-xl border transition-colors focus:outline-none ${
                 isDark
                   ? 'bg-slate-900/80 border-slate-700 focus:border-amber-500 text-white placeholder-slate-500'
