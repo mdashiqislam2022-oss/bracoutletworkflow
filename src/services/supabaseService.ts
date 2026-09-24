@@ -1136,6 +1136,20 @@ export const SupabaseService = {
       console.warn('Error saving customer account to Supabase:', err);
     }
   },
+    // Save/Upsert Independent All Account Record
+  async saveAllAccount(record: AllAccountRecord) {
+    if (!this.isAvailable() || !supabase) return;
+
+    try {
+      const dbRow = mapAllAccountToDb(record);
+
+      await supabase
+        .from('all_accounts')
+        .upsert(dbRow);
+    } catch (err) {
+      console.warn('Error saving all account to Supabase:', err);
+    }
+  },
 
   // Delete Customer Account
   async deleteCustomerAccount(id: string) {
