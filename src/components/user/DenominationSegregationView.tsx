@@ -498,7 +498,7 @@ export const DenominationSegregationView: React.FC = () => {
            <Tag size={12} /> {isBn ? 'চার্জ' : 'Charge'}
           </div>
           <div className="text-xs font-bold mt-0.5 text-amber-600 truncate">
-            Total Charge
+          {isBn ? 'মোট চার্জ' : 'Total Charge'}
           </div>
           <div className="text-sm font-extrabold mt-0.5 text-amber-600 truncate">
             ৳ {totalChargeAmount.toLocaleString()}
