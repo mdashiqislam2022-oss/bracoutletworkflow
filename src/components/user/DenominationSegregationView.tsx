@@ -844,7 +844,7 @@ export const DenominationSegregationView: React.FC = () => {
             <div className={`relative flex items-center gap-2 rounded-xl border px-2.5 py-1.5 ${inputBg}`}>
               <div className="flex flex-col leading-tight">
                                 <span className="text-[11px] font-bold text-rose-500 flex items-center gap-1">
-                  <ArrowUpCircle size={11} /> Return Amount
+                 <ArrowUpCircle size={11} /> {isBn ? 'ফেরত টাকা' : 'Return Amount'}
                 </span>
               </div>
                            <button
