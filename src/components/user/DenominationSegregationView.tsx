@@ -95,6 +95,7 @@ export const DenominationSegregationView: React.FC = () => {
   } = useApp();
 
   const isDark = userPreferences.theme === 'dark';
+  const isBn = userPreferences.language === 'bn';
 
     // ---------- Calculator State ----------
    const [activeType, setActiveType] = useState<SegregationTransactionType>(() => {
