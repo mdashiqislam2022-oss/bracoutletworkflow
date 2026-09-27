@@ -718,7 +718,9 @@ export const DenominationSegregationView: React.FC = () => {
             {isChangeMode && showChangePopup && (
               <div className={`mt-2 rounded-xl border shadow-lg p-3 ${cardBg}`}>
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-xs font-bold text-indigo-600">Received Denomination (from Customer)</span>
+                  <span className="text-xs font-bold text-indigo-600">
+  {isBn ? 'গ্রাহকের কাছ থেকে প্রাপ্ত নোট' : 'Received Denomination (from Customer)'}
+</span>
                   <button onClick={() => setShowChangePopup(false)} className="text-slate-400">
                     <X size={14} />
                   </button>
