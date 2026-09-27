@@ -868,7 +868,9 @@ export const DenominationSegregationView: React.FC = () => {
               {showReturnPopup && (
                 <div className={`absolute z-30 bottom-full left-0 right-0 mb-2 rounded-xl border shadow-lg p-3 ${cardBg}`}>
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-xs font-bold text-rose-500">Return Denomination Breakdown</span>
+                    <span className="text-xs font-bold text-rose-500">
+  {isBn ? 'ফেরত টাকার নোটভিত্তিক হিসাব' : 'Return Denomination Breakdown'}
+</span>
                     <button onClick={() => setShowReturnPopup(false)} className="text-slate-400">
                       <X size={14} />
                     </button>
@@ -889,7 +891,7 @@ export const DenominationSegregationView: React.FC = () => {
                     ))}
                   </div>
                   <div className="text-right text-[11px] font-bold text-rose-500 mt-2">
-                    Total Return: ৳ {returnDenomTotal.toLocaleString()}
+                    {isBn ? 'মোট ফেরত:' : 'Total Return:'} ৳ {returnDenomTotal.toLocaleString()}
                   </div>
                 </div>
               )}
@@ -903,11 +905,11 @@ export const DenominationSegregationView: React.FC = () => {
             >
               {copiedFeedback ? (
                 <span className="flex items-center gap-1 text-emerald-500 font-bold">
-                  <Check size={13} /> Copied
+                  <Check size={13} /> {isBn ? 'কপি হয়েছে' : 'Copied'}
                 </span>
               ) : (
                 <>
-                  <Copy size={13} /> Copy Amount
+                  <Copy size={13} /> {isBn ? 'টাকা কপি করুন' : 'Copy Amount'}
                 </>
               )}
             </button>
