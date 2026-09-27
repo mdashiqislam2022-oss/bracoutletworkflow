@@ -981,13 +981,14 @@ export const DenominationSegregationView: React.FC = () => {
         <div className={`rounded-2xl border p-4 md:p-5 ${cardBg}`}>
           <div className="flex items-center justify-between mb-3">
             <h3 className={`font-bold flex items-center gap-2 ${isDark ? 'text-slate-100' : 'text-slate-900'}`}>
-              <Users size={18} className="text-emerald-500" /> Account & Customer Search
+             <Users size={18} className="text-emerald-500" />
+{isBn ? 'অ্যাকাউন্ট ও গ্রাহক অনুসন্ধান' : 'Account & Customer Search'}
             </h3>
             <button
               onClick={() => setShowAddCustomer((v) => !v)}
               className="text-xs font-semibold text-emerald-500 flex items-center gap-1"
             >
-              <Plus size={13} /> Add New Customer
+              <Plus size={13} /> {isBn ? 'নতুন গ্রাহক যোগ করুন' : 'Add New Customer'}
             </button>
           </div>
 
@@ -998,13 +999,21 @@ export const DenominationSegregationView: React.FC = () => {
                 onChange={(e) => setNewCustAccNo(e.target.value.replace(/\D/g, '').slice(0, 16))}
                 inputMode="numeric"
                 maxLength={16}
-                placeholder="Account Number (max 16 digits)"
+               placeholder={
+  isBn
+    ? 'অ্যাকাউন্ট নম্বর (সর্বোচ্চ ১৬ সংখ্যা)'
+    : 'Account Number (max 16 digits)'
+}
                 className={`w-full rounded-lg border px-2 py-1.5 text-sm ${inputBg}`}
               />
                             <input
                 value={newCustTitle}
                 onChange={(e) => setNewCustTitle(e.target.value.replace(/[^a-zA-Z\s.]/g, '').toUpperCase())}
-                placeholder="Customer / Account Title"
+                placeholder={
+  isBn
+    ? 'গ্রাহক / অ্যাকাউন্টের নাম'
+    : 'Customer / Account Title'
+}
                 className={`w-full rounded-lg border px-2 py-1.5 text-sm ${inputBg}`}
               />
                                            <input
@@ -1012,14 +1021,22 @@ export const DenominationSegregationView: React.FC = () => {
                 onChange={(e) => setNewCustMobile(e.target.value.replace(/\D/g, '').slice(0, 11))}
                 inputMode="numeric"
                 maxLength={11}
-                placeholder="Mobile Number (11 digits)"
+                placeholder={
+  isBn
+    ? 'মোবাইল নম্বর (১১ সংখ্যা)'
+    : 'Mobile Number (11 digits)'
+}
                 className={`w-full rounded-lg border px-2 py-1.5 text-sm ${inputBg}`}
               />
               {activeType === 'CD' && (
                 <input
                   value={bearerName}
                   onChange={(e) => setBearerName(e.target.value)}
-                  placeholder="Bearer Name (optional)"
+                  placeholder={
+  isBn
+    ? 'বাহকের নাম (ঐচ্ছিক)'
+    : 'Bearer Name (optional)'
+}
                   className={`w-full rounded-lg border px-2 py-1.5 text-sm ${inputBg}`}
                 />
               )}
@@ -1032,7 +1049,7 @@ export const DenominationSegregationView: React.FC = () => {
                       : 'bg-transparent border-emerald-500 text-emerald-500'
                   }`}
                 >
-                  Savings
+                                   {isBn ? 'সেভিংস' : 'Savings'}
                 </button>
                 <button
                   onClick={() => setNewCustCategory('CURRENT')}
@@ -1042,14 +1059,14 @@ export const DenominationSegregationView: React.FC = () => {
                       : 'bg-transparent border-blue-500 text-blue-500'
                   }`}
                 >
-                  Current
+                                    {isBn ? 'কারেন্ট' : 'Current'}
                 </button>
               </div>
               <button
                 onClick={handleAddCustomer}
                 className="w-full py-1.5 rounded-lg bg-emerald-500 text-white text-xs font-bold"
               >
-                Save Customer
+                                {isBn ? 'গ্রাহক সংরক্ষণ করুন' : 'Save Customer'}
               </button>
             </div>
           )}
