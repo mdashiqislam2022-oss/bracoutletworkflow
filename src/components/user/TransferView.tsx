@@ -42,7 +42,8 @@ const emptyDenoms = (): Record<DenomKey, number> => ({
 
 export const TransferView: React.FC = () => {
    const { currentUser, userPreferences, cashTransfers, addCashTransfer, showToast, outlets, segregationRecords, updateSegregationNote, updateCashTransferNote } = useApp();
-  const isDark = userPreferences.theme === 'dark';
+    const isDark = userPreferences.theme === 'dark';
+  const isBn = userPreferences.language === 'bn';
   const cardBg = isDark ? 'bg-[#1A2333] border-slate-800' : 'bg-white border-slate-200';
   const inputBg = isDark
     ? 'bg-[#0F172A] border-slate-700 text-slate-100'
@@ -67,7 +68,35 @@ export const TransferView: React.FC = () => {
   });
   const [monthDropdownOpen, setMonthDropdownOpen] = useState(false);
   const [yearDropdownOpen, setYearDropdownOpen] = useState(false);
-  const monthNamesList = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+   const monthNamesList = isBn
+    ? [
+        'জানুয়ারি',
+        'ফেব্রুয়ারি',
+        'মার্চ',
+        'এপ্রিল',
+        'মে',
+        'জুন',
+        'জুলাই',
+        'আগস্ট',
+        'সেপ্টেম্বর',
+        'অক্টোবর',
+        'নভেম্বর',
+        'ডিসেম্বর'
+      ]
+    : [
+        'January',
+        'February',
+        'March',
+        'April',
+        'May',
+        'June',
+        'July',
+        'August',
+        'September',
+        'October',
+        'November',
+        'December'
+      ];
   const yearOptionsList = Array.from({ length: 20 }, (_, i) => 2020 + i);
   const myTransfers = useMemo(() => {
     return cashTransfers.filter((t) => !currentUser || t.userId === currentUser.id);
@@ -127,7 +156,10 @@ export const TransferView: React.FC = () => {
     }
     setNoteEditRowId(null);
     setNoteInputText('');
-    showToast({ message: 'Note added.', type: 'success' });
+       showToast({
+      message: isBn ? 'নোট যোগ করা হয়েছে।' : 'Note added.',
+      type: 'success'
+    });
   };
 
   const mySegregations = useMemo(() => {
@@ -232,7 +264,8 @@ export const TransferView: React.FC = () => {
       <div className={`rounded-2xl border p-4 md:p-5 ${cardBg}`}>
                 <div className="flex items-center justify-between mb-1">
           <h2 className={`font-bold text-lg flex items-center gap-2 ${isDark ? 'text-slate-100' : 'text-slate-900'}`}>
-            <ArrowRightLeft className="text-emerald-500" size={20} /> Transfer & Analysis
+                        <ArrowRightLeft className="text-emerald-500" size={20} />
+            {isBn ? 'ট্রান্সফার ও বিশ্লেষণ' : 'Transfer & Analysis'}
           </h2>
           <button
             type="button"
@@ -242,7 +275,9 @@ export const TransferView: React.FC = () => {
             }`}
           >
             <History size={14} />
-            {activeTab === 'history' ? 'Transfer' : 'History'}
+                        {activeTab === 'history'
+              ? (isBn ? 'ট্রান্সফার' : 'Transfer')
+              : (isBn ? 'ইতিহাস' : 'History')}
           </button>
                </div>
 
@@ -254,19 +289,19 @@ export const TransferView: React.FC = () => {
         <div className="grid grid-cols-3 gap-3 mb-6 max-w-2xl">
           <div className="rounded-xl border p-3 border-blue-500/40 bg-blue-500/10">
             <div className="flex items-center gap-1.5 text-[11px] font-semibold text-blue-600">
-              <Landmark size={13} /> RTGS Transfer
+                           <Landmark size={13} /> {isBn ? 'RTGS ট্রান্সফার' : 'RTGS Transfer'}
             </div>
             <div className="text-lg font-extrabold mt-1 text-blue-600">৳ {rtgsTotal.toLocaleString()}</div>
           </div>
           <div className="rounded-xl border p-3 border-purple-500/40 bg-purple-500/10">
             <div className="flex items-center gap-1.5 text-[11px] font-semibold text-purple-600">
-              <Wallet size={13} /> Move Money Transfer
+                            <Wallet size={13} /> {isBn ? 'মুভ মানি ট্রান্সফার' : 'Move Money Transfer'}
             </div>
             <div className="text-lg font-extrabold mt-1 text-purple-600">৳ {moveMoneyTotal.toLocaleString()}</div>
           </div>
           <div className="rounded-xl border p-3 border-teal-500/40 bg-teal-500/10">
             <div className="flex items-center gap-1.5 text-[11px] font-semibold text-teal-600">
-              <Send size={13} /> Transferred Amount to Outlet
+                           <Send size={13} /> {isBn ? 'আউটলেটে ট্রান্সফারকৃত টাকা' : 'Transferred Amount to Outlet'}
             </div>
             <div className="text-lg font-extrabold mt-1 text-teal-600">৳ {transferToOutletTotal.toLocaleString()}</div>
           </div>
@@ -276,7 +311,7 @@ export const TransferView: React.FC = () => {
           {/* Left: Transfer form */}
           <div className={`rounded-xl border p-3 space-y-2 ${inputBg}`}>
             <div className="text-xs font-bold flex items-center gap-1.5 text-emerald-600">
-              <Send size={14} /> Transfer Option
+                           <Send size={14} /> {isBn ? 'ট্রান্সফারের ধরন' : 'Transfer Option'}
             </div>
 
                         <div className="flex gap-2">
@@ -288,7 +323,7 @@ export const TransferView: React.FC = () => {
                     : `${inputBg}`
                 }`}
               >
-                RTGS Transfer
+                               {isBn ? 'RTGS ট্রান্সফার' : 'RTGS Transfer'}
               </button>
               <button
                 onClick={() => setTransferType('MOVE_MONEY')}
@@ -298,7 +333,7 @@ export const TransferView: React.FC = () => {
                     : `${inputBg}`
                 }`}
               >
-                Move Money
+                                {isBn ? 'মুভ মানি' : 'Move Money'}
               </button>
               <button
                 onClick={() => setTransferType('TRANSFER_TO_OUTLET')}
@@ -308,14 +343,16 @@ export const TransferView: React.FC = () => {
                     : `${inputBg}`
                 }`}
               >
-                Transfer to Outlet
+                                {isBn ? 'আউটলেটে ট্রান্সফার' : 'Transfer to Outlet'}
               </button>
             </div>
 
                         {transferType === 'RTGS' && (
               <div className={`rounded-lg border p-2 ${inputBg}`}>
                 <div className="flex items-center justify-between gap-2 mb-1.5">
-                  <span className="text-xs font-bold text-slate-500">RTGS Charge</span>
+                                    <span className="text-xs font-bold text-slate-500">
+                    {isBn ? 'RTGS চার্জ' : 'RTGS Charge'}
+                  </span>
                   <div className="flex gap-1">
                     <button
                       type="button"
@@ -324,7 +361,7 @@ export const TransferView: React.FC = () => {
                         rtgsChargeEnabled ? 'bg-emerald-500 text-white border-emerald-500' : `${inputBg}`
                       }`}
                     >
-                      Yes
+                                           {isBn ? 'হ্যাঁ' : 'Yes'}
                     </button>
                     <button
                       type="button"
@@ -333,7 +370,7 @@ export const TransferView: React.FC = () => {
                         !rtgsChargeEnabled ? 'bg-rose-500 text-white border-rose-500' : `${inputBg}`
                       }`}
                     >
-                      No
+                                           {isBn ? 'না' : 'No'}
                     </button>
                   </div>
                 </div>
@@ -343,7 +380,7 @@ export const TransferView: React.FC = () => {
                   value={rtgsChargeAmount}
                   onChange={(e) => setRtgsChargeAmount(e.target.value)}
                   disabled={!rtgsChargeEnabled}
-                  placeholder="Charge amount"
+                                    placeholder={isBn ? 'চার্জের পরিমাণ' : 'Charge amount'}
                   className={`w-full rounded-lg border px-2 py-1.5 text-xs ${inputBg} ${!rtgsChargeEnabled ? 'opacity-40 cursor-not-allowed' : ''}`}
                 />
               </div>
@@ -354,13 +391,13 @@ export const TransferView: React.FC = () => {
               min={0}
               value={amountInput}
               onChange={(e) => setAmountInput(e.target.value)}
-              placeholder="Amount"
+                            placeholder={isBn ? 'পরিমাণ' : 'Amount'}
               className={`w-full rounded-lg border px-2 py-1.5 text-xs ${inputBg}`}
             />
             <input
               value={note}
               onChange={(e) => setNote(e.target.value)}
-              placeholder="Note (optional)"
+                          placeholder={isBn ? 'নোট (ঐচ্ছিক)' : 'Note (optional)'}
               className={`w-full rounded-lg border px-2 py-1.5 text-xs ${inputBg}`}
             />
 
@@ -371,7 +408,11 @@ export const TransferView: React.FC = () => {
                   onClick={() => setOutletDropdownOpen((v) => !v)}
                   className={`w-full flex items-center justify-between rounded-lg border px-2 py-1.5 text-xs font-semibold ${inputBg}`}
                 >
-                  <span className="truncate">{selectedDestinationOutlet ? selectedDestinationOutlet.name : 'Select Destination Outlet'}</span>
+                                   <span className="truncate">
+                    {selectedDestinationOutlet
+                      ? selectedDestinationOutlet.name
+                      : (isBn ? 'গন্তব্য আউটলেট নির্বাচন করুন' : 'Select Destination Outlet')}
+                  </span>
                   <ChevronDown size={13} className="text-slate-400 shrink-0" />
                 </button>
                 {outletDropdownOpen && (
@@ -381,13 +422,15 @@ export const TransferView: React.FC = () => {
                         autoFocus
                         value={outletSearchTerm}
                         onChange={(e) => setOutletSearchTerm(e.target.value)}
-                        placeholder="Search outlet..."
+                                                placeholder={isBn ? 'আউটলেট খুঁজুন...' : 'Search outlet...'}
                         className={`w-full rounded-lg border px-2 py-1 text-xs ${inputBg}`}
                       />
                     </div>
                     <div className="max-h-40 overflow-y-auto">
                       {filteredOutlets.length === 0 && (
-                        <div className="text-[11px] text-slate-500 text-center py-3">No outlet found.</div>
+                                               <div className="text-[11px] text-slate-500 text-center py-3">
+                          {isBn ? 'কোনো আউটলেট পাওয়া যায়নি।' : 'No outlet found.'}
+                        </div>
                       )}
                       {filteredOutlets.map((o) => (
                         <button
@@ -416,14 +459,14 @@ export const TransferView: React.FC = () => {
               disabled={!canSaveTransfer}
               className="w-full py-1.5 rounded-lg bg-emerald-500 text-white text-xs font-bold disabled:opacity-40 disabled:cursor-not-allowed"
             >
-              Save Transfer
+                           {isBn ? 'ট্রান্সফার সংরক্ষণ করুন' : 'Save Transfer'}
             </button>
           </div>
 
                             {/* Right: Segregation panel (enabled for RTGS & Transfer to Outlet, disabled for Move Money) */}
          <div className={`rounded-xl border p-3 space-y-2 transition-all ${inputBg} ${transferType === 'MOVE_MONEY' ? 'opacity-40 grayscale pointer-events-none' : ''}`}>
               <div className="text-xs font-bold flex items-center gap-1.5 text-blue-600 mb-1">
-                Segregation
+                                {isBn ? 'নোটের হিসাব' : 'Segregation'}
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1.5">
@@ -467,7 +510,7 @@ export const TransferView: React.FC = () => {
                     setCopiedTotal(true);
                     setTimeout(() => setCopiedTotal(false), 1500);
                   }}
-                  title="Copy exact amount"
+                                    title={isBn ? 'সঠিক পরিমাণ কপি করুন' : 'Copy exact amount'}
                   className={`p-1 rounded-md border transition-colors ${
                     copiedTotal
                       ? 'border-emerald-500 text-emerald-500'
@@ -478,7 +521,7 @@ export const TransferView: React.FC = () => {
                                >
                   {copiedTotal ? <Check size={12} /> : <Copy size={12} />}
                 </button>
-                Segregated Total: ৳ {segregatedTotal.toLocaleString()}
+                                {isBn ? 'মোট নোটের পরিমাণ:' : 'Segregated Total:'} ৳ {segregatedTotal.toLocaleString()}
               </div>
                       </div>
         </div>
@@ -494,7 +537,9 @@ export const TransferView: React.FC = () => {
                   onClick={() => setHistoryTypeDropdownOpen((v) => !v)}
                   className={`flex items-center gap-1.5 rounded-lg border px-2.5 py-1.5 text-[11px] font-semibold ${inputBg}`}
                 >
-                  {historyTypeFilter === 'ALL' ? 'All Types' : historyTypeFilter}
+                                  {historyTypeFilter === 'ALL'
+                    ? (isBn ? 'সকল ধরন' : 'All Types')
+                    : historyTypeFilter}
                   <ChevronDown size={12} className="text-slate-400" />
                 </button>
                 {historyTypeDropdownOpen && (
@@ -506,7 +551,9 @@ export const TransferView: React.FC = () => {
                         onClick={() => { setHistoryTypeFilter(tp); setHistoryTypeDropdownOpen(false); }}
                         className={`w-full text-left px-3 py-2 text-xs font-semibold hover:bg-emerald-500/10 ${historyTypeFilter === tp ? 'text-emerald-500' : ''}`}
                       >
-                        {tp === 'ALL' ? 'All Types' : tp}
+                                                {tp === 'ALL'
+                          ? (isBn ? 'সকল ধরন' : 'All Types')
+                          : tp}
                       </button>
                     ))}
                   </div>
@@ -521,7 +568,7 @@ export const TransferView: React.FC = () => {
                   <Calendar size={12} className="text-emerald-500" />
                   {dateFilter
                     ? new Date(dateFilter + 'T00:00:00').toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })
-                    : 'All Dates'}
+                                        : (isBn ? 'সকল তারিখ' : 'All Dates')}
                   <ChevronDown size={12} className="text-slate-400" />
                 </button>
 
@@ -639,7 +686,10 @@ export const TransferView: React.FC = () => {
                   </div>
 
                   <div className="grid grid-cols-7 gap-1 mb-1">
-                    {['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'].map((d, i) => (
+                                       {(isBn
+                      ? ['রবি', 'সোম', 'মঙ্গল', 'বুধ', 'বৃহস্পতি', 'শুক্র', 'শনি']
+                      : ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa']
+                    ).map((d, i) => (
                       <div
                         key={d}
                         className={`text-center text-[10px] font-bold ${i === 5 || i === 6 ? 'text-rose-500' : 'text-slate-400'}`}
@@ -691,7 +741,7 @@ export const TransferView: React.FC = () => {
                       }}
                       className="text-xs font-semibold text-rose-500"
                     >
-                      Clear
+                                           {isBn ? 'পরিষ্কার' : 'Clear'}
                     </button>
                     <button
                       onClick={() => {
@@ -702,7 +752,7 @@ export const TransferView: React.FC = () => {
                       }}
                       className="text-xs font-semibold text-emerald-500"
                     >
-                      Today
+                                            {isBn ? 'আজ' : 'Today'}
                     </button>
                   </div>
                 </div>
@@ -711,17 +761,24 @@ export const TransferView: React.FC = () => {
 
             <div className={`flex items-center justify-between rounded-lg border px-3 py-2 mb-2 text-[11px] font-bold ${inputBg}`}>
               <span>
-                Total ({historyTypeFilter === 'ALL' ? 'All Types' : historyTypeFilter} ·{' '}
+                               {isBn ? 'মোট' : 'Total'} (
+                {historyTypeFilter === 'ALL'
+                  ? (isBn ? 'সকল ধরন' : 'All Types')
+                  : historyTypeFilter} ·{' '}
                 {dateFilter
                   ? new Date(dateFilter + 'T00:00:00').toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })
-                  : 'All Dates'})
+                                   : (isBn ? 'সকল তারিখ' : 'All Dates')})
               </span>
               <span>৳ {combinedHistoryTotal.toLocaleString()}</span>
             </div>
 
             <div className="space-y-1.5 max-h-96 overflow-y-auto">
               {combinedUserHistory.length === 0 && (
-                <div className="text-xs text-slate-500 text-center py-6">No transaction history found.</div>
+                              <div className="text-xs text-slate-500 text-center py-6">
+                  {isBn
+                    ? 'কোনো লেনদেনের ইতিহাস পাওয়া যায়নি।'
+                    : 'No transaction history found.'}
+                </div>
               )}
                             {combinedUserHistory.map((h) => (
                 <div key={h.id} className={`relative rounded-lg border px-3 py-2 text-[11px] ${inputBg}`}>
@@ -731,7 +788,7 @@ export const TransferView: React.FC = () => {
                       {h.note ? <span className="text-slate-500"> ({h.note})</span> : null}
                       {h.bearerName ? (
                         <span className="ml-1 inline-block px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-600 text-[9px] font-bold align-middle">
-                          Bearer: {h.bearerName}
+                                                    {isBn ? 'বাহক:' : 'Bearer:'} {h.bearerName}
                         </span>
                       ) : null}
                       <div className="text-slate-500">{new Date(h.createdAt).toLocaleString()}</div>
@@ -764,7 +821,9 @@ export const TransferView: React.FC = () => {
             <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4">
               <div className={`rounded-2xl border shadow-lg p-4 max-w-sm w-full ${cardBg}`}>
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-sm font-bold">Add Note</span>
+                                   <span className="text-sm font-bold">
+                    {isBn ? 'নোট যোগ করুন' : 'Add Note'}
+                  </span>
                   <button type="button" onClick={() => setNoteEditRowId(null)} className="text-slate-400">
                     <X size={16} />
                   </button>
@@ -772,7 +831,11 @@ export const TransferView: React.FC = () => {
                 <textarea
                   value={noteInputText}
                   onChange={(e) => setNoteInputText(e.target.value)}
-                  placeholder="Note your correction..."
+                                   placeholder={
+                    isBn
+                      ? 'আপনার সংশোধনের নোট লিখুন...'
+                      : 'Note your correction...'
+                  }
                   rows={3}
                   autoFocus
                   className={`w-full rounded-lg border px-2 py-1.5 text-xs mb-3 ${inputBg}`}
@@ -783,14 +846,14 @@ export const TransferView: React.FC = () => {
                     onClick={() => setNoteEditRowId(null)}
                     className={`flex-1 py-1.5 rounded-lg text-xs font-semibold border ${inputBg}`}
                   >
-                    Cancel
+                                       {isBn ? 'বাতিল' : 'Cancel'}
                   </button>
                   <button
                     type="button"
                     onClick={() => handleSubmitRowNote(targetRow)}
                     className="flex-1 py-1.5 rounded-lg bg-emerald-500 text-white text-xs font-bold"
                   >
-                    Submit
+                                        {isBn ? 'জমা দিন' : 'Submit'}
                   </button>
                 </div>
               </div>
