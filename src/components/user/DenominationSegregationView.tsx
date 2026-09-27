@@ -38,13 +38,62 @@ const DENOM_RIGHT: { key: DenomKey; value: number }[] = [
   { key: 'note1000', value: 1000 }
 ];
 
-const TX_TYPES: { id: SegregationTransactionType; label: string; short: string; icon: React.ElementType }[] = [
-  { id: 'CD', label: 'Cash Deposit', short: 'Deposit', icon: ArrowDownCircle },
-  { id: 'CW', label: 'Cash Withdraw', short: 'Withdraw', icon: ArrowUpCircle },
-  { id: 'ID', label: 'Initial Deposit', short: 'Init', icon: Wallet },
-  { id: 'LD', label: 'Loan Disbursement', short: 'Loan', icon: Banknote },
-  { id: 'LR', label: 'Loan Repayment', short: 'Repay', icon: RefreshCcw },
-  { id: 'BC', label: 'Bill Collection', short: 'Bill', icon: CreditCard }
+const TX_TYPES: {
+  id: SegregationTransactionType;
+  label: string;
+  bnLabel: string;
+  short: string;
+  bnShort: string;
+  icon: React.ElementType;
+}[] = [
+  {
+    id: 'CD',
+    label: 'Cash Deposit',
+    bnLabel: 'নগদ জমা',
+    short: 'Deposit',
+    bnShort: 'জমা',
+    icon: ArrowDownCircle
+  },
+  {
+    id: 'CW',
+    label: 'Cash Withdraw',
+    bnLabel: 'নগদ উত্তোলন',
+    short: 'Withdraw',
+    bnShort: 'উত্তোলন',
+    icon: ArrowUpCircle
+  },
+  {
+    id: 'ID',
+    label: 'Initial Deposit',
+    bnLabel: 'প্রাথমিক জমা',
+    short: 'Init',
+    bnShort: 'প্রাথমিক',
+    icon: Wallet
+  },
+  {
+    id: 'LD',
+    label: 'Loan Disbursement',
+    bnLabel: 'লোন বিতরণ',
+    short: 'Loan',
+    bnShort: 'লোন',
+    icon: Banknote
+  },
+  {
+    id: 'LR',
+    label: 'Loan Repayment',
+    bnLabel: 'লোন পরিশোধ',
+    short: 'Repay',
+    bnShort: 'পরিশোধ',
+    icon: RefreshCcw
+  },
+  {
+    id: 'BC',
+    label: 'Bill Collection',
+    bnLabel: 'বিল সংগ্রহ',
+    short: 'Bill',
+    bnShort: 'বিল',
+    icon: CreditCard
+  }
 ];
 
 // Charge Slabs — applicable only for CD (Cash Deposit) & CW (Cash Withdraw)
