@@ -573,7 +573,7 @@ export const DenominationSegregationView: React.FC = () => {
                       : `${inputBg} text-slate-500`
                   } ${!chargeIsApplicable ? 'opacity-40 cursor-not-allowed' : ''}`}
                 >
-                  Yes
+                  {isBn ? 'হ্যাঁ' : 'Yes'}
                 </button>
                 <button
                   onClick={() => setChargeApplied(false)}
