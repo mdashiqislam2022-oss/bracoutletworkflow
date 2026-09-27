@@ -917,9 +917,13 @@ export const DenominationSegregationView: React.FC = () => {
           {/* Totals */}
           <div className="grid grid-cols-2 gap-3 mb-4">
             <div className={`rounded-xl border p-3 ${inputBg}`}>
-              <div className="text-[11px] text-slate-500">TOTAL RCVD</div>
+             <div className="text-[11px] text-slate-500">
+  {isBn ? 'মোট প্রাপ্ত' : 'TOTAL RCVD'}
+</div>
               <div className="text-lg font-extrabold">৳ {totalReceivedAmount.toLocaleString()}</div>
-              <div className="text-[10px] text-slate-500">{totalPieces} notes</div>
+              <div className="text-[10px] text-slate-500">
+  {totalPieces} {isBn ? 'টি নোট' : 'notes'}
+</div>
             </div>
                         <div className="relative rounded-xl border border-emerald-500/40 bg-emerald-500/10 p-3">
               <span className={`absolute top-2 right-2 px-1.5 py-0.5 rounded text-[9px] font-bold ${
@@ -927,9 +931,13 @@ export const DenominationSegregationView: React.FC = () => {
               }`}>
                 {activeType}
               </span>
-              <div className="text-[11px] text-emerald-600 font-semibold">ACTUAL AMT</div>
+             <div className="text-[11px] text-emerald-600 font-semibold">
+  {isBn ? 'প্রকৃত পরিমাণ' : 'ACTUAL AMT'}
+</div>
               <div className="text-lg font-extrabold text-emerald-600">৳ {actualAmount.toLocaleString()}</div>
-              <div className="text-[10px] text-emerald-600">Net posted amount</div>
+             <div className="text-[10px] text-emerald-600">
+  {isBn ? 'নিট পোস্টকৃত পরিমাণ' : 'Net posted amount'}
+</div>
             </div>
           </div>
 
