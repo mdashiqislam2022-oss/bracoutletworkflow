@@ -636,7 +636,11 @@ export const DenominationSegregationView: React.FC = () => {
                 onClick={() => setCrossOutletDropdownOpen((v) => !v)}
                 className={`flex-1 min-w-[140px] flex items-center justify-between rounded-lg border px-2 py-1 text-xs font-semibold ${inputBg}`}
               >
-                <span className="truncate">{crossOutlet ? crossOutlet.name : 'Select Outlet (optional)'}</span>
+                <span className="truncate">
+  {crossOutlet
+    ? crossOutlet.name
+    : (isBn ? 'আউটলেট নির্বাচন করুন (ঐচ্ছিক)' : 'Select Outlet (optional)')}
+</span>
                 <ChevronDown size={13} className="text-slate-400 shrink-0" />
               </button>
               {crossOutletId && (
