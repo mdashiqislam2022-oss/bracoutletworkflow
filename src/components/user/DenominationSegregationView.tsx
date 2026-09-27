@@ -741,7 +741,7 @@ export const DenominationSegregationView: React.FC = () => {
                   ))}
                 </div>
                 <div className="text-right text-[11px] font-bold text-indigo-600 mt-2">
-                  Total Received: ৳ {changeReceivedTotal.toLocaleString()}
+                 {isBn ? 'মোট প্রাপ্ত:' : 'Total Received:'} ৳ {changeReceivedTotal.toLocaleString()}
                 </div>
               </div>
             )}
