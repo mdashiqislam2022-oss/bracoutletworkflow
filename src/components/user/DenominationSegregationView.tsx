@@ -519,7 +519,7 @@ export const DenominationSegregationView: React.FC = () => {
      {isBn ? 'নোটের হিসাব ক্যালকুলেটর' : 'Denomination Segregation Calculator'}
             </h3>
                            <button onClick={handleClear} className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-rose-500 hover:bg-rose-600 text-white text-xs font-bold shadow-sm transition active:scale-90">
-              <Trash2 size={14} /> Clear
+             <Trash2 size={14} /> {isBn ? 'পরিষ্কার' : 'Clear'}
             </button>
           </div>
 
