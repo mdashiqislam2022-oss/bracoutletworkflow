@@ -503,7 +503,7 @@ export const DenominationSegregationView: React.FC = () => {
           <div className="text-sm font-extrabold mt-0.5 text-amber-600 truncate">
             ৳ {totalChargeAmount.toLocaleString()}
           </div>
-          <div className="text-[10px] text-amber-600/70 truncate">From CD</div>
+          <div className="text-[10px] text-amber-600/70 truncate">{isBn ? 'CD থেকে' : 'From CD'}</div>
         </div>
       </div>
 
