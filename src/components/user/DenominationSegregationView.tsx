@@ -616,7 +616,9 @@ export const DenominationSegregationView: React.FC = () => {
                 </div>
                 {!chargeIsApplicable && (
                   <div className="mt-2 text-[10px] text-slate-500 text-center">
-                    Charge slab only applies to CD (Cash Deposit) and CW (Cash Withdraw).
+                   {isBn
+  ? 'চার্জ স্ল্যাব শুধুমাত্র CD (নগদ জমা) এবং CW (নগদ উত্তোলন)-এর ক্ষেত্রে প্রযোজ্য।'
+  : 'Charge slab only applies to CD (Cash Deposit) and CW (Cash Withdraw).'}
                   </div>
                 )}
               </div>
