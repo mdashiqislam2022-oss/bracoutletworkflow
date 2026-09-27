@@ -552,7 +552,7 @@ export const DenominationSegregationView: React.FC = () => {
                 onClick={() => setShowChargeSheet((v) => !v)}
                 className="flex items-center gap-1.5 text-xs font-bold text-amber-600"
               >
-                <Tag size={14} /> Charge Sheet
+                <Tag size={14} /> {isBn ? 'চার্জ শিট' : 'Charge Sheet'}
                 <ChevronDown size={14} className={`transition-transform ${showChargeSheet ? 'rotate-180' : ''}`} />
               </button>
 
@@ -561,7 +561,9 @@ export const DenominationSegregationView: React.FC = () => {
               </div>
 
               <div className="flex items-center gap-2 ml-auto">
-                <span className="text-xs font-semibold text-slate-500">Apply Charge:</span>
+                <span className="text-xs font-semibold text-slate-500">
+  {isBn ? 'চার্জ প্রয়োগ:' : 'Apply Charge:'}
+</span>
                 <button
                   onClick={() => chargeIsApplicable && setChargeApplied(true)}
                   disabled={!chargeIsApplicable}
