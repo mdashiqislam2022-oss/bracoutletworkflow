@@ -962,12 +962,16 @@ export const DenominationSegregationView: React.FC = () => {
             }
             className="w-full py-2.5 rounded-xl bg-emerald-500 text-white font-bold text-sm disabled:opacity-40 disabled:cursor-not-allowed"
           >
-            Save & Record Transaction
+                       {isBn ? 'সংরক্ষণ ও লেনদেন রেকর্ড করুন' : 'Save & Record Transaction'}
           </button>
           <textarea
             value={note}
             onChange={(e) => setNote(e.target.value)}
-            placeholder="Write a short note (optional)..."
+            placeholder={
+  isBn
+    ? 'সংক্ষিপ্ত নোট লিখুন (ঐচ্ছিক)...'
+    : 'Write a short note (optional)...'
+}
             rows={2}
             className={`w-full mt-3 rounded-xl border px-3 py-2 text-xs resize-none ${inputBg}`}
           />
