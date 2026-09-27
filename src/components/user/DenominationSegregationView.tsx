@@ -495,7 +495,7 @@ export const DenominationSegregationView: React.FC = () => {
         {/* Total Charge Amount (CD only) — box section, not part of the calculator */}
         <div className="rounded-xl border p-2.5 border-amber-500/40 bg-amber-500/10">
           <div className="flex items-center gap-1 text-[10px] font-semibold text-amber-600">
-            <Tag size={12} /> Charge
+           <Tag size={12} /> {isBn ? 'চার্জ' : 'Charge'}
           </div>
           <div className="text-xs font-bold mt-0.5 text-amber-600 truncate">
             Total Charge
