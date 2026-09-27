@@ -488,7 +488,7 @@ export const DenominationSegregationView: React.FC = () => {
             <div className="text-sm font-extrabold mt-0.5 text-emerald-500 truncate">
               ৳ {summaryByType[tx.id].amount.toLocaleString()}
             </div>
-            <div className="text-[10px] text-slate-500">{summaryByType[tx.id].count} Entries</div>
+            <div className="text-[10px] text-slate-500">{summaryByType[tx.id].count} {isBn ? 'টি এন্ট্রি' : 'Entries'}</div>
           </div>
         ))}
 
