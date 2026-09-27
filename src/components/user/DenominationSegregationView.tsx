@@ -851,7 +851,7 @@ export const DenominationSegregationView: React.FC = () => {
                 type="button"
                 onClick={() => setShowReturnPopup((v) => !v)}
                 className="ml-auto flex items-center justify-center w-7 h-7 rounded-lg border border-slate-200 dark:border-slate-600 text-slate-400 hover:text-emerald-500 hover:border-emerald-500 active:scale-90 transition-all duration-150 shrink-0"
-                title="Break down return amount by denomination"
+                title={isBn ? 'ফেরত টাকার নোটভিত্তিক হিসাব' : 'Break down return amount by denomination'}
               >
                 <ChevronDown size={18} className={`transition-transform duration-200 ${showReturnPopup ? 'rotate-180' : ''}`} />
               </button>
