@@ -1076,7 +1076,11 @@ export const DenominationSegregationView: React.FC = () => {
             <input
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              placeholder="Search Account No, Customer Name, Mobile..."
+              placeholder={
+  isBn
+    ? 'অ্যাকাউন্ট নম্বর, গ্রাহকের নাম, মোবাইল খুঁজুন...'
+    : 'Search Account No, Customer Name, Mobile...'
+}
               className={`w-full rounded-lg border pl-9 pr-3 py-2 text-sm ${inputBg}`}
             />
           </div>
