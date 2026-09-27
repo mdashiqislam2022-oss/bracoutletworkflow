@@ -374,14 +374,24 @@ export const DenominationSegregationView: React.FC = () => {
     const handleCopyAmount = () => {
     if (actualAmount <= 0) return;
     navigator.clipboard.writeText(String(actualAmount));
-    showToast({ message: `Amount ৳${actualAmount.toLocaleString()} copied!`, type: 'success' });
+    showToast({
+  message: isBn
+    ? `৳${actualAmount.toLocaleString()} টাকা কপি হয়েছে!`
+    : `Amount ৳${actualAmount.toLocaleString()} copied!`,
+  type: 'success'
+});
     setCopiedFeedback(true);
     setTimeout(() => setCopiedFeedback(false), 2000);
   };
 
    const handleAddCustomer = () => {
     if (!newCustAccNo.trim() && !newCustTitle.trim() && !newCustMobile.trim()) {
-      showToast({ message: 'Please enter at least one of: Account Number, Title, or Mobile Number.', type: 'error' });
+      showToast({
+  message: isBn
+    ? 'অন্তত একটি তথ্য দিন: অ্যাকাউন্ট নম্বর, নাম অথবা মোবাইল নম্বর।'
+    : 'Please enter at least one of: Account Number, Title, or Mobile Number.',
+  type: 'error'
+});
       return;
     }
     const created = addCustomerAccount({
@@ -407,11 +417,21 @@ export const DenominationSegregationView: React.FC = () => {
     const handleSave = () => {
     if (isChangeMode) {
       if (changeReceivedTotal <= 0) {
-        showToast({ message: 'Please enter the denomination received from customer.', type: 'error' });
+        showToast({
+  message: isBn
+    ? 'গ্রাহকের কাছ থেকে প্রাপ্ত নোটের হিসাব দিন।'
+    : 'Please enter the denomination received from customer.',
+  type: 'error'
+});
         return;
       }
       if (changeReceivedTotal !== totalReceivedAmount) {
-        showToast({ message: 'Received amount and Given amount must match exactly.', type: 'error' });
+        showToast({
+  message: isBn
+    ? 'প্রাপ্ত টাকা এবং প্রদত্ত টাকার পরিমাণ অবশ্যই সমান হতে হবে।'
+    : 'Received amount and Given amount must match exactly.',
+  type: 'error'
+});
         return;
       }
       addSegregationRecord({
@@ -438,11 +458,21 @@ export const DenominationSegregationView: React.FC = () => {
     }
 
     if (!selectedAccount) {
-      showToast({ message: 'Please select an account first.', type: 'error' });
+      showToast({
+  message: isBn
+    ? 'প্রথমে একটি অ্যাকাউন্ট নির্বাচন করুন।'
+    : 'Please select an account first.',
+  type: 'error'
+});
       return;
     }
     if (totalReceivedAmount <= 0) {
-      showToast({ message: 'Please enter at least one denomination count.', type: 'error' });
+      showToast({
+  message: isBn
+    ? 'অন্তত একটি নোটের সংখ্যা দিন।'
+    : 'Please enter at least one denomination count.',
+  type: 'error'
+});
       return;
     }
              addSegregationRecord({
@@ -1087,10 +1117,10 @@ export const DenominationSegregationView: React.FC = () => {
 
           <div className="flex gap-1.5 mb-3 flex-wrap">
             {[
-              { id: 'ALL', label: 'All Accounts' },
-              { id: 'SAVINGS', label: 'Savings/Current' },
-              { id: 'LOAN', label: 'Loan Accounts' },
-              { id: 'CARDS', label: 'Cards & Cheques' }
+              { id: 'ALL', label: isBn ? 'সকল অ্যাকাউন্ট' : 'All Accounts' },
+{ id: 'SAVINGS', label: isBn ? 'সেভিংস/কারেন্ট' : 'Savings/Current' },
+{ id: 'LOAN', label: isBn ? 'লোন অ্যাকাউন্ট' : 'Loan Accounts' },
+{ id: 'CARDS', label: isBn ? 'কার্ড ও চেক' : 'Cards & Cheques' }
             ].map((tab) => (
               <button
                 key={tab.id}
@@ -1106,7 +1136,9 @@ export const DenominationSegregationView: React.FC = () => {
 
           <div className="space-y-2 max-h-[360px] overflow-y-auto">
             {searchResults.length === 0 && (
-              <div className="text-xs text-slate-500 text-center py-6">No accounts found.</div>
+              <div className="text-xs text-slate-500 text-center py-6">
+  {isBn ? 'কোনো অ্যাকাউন্ট পাওয়া যায়নি।' : 'No accounts found.'}
+</div>
             )}
                        {searchResults.map((acc) => (
               <div
@@ -1127,7 +1159,7 @@ export const DenominationSegregationView: React.FC = () => {
                   </div>
                 </div>
                 <span className="text-xs font-bold text-emerald-500 flex items-center gap-1">
-                  <Check size={13} /> Select
+                  <Check size={13} /> {isBn ? 'নির্বাচন করুন' : 'Select'}
                 </span>
               </div>
             ))}
