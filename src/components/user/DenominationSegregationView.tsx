@@ -483,7 +483,7 @@ export const DenominationSegregationView: React.FC = () => {
               <tx.icon size={12} /> {tx.id}
             </div>
             <div className={`text-xs font-bold mt-0.5 truncate ${isDark ? 'text-slate-100' : 'text-slate-900'}`}>
-              {tx.short}
+                {isBn ? tx.bnShort : tx.short}
             </div>
             <div className="text-sm font-extrabold mt-0.5 text-emerald-500 truncate">
               ৳ {summaryByType[tx.id].amount.toLocaleString()}
