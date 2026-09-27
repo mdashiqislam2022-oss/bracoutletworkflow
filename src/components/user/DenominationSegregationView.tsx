@@ -664,7 +664,9 @@ export const DenominationSegregationView: React.FC = () => {
                         crossOutletDirection === 'THERE' ? 'bg-teal-500 text-white' : 'text-slate-500'
                       }`}
                     >
-                                          {activeType === 'CW' || activeType === 'LD' ? `Cash Paid From ${crossOutlet?.name}` : `Cash Received at ${crossOutlet?.name}`}
+                    {activeType === 'CW' || activeType === 'LD'
+  ? `${isBn ? 'নগদ প্রদান' : 'Cash Paid From'} ${crossOutlet?.name}`
+  : `${isBn ? 'নগদ গ্রহণ' : 'Cash Received at'} ${crossOutlet?.name}`}
                     </button>
                   </div>
                                    <button type="button" onClick={() => setCrossOutletId('')} className="text-rose-500 shrink-0">
