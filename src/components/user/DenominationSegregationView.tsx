@@ -581,7 +581,7 @@ export const DenominationSegregationView: React.FC = () => {
                     !chargeApplied ? 'bg-rose-500 text-white' : `${inputBg} text-slate-500`
                   }`}
                 >
-                  No
+                    {isBn ? 'না' : 'No'}
                 </button>
               </div>
             </div>
