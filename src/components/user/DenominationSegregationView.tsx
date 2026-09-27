@@ -590,7 +590,10 @@ export const DenominationSegregationView: React.FC = () => {
               <div className={`absolute z-20 top-full left-0 right-0 mt-2 rounded-xl border shadow-lg p-3 ${cardBg}`}>
                 <div className="flex items-center justify-between mb-2">
                   <span className={`text-xs font-bold ${isDark ? 'text-slate-100' : 'text-slate-900'}`}>
-                    {activeType === 'CW' ? 'Cash Withdraw (CW)' : 'Cash Deposit (CD)'} Charge Slabs
+                   {activeType === 'CW'
+  ? (isBn ? 'নগদ উত্তোলন (CW)' : 'Cash Withdraw (CW)')
+  : (isBn ? 'নগদ জমা (CD)' : 'Cash Deposit (CD)')}{' '}
+{isBn ? 'চার্জ স্ল্যাব' : 'Charge Slabs'}
                   </span>
                   <button onClick={() => setShowChargeSheet(false)} className="text-slate-400">
                     <X size={15} />
