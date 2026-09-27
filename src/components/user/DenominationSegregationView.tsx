@@ -629,7 +629,7 @@ export const DenominationSegregationView: React.FC = () => {
           <div className="relative mb-4">
             <div className="flex items-center gap-2 flex-wrap rounded-xl px-3 py-2 bg-teal-500/10 border border-teal-500/30">
               <span className="text-xs font-bold text-teal-600 flex items-center gap-1 shrink-0">
-                <Building2 size={13} /> Cross-Outlet:
+                <Building2 size={13} /> {isBn ? 'অন্য আউটলেট:' : 'Cross-Outlet:'}
               </span>
               <button
                 type="button"
