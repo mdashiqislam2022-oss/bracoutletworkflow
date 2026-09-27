@@ -690,7 +690,7 @@ export const DenominationSegregationView: React.FC = () => {
                   isChangeMode ? 'bg-indigo-500 text-white border-indigo-500' : `${inputBg} text-slate-500`
                 }`}
               >
-                Change
+                  {isBn ? 'ভাংতি' : 'Change'}
               </button>
                            <button
                 type="button"
