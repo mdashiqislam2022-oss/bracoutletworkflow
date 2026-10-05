@@ -233,21 +233,21 @@ export const SupportingView: React.FC = () => {
             <div className="grid grid-cols-3 gap-3 mb-6 max-w-3xl">
               <div className="rounded-xl border p-3 border-blue-500/40 bg-blue-500/10">
                 <div className="flex items-center gap-1.5 text-[11px] font-semibold text-blue-600">
-                  <Wallet size={13} /> Total Supported Amount
+                                    <Wallet size={13} /> {isBn ? 'মোট সাপোর্টিং পরিমাণ' : 'Total Supported Amount'}
                 </div>
                 <div className="text-lg font-extrabold mt-1 text-blue-600">
                   ৳ {totalSupportingStats.amount.toLocaleString()}
                 </div>
-                <div className="text-[10px] text-blue-600/70 font-semibold mt-0.5">{totalSupportingStats.count} entries</div>
+                <div className="text-[10px] text-blue-600/70 font-semibold mt-0.5">{totalSupportingStats.count} {isBn ? 'টি এন্ট্রি' : 'entries'}</div>
               </div>
               <div className="rounded-xl border p-3 border-emerald-500/40 bg-emerald-500/10">
                 <div className="flex items-center gap-1.5 text-[11px] font-semibold text-emerald-600">
-                  <CheckCircle2 size={13} /> Recovered Amount
+                                    <CheckCircle2 size={13} /> {isBn ? 'আদায়কৃত পরিমাণ' : 'Recovered Amount'}
                 </div>
                 <div className="text-lg font-extrabold mt-1 text-emerald-600">
                   ৳ {recoveredStats.amount.toLocaleString()}
                 </div>
-                <div className="text-[10px] text-emerald-600/70 font-semibold mt-0.5">{recoveredStats.count} entries</div>
+                <div className="text-[10px] text-emerald-600/70 font-semibold mt-0.5">{recoveredStats.count} {isBn ? 'টি এন্ট্রি' : 'entries'}</div>
               </div>
                             <button
                 type="button"
@@ -255,12 +255,12 @@ export const SupportingView: React.FC = () => {
                 className="text-left rounded-xl border p-3 border-amber-500/40 bg-amber-500/10 hover:bg-amber-500/20 transition-colors cursor-pointer"
               >
                 <div className="flex items-center gap-1.5 text-[11px] font-semibold text-amber-600">
-                  <Clock3 size={13} /> Pending Supporting
+                                    <Clock3 size={13} /> {isBn ? 'বকেয়া সাপোর্টিং' : 'Pending Supporting'}
                 </div>
                 <div className="text-lg font-extrabold mt-1 text-amber-600">
                   ৳ {pendingStats.amount.toLocaleString()}
                 </div>
-                <div className="text-[10px] text-amber-600/70 font-semibold mt-0.5">{pendingStats.count} entries</div>
+                <div className="text-[10px] text-amber-600/70 font-semibold mt-0.5">{pendingStats.count} {isBn ? 'টি এন্ট্রি' : 'entries'}</div>
               </button>
             </div>
 
@@ -268,7 +268,7 @@ export const SupportingView: React.FC = () => {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-3">
               <div>
               <div className="text-xs font-bold flex items-center gap-1.5 text-slate-500 mb-1.5">
-                Supporting Source
+                               {isBn ? 'সাপোর্টিং-এর উৎস' : 'Supporting Source'}
               </div>
               <div className="flex gap-2">
                 <button
@@ -278,7 +278,7 @@ export const SupportingView: React.FC = () => {
                     fundingSource === 'CASH' ? 'bg-blue-500 text-white border-blue-500' : `${inputBg}`
                   }`}
                 >
-                  <Wallet size={13} /> Cash
+                                    <Wallet size={13} /> {isBn ? 'নগদ' : 'Cash'}
                 </button>
                 <button
                   type="button"
@@ -287,7 +287,7 @@ export const SupportingView: React.FC = () => {
                     fundingSource === 'BALANCE' ? 'bg-purple-500 text-white border-purple-500' : `${inputBg}`
                   }`}
                 >
-                                   <Landmark size={13} /> Balance
+                  <Landmark size={13} /> {isBn ? 'ব্যালেন্স' : 'Balance'}
                 </button>
               </div>
               </div>
@@ -301,7 +301,7 @@ export const SupportingView: React.FC = () => {
                 {fundingSource === 'CASH' ? (
                   <>
                     <div className="text-xs font-bold flex items-center gap-1.5 text-blue-600 mb-1">
-                      Money Segregation
+                      {isBn ? 'নোটের হিসাব' : 'Money Segregation'}
                     </div>
                     <div className="grid grid-cols-2 gap-3">
                       <div className="space-y-1.5">
@@ -339,14 +339,14 @@ export const SupportingView: React.FC = () => {
                 ) : (
                   <>
                     <div className="text-xs font-bold flex items-center gap-1.5 text-purple-600 mb-1">
-                      Balance Amount
+                      {isBn ? 'ব্যালেন্সের পরিমাণ' : 'Balance Amount'}
                     </div>
                     <input
                       type="number"
                       min={0}
                       value={balanceAmount}
                       onChange={(e) => setBalanceAmount(e.target.value)}
-                      placeholder="Amount from Balance"
+                      placeholder={isBn ? 'ব্যালেন্স থেকে পরিমাণ' : 'Amount from Balance'}
                       className={`w-full rounded-lg border px-2 py-1.5 text-xs ${inputBg}`}
                     />
                                   </>
@@ -354,7 +354,9 @@ export const SupportingView: React.FC = () => {
                 </div>
 
                 <div className={`flex items-center justify-between rounded-lg border px-3 py-2 text-[11px] font-bold mt-2 ${cardBg}`}>
-                  <span className="text-slate-500">Supporting Amount</span>
+                                   <span className="text-slate-500">
+                    {isBn ? 'সাপোর্টিং-এর পরিমাণ' : 'Supporting Amount'}
+                  </span>
                   <span className="text-emerald-600">৳ {supportingAmount.toLocaleString()}</span>
                 </div>
 
@@ -363,7 +365,7 @@ export const SupportingView: React.FC = () => {
                   disabled={!canSaveSupporting}
                   className="w-full py-1.5 rounded-lg bg-emerald-500 text-white text-xs font-bold disabled:opacity-40 disabled:cursor-not-allowed"
                 >
-                  Save Supporting
+                  {isBn ? 'সাপোর্টিং সংরক্ষণ করুন' : 'Save Supporting'}
                 </button>
               </div>
 
@@ -371,7 +373,7 @@ export const SupportingView: React.FC = () => {
               <div className={`rounded-xl border p-3 space-y-2 ${inputBg}`}>
                 <div className="flex items-center justify-between mb-1">
                   <div className="text-xs font-bold flex items-center gap-1.5 text-emerald-600">
-                    Supporting Details
+                    {isBn ? 'সাপোর্টিং-এর বিবরণ' : 'Supporting Details'}
                   </div>
 
                   {/* Date Picker - moved to top right corner */}
@@ -384,7 +386,7 @@ export const SupportingView: React.FC = () => {
                       <Calendar size={11} className="text-emerald-500" />
                       {supportingDate
                         ? new Date(supportingDate + 'T00:00:00').toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })
-                        : 'Select Date'}
+                        : (isBn ? 'তারিখ নির্বাচন করুন' : 'Select Date')}
                       <ChevronDown size={11} className="text-slate-400" />
                     </button>
 
@@ -547,7 +549,9 @@ export const SupportingView: React.FC = () => {
                       </div>
 
                       <div className="flex items-center justify-between mt-2 pt-2 border-t border-slate-700/20">
-                        <span className="text-[10px] text-slate-500 font-medium">Selected Date</span>
+                                               <span className="text-[10px] text-slate-500 font-medium">
+                          {isBn ? 'নির্বাচিত তারিখ' : 'Selected Date'}
+                        </span>
                         <button
                           onClick={() => {
                             const t = new Date();
@@ -557,7 +561,7 @@ export const SupportingView: React.FC = () => {
                           }}
                           className="text-xs font-semibold text-emerald-500 flex items-center gap-1"
                         >
-                          <Sparkles size={11} /> Today
+                          <Sparkles size={11} /> {isBn ? 'আজ' : 'Today'}
                         </button>
                       </div>
                     </div>
@@ -567,7 +571,9 @@ export const SupportingView: React.FC = () => {
                               <input
                   value={recipientName}
                   onChange={(e) => setRecipientName(stripDigits(e.target.value))}
-                  placeholder="Supporting To (Name)"
+                                   placeholder={
+                    isBn ? 'সাপোর্টিং প্রাপক (নাম)' : 'Supporting To (Name)'
+                  }
                   className={`w-full rounded-lg border px-2 py-1.5 text-xs ${inputBg}`}
                 />
                 <div className="text-[9px] font-bold text-rose-500 -mt-1.5 ml-0.5">* Required</div>
