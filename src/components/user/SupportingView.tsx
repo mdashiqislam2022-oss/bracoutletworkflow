@@ -39,7 +39,20 @@ const emptyDenoms = (): Record<DenomKey, number> => ({
 
 const todayStr = () => new Date().toLocaleDateString('en-CA');
 
-const monthNamesList = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+const monthNamesList = [
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December'
+];
 const yearOptionsList = Array.from({ length: 20 }, (_, i) => 2020 + i);
 
 // Only letters, spaces, and common name punctuation allowed
@@ -49,7 +62,8 @@ const stripNonDigits = (val: string) => val.replace(/\D/g, '');
 
 export const SupportingView: React.FC = () => {
   const { currentUser, userPreferences, supportingRecords, addSupportingRecord, markSupportingRecovered, showToast } = useApp();
-  const isDark = userPreferences.theme === 'dark';
+    const isDark = userPreferences.theme === 'dark';
+  const isBn = userPreferences.language === 'bn';
   const cardBg = isDark ? 'bg-[#1A2333] border-slate-800' : 'bg-white border-slate-200';
   const inputBg = isDark
     ? 'bg-[#0F172A] border-slate-700 text-slate-100'
@@ -193,7 +207,8 @@ export const SupportingView: React.FC = () => {
       <div className={`rounded-2xl border p-4 md:p-5 ${cardBg}`}>
         <div className="flex items-center justify-between mb-1">
           <h2 className={`font-bold text-lg flex items-center gap-2 ${isDark ? 'text-slate-100' : 'text-slate-900'}`}>
-            <HandCoins className="text-emerald-500" size={20} /> Supporting
+                       <HandCoins className="text-emerald-500" size={20} />
+            {isBn ? 'সাপোর্টিং' : 'Supporting'}
           </h2>
                    <button
             type="button"
@@ -206,7 +221,9 @@ export const SupportingView: React.FC = () => {
             }`}
           >
             <History size={14} />
-            {activeTab === 'history' ? 'Supporting' : 'History'}
+                        {activeTab === 'history'
+              ? (isBn ? 'সাপোর্টিং' : 'Supporting')
+              : (isBn ? 'ইতিহাস' : 'History')}
           </button>
         </div>
 
