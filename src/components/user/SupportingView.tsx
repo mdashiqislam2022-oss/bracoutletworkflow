@@ -576,26 +576,34 @@ export const SupportingView: React.FC = () => {
                   }
                   className={`w-full rounded-lg border px-2 py-1.5 text-xs ${inputBg}`}
                 />
-                <div className="text-[9px] font-bold text-rose-500 -mt-1.5 ml-0.5">* Required</div>
+                                <div className="text-[9px] font-bold text-rose-500 -mt-1.5 ml-0.5">
+                  * {isBn ? 'আবশ্যক' : 'Required'}
+                </div>
                 <input
                   value={purpose}
                   onChange={(e) => setPurpose(stripDigits(e.target.value))}
-                  placeholder="Supporting Purpose"
+                                    placeholder={
+                    isBn ? 'সাপোর্টিং-এর উদ্দেশ্য' : 'Supporting Purpose'
+                  }
                   className={`w-full rounded-lg border px-2 py-1.5 text-xs ${inputBg}`}
                 />
-                <div className="text-[9px] font-bold text-rose-500 -mt-1.5 ml-0.5">* Required</div>
+                                <div className="text-[9px] font-bold text-rose-500 -mt-1.5 ml-0.5">
+                  * {isBn ? 'আবশ্যক' : 'Required'}
+                </div>
                 <input
                   type="tel"
                   inputMode="numeric"
                   value={mobileNumber}
                   onChange={(e) => setMobileNumber(stripNonDigits(e.target.value))}
-                  placeholder="Number (Mobile)"
+                                   placeholder={isBn ? 'মোবাইল নম্বর' : 'Number (Mobile)'}
                   className={`w-full rounded-lg border px-2 py-1.5 text-xs ${inputBg}`}
                 />
                 <input
                   value={smeOfficerName}
                   onChange={(e) => setSmeOfficerName(stripDigits(e.target.value))}
-                  placeholder="SME Officer Name"
+                                    placeholder={
+                    isBn ? 'SME কর্মকর্তার নাম' : 'SME Officer Name'
+                  }
                   className={`w-full rounded-lg border px-2 py-1.5 text-xs ${inputBg}`}
                 />
                 <input
@@ -603,13 +611,13 @@ export const SupportingView: React.FC = () => {
                   inputMode="numeric"
                   value={accountNumber}
                   onChange={(e) => setAccountNumber(stripNonDigits(e.target.value))}
-                  placeholder="Account Number"
+                    placeholder={isBn ? 'অ্যাকাউন্ট নম্বর' : 'Account Number'}
                   className={`w-full rounded-lg border px-2 py-1.5 text-xs ${inputBg}`}
                 />
                 <input
                   value={accountTitle}
                   onChange={(e) => setAccountTitle(stripDigits(e.target.value))}
-                  placeholder="Account Title"
+                    placeholder={isBn ? 'অ্যাকাউন্টের নাম' : 'Account Title'}
                   className={`w-full rounded-lg border px-2 py-1.5 text-xs ${inputBg}`}
                 />
 
@@ -617,7 +625,7 @@ export const SupportingView: React.FC = () => {
                 <textarea
                   value={notes}
                   onChange={(e) => setNotes(e.target.value)}
-                  placeholder="Note (optional)"
+                  placeholder={isBn ? 'নোট (ঐচ্ছিক)' : 'Note (optional)'}
                   rows={2}
                   className={`w-full rounded-lg border px-2 py-1.5 text-xs resize-none ${inputBg}`}
                 />
@@ -633,7 +641,7 @@ export const SupportingView: React.FC = () => {
                 <span>
                   Total ({historyDateFilter
                     ? new Date(historyDateFilter + 'T00:00:00').toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })
-                    : 'All Dates'})
+                    : (isBn ? 'সকল তারিখ' : 'All Dates')})
                 </span>
                                 <span className="ml-2">৳ {filteredHistory.reduce((s, r) => s + r.amount, 0).toLocaleString()}</span>
               </div>
@@ -644,7 +652,10 @@ export const SupportingView: React.FC = () => {
                   onClick={() => setHistoryStatusFilter('ALL')}
                   className="flex items-center gap-1.5 rounded-lg border border-amber-500/40 bg-amber-500/10 px-3 py-2 text-[11px] font-bold text-amber-600"
                 >
-                  Showing: {historyStatusFilter === 'PENDING' ? 'Pending only' : 'Recovered only'} ✕
+                                   {isBn ? 'দেখানো হচ্ছে:' : 'Showing:'}{' '}
+                  {historyStatusFilter === 'PENDING'
+                    ? (isBn ? 'শুধু বকেয়া' : 'Pending only')
+                    : (isBn ? 'শুধু আদায়কৃত' : 'Recovered only')} ✕
                 </button>
               )}
 
@@ -774,7 +785,10 @@ export const SupportingView: React.FC = () => {
                   </div>
 
                   <div className="grid grid-cols-7 gap-1 mb-1">
-                    {['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'].map((d, i) => (
+                                       {(isBn
+                      ? ['রবি', 'সোম', 'মঙ্গল', 'বুধ', 'বৃহস্পতি', 'শুক্র', 'শনি']
+                      : ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa']
+                    ).map((d, i) => (
                       <div
                         key={d}
                         className={`text-center text-[10px] font-bold ${i === 5 || i === 6 ? 'text-rose-500' : 'text-slate-400'}`}
