@@ -389,7 +389,15 @@ export interface AllAccountRecord {
   sourceTable?: string;
   sourceId?: string;
 
-  notes?: string;
+   notes?: string;
+
+  // Outlet Account Details
+  accountSchemeCode?: string;
+  accountHolderName?: string;
+  presentAddress?: string;
+  permanentAddress?: string;
+  sameAddress?: boolean;
+  openingDate?: string;
 
   createdAt: string;
   updatedAt: string;
