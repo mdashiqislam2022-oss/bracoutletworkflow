@@ -15,7 +15,8 @@ import {
 
 export const NoteAndRuleView: React.FC = () => {
   const { currentUser, notes, rules, addNote, updateNote, deleteNote, showToast, userPreferences } = useApp();
-  const isDark = userPreferences.theme === 'dark';
+    const isDark = userPreferences.theme === 'dark';
+  const isBn = userPreferences.language === 'bn';
 
   const cardBg = isDark ? 'bg-[#1A2333] border-slate-800' : 'bg-white border-slate-200';
   const inputBg = isDark
@@ -68,13 +69,27 @@ export const NoteAndRuleView: React.FC = () => {
   const handleCopyNote = (n: (typeof myNotes)[number]) => {
     const plainText = n.contentHtml.replace(/<[^>]*>/g, '');
     navigator.clipboard.writeText(`${n.title}\n\n${plainText}`);
-    showToast({ message: 'Note copied to clipboard!', type: 'success' });
+        showToast({
+      message: isBn
+        ? 'নোট ক্লিপবোর্ডে কপি হয়েছে!'
+        : 'Note copied to clipboard!',
+      type: 'success'
+    });
   };
 
-  const formatDate = (dateStr: string) => {
+   const formatDate = (dateStr: string) => {
     const d = new Date(dateStr);
+
     if (isNaN(d.getTime())) return dateStr;
-    return d.toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' });
+
+    return d.toLocaleDateString(
+      isBn ? 'bn-BD' : 'en-US',
+      {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric'
+      }
+    );
   };
 
   return (
@@ -84,7 +99,9 @@ export const NoteAndRuleView: React.FC = () => {
         <div className="flex items-center justify-between flex-wrap gap-2 mb-4">
           <h2 className={`font-bold text-lg flex items-center gap-2 ${isDark ? 'text-slate-100' : 'text-slate-900'}`}>
             {activeTab === 'NOTE' ? <StickyNote size={20} className="text-emerald-500" /> : <ShieldCheck size={20} className="text-emerald-500" />}
-            {activeTab === 'NOTE' ? 'My Notes' : 'Outlet Rules'}
+                       {activeTab === 'NOTE'
+              ? (isBn ? 'আমার নোটসমূহ' : 'My Notes')
+              : (isBn ? 'আউটলেটের নিয়মাবলি' : 'Outlet Rules')}
           </h2>
 
           <div className={`flex items-center gap-1 p-1 rounded-xl ${isDark ? 'bg-[#0F172A]' : 'bg-slate-100'}`}>
@@ -96,7 +113,7 @@ export const NoteAndRuleView: React.FC = () => {
                   : 'text-slate-400'
               }`}
             >
-              Note
+                            {isBn ? 'নোট' : 'Note'}
             </button>
             <button
               onClick={() => setActiveTab('RULES')}
@@ -106,7 +123,7 @@ export const NoteAndRuleView: React.FC = () => {
                   : 'text-slate-400'
               }`}
             >
-              Rules
+                             {isBn ? 'নিয়মাবলি' : 'Rules'}
             </button>
           </div>
         </div>
@@ -119,14 +136,19 @@ export const NoteAndRuleView: React.FC = () => {
                 onClick={() => setShowAddForm(true)}
                 className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-emerald-500 text-white text-xs font-bold mb-4"
               >
-                <Plus size={14} /> Add Note
+                               <Plus size={14} />
+                {isBn ? 'নতুন নোট যোগ করুন' : 'Add Note'}
               </button>
             )}
 
                         {showAddForm && (
               <div className={`rounded-xl border p-3 mb-4 space-y-3 ${inputBg}`}>
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-bold">{editingNoteId ? 'Edit Note' : 'New Note'}</span>
+                                   <span className="text-xs font-bold">
+                    {editingNoteId
+                      ? (isBn ? 'নোট সম্পাদনা করুন' : 'Edit Note')
+                      : (isBn ? 'নতুন নোট' : 'New Note')}
+                  </span>
                   <button
                     onClick={() => {
                       setShowAddForm(false);
@@ -142,16 +164,25 @@ export const NoteAndRuleView: React.FC = () => {
                 <input
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
-                  placeholder="Note title"
+                                   placeholder={isBn ? 'নোটের শিরোনাম' : 'Note title'}
                   className={`w-full rounded-lg border px-3 py-2 text-sm ${inputBg}`}
                 />
                                <div className="max-w-[220px]">
-                  <CustomDatePicker value={noteDate} onChange={setNoteDate} label="Note Date" isDark={isDark} />
+                                  <CustomDatePicker
+                    value={noteDate}
+                    onChange={setNoteDate}
+                    label={isBn ? 'নোটের তারিখ' : 'Note Date'}
+                    isDark={isDark}
+                  />
                 </div>
                 <RichTextEditor
                   value={contentHtml}
                   onChange={setContentHtml}
-                  placeholder="Write your note here..."
+                                   placeholder={
+                    isBn
+                      ? 'এখানে আপনার নোট লিখুন...'
+                      : 'Write your note here...'
+                  }
                   isDark={isDark}
                 />
                                <button
@@ -159,14 +190,20 @@ export const NoteAndRuleView: React.FC = () => {
                   disabled={!title.trim() || !contentHtml.trim()}
                   className="w-full py-2 rounded-xl bg-emerald-500 text-white text-sm font-bold disabled:opacity-40"
                 >
-                  {editingNoteId ? 'Update Note' : 'Save Note'}
+                                    {editingNoteId
+                    ? (isBn ? 'নোট আপডেট করুন' : 'Update Note')
+                    : (isBn ? 'নোট সংরক্ষণ করুন' : 'Save Note')}
                 </button>
               </div>
             )}
 
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {myNotes.length === 0 && (
-                <div className="col-span-full text-sm text-slate-500 text-center py-10">No notes yet. Add your first note above.</div>
+                               <div className="col-span-full text-sm text-slate-500 text-center py-10">
+                  {isBn
+                    ? 'এখনো কোনো নোট নেই। প্রথম নোটটি যোগ করুন।'
+                    : 'No notes yet. Add your first note above.'}
+                </div>
               )}
               {myNotes.map((n) => (
                 <div
@@ -185,21 +222,21 @@ export const NoteAndRuleView: React.FC = () => {
                       <button
                         onClick={(e) => { e.stopPropagation(); handleCopyNote(n); }}
                         className="text-slate-400 hover:text-emerald-500"
-                        title="Copy note"
+                                              title={isBn ? 'নোট কপি করুন' : 'Copy note'}
                       >
                         <Copy size={14} />
                       </button>
                       <button
                         onClick={(e) => { e.stopPropagation(); handleEditNote(n); }}
                         className="text-slate-400 hover:text-blue-500"
-                        title="Edit note"
+                                               title={isBn ? 'নোট সম্পাদনা করুন' : 'Edit note'}
                       >
                         <Pencil size={14} />
                       </button>
                       <button
                         onClick={(e) => { e.stopPropagation(); setDeleteTargetId(n.id); }}
                         className="text-rose-500"
-                        title="Delete note"
+                                               title={isBn ? 'নোট মুছে ফেলুন' : 'Delete note'}
                       >
                         <Trash2 size={15} />
                       </button>
@@ -219,7 +256,11 @@ export const NoteAndRuleView: React.FC = () => {
         {activeTab === 'RULES' && (
           <div className="space-y-3">
             {myRules.length === 0 && (
-              <div className="text-sm text-slate-500 text-center py-10">No rules have been set for your outlet yet.</div>
+                           <div className="text-sm text-slate-500 text-center py-10">
+                {isBn
+                  ? 'আপনার আউটলেটের জন্য এখনো কোনো নিয়ম নির্ধারণ করা হয়নি।'
+                  : 'No rules have been set for your outlet yet.'}
+              </div>
             )}
             {myRules.map((r) => (
               <div key={r.id} className={`rounded-xl border p-3 ${inputBg}`}>
@@ -273,14 +314,20 @@ export const NoteAndRuleView: React.FC = () => {
       {deleteTargetId && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4">
           <div className={`rounded-2xl border p-5 max-w-sm w-full ${cardBg}`}>
-            <h3 className={`font-bold text-sm mb-2 ${isDark ? 'text-slate-100' : 'text-slate-900'}`}>Delete this note?</h3>
-            <p className="text-xs text-slate-500 mb-4">This action cannot be undone. Are you sure you want to delete this note?</p>
+                     <h3 className={`font-bold text-sm mb-2 ${isDark ? 'text-slate-100' : 'text-slate-900'}`}>
+              {isBn ? 'এই নোটটি মুছে ফেলবেন?' : 'Delete this note?'}
+            </h3>
+                       <p className="text-xs text-slate-500 mb-4">
+              {isBn
+                ? 'এই কাজটি পূর্বাবস্থায় ফেরানো যাবে না। আপনি কি নিশ্চিত যে নোটটি মুছে ফেলতে চান?'
+                : 'This action cannot be undone. Are you sure you want to delete this note?'}
+            </p>
             <div className="flex gap-2">
               <button
                 onClick={() => setDeleteTargetId(null)}
                 className={`flex-1 py-2 rounded-xl text-xs font-bold ${inputBg}`}
               >
-                No, Keep it
+                                {isBn ? 'না, রেখে দিন' : 'No, Keep it'}
               </button>
               <button
                 onClick={() => {
@@ -289,7 +336,7 @@ export const NoteAndRuleView: React.FC = () => {
                 }}
                 className="flex-1 py-2 rounded-xl bg-rose-500 text-white text-xs font-bold"
               >
-                Yes, Delete
+                               {isBn ? 'হ্যাঁ, মুছে ফেলুন' : 'Yes, Delete'}
               </button>
             </div>
           </div>
