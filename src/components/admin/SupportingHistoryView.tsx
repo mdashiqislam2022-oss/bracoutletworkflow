@@ -379,11 +379,19 @@ export const SupportingHistoryView: React.FC = () => {
           </button>
         </div>
 
-        <div className="text-xs text-slate-500 mb-2">{filtered.length} entries found</div>
+                <div className="text-xs text-slate-500 mb-2">
+          {isBn
+            ? `${filtered.length.toLocaleString('bn-BD')}টি রেকর্ড পাওয়া গেছে`
+            : `${filtered.length} entries found`}
+        </div>
 
         <div className="space-y-1.5 max-h-[70vh] overflow-y-auto">
           {filtered.length === 0 && (
-            <div className="text-xs text-slate-500 text-center py-6">No supporting records found.</div>
+                        <div className="text-xs text-slate-500 text-center py-6">
+              {isBn
+                ? 'কোনো সাপোর্টিং রেকর্ড পাওয়া যায়নি।'
+                : 'No supporting records found.'}
+            </div>
           )}
           {filtered.map((s) => {
             const isOpen = expandedId === s.id;
@@ -401,17 +409,39 @@ export const SupportingHistoryView: React.FC = () => {
                         s.status === 'RECOVERED' ? 'bg-emerald-500/10 text-emerald-600' : 'bg-amber-500/10 text-amber-600'
                       }`}
                     >
-                      {s.status}
+                                           {isBn
+                        ? s.status === 'RECOVERED'
+                          ? 'আদায় হয়েছে'
+                          : s.status === 'PENDING'
+                            ? 'অনাদায়ী'
+                            : s.status
+                        : s.status}
                     </span>
                     <span className="ml-1 inline-block px-1.5 py-0.5 rounded text-[9px] font-bold align-middle bg-slate-500/10 text-slate-500">
-                      {s.fundingSource}
+                                           {isBn
+                        ? s.fundingSource === 'CASH'
+                          ? 'নগদ'
+                          : s.fundingSource === 'BALANCE'
+                            ? 'ব্যালেন্স'
+                            : s.fundingSource
+                        : s.fundingSource}
                     </span>
                     <div className="text-slate-500">
-                      {s.outletName} · {s.userName} · {new Date(s.supportingDate).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}
+                                           {s.outletName} · {s.userName} ·{' '}
+                      {new Date(s.supportingDate).toLocaleDateString(
+                        isBn ? 'bn-BD' : 'en-GB',
+                        {
+                          day: 'numeric',
+                          month: 'short',
+                          year: 'numeric'
+                        }
+                      )}
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
-                    <div className="font-extrabold">৳ {s.amount.toLocaleString()}</div>
+                                       <div className="font-extrabold">
+                      ৳ {s.amount.toLocaleString(isBn ? 'bn-BD' : 'en-US')}
+                    </div>
                     {isOpen ? <ChevronUp size={14} className="text-slate-400" /> : <ChevronDown size={14} className="text-slate-400" />}
                   </div>
                 </button>
@@ -419,20 +449,58 @@ export const SupportingHistoryView: React.FC = () => {
                 {isOpen && (
                   <div className="px-3 pb-3 pt-1 border-t border-slate-700/20 space-y-2">
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-2 text-[11px] text-slate-500">
-                      {s.mobileNumber && <div>Mobile: <span className="font-semibold">{s.mobileNumber}</span></div>}
-                      {s.smeOfficerName && <div>SME Officer: <span className="font-semibold">{s.smeOfficerName}</span></div>}
-                      {s.accountNumber && <div>Account No: <span className="font-semibold">{s.accountNumber}</span></div>}
-                      {s.accountTitle && <div>Account Title: <span className="font-semibold">{s.accountTitle}</span></div>}
-                      {s.notes && <div>Note: <span className="font-semibold">{s.notes}</span></div>}
+                                         {s.mobileNumber && (
+                        <div>
+                          {isBn ? 'মোবাইল:' : 'Mobile:'}{' '}
+                          <span className="font-semibold">{s.mobileNumber}</span>
+                        </div>
+                      )}
+
+                      {s.smeOfficerName && (
+                        <div>
+                          {isBn ? 'এসএমই অফিসার:' : 'SME Officer:'}{' '}
+                          <span className="font-semibold">{s.smeOfficerName}</span>
+                        </div>
+                      )}
+
+                      {s.accountNumber && (
+                        <div>
+                          {isBn ? 'হিসাব নম্বর:' : 'Account No:'}{' '}
+                          <span className="font-semibold">{s.accountNumber}</span>
+                        </div>
+                      )}
+
+                      {s.accountTitle && (
+                        <div>
+                          {isBn ? 'হিসাবের নাম:' : 'Account Title:'}{' '}
+                          <span className="font-semibold">{s.accountTitle}</span>
+                        </div>
+                      )}
+
+                      {s.notes && (
+                        <div>
+                          {isBn ? 'নোট:' : 'Note:'}{' '}
+                          <span className="font-semibold">{s.notes}</span>
+                        </div>
+                      )}
                     </div>
 
                     {s.fundingSource === 'CASH' && s.denominations && (
                       <div>
-                        <div className="text-[10px] font-bold text-slate-500 mb-1">Given Denomination</div>
+                                               <div className="text-[10px] font-bold text-slate-500 mb-1">
+                          {isBn ? 'প্রদানকৃত নোটের বিবরণ' : 'Given Denomination'}
+                        </div>
                         <div className="grid grid-cols-2 md:grid-cols-5 gap-2 text-[10px]">
                           {DENOM_LIST.filter((d) => (s.denominations?.[d.key] || 0) > 0).map((d) => (
                             <div key={d.key} className="rounded-lg bg-black/5 dark:bg-white/5 px-2 py-1">
-                              <span className="font-semibold">Tk{d.value}:</span> {s.denominations?.[d.key]}
+                                                           <span className="font-semibold">
+                                {isBn ? '৳' : 'Tk'}
+                                {d.value.toLocaleString(isBn ? 'bn-BD' : 'en-US')}:
+                              </span>
+                              {' '}
+                              {(s.denominations?.[d.key] || 0).toLocaleString(
+                                isBn ? 'bn-BD' : 'en-US'
+                              )}
                             </div>
                           ))}
                         </div>
@@ -441,18 +509,66 @@ export const SupportingHistoryView: React.FC = () => {
 
                     {s.status === 'RECOVERED' && (
                       <div className={`rounded-lg p-2 ${isDark ? 'bg-emerald-950/30' : 'bg-emerald-50'}`}>
-                        <div className="text-[10px] font-bold text-emerald-600 mb-1">Recovery Details</div>
+                                               <div className="text-[10px] font-bold text-emerald-600 mb-1">
+                          {isBn ? 'আদায়ের বিস্তারিত তথ্য' : 'Recovery Details'}
+                        </div>
                         <div className="grid grid-cols-2 md:grid-cols-3 gap-2 text-[11px] text-slate-500">
-                          <div>Amount: <span className="font-semibold">৳{(s.recoveredAmount || 0).toLocaleString()}</span></div>
-                          <div>Source: <span className="font-semibold">{s.recoveredFundingSource}</span></div>
-                          {s.recoveredAt && <div>Date: <span className="font-semibold">{new Date(s.recoveredAt).toLocaleString()}</span></div>}
-                          {s.recoveredBy && <div>By: <span className="font-semibold">{s.recoveredBy}</span></div>}
+                                                   <div>
+                            {isBn ? 'পরিমাণ:' : 'Amount:'}{' '}
+                            <span className="font-semibold">
+                              ৳{(s.recoveredAmount || 0).toLocaleString(
+                                isBn ? 'bn-BD' : 'en-US'
+                              )}
+                            </span>
+                          </div>
+
+                          <div>
+                            {isBn ? 'উৎস:' : 'Source:'}{' '}
+                            <span className="font-semibold">
+                              {isBn
+                                ? s.recoveredFundingSource === 'CASH'
+                                  ? 'নগদ'
+                                  : s.recoveredFundingSource === 'BALANCE'
+                                    ? 'ব্যালেন্স'
+                                    : s.recoveredFundingSource
+                                : s.recoveredFundingSource}
+                            </span>
+                          </div>
+
+                          {s.recoveredAt && (
+                            <div>
+                              {isBn ? 'তারিখ:' : 'Date:'}{' '}
+                              <span className="font-semibold">
+                                {new Date(s.recoveredAt).toLocaleString(
+                                  isBn ? 'bn-BD' : undefined
+                                )}
+                              </span>
+                            </div>
+                          )}
+
+                          {s.recoveredBy && (
+                            <div>
+                              {isBn ? 'আদায়কারী:' : 'By:'}{' '}
+                              <span className="font-semibold">
+                                {s.recoveredBy}
+                              </span>
+                            </div>
+                          )}
                         </div>
                         {s.recoveredFundingSource === 'CASH' && s.recoveredDenominations && (
                           <div className="grid grid-cols-2 md:grid-cols-5 gap-2 text-[10px] mt-2">
                             {DENOM_LIST.filter((d) => (s.recoveredDenominations?.[d.key] || 0) > 0).map((d) => (
                               <div key={d.key} className="rounded-lg bg-black/5 dark:bg-white/5 px-2 py-1">
-                                <span className="font-semibold">Tk{d.value}:</span> {s.recoveredDenominations?.[d.key]}
+                                                               <span className="font-semibold">
+                                  {isBn ? '৳' : 'Tk'}
+                                  {d.value.toLocaleString(
+                                    isBn ? 'bn-BD' : 'en-US'
+                                  )}:
+                                </span>
+                                {' '}
+                                {(s.recoveredDenominations?.[d.key] || 0).toLocaleString(
+                                  isBn ? 'bn-BD' : 'en-US'
+                                )}
                               </div>
                             ))}
                           </div>
