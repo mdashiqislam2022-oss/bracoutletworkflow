@@ -433,7 +433,7 @@ if (statusFilter !== 'ALL') {
               className="flex items-center gap-2 px-5 py-2 rounded-full text-xs font-black bg-amber-500 hover:bg-amber-400 text-slate-950 shadow-md transition-all cursor-pointer transform hover:scale-[1.02] active:scale-[0.98]"
             >
               <Plus className="w-4 h-4 stroke-[3]" />
-              <span>{isBn ? '+ নতুন লোন এন্ট্রি' : '+ Add New Loan File'}</span>
+              <span>{isBn ? 'অ্যাকাউন্ট যোগ করুন' : 'Add Account'}</span>
             </button>
           </div>
         </div>
