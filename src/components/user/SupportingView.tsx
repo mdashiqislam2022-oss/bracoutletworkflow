@@ -932,7 +932,9 @@ export const SupportingView: React.FC = () => {
             {isBn ? 'আদায় নিশ্চিত করুন' : 'Confirm Recovery'}
             </div>
             <div className="text-xs text-slate-500 mb-3">
-              Has the supporting amount of ৳{' '}
+             {isBn
+                ? `৳ ${(mySupportingRecords.find((r) => r.id === recoverConfirmId)?.amount || 0).toLocaleString()} এর সাপোর্টিং-এর টাকা সঠিকভাবে আদায় হয়েছে কি?`
+                : `Has the supporting amount of ৳ ${(mySupportingRecords.find((r) => r.id === recoverConfirmId)?.amount || 0).toLocaleString()} been properly recovered?`}
               {(mySupportingRecords.find((r) => r.id === recoverConfirmId)?.amount || 0).toLocaleString()}{' '}
               been properly recovered?
             </div>
