@@ -12,7 +12,8 @@ const DENOM_LIST: { key: keyof DenominationCounts; value: number }[] = [
 
 export const CashHistoryView: React.FC = () => {
   const { outlets, motherAmounts, outletTransfers, cashTransfers, denominationAdjustments, userPreferences } = useApp();
-  const isDark = userPreferences.theme === 'dark';
+   const isDark = userPreferences.theme === 'dark';
+  const isBn = userPreferences.language === 'bn';
   const cardBg = isDark ? 'bg-[#1A2333] border-slate-800' : 'bg-white border-slate-200';
   const inputBg = isDark ? 'bg-[#0F172A] border-slate-700 text-slate-100' : 'bg-white border-slate-200 text-slate-900';
 
@@ -28,10 +29,42 @@ export const CashHistoryView: React.FC = () => {
   });
   const [historyMonthDropdownOpen, setHistoryMonthDropdownOpen] = useState(false);
   const [historyYearDropdownOpen, setHistoryYearDropdownOpen] = useState(false);
-  const historyMonthNamesList = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+   const historyMonthNamesList = isBn
+    ? [
+        'জানুয়ারি',
+        'ফেব্রুয়ারি',
+        'মার্চ',
+        'এপ্রিল',
+        'মে',
+        'জুন',
+        'জুলাই',
+        'আগস্ট',
+        'সেপ্টেম্বর',
+        'অক্টোবর',
+        'নভেম্বর',
+        'ডিসেম্বর'
+      ]
+    : [
+        'January',
+        'February',
+        'March',
+        'April',
+        'May',
+        'June',
+        'July',
+        'August',
+        'September',
+        'October',
+        'November',
+        'December'
+      ];
   const historyYearOptionsList = Array.from({ length: 20 }, (_, i) => 2020 + i);
 
-  const selectedOutletName = viewOutlet === 'ALL' ? 'All Outlets' : outlets.find((o) => o.id === viewOutlet)?.name || 'All Outlets';
+  const selectedOutletName =
+    viewOutlet === 'ALL'
+      ? (isBn ? 'সকল আউটলেট' : 'All Outlets')
+      : outlets.find((o) => o.id === viewOutlet)?.name ||
+        (isBn ? 'সকল আউটলেট' : 'All Outlets');
 
   const getPreviousMotherAmount = (record: { outletId: string; createdAt: string }): number => {
     const prior = motherAmounts
@@ -87,7 +120,10 @@ export const CashHistoryView: React.FC = () => {
     <div className="space-y-4 md:space-y-6">
       <div className={`rounded-2xl border p-4 md:p-5 ${cardBg}`}>
         <h2 className={`font-bold text-lg flex items-center gap-2 mb-4 ${isDark ? 'text-slate-100' : 'text-slate-900'}`}>
-          <History className="text-emerald-500" size={20} /> Cash & Mother Amount History
+                   <History className="text-emerald-500" size={20} />
+          {isBn
+            ? 'নগদ ও মাদার অ্যামাউন্টের ইতিহাস'
+            : 'Cash & Mother Amount History'}
         </h2>
 
         <div className="flex flex-wrap items-center gap-2 mb-4">
@@ -108,7 +144,7 @@ export const CashHistoryView: React.FC = () => {
                   onClick={() => { setViewOutlet('ALL'); setOutletDropdownOpen(false); }}
                   className={`w-full text-left px-3 py-2 text-xs font-semibold hover:bg-emerald-500/10 ${viewOutlet === 'ALL' ? 'text-emerald-500' : ''}`}
                 >
-                  All Outlets
+                                   {isBn ? 'সকল আউটলেট' : 'All Outlets'}
                 </button>
                 {outlets.map((o) => (
                   <button
