@@ -1064,6 +1064,23 @@ onKeyDown={(e) => {
           </table>
         </div>
       </div>
+            {/* Outlet Account Entry Modal */}
+      <OutletAccountModal
+        isOpen={isOutletModalOpen}
+        onClose={() => setIsOutletModalOpen(false)}
+        onSubmit={(data) => {
+          // Database save will be connected in the next step.
+          console.log('Outlet account form data:', data);
+          setToast({
+            message: isBn
+              ? 'ফর্ম প্রস্তুত। ডেটাবেস সংযোগ এখনো বাকি।'
+              : 'Form ready. Database connection is pending.',
+            type: 'info'
+          });
+        }}
+        isDark={isDark}
+        isBn={isBn}
+      />
 
       {/* 5. Loan Add/Edit Modal */}
             {showAccountTypePopup && (
@@ -1132,8 +1149,9 @@ onKeyDown={(e) => {
               <button
                 type="button"
                 onClick={() => {
-                  setShowAccountTypePopup(false);
-                }}
+  setShowAccountTypePopup(false);
+  setIsOutletModalOpen(true);
+}}
                 className={`text-left p-5 rounded-2xl border-2 transition-all hover:border-emerald-500 hover:shadow-lg ${
                   isDark
                     ? 'bg-slate-800 border-slate-700'
