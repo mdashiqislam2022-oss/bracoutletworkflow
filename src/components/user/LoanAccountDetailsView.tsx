@@ -80,7 +80,8 @@ export const LoanAccountDetailsView: React.FC = () => {
   'ALL' | 'LOAN' | 'OUTLET' | 'EXTERNAL'
 >('ALL');
   const [selectedRecord, setSelectedRecord] = useState<LoanAccountRecord | null>(null);
-  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+    const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [showAccountTypePopup, setShowAccountTypePopup] = useState(false);
   const [editingRecord, setEditingRecord] = useState<LoanAccountRecord | null>(null);
   const [deletingRecord, setDeletingRecord] = useState<LoanAccountRecord | null>(null);
   const [copiedId, setCopiedId] = useState<string | null>(null);
@@ -426,9 +427,9 @@ if (statusFilter !== 'ALL') {
             {/* New Loan Entry Button */}
             <button
               id="add-loan-entry-btn"
-              onClick={() => {
+                           onClick={() => {
                 setEditingRecord(null);
-                setIsAddModalOpen(true);
+                setShowAccountTypePopup(true);
               }}
               className="flex items-center gap-2 px-5 py-2 rounded-full text-xs font-black bg-amber-500 hover:bg-amber-400 text-slate-950 shadow-md transition-all cursor-pointer transform hover:scale-[1.02] active:scale-[0.98]"
             >
@@ -1063,6 +1064,111 @@ onKeyDown={(e) => {
       </div>
 
       {/* 5. Loan Add/Edit Modal */}
+            {showAccountTypePopup && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-950/60 backdrop-blur-sm p-4">
+
+          <div className={`w-full max-w-lg rounded-3xl shadow-2xl p-6 sm:p-8 ${
+            isDark
+              ? 'bg-slate-900 text-white'
+              : 'bg-white text-slate-900'
+          }`}>
+
+            <div className="flex justify-between items-start mb-6">
+              <div>
+                <h2 className="text-xl font-black">
+                  {isBn ? 'অ্যাকাউন্টের ধরন নির্বাচন করুন' : 'Select Account Type'}
+                </h2>
+
+                <p className="text-xs text-slate-500 mt-1">
+                  {isBn
+                    ? 'আপনি কোন ধরনের অ্যাকাউন্ট যোগ করতে চান?'
+                    : 'Which type of account would you like to add?'}
+                </p>
+              </div>
+
+              <button
+                onClick={() => setShowAccountTypePopup(false)}
+                className="p-2 rounded-full hover:bg-slate-500/10"
+                aria-label={isBn ? 'বন্ধ করুন' : 'Close'}
+              >
+                <X size={20} />
+              </button>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+
+              {/* SME Loan Account */}
+              <button
+                type="button"
+                onClick={() => {
+                  setShowAccountTypePopup(false);
+                  setEditingRecord(null);
+                  setIsAddModalOpen(true);
+                }}
+                className={`text-left p-5 rounded-2xl border-2 transition-all hover:border-amber-500 hover:shadow-lg ${
+                  isDark
+                    ? 'bg-slate-800 border-slate-700'
+                    : 'bg-amber-50/50 border-slate-200'
+                }`}
+              >
+                <div className="w-12 h-12 rounded-xl bg-amber-500/15 flex items-center justify-center mb-4">
+                  <Landmark size={25} className="text-amber-500" />
+                </div>
+
+                <h3 className="font-black text-sm mb-2">
+                  {isBn ? 'এসএমই লোন অ্যাকাউন্ট' : 'SME Loan Account'}
+                </h3>
+
+                <p className="text-xs text-slate-500 leading-relaxed">
+                  {isBn
+                    ? 'লোনের পরিমাণ, EMI, সুদের হার ও মেয়াদসহ নতুন লোন যোগ করুন।'
+                    : 'Add a loan with amount, EMI, interest rate and tenure.'}
+                </p>
+              </button>
+
+              {/* Outlet Account */}
+              <button
+                type="button"
+                onClick={() => {
+                  setShowAccountTypePopup(false);
+                }}
+                className={`text-left p-5 rounded-2xl border-2 transition-all hover:border-emerald-500 hover:shadow-lg ${
+                  isDark
+                    ? 'bg-slate-800 border-slate-700'
+                    : 'bg-emerald-50/50 border-slate-200'
+                }`}
+              >
+                <div className="w-12 h-12 rounded-xl bg-emerald-500/15 flex items-center justify-center mb-4">
+                  <Layers size={25} className="text-emerald-500" />
+                </div>
+
+                <h3 className="font-black text-sm mb-2">
+                  {isBn ? 'আউটলেট অ্যাকাউন্ট' : 'Outlet Account'}
+                </h3>
+
+                <p className="text-xs text-slate-500 leading-relaxed">
+                  {isBn
+                    ? 'সেভিংস, কারেন্ট ও অন্যান্য আউটলেট অ্যাকাউন্ট যোগ করুন।'
+                    : 'Add savings, current and other outlet accounts.'}
+                </p>
+              </button>
+
+            </div>
+
+            <button
+              onClick={() => setShowAccountTypePopup(false)}
+              className={`w-full mt-6 py-3 rounded-xl text-sm font-bold ${
+                isDark
+                  ? 'bg-slate-800 text-slate-200'
+                  : 'bg-slate-100 text-slate-600'
+              }`}
+            >
+              {isBn ? 'বাতিল করুন' : 'Cancel'}
+            </button>
+
+          </div>
+        </div>
+      )}
       <LoanAccountModal
         isOpen={isAddModalOpen}
         onClose={() => {
