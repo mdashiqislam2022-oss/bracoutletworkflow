@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { useApp } from '../../context/AppContext';
 import {
   Calendar as CalendarIcon,
   ChevronLeft,
@@ -25,7 +26,10 @@ export const CustomDatePicker: React.FC<CustomDatePickerProps> = ({
   isDark = false,
   error
 }) => {
-    const [isOpen, setIsOpen] = useState(false);
+  const { userPreferences } = useApp();
+  const isBn = userPreferences.language === 'bn';
+
+  const [isOpen, setIsOpen] = useState(false);
   const [pickerView, setPickerView] = useState<'DATE' | 'MONTH' | 'YEAR'>('DATE');
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -67,16 +71,24 @@ export const CustomDatePicker: React.FC<CustomDatePickerProps> = ({
   const today = new Date();
   const todayStr = today.toISOString().split('T')[0];
 
-  const formatDisplayDate = (dStr: string) => {
-    if (!dStr) return 'Select Date';
+    const formatDisplayDate = (dStr: string) => {
+    if (!dStr) {
+      return isBn ? 'তারিখ নির্বাচন করুন' : 'Select Date';
+    }
+
     try {
       const d = new Date(dStr);
+
       if (isNaN(d.getTime())) return dStr;
-      return d.toLocaleDateString('en-GB', {
-        day: '2-digit',
-        month: 'short',
-        year: 'numeric'
-      });
+
+      return d.toLocaleDateString(
+        isBn ? 'bn-BD' : 'en-GB',
+        {
+          day: '2-digit',
+          month: 'short',
+          year: 'numeric'
+        }
+      );
     } catch {
       return dStr;
     }
@@ -112,10 +124,35 @@ export const CustomDatePicker: React.FC<CustomDatePickerProps> = ({
   // Calendar calculations
   const year = viewDate.getFullYear();
   const month = viewDate.getMonth();
-  const monthNames = [
-    'January', 'February', 'March', 'April', 'May', 'June',
-    'July', 'August', 'September', 'October', 'November', 'December'
-  ];
+    const monthNames = isBn
+    ? [
+        'জানুয়ারি',
+        'ফেব্রুয়ারি',
+        'মার্চ',
+        'এপ্রিল',
+        'মে',
+        'জুন',
+        'জুলাই',
+        'আগস্ট',
+        'সেপ্টেম্বর',
+        'অক্টোবর',
+        'নভেম্বর',
+        'ডিসেম্বর'
+      ]
+    : [
+        'January',
+        'February',
+        'March',
+        'April',
+        'May',
+        'June',
+        'July',
+        'August',
+        'September',
+        'October',
+        'November',
+        'December'
+      ];
 
   const daysInMonth = new Date(year, month + 1, 0).getDate();
   const firstDayOfWeek = new Date(year, month, 1).getDay(); // 0 = Sun
@@ -180,7 +217,7 @@ export const CustomDatePicker: React.FC<CustomDatePickerProps> = ({
         <div className="flex items-center gap-1.5">
           {value === todayStr && (
             <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300">
-              Today
+                           {isBn ? 'আজ' : 'Today'}
             </span>
           )}
           <span className="text-xs text-slate-400">▼</span>
@@ -204,7 +241,7 @@ export const CustomDatePicker: React.FC<CustomDatePickerProps> = ({
                 if (pickerView === 'DATE') handlePrevMonth();
                 else if (pickerView === 'YEAR') setViewDate(new Date(year - 25, month, 1));
               }}
-              title="Previous"
+                           title={isBn ? 'পূর্ববর্তী' : 'Previous'}
               className={`p-1 rounded-md transition-colors cursor-pointer shrink-0 ${
                 isDark ? 'hover:bg-slate-800 text-slate-300' : 'hover:bg-slate-100 text-slate-700'
               }`}
@@ -241,7 +278,7 @@ export const CustomDatePicker: React.FC<CustomDatePickerProps> = ({
                 if (pickerView === 'DATE') handleNextMonth();
                 else if (pickerView === 'YEAR') setViewDate(new Date(year + 25, month, 1));
               }}
-              title="Next"
+                           title={isBn ? 'পরবর্তী' : 'Next'}
               className={`p-1 rounded-md transition-colors cursor-pointer shrink-0 ${
                 isDark ? 'hover:bg-slate-800 text-slate-300' : 'hover:bg-slate-100 text-slate-700'
               }`}
@@ -305,7 +342,10 @@ export const CustomDatePicker: React.FC<CustomDatePickerProps> = ({
             <>
               {/* Weekday headers */}
               <div className="grid grid-cols-7 gap-0.5 text-center mb-1">
-                {['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'].map((d, i) => (
+                                {(isBn
+                  ? ['রবি', 'সোম', 'মঙ্গল', 'বুধ', 'বৃহস্পতি', 'শুক্র', 'শনি']
+                  : ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa']
+                ).map((d, i) => (
                   <div
                     key={d}
                     className={`text-[9px] font-bold ${
@@ -358,7 +398,7 @@ export const CustomDatePicker: React.FC<CustomDatePickerProps> = ({
           {pickerView === 'DATE' && (
           <div className="mt-2 pt-2 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
             <span className="text-[10px] text-slate-500 dark:text-slate-400 font-medium">
-              Real-time Date
+                           {isBn ? 'বর্তমান তারিখ' : 'Real-time Date'}
             </span>
 
             <button
@@ -367,7 +407,17 @@ export const CustomDatePicker: React.FC<CustomDatePickerProps> = ({
               className="px-2.5 py-1 rounded-lg text-[10px] font-bold bg-emerald-600 hover:bg-emerald-500 text-white transition-all shadow-xs flex items-center gap-1 cursor-pointer"
             >
               <Sparkles className="w-2.5 h-2.5" />
-                           <span>Today ({today.getDate()}/{today.getMonth() + 1})</span>
+                                                     <span>
+                             {isBn ? 'আজ' : 'Today'} (
+                             {isBn
+                               ? today.getDate().toLocaleString('bn-BD', { useGrouping: false })
+                               : today.getDate()}
+                             /
+                             {isBn
+                               ? (today.getMonth() + 1).toLocaleString('bn-BD', { useGrouping: false })
+                               : today.getMonth() + 1}
+                             )
+                           </span>
             </button>
           </div>
           )}
