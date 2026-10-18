@@ -35,7 +35,8 @@ export const TotalCashAnalysisView: React.FC = () => {
     denominationAdjustments
   } = useApp();
 
-  const isDark = userPreferences.theme === 'dark';
+   const isDark = userPreferences.theme === 'dark';
+  const isBn = userPreferences.language === 'bn';
   const cardBg = isDark ? 'bg-[#1A2333] border-slate-800' : 'bg-white border-slate-200';
   const inputBg = isDark
     ? 'bg-[#0F172A] border-slate-700 text-slate-100'
@@ -318,10 +319,13 @@ export const TotalCashAnalysisView: React.FC = () => {
     <div className="space-y-4 md:space-y-6">
       <div className={`rounded-2xl border p-4 md:p-5 ${cardBg}`}>
         <h2 className={`font-bold text-lg flex items-center gap-2 mb-1 ${isDark ? 'text-slate-100' : 'text-slate-900'}`}>
-          <Wallet className="text-emerald-500" size={20} /> Total Cash Analysis
+                   <Wallet className="text-emerald-500" size={20} />
+          {isBn ? 'মোট নগদ বিশ্লেষণ' : 'Total Cash Analysis'}
         </h2>
         <p className="text-xs text-slate-500 mb-4">
-          Outlet-wise vault reconciliation — Mother Amount, live AFO cash-in-hand, transfers, and vault balance.
+                   {isBn
+            ? 'আউটলেটভিত্তিক ভল্ট হিসাব সমন্বয় — মাদার অ্যামাউন্ট, AFO-এর বর্তমান নগদ টাকা, ট্রান্সফার এবং ভল্ট ব্যালেন্স।'
+            : 'Outlet-wise vault reconciliation — Mother Amount, live AFO cash-in-hand, transfers, and vault balance.'}
         </p>
 
         {/* Outlet Filter */}
@@ -341,7 +345,7 @@ export const TotalCashAnalysisView: React.FC = () => {
                 onClick={() => { setViewOutlet('ALL'); setOutletDropdownOpen(false); }}
                 className={`w-full text-left px-3 py-2 text-xs font-semibold hover:bg-emerald-500/10 ${viewOutlet === 'ALL' ? 'text-emerald-500' : ''}`}
               >
-                All Outlets
+                                {isBn ? 'সকল আউটলেট' : 'All Outlets'}
               </button>
               {outlets.map((o) => (
                 <button
@@ -360,25 +364,31 @@ export const TotalCashAnalysisView: React.FC = () => {
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
           <div className={`rounded-xl border p-3 ${cardBg}`}>
             <div className="flex items-center gap-1.5 text-[11px] font-semibold text-slate-500">
-              <Landmark size={13} /> Total Mother Amount
+                             <Landmark size={13} />
+               {isBn ? 'মোট মাদার অ্যামাউন্ট' : 'Total Mother Amount'}
             </div>
             <div className="text-lg font-extrabold mt-1 text-blue-500">৳ {totals.mother.toLocaleString()}</div>
           </div>
           <div className="rounded-xl border p-3 border-emerald-500/40 bg-emerald-500/10">
             <div className="flex items-center gap-1.5 text-[11px] font-semibold text-emerald-600">
-              <Wallet size={13} /> Total AFO Cash Amount
+                             <Wallet size={13} />
+               {isBn ? 'মোট AFO নগদ টাকা' : 'Total AFO Cash Amount'}
             </div>
             <div className="text-lg font-extrabold mt-1 text-emerald-600">৳ {totals.afoCash.toLocaleString()}</div>
           </div>
                     <div className="rounded-xl border p-3 border-amber-500/40 bg-amber-500/10">
             <div className="flex items-center gap-1.5 text-[11px] font-semibold text-amber-600">
-              <ArrowRightLeft size={13} /> Total Amount Received From Outlet
+                             <ArrowRightLeft size={13} />
+               {isBn
+                 ? 'আউটলেট থেকে মোট প্রাপ্ত টাকা'
+                 : 'Total Amount Received From Outlet'}
             </div>
             <div className="text-lg font-extrabold mt-1 text-amber-600">৳ {totals.receivedFromOutlet.toLocaleString()}</div>
           </div>
           <div className="rounded-xl border p-3 border-purple-500/40 bg-purple-500/10">
             <div className="flex items-center gap-1.5 text-[11px] font-semibold text-purple-600">
-              <Vault size={13} /> Total Vault Amount
+                            <Vault size={13} />
+               {isBn ? 'মোট ভল্টের টাকা' : 'Total Vault Amount'}
             </div>
                         <div className="text-lg font-extrabold mt-1 text-purple-600">৳ {totals.vault.toLocaleString()}</div>
           </div>
@@ -451,7 +461,8 @@ export const TotalCashAnalysisView: React.FC = () => {
           <div className={`rounded-xl border p-3 space-y-2 max-w-md ${inputBg}`}>
             <div className="flex items-center justify-between">
               <div className="text-xs font-bold flex items-center gap-1.5 text-blue-500">
-                <PlusCircle size={14} /> Set Mother Amount
+                                <PlusCircle size={14} />
+                 {isBn ? 'মাদার অ্যামাউন্ট নির্ধারণ করুন' : 'Set Mother Amount'}
               </div>
                             <div className={`relative flex items-center rounded-lg border p-0.5 ${inputBg}`} style={{ width: '60px', height: '26px' }}>
                 <div
@@ -487,7 +498,9 @@ export const TotalCashAnalysisView: React.FC = () => {
               >
                 <span className="flex items-center gap-1.5 truncate">
                   <Building2 size={13} className="text-blue-500 shrink-0" />
-                  {motherOutlet ? outlets.find((o) => o.id === motherOutlet)?.name : 'Select Outlet'}
+                                    {motherOutlet
+                     ? outlets.find((o) => o.id === motherOutlet)?.name
+                     : (isBn ? 'আউটলেট নির্বাচন করুন' : 'Select Outlet')}
                 </span>
                 <ChevronDown size={13} className="text-slate-400 shrink-0" />
               </button>
@@ -506,15 +519,25 @@ export const TotalCashAnalysisView: React.FC = () => {
                 </div>
               )}
             </div>
-            <input type="number" min={0} value={motherAmountInput} onChange={(e) => setMotherAmountInput(e.target.value)} placeholder="Amount" className={`w-full rounded-lg border px-2 py-1.5 text-xs ${inputBg}`} />
+            <input type="number" min={0} value={motherAmountInput} onChange={(e) => setMotherAmountInput(e.target.value)} placeholder={isBn ? 'টাকার পরিমাণ' : 'Amount'} className={`w-full rounded-lg border px-2 py-1.5 text-xs ${inputBg}`} />
             {motherOutlet && motherAmountInput && !isNaN(parseFloat(motherAmountInput)) && (
               <div className="text-[10px] font-semibold text-slate-500 px-1">
-                Current: ৳{currentMotherForSelectedOutlet.toLocaleString()}
-                {' '}→ New: ৳{(currentMotherForSelectedOutlet + (motherAmountSign === '+' ? 1 : -1) * parseFloat(motherAmountInput)).toLocaleString()}
+                                {isBn ? 'বর্তমান:' : 'Current:'} ৳
+                 {currentMotherForSelectedOutlet.toLocaleString()}
+                 {' '}→ {isBn ? 'নতুন:' : 'New:'} ৳
+                 {(currentMotherForSelectedOutlet +
+                   (motherAmountSign === '+' ? 1 : -1) *
+                   parseFloat(motherAmountInput)
+                 ).toLocaleString()}
               </div>
             )}
-            <input value={motherNote} onChange={(e) => setMotherNote(e.target.value)} placeholder="Note (optional)" className={`w-full rounded-lg border px-2 py-1.5 text-xs ${inputBg}`} />
-            <button onClick={handleSetMother} className="w-full py-1.5 rounded-lg bg-blue-500 text-white text-xs font-bold">Save Mother Amount</button>
+            <input value={motherNote} onChange={(e) => setMotherNote(e.target.value)} placeholder={isBn ? 'নোট লিখুন (ঐচ্ছিক)' : 'Note (optional)'} className={`w-full rounded-lg border px-2 py-1.5 text-xs ${inputBg}`} />
+            <button
+  onClick={handleSetMother}
+  className="w-full py-1.5 rounded-lg bg-blue-500 text-white text-xs font-bold"
+>
+  {isBn ? 'মাদার অ্যামাউন্ট সংরক্ষণ করুন' : 'Save Mother Amount'}
+</button>
           </div>
                   </div>
 
