@@ -141,7 +141,12 @@ export const SupportingView: React.FC = () => {
   const handleSaveSupporting = () => {
     if (!currentUser) return;
     if (!canSaveSupporting) {
-      showToast({ message: 'অনুগ্রহ করে Supporting To Name ও Purpose পূরণ করুন এবং amount দিন।', type: 'error' });
+           showToast({
+        message: isBn
+          ? 'অনুগ্রহ করে সাপোর্টিং প্রাপক, উদ্দেশ্য এবং পরিমাণ পূরণ করুন।'
+          : 'Please fill in Supporting To Name, Purpose, and amount.',
+        type: 'error'
+      });
       return;
     }
     addSupportingRecord({
@@ -940,7 +945,7 @@ export const SupportingView: React.FC = () => {
             </div>
 
             <div className="text-xs font-bold flex items-center gap-1.5 text-slate-500 mb-1.5">
-              Recovered Via
+                            {isBn ? 'কীভাবে আদায় হয়েছে' : 'Recovered Via'}
             </div>
             <div className="flex gap-2 mb-3">
               <button
@@ -950,7 +955,7 @@ export const SupportingView: React.FC = () => {
                   recoverFundingSource === 'CASH' ? 'bg-blue-500 text-white border-blue-500' : `${inputBg}`
                 }`}
               >
-                <Wallet size={13} /> Cash
+                               <Wallet size={13} /> {isBn ? 'নগদ' : 'Cash'}
               </button>
               <button
                 type="button"
@@ -959,7 +964,7 @@ export const SupportingView: React.FC = () => {
                   recoverFundingSource === 'BALANCE' ? 'bg-purple-500 text-white border-purple-500' : `${inputBg}`
                 }`}
               >
-                <Landmark size={13} /> Balance
+                               <Landmark size={13} /> {isBn ? 'ব্যালেন্স' : 'Balance'}
               </button>
             </div>
 
@@ -967,7 +972,7 @@ export const SupportingView: React.FC = () => {
               {recoverFundingSource === 'CASH' ? (
                 <div className={`rounded-xl border p-3 space-y-2 mb-3 ${inputBg}`}>
                   <div className="text-xs font-bold flex items-center gap-1.5 text-blue-600 mb-1">
-                    Money Segregation
+                                       {isBn ? 'নোটের হিসাব' : 'Money Segregation'}
                   </div>
                   <div className="grid grid-cols-2 gap-3">
                     <div className="space-y-1.5">
@@ -1002,17 +1007,23 @@ export const SupportingView: React.FC = () => {
                     </div>
                   </div>
                                    <div className={`flex items-center justify-between rounded-lg border px-3 py-2 text-[11px] font-bold mt-2 ${cardBg}`}>
-                    <span className="text-slate-500">Recovered Amount</span>
+                                       <span className="text-slate-500">
+                      {isBn ? 'আদায়কৃত পরিমাণ' : 'Recovered Amount'}
+                    </span>
                     <span className="text-emerald-600">৳ {recoverSegregatedTotal.toLocaleString()}</span>
                   </div>
                   <div className={`flex items-center justify-between rounded-lg border px-3 py-2 text-[11px] font-bold mt-2 ${cardBg}`}>
-                    <span className="text-slate-500">Total Supporting Amount</span>
+                                       <span className="text-slate-500">
+                      {isBn ? 'মোট সাপোর্টিং পরিমাণ' : 'Total Supporting Amount'}
+                    </span>
                     <span className="text-blue-600">
                       ৳ {(mySupportingRecords.find((r) => r.id === recoverConfirmId)?.amount || 0).toLocaleString()}
                     </span>
                   </div>
                   <div className={`flex items-center justify-between rounded-lg border px-3 py-2 text-[11px] font-bold mt-2 ${cardBg}`}>
-                    <span className="text-slate-500">Due Amount</span>
+                                        <span className="text-slate-500">
+                      {isBn ? 'বকেয়া পরিমাণ' : 'Due Amount'}
+                    </span>
                     <span
                       className={
                         (mySupportingRecords.find((r) => r.id === recoverConfirmId)?.amount || 0) - recoverSegregatedTotal === 0
@@ -1026,7 +1037,9 @@ export const SupportingView: React.FC = () => {
                 </div>
               ) : (
                 <div className="text-xs text-slate-500 mb-3">
-                  The full supporting amount of ৳{' '}
+                                    {isBn
+                    ? `সম্পূর্ণ সাপোর্টিং পরিমাণ ৳ ${(mySupportingRecords.find((r) => r.id === recoverConfirmId)?.amount || 0).toLocaleString()} Mother Amount-এ ফেরত যোগ হবে।`
+                    : `The full supporting amount of ৳ ${(mySupportingRecords.find((r) => r.id === recoverConfirmId)?.amount || 0).toLocaleString()} will be added back to Mother Amount.`}
                   {(mySupportingRecords.find((r) => r.id === recoverConfirmId)?.amount || 0).toLocaleString()}{' '}
                   will be added back to Mother Amount.
                 </div>
@@ -1039,7 +1052,7 @@ export const SupportingView: React.FC = () => {
                 onClick={() => setRecoverConfirmId(null)}
                 className={`flex-1 py-1.5 rounded-lg text-xs font-bold border ${inputBg}`}
               >
-                No
+                               {isBn ? 'না' : 'No'}
               </button>
               <button
                 type="button"
@@ -1059,7 +1072,7 @@ export const SupportingView: React.FC = () => {
                 }}
                 className="flex-1 py-1.5 rounded-lg bg-emerald-500 text-white text-xs font-bold disabled:opacity-40 disabled:cursor-not-allowed"
               >
-                Yes
+                                {isBn ? 'হ্যাঁ' : 'Yes'}
               </button>
             </div>
           </div>
