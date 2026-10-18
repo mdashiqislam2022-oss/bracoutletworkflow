@@ -840,7 +840,7 @@ export const SupportingView: React.FC = () => {
                       }}
                       className="text-xs font-semibold text-rose-500"
                     >
-                      Clear
+                    {isBn ? 'পরিষ্কার' : 'Clear'}
                     </button>
                     <button
                       onClick={() => {
@@ -851,7 +851,7 @@ export const SupportingView: React.FC = () => {
                       }}
                       className="text-xs font-semibold text-emerald-500"
                     >
-                      Today
+                      {isBn ? 'আজ' : 'Today'}
                     </button>
                   </div>
                 </div>
@@ -860,7 +860,11 @@ export const SupportingView: React.FC = () => {
 
             <div className="space-y-1.5 max-h-96 overflow-y-auto">
               {filteredHistory.length === 0 && (
-                <div className="text-xs text-slate-500 text-center py-6">No supporting history found.</div>
+                               <div className="text-xs text-slate-500 text-center py-6">
+                  {isBn
+                    ? 'কোনো সাপোর্টিং ইতিহাস পাওয়া যায়নি।'
+                    : 'No supporting history found.'}
+                </div>
               )}
               {filteredHistory.map((r) => (
                 <div key={r.id} className={`rounded-lg border px-3 py-2 text-[11px] ${inputBg}`}>
@@ -904,7 +908,7 @@ export const SupportingView: React.FC = () => {
                           }}
                           className="flex items-center gap-1 px-2 py-1 rounded-md bg-emerald-500 text-white text-[10px] font-bold"
                         >
-                          <CheckCircle2 size={11} /> Recovered
+                           <CheckCircle2 size={11} /> {isBn ? 'আদায় হয়েছে' : 'Recovered'}
                         </button>
                       ) : (
                         <div className="flex items-center gap-1 text-[10px] text-emerald-600 font-semibold">
@@ -925,7 +929,7 @@ export const SupportingView: React.FC = () => {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
           <div className={`w-full max-w-sm rounded-2xl border p-4 shadow-xl ${cardBg}`}>
                        <div className={`text-sm font-bold mb-2 ${isDark ? 'text-slate-100' : 'text-slate-900'}`}>
-              Confirm Recovery
+            {isBn ? 'আদায় নিশ্চিত করুন' : 'Confirm Recovery'}
             </div>
             <div className="text-xs text-slate-500 mb-3">
               Has the supporting amount of ৳{' '}
