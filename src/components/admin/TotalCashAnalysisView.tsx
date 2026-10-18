@@ -396,7 +396,9 @@ export const TotalCashAnalysisView: React.FC = () => {
 
                 {/* Denomination-wise Note Count (Outlet scoped) */}
         <div className="mb-6">
-          <div className="text-xs font-bold text-slate-500 mb-2">Denomination-wise Note Count</div>
+                   <div className="text-xs font-bold text-slate-500 mb-2">
+            {isBn ? 'নোটের মান অনুযায়ী সংখ্যা' : 'Denomination-wise Note Count'}
+          </div>
           <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
             {DENOM_LIST.map((d) => {
               const isEditing = editingDenomKey === d.key;
@@ -411,10 +413,13 @@ export const TotalCashAnalysisView: React.FC = () => {
                       }}
                       className="absolute top-1.5 right-1.5 text-[9px] font-bold text-emerald-500 hover:text-emerald-600"
                     >
-                      Change
+                                           {isBn ? 'পরিবর্তন করুন' : 'Change'}
                     </button>
                   )}
-                  <div className="text-[11px] font-semibold text-slate-500 mb-1">Tk{d.value}</div>
+                                   <div className="text-[11px] font-semibold text-slate-500 mb-1">
+                    {isBn ? '৳' : 'Tk'}
+                    {d.value}
+                  </div>
                   {isEditing ? (
                     <>
                       <input
@@ -430,13 +435,13 @@ export const TotalCashAnalysisView: React.FC = () => {
                           onClick={() => setEditingDenomKey(null)}
                           className={`flex-1 py-1 rounded-md text-[10px] font-bold ${inputBg}`}
                         >
-                          Cancel
+                                                   {isBn ? 'বাতিল' : 'Cancel'}
                         </button>
                         <button
                           onClick={() => handleSaveDenomAdjustment(d.key, d.value)}
                           className="flex-1 py-1 rounded-md text-[10px] font-bold bg-emerald-500 text-white"
                         >
-                          Save
+                                                    {isBn ? 'সংরক্ষণ করুন' : 'Save'}
                         </button>
                       </div>
                     </>
