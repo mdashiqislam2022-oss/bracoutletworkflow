@@ -28,6 +28,7 @@ import {
 } from 'lucide-react';
 import { LoanAccountRecord, LoanStatus } from '../../types';
 import { LoanAccountModal } from './LoanAccountModal';
+import { OutletAccountModal } from './OutletAccountModal';
 
 type UnifiedAccount = {
   source:
@@ -81,7 +82,8 @@ export const LoanAccountDetailsView: React.FC = () => {
 >('ALL');
   const [selectedRecord, setSelectedRecord] = useState<LoanAccountRecord | null>(null);
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
-  const [showAccountTypePopup, setShowAccountTypePopup] = useState(false);
+ const [showAccountTypePopup, setShowAccountTypePopup] = useState(false);
+const [isOutletModalOpen, setIsOutletModalOpen] = useState(false);
   const [editingRecord, setEditingRecord] = useState<LoanAccountRecord | null>(null);
   const [deletingRecord, setDeletingRecord] = useState<LoanAccountRecord | null>(null);
   const [copiedId, setCopiedId] = useState<string | null>(null);
