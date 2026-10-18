@@ -1,5 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { Bold, Italic, Strikethrough, Highlighter, Palette } from 'lucide-react';
+import { useApp } from '../../context/AppContext';
 
 const COLOR_PALETTE = [
   '#000000', '#374151', '#6B7280', '#EF4444', '#F97316',
@@ -22,6 +23,9 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({
   isDark,
   minHeight = '160px'
 }) => {
+    const { userPreferences } = useApp();
+  const isBn = userPreferences.language === 'bn';
+
   const editorRef = useRef<HTMLDivElement>(null);
   const [showColorPalette, setShowColorPalette] = useState(false);
   const [activeColor, setActiveColor] = useState('#000000');
@@ -79,7 +83,7 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({
           onMouseDown={(e) => { e.preventDefault(); saveSelection(); }}
           onClick={() => applyCommand('bold')}
           className={toolbarBtn}
-          title="Bold"
+                   title={isBn ? 'বোল্ড (গাঢ় লেখা)' : 'Bold'}
         >
           <Bold size={14} />
         </button>
@@ -88,7 +92,7 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({
           onMouseDown={(e) => { e.preventDefault(); saveSelection(); }}
           onClick={() => applyCommand('italic')}
           className={toolbarBtn}
-          title="Italic"
+                   title={isBn ? 'ইটালিক (বাঁকা লেখা)' : 'Italic'}
         >
           <Italic size={14} />
         </button>
@@ -97,7 +101,7 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({
           onMouseDown={(e) => { e.preventDefault(); saveSelection(); }}
           onClick={() => applyCommand('strikeThrough')}
           className={toolbarBtn}
-          title="Cut / Strikethrough"
+                  title={isBn ? 'লেখার মাঝখানে দাগ দিন' : 'Cut / Strikethrough'}
         >
           <Strikethrough size={14} />
         </button>
@@ -106,7 +110,7 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({
           onMouseDown={(e) => { e.preventDefault(); saveSelection(); }}
           onClick={() => applyCommand('hiliteColor', '#FEF08A')}
           className={toolbarBtn}
-          title="Highlight"
+                  title={isBn ? 'লেখা হাইলাইট করুন' : 'Highlight'}
         >
           <Highlighter size={14} />
         </button>
@@ -119,7 +123,7 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({
           onMouseDown={(e) => { e.preventDefault(); saveSelection(); }}
           onClick={() => setShowColorPalette((v) => !v)}
           className="flex items-center gap-1 p-1 rounded-lg"
-          title="Text Color"
+                   title={isBn ? 'লেখার রং পরিবর্তন করুন' : 'Text Color'}
         >
           <Palette size={13} className={isDark ? 'text-slate-300' : 'text-slate-600'} />
           <span
@@ -155,7 +159,7 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({
         onInput={handleInput}
         onMouseUp={saveSelection}
         onKeyUp={saveSelection}
-        data-placeholder={placeholder || 'Write here...'}
+               data-placeholder={placeholder || (isBn ? 'এখানে লিখুন...' : 'Write here...')}
         className="rich-text-editable px-3 py-2 text-sm outline-none overflow-y-auto"
         style={{ minHeight }}
         suppressContentEditableWarning
