@@ -221,23 +221,43 @@ export const TransferView: React.FC = () => {
 
     if (transferType === 'RTGS' || transferType === 'TRANSFER_TO_OUTLET') {
       if (segregatedTotal <= 0) {
-        showToast({ message: 'Transfer save করার আগে অবশ্যই Segregation দিতে হবে।', type: 'error' });
+        showToast({
+  message: isBn
+    ? 'টাকা স্থানান্তর সংরক্ষণের আগে অবশ্যই নোটের বিবরণ দিতে হবে।'
+    : 'You must provide denomination details before saving the transfer.',
+  type: 'error'
+});
         return;
       }
       if (amt !== segregatedTotal) {
-        showToast({ message: 'Amount এবং Segregation Total অবশ্যই এক হতে হবে।', type: 'error' });
+       showToast({
+  message: isBn
+    ? 'টাকার পরিমাণ এবং নোটের মোট টাকার পরিমাণ অবশ্যই সমান হতে হবে।'
+    : 'The transfer amount and total denomination amount must match.',
+  type: 'error'
+});
         return;
       }
     }
 
     if (transferType === 'TRANSFER_TO_OUTLET' && !destinationOutletId) {
-      showToast({ message: 'অনুগ্রহ করে একটা Destination Outlet সিলেক্ট করুন।', type: 'error' });
+      showToast({
+  message: isBn
+    ? 'অনুগ্রহ করে টাকা পাঠানোর জন্য একটি আউটলেট নির্বাচন করুন।'
+    : 'Please select a destination outlet.',
+  type: 'error'
+});
       return;
     }
 
        const rtgsChargeAmt = transferType === 'RTGS' && rtgsChargeEnabled ? (parseFloat(rtgsChargeAmount) || 0) : 0;
     if (transferType === 'RTGS' && rtgsChargeEnabled && rtgsChargeAmt > amt) {
-      showToast({ message: 'Charge amount, total RTGS amount থেকে বেশি হতে পারবে না।', type: 'error' });
+     showToast({
+  message: isBn
+    ? 'RTGS চার্জের পরিমাণ মোট RTGS টাকার পরিমাণের বেশি হতে পারবে না।'
+    : 'The RTGS charge cannot exceed the total RTGS amount.',
+  type: 'error'
+});
       return;
     }
 
