@@ -12,7 +12,8 @@ const DENOM_LIST: { key: keyof DenominationCounts; value: number }[] = [
 
 export const SupportingHistoryView: React.FC = () => {
   const { outlets, supportingRecords, userPreferences } = useApp();
-  const isDark = userPreferences.theme === 'dark';
+   const isDark = userPreferences.theme === 'dark';
+  const isBn = userPreferences.language === 'bn';
   const cardBg = isDark ? 'bg-[#1A2333] border-slate-800' : 'bg-white border-slate-200';
   const inputBg = isDark ? 'bg-[#0F172A] border-slate-700 text-slate-100' : 'bg-white border-slate-200 text-slate-900';
 
@@ -28,10 +29,42 @@ export const SupportingHistoryView: React.FC = () => {
   });
   const [monthDropdownOpen, setMonthDropdownOpen] = useState(false);
   const [yearDropdownOpen, setYearDropdownOpen] = useState(false);
-  const monthNamesList = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+   const monthNamesList = isBn
+    ? [
+        'জানুয়ারি',
+        'ফেব্রুয়ারি',
+        'মার্চ',
+        'এপ্রিল',
+        'মে',
+        'জুন',
+        'জুলাই',
+        'আগস্ট',
+        'সেপ্টেম্বর',
+        'অক্টোবর',
+        'নভেম্বর',
+        'ডিসেম্বর'
+      ]
+    : [
+        'January',
+        'February',
+        'March',
+        'April',
+        'May',
+        'June',
+        'July',
+        'August',
+        'September',
+        'October',
+        'November',
+        'December'
+      ];
   const yearOptionsList = Array.from({ length: 20 }, (_, i) => 2020 + i);
 
-  const selectedOutletName = viewOutlet === 'ALL' ? 'All Outlets' : outlets.find((o) => o.id === viewOutlet)?.name || 'All Outlets';
+   const selectedOutletName =
+    viewOutlet === 'ALL'
+      ? (isBn ? 'সকল আউটলেট' : 'All Outlets')
+      : outlets.find((o) => o.id === viewOutlet)?.name ||
+        (isBn ? 'সকল আউটলেট' : 'All Outlets');
 
     const [statusFilter, setStatusFilter] = useState<'ALL' | 'PENDING' | 'RECOVERED'>('ALL');
 
@@ -61,7 +94,8 @@ export const SupportingHistoryView: React.FC = () => {
     <div className="space-y-4 md:space-y-6">
       <div className={`rounded-2xl border p-4 md:p-5 ${cardBg}`}>
         <h2 className={`font-bold text-lg flex items-center gap-2 mb-4 ${isDark ? 'text-slate-100' : 'text-slate-900'}`}>
-          <HandCoins className="text-emerald-500" size={20} /> Supporting History
+                   <HandCoins className="text-emerald-500" size={20} />
+          {isBn ? 'সাপোর্টিং হিস্ট্রি' : 'Supporting History'}
         </h2>
 
         <div className="flex flex-wrap items-center gap-2 mb-4">
@@ -82,7 +116,7 @@ export const SupportingHistoryView: React.FC = () => {
                   onClick={() => { setViewOutlet('ALL'); setOutletDropdownOpen(false); }}
                   className={`w-full text-left px-3 py-2 text-xs font-semibold hover:bg-emerald-500/10 ${viewOutlet === 'ALL' ? 'text-emerald-500' : ''}`}
                 >
-                  All Outlets
+                                    {isBn ? 'সকল আউটলেট' : 'All Outlets'}
                 </button>
                 {outlets.map((o) => (
                   <button
@@ -104,9 +138,16 @@ export const SupportingHistoryView: React.FC = () => {
               className={`flex items-center gap-2 rounded-lg border px-3 py-2 text-xs font-semibold ${inputBg}`}
             >
               <Calendar size={13} className="text-emerald-500" />
-              {dateFilter
-                ? new Date(dateFilter + 'T00:00:00').toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })
-                : 'Select Date'}
+                           {dateFilter
+                ? new Date(dateFilter + 'T00:00:00').toLocaleDateString(
+                    isBn ? 'bn-BD' : 'en-GB',
+                    {
+                      day: 'numeric',
+                      month: 'short',
+                      year: 'numeric'
+                    }
+                  )
+                : (isBn ? 'তারিখ নির্বাচন করুন' : 'Select Date')}
             </button>
 
             <div
@@ -223,7 +264,10 @@ export const SupportingHistoryView: React.FC = () => {
               </div>
 
               <div className="grid grid-cols-7 gap-1 mb-1">
-                {['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'].map((d, i) => (
+                               {(isBn
+                  ? ['রবি', 'সোম', 'মঙ্গল', 'বুধ', 'বৃহস্পতি', 'শুক্র', 'শনি']
+                  : ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa']
+                ).map((d, i) => (
                   <div key={d} className={`text-center text-[10px] font-bold ${i === 5 || i === 6 ? 'text-rose-500' : 'text-slate-400'}`}>
                     {d}
                   </div>
@@ -258,7 +302,9 @@ export const SupportingHistoryView: React.FC = () => {
                           : 'hover:bg-emerald-500/10'
                       }`}
                     >
-                      {day}
+                                          {isBn
+                        ? day.toLocaleString('bn-BD', { useGrouping: false })
+                        : day}
                     </button>
                   );
                 })}
@@ -269,7 +315,7 @@ export const SupportingHistoryView: React.FC = () => {
                   onClick={() => { setDateFilter(''); setDatePickerOpen(false); }}
                   className="text-xs font-semibold text-rose-500"
                 >
-                  Clear
+                                   {isBn ? 'মুছুন' : 'Clear'}
                 </button>
                 <button
                   onClick={() => {
@@ -280,7 +326,7 @@ export const SupportingHistoryView: React.FC = () => {
                   }}
                   className="text-xs font-semibold text-emerald-500"
                 >
-                  Today
+                                   {isBn ? 'আজ' : 'Today'}
                 </button>
               </div>
             </div>
@@ -296,8 +342,12 @@ export const SupportingHistoryView: React.FC = () => {
               statusFilter === 'ALL' ? 'ring-2 ring-blue-500' : ''
             }`}
           >
-            <div className="text-[11px] font-semibold text-blue-600">Total Supported</div>
-            <div className="text-lg font-extrabold text-blue-600">৳ {totals.total.toLocaleString()}</div>
+                       <div className="text-[11px] font-semibold text-blue-600">
+              {isBn ? 'মোট সাপোর্টিং টাকা' : 'Total Supported'}
+            </div>
+                       <div className="text-lg font-extrabold text-blue-600">
+              ৳ {totals.total.toLocaleString(isBn ? 'bn-BD' : 'en-US')}
+            </div>
           </button>
           <button
             type="button"
@@ -306,8 +356,12 @@ export const SupportingHistoryView: React.FC = () => {
               statusFilter === 'RECOVERED' ? 'ring-2 ring-emerald-500' : ''
             }`}
           >
-            <div className="text-[11px] font-semibold text-emerald-600">Recovered</div>
-            <div className="text-lg font-extrabold text-emerald-600">৳ {totals.recovered.toLocaleString()}</div>
+                       <div className="text-[11px] font-semibold text-emerald-600">
+              {isBn ? 'আদায়কৃত টাকা' : 'Recovered'}
+            </div>
+                     <div className="text-lg font-extrabold text-emerald-600">
+              ৳ {totals.recovered.toLocaleString(isBn ? 'bn-BD' : 'en-US')}
+            </div>
           </button>
           <button
             type="button"
@@ -316,8 +370,12 @@ export const SupportingHistoryView: React.FC = () => {
               statusFilter === 'PENDING' ? 'ring-2 ring-amber-500' : ''
             }`}
           >
-            <div className="text-[11px] font-semibold text-amber-600">Pending</div>
-            <div className="text-lg font-extrabold text-amber-600">৳ {totals.pending.toLocaleString()}</div>
+                        <div className="text-[11px] font-semibold text-amber-600">
+              {isBn ? 'অনাদায়ী টাকা' : 'Pending'}
+            </div>
+                      <div className="text-lg font-extrabold text-amber-600">
+              ৳ {totals.pending.toLocaleString(isBn ? 'bn-BD' : 'en-US')}
+            </div>
           </button>
         </div>
 
