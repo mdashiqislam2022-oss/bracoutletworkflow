@@ -73,6 +73,20 @@ export const CashHistoryView: React.FC = () => {
     return prior?.amount || 0;
   };
 
+   const translateHistoryKind = (kind: string): string => {
+    if (!isBn) return kind;
+
+    const labels: Record<string, string> = {
+      'Mother Amount': 'মাদার অ্যামাউন্ট',
+      'Transfer': 'টাকা স্থানান্তর',
+      'RTGS Transfer': 'RTGS স্থানান্তর',
+      'Transfer to Outlet': 'আউটলেটে টাকা স্থানান্তর',
+      'Denomination Adjustment': 'নোটের সংখ্যা সমন্বয়'
+    };
+
+    return labels[kind] || kind;
+  };
+
   const getMotherAmountReasonTag = (note?: string): string => {
     if (!note) return 'Manual';
     if (note.startsWith('Manual added')) return 'Manual +';
@@ -166,9 +180,12 @@ export const CashHistoryView: React.FC = () => {
               className={`flex items-center gap-2 rounded-lg border px-3 py-2 text-xs font-semibold ${inputBg}`}
             >
               <Calendar size={13} className="text-emerald-500" />
-              {historyDateFilter
-                ? new Date(historyDateFilter + 'T00:00:00').toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })
-                : 'Select Date'}
+                            {historyDateFilter
+                ? new Date(historyDateFilter + 'T00:00:00').toLocaleDateString(
+                    isBn ? 'bn-BD' : 'en-GB',
+                    { day: 'numeric', month: 'short', year: 'numeric' }
+                  )
+                : (isBn ? 'তারিখ নির্বাচন করুন' : 'Select Date')}
             </button>
 
             <div
@@ -285,7 +302,10 @@ export const CashHistoryView: React.FC = () => {
               </div>
 
               <div className="grid grid-cols-7 gap-1 mb-1">
-                {['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'].map((d, i) => (
+                               {(isBn
+                  ? ['রবি', 'সোম', 'মঙ্গল', 'বুধ', 'বৃহস্পতি', 'শুক্র', 'শনি']
+                  : ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa']
+                ).map((d, i) => (
                   <div key={d} className={`text-center text-[10px] font-bold ${i === 5 || i === 6 ? 'text-rose-500' : 'text-slate-400'}`}>
                     {d}
                   </div>
@@ -320,7 +340,9 @@ export const CashHistoryView: React.FC = () => {
                           : 'hover:bg-emerald-500/10'
                       }`}
                     >
-                      {day}
+                                            {isBn
+                        ? day.toLocaleString('bn-BD', { useGrouping: false })
+                        : day}
                     </button>
                   );
                 })}
@@ -331,7 +353,7 @@ export const CashHistoryView: React.FC = () => {
                   onClick={() => { setHistoryDateFilter(''); setHistoryDatePickerOpen(false); }}
                   className="text-xs font-semibold text-rose-500"
                 >
-                  Clear
+                                    {isBn ? 'মুছুন' : 'Clear'}
                 </button>
                 <button
                   onClick={() => {
@@ -342,18 +364,24 @@ export const CashHistoryView: React.FC = () => {
                   }}
                   className="text-xs font-semibold text-emerald-500"
                 >
-                  Today
+                                    {isBn ? 'আজ' : 'Today'}
                 </button>
               </div>
             </div>
           </div>
         </div>
 
-        <div className="text-xs text-slate-500 mb-2">{combinedHistory.length} entries found</div>
+               <div className="text-xs text-slate-500 mb-2">
+          {isBn
+            ? `${combinedHistory.length.toLocaleString('bn-BD')}টি রেকর্ড পাওয়া গেছে`
+            : `${combinedHistory.length} entries found`}
+        </div>
 
         <div className="space-y-1.5 max-h-[70vh] overflow-y-auto">
           {combinedHistory.length === 0 && (
-            <div className="text-xs text-slate-500 text-center py-6">No history found.</div>
+                       <div className="text-xs text-slate-500 text-center py-6">
+              {isBn ? 'কোনো ইতিহাস পাওয়া যায়নি।' : 'No history found.'}
+            </div>
           )}
           {combinedHistory.map((h) => {
             const hasDenoms = (h.kind === 'RTGS Transfer' || h.kind === 'Transfer to Outlet') && !!(h as any).denominations;
@@ -369,7 +397,9 @@ export const CashHistoryView: React.FC = () => {
                   }`}
                 >
                   <div>
-                    <span className="font-bold">{h.kind}</span> — {h.outletName}
+                                      <span className="font-bold">
+                      {translateHistoryKind(h.kind)}
+                    </span> — {h.outletName}
                     {h.kind === 'Transfer to Outlet' && (h as any).destinationOutletName ? (
                       <span className="text-teal-600 font-semibold"> → {(h as any).destinationOutletName}</span>
                     ) : null}
@@ -384,13 +414,26 @@ export const CashHistoryView: React.FC = () => {
                     )}
                     {h.kind === 'Mother Amount' && (
                       <div className="text-slate-500">
-                        Before: ৳{getPreviousMotherAmount(h).toLocaleString()} → After: ৳{h.amount.toLocaleString()}{' '}
+                                                {isBn ? 'আগে:' : 'Before:'} ৳
+                        {getPreviousMotherAmount(h).toLocaleString(
+                          isBn ? 'bn-BD' : 'en-US'
+                        )}
+                        {' → '}
+                        {isBn ? 'পরে:' : 'After:'} ৳
+                        {h.amount.toLocaleString(isBn ? 'bn-BD' : 'en-US')}
+                        {' '}
                         <span className={h.amount >= getPreviousMotherAmount(h) ? 'text-emerald-600 font-semibold' : 'text-red-500 font-semibold'}>
                           ({h.amount >= getPreviousMotherAmount(h) ? '+' : ''}{(h.amount - getPreviousMotherAmount(h)).toLocaleString()})
                         </span>
                       </div>
                     )}
-                    <div className="text-slate-500">{new Date(h.createdAt).toLocaleString()} · {h.setByUserName}</div>
+                                       <div className="text-slate-500">
+                      {new Date(h.createdAt).toLocaleString(
+                        isBn ? 'bn-BD' : 'en-GB'
+                      )}
+                      {' · '}
+                      {h.setByUserName}
+                    </div>
                   </div>
                                    <div
                     className={`font-extrabold ${
@@ -413,7 +456,16 @@ export const CashHistoryView: React.FC = () => {
                     <div className="grid grid-cols-2 md:grid-cols-5 gap-2 text-[10px]">
                       {DENOM_LIST.map((d) => (
                         <div key={d.key} className="rounded-lg bg-black/5 dark:bg-white/5 px-2 py-1">
-                          <span className="font-semibold">Tk{d.value}:</span> {(h as any).denominations?.[d.key] || 0}
+                                                   <span className="font-semibold">
+                            {isBn ? '৳' : 'Tk'}
+                            {d.value.toLocaleString(
+                              isBn ? 'bn-BD' : 'en-US'
+                            )}:
+                          </span>
+                          {' '}
+                          {((h as any).denominations?.[d.key] || 0).toLocaleString(
+                            isBn ? 'bn-BD' : 'en-US'
+                          )}
                         </div>
                       ))}
                     </div>
