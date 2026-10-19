@@ -204,9 +204,18 @@ export const mapDbToAllAccount = (row: any): AllAccountRecord => {
       row.loan_tenure_years !== null && row.loan_tenure_years !== undefined
         ? Number(row.loan_tenure_years)
         : undefined,
-    sourceTable: row.source_table || undefined,
+        sourceTable: row.source_table || undefined,
     sourceId: row.source_id || undefined,
     notes: row.notes || undefined,
+
+    // Outlet Account Details
+    accountSchemeCode: row.account_scheme_code || undefined,
+    accountHolderName: row.account_holder_name || undefined,
+    presentAddress: row.present_address || undefined,
+    permanentAddress: row.permanent_address || undefined,
+    sameAddress: row.same_address ?? false,
+    openingDate: row.opening_date || undefined,
+
     createdAt: row.created_at || new Date().toISOString(),
     updatedAt: row.updated_at || new Date().toISOString()
   };
