@@ -1083,6 +1083,15 @@ onKeyDown={(e) => {
                               <Trash2 className="w-3.5 h-3.5" />
                             </button>
                           </div>
+                                                ) : account.sourceTable === 'manual_outlet_account' ? (
+                          <button
+                            type="button"
+                            onClick={() => setSelectedOutletAccount(account)}
+                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 text-emerald-600 dark:text-emerald-400 text-[11px] font-black transition-colors"
+                          >
+                            <Search size={13} />
+                            {isBn ? 'বিস্তারিত' : 'Details'}
+                          </button>
                         ) : (
                           <span className="text-[10px] font-semibold text-slate-400">
                             {isBn ? 'শুধু দেখুন' : 'View only'}
@@ -1108,6 +1117,131 @@ onKeyDown={(e) => {
         isDark={isDark}
         isBn={isBn}
       />
+            {/* Outlet Account Details Popup */}
+      {selectedOutletAccount && (
+        <div className="fixed inset-0 z-[120] flex items-center justify-center bg-slate-950/65 backdrop-blur-sm p-4">
+
+          <div
+            className={`w-full max-w-xl max-h-[90vh] overflow-y-auto rounded-3xl shadow-2xl ${
+              isDark
+                ? 'bg-slate-900 text-white'
+                : 'bg-white text-slate-900'
+            }`}
+          >
+
+            {/* Header */}
+            <div className="sticky top-0 z-10 flex items-center justify-between p-6 border-b border-slate-500/15 bg-inherit">
+
+              <div>
+                <h2 className="text-lg font-black">
+                  {isBn
+                    ? 'আউটলেট অ্যাকাউন্টের বিস্তারিত'
+                    : 'Outlet Account Details'}
+                </h2>
+
+                <p className="text-xs text-slate-500 mt-1">
+                  {isBn
+                    ? 'সংরক্ষিত অ্যাকাউন্টের তথ্য'
+                    : 'Saved account information'}
+                </p>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setSelectedOutletAccount(null)}
+                className="p-2 rounded-xl hover:bg-slate-500/10"
+                aria-label={isBn ? 'বন্ধ করুন' : 'Close'}
+              >
+                <X size={20} />
+              </button>
+
+            </div>
+
+            {/* Account Information */}
+            <div className="p-6 space-y-4">
+
+              {[
+                {
+                  label: isBn ? 'অ্যাকাউন্টের শিরোনাম' : 'Account Title',
+                  value: selectedOutletAccount.accountTitle
+                },
+                {
+                  label: isBn ? 'অ্যাকাউন্ট নম্বর' : 'Account Number',
+                  value: selectedOutletAccount.accountNumber
+                },
+                {
+                  label: isBn ? 'মোবাইল নম্বর' : 'Mobile Number',
+                  value: selectedOutletAccount.mobileNumber
+                },
+                {
+                  label: isBn ? 'অ্যাকাউন্টের ধরন' : 'Account Type',
+                  value: selectedOutletAccount.accountSchemeCode ||
+                    selectedOutletAccount.category
+                },
+                {
+                  label: isBn ? 'অ্যাকাউন্টধারীর নাম' : 'Account Holder Name',
+                  value: selectedOutletAccount.accountHolderName ||
+                    selectedOutletAccount.customerName
+                },
+                {
+                  label: isBn ? 'বর্তমান ঠিকানা' : 'Present Address',
+                  value: selectedOutletAccount.presentAddress
+                },
+                {
+                  label: isBn ? 'স্থায়ী ঠিকানা' : 'Permanent Address',
+                  value: selectedOutletAccount.permanentAddress
+                },
+                {
+                  label: isBn ? 'দুই ঠিকানা একই' : 'Same Address',
+                  value: selectedOutletAccount.sameAddress
+                    ? (isBn ? 'হ্যাঁ' : 'Yes')
+                    : (isBn ? 'না' : 'No')
+                },
+                {
+                  label: isBn ? 'অ্যাকাউন্ট খোলার তারিখ' : 'Opening Date',
+                  value: selectedOutletAccount.openingDate
+                },
+                {
+                  label: isBn ? 'আউটলেট' : 'Outlet',
+                  value: selectedOutletAccount.outletName
+                },
+                {
+                  label: isBn ? 'অ্যাকাউন্টের অবস্থা' : 'Account Status',
+                  value: selectedOutletAccount.status
+                }
+              ].map((item, index) => (
+                <div
+                  key={index}
+                  className={`flex flex-col sm:flex-row sm:items-start justify-between gap-1 sm:gap-4 p-3 rounded-xl ${
+                    isDark ? 'bg-slate-800/70' : 'bg-slate-50'
+                  }`}
+                >
+                  <span className="text-xs font-semibold text-slate-500">
+                    {item.label}
+                  </span>
+
+                  <span className="text-sm font-bold break-words sm:text-right">
+                    {item.value || '—'}
+                  </span>
+                </div>
+              ))}
+
+            </div>
+
+            {/* Footer */}
+            <div className="sticky bottom-0 p-4 border-t border-slate-500/15 bg-inherit">
+              <button
+                type="button"
+                onClick={() => setSelectedOutletAccount(null)}
+                className="w-full py-3 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white text-sm font-black transition-colors"
+              >
+                {isBn ? 'বন্ধ করুন' : 'Close'}
+              </button>
+            </div>
+
+          </div>
+        </div>
+      )}
 
       {/* 5. Loan Add/Edit Modal */}
             {showAccountTypePopup && (
