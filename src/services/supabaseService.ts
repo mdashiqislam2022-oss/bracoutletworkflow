@@ -261,9 +261,18 @@ export const mapAllAccountToDb = (record: AllAccountRecord) => {
     disbursement_date: record.disbursementDate || null,
     interest_rate: record.interestRate ?? null,
     loan_tenure_years: record.loanTenureYears ?? null,
-    source_table: record.sourceTable || null,
+        source_table: record.sourceTable || null,
     source_id: record.sourceId || null,
     notes: record.notes || null,
+
+    // Outlet Account Details
+    account_scheme_code: record.accountSchemeCode || null,
+    account_holder_name: record.accountHolderName || null,
+    present_address: record.presentAddress || null,
+    permanent_address: record.permanentAddress || null,
+    same_address: record.sameAddress ?? false,
+    opening_date: record.openingDate || null,
+
     created_at: record.createdAt,
     updated_at: record.updatedAt || new Date().toISOString()
   };
