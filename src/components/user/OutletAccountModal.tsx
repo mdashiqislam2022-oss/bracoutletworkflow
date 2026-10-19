@@ -10,8 +10,9 @@ export interface OutletAccountFormData {
   accountHolderName: string;
   presentAddress: string;
   permanentAddress: string;
-  sameAddress: boolean;
+   sameAddress: boolean;
   openingDate: string;
+  signatureDataUrl?: string;
 }
 
 interface Props {
@@ -59,7 +60,10 @@ export const OutletAccountModal: React.FC<Props> = ({
   isBn
 }) => {
    const [form, setForm] = useState<OutletAccountFormData>(emptyForm);
-  const [isSchemeDropdownOpen, setIsSchemeDropdownOpen] = useState(false);
+   const [isSchemeDropdownOpen, setIsSchemeDropdownOpen] = useState(false);
+
+  const [signaturePreview, setSignaturePreview] = useState<string | null>(null);
+  const [signatureError, setSignatureError] = useState('');
 
   if (!isOpen) return null;
 
@@ -84,6 +88,88 @@ export const OutletAccountModal: React.FC<Props> = ({
 
   const numberOnly = (value: string) =>
     value.replace(/\D/g, '');
+
+  // Signature JPG Upload: 300 x 100 pixels
+  const handleSignatureUpload = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const file = event.target.files?.[0];
+
+    if (!file) return;
+
+    setSignatureError('');
+
+    if (
+      file.type !== 'image/jpeg' ||
+      !/\.jpe?g$/i.test(file.name)
+    ) {
+      setSignatureError(
+        isBn
+          ? 'শুধু JPG/JPEG ছবি আপলোড করুন।'
+          : 'Only JPG/JPEG images are allowed.'
+      );
+
+      event.target.value = '';
+      return;
+    }
+
+    const imageUrl = URL.createObjectURL(file);
+    const image = new Image();
+
+    image.onload = () => {
+      URL.revokeObjectURL(imageUrl);
+
+      if (image.width !== 300 || image.height !== 100) {
+        setSignatureError(
+          isBn
+            ? 'Signature ছবির মাপ অবশ্যই 300 × 100 pixels হতে হবে।'
+            : 'Signature image must be exactly 300 × 100 pixels.'
+        );
+
+        event.target.value = '';
+        return;
+      }
+
+      const reader = new FileReader();
+
+      reader.onload = () => {
+        const result = reader.result;
+
+        if (typeof result === 'string') {
+          setSignaturePreview(result);
+
+          setForm(prev => ({
+            ...prev,
+            signatureDataUrl: result
+          }));
+        }
+      };
+
+      reader.onerror = () => {
+        setSignatureError(
+          isBn
+            ? 'ছবি পড়তে সমস্যা হয়েছে। আবার চেষ্টা করুন।'
+            : 'Unable to read the image. Please try again.'
+        );
+      };
+
+      reader.readAsDataURL(file);
+    };
+
+    image.onerror = () => {
+      URL.revokeObjectURL(imageUrl);
+
+      setSignatureError(
+        isBn
+          ? 'ছবিটি সঠিক নয়। অন্য JPG ছবি নির্বাচন করুন।'
+          : 'Invalid image. Please select another JPG file.'
+      );
+
+      event.target.value = '';
+    };
+
+    image.src = imageUrl;
+  };
 
   const inputClass = `w-full px-3 py-2.5 rounded-xl border outline-none text-sm ${
     isDark
@@ -443,6 +529,109 @@ export const OutletAccountModal: React.FC<Props> = ({
           </div>
 
           
+                  {/* Signature Upload Section */}
+          <div className="border-t border-slate-500/15 pt-5">
+
+            <div className="flex items-center justify-between mb-3">
+              <div>
+                <label className="block text-sm font-black">
+                  {isBn ? 'স্বাক্ষর আপলোড' : 'Signature Upload'}
+                </label>
+
+                <p className="text-xs text-slate-500 mt-1">
+                  {isBn
+                    ? 'ঐচ্ছিক • JPG ছবি • 300 × 100 pixels'
+                    : 'Optional • JPG image • 300 × 100 pixels'}
+                </p>
+              </div>
+
+              <span className="px-2.5 py-1 rounded-lg bg-emerald-500/10 text-emerald-600 text-[10px] font-black">
+                {isBn ? 'ঐচ্ছিক' : 'Optional'}
+              </span>
+            </div>
+
+            <input
+              id="outlet-signature-upload"
+              type="file"
+              accept=".jpg,.jpeg,image/jpeg"
+              onChange={handleSignatureUpload}
+              className="hidden"
+            />
+
+            <label
+              htmlFor="outlet-signature-upload"
+              className={`flex flex-col items-center justify-center gap-3 min-h-[150px] p-5 rounded-2xl border-2 border-dashed cursor-pointer transition-all hover:border-emerald-500 ${
+                isDark
+                  ? 'bg-slate-800/50 border-slate-700'
+                  : 'bg-slate-50 border-slate-300'
+              }`}
+            >
+
+              {signaturePreview ? (
+                <>
+                  <div className="max-w-full overflow-hidden rounded-lg bg-white p-2 border border-slate-200">
+                    <img
+                      src={signaturePreview}
+                      alt="Account holder signature"
+                      width={300}
+                      height={100}
+                      className="block max-w-full h-auto object-contain"
+                    />
+                  </div>
+
+                  <span className="text-xs font-bold text-emerald-500">
+                    {isBn
+                      ? 'স্বাক্ষর পরিবর্তন করতে ক্লিক করুন'
+                      : 'Click to change signature'}
+                  </span>
+                </>
+              ) : (
+                <>
+                  <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 flex items-center justify-center">
+                    <svg
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      className="text-emerald-500"
+                    >
+                      <path d="M12 16V4" />
+                      <path d="m7 9 5-5 5 5" />
+                      <path d="M4 16v4h16v-4" />
+                    </svg>
+                  </div>
+
+                  <div className="text-center">
+                    <p className="text-sm font-black">
+                      {isBn
+                        ? 'স্বাক্ষরের ছবি নির্বাচন করুন'
+                        : 'Choose Signature Image'}
+                    </p>
+
+                    <p className="text-xs text-slate-500 mt-1">
+                      {isBn
+                        ? 'ডিভাইস থেকে JPG ছবি নির্বাচন করতে ক্লিক করুন'
+                        : 'Click to browse a JPG image from your device'}
+                    </p>
+                  </div>
+                </>
+              )}
+
+            </label>
+
+            {signatureError && (
+              <p
+                role="alert"
+                className="mt-2 text-xs font-semibold text-red-500"
+              >
+                {signatureError}
+              </p>
+            )}
+
+          </div>
+
         </form>
 
         {/* Footer */}
