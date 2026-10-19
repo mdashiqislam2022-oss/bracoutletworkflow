@@ -1069,15 +1069,9 @@ onKeyDown={(e) => {
       <OutletAccountModal
         isOpen={isOutletModalOpen}
         onClose={() => setIsOutletModalOpen(false)}
-        onSubmit={(data) => {
-          // Database save will be connected in the next step.
-          console.log('Outlet account form data:', data);
-          setToast({
-            message: isBn
-              ? 'ফর্ম প্রস্তুত। ডেটাবেস সংযোগ এখনো বাকি।'
-              : 'Form ready. Database connection is pending.',
-            type: 'info'
-          });
+                onSubmit={(data) => {
+          addOutletAccount(data);
+          setIsOutletModalOpen(false);
         }}
         isDark={isDark}
         isBn={isBn}
