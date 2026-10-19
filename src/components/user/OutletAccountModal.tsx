@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, Landmark, Save } from 'lucide-react';
+import { X, Landmark, Save, ChevronDown, Check, Search } from 'lucide-react';
 import { CustomDatePicker } from '../common/CustomDatePicker';
 
 export interface OutletAccountFormData {
@@ -58,7 +58,8 @@ export const OutletAccountModal: React.FC<Props> = ({
   isDark,
   isBn
 }) => {
-  const [form, setForm] = useState<OutletAccountFormData>(emptyForm);
+   const [form, setForm] = useState<OutletAccountFormData>(emptyForm);
+  const [isSchemeDropdownOpen, setIsSchemeDropdownOpen] = useState(false);
 
   if (!isOpen) return null;
 
