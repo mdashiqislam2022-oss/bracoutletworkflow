@@ -396,8 +396,11 @@ export interface AllAccountRecord {
   accountHolderName?: string;
   presentAddress?: string;
   permanentAddress?: string;
-  sameAddress?: boolean;
+   sameAddress?: boolean;
   openingDate?: string;
+
+  // Signature file path in private Supabase Storage
+  signaturePath?: string;
 
   createdAt: string;
   updatedAt: string;
