@@ -55,10 +55,17 @@ type UnifiedAccount = {
   loanTenureYears?: number;
   loanRecord?: LoanAccountRecord;
   isOutsideOutlet?: boolean;
-   allAccountId?: string;
+    allAccountId?: string;
   sourceTable?: string;
-};
 
+  // Outlet Account Details
+  accountSchemeCode?: string;
+  accountHolderName?: string;
+  presentAddress?: string;
+  permanentAddress?: string;
+  sameAddress?: boolean;
+  openingDate?: string;
+};
 export const LoanAccountDetailsView: React.FC = () => {
   const {
     loanRecords,
@@ -88,7 +95,10 @@ export const LoanAccountDetailsView: React.FC = () => {
 const [isOutletModalOpen, setIsOutletModalOpen] = useState(false);
   const [editingRecord, setEditingRecord] = useState<LoanAccountRecord | null>(null);
   const [deletingRecord, setDeletingRecord] = useState<LoanAccountRecord | null>(null);
-  const [copiedId, setCopiedId] = useState<string | null>(null);
+   const [copiedId, setCopiedId] = useState<string | null>(null);
+
+  const [selectedOutletAccount, setSelectedOutletAccount] =
+    useState<UnifiedAccount | null>(null);
 
   // Overview Counts & Financial Math
     const unifiedAccounts = useMemo<UnifiedAccount[]>(() => {
@@ -130,9 +140,17 @@ const [isOutletModalOpen, setIsOutletModalOpen] = useState(false);
         disbursementDate: account.disbursementDate,
         interestRate: account.interestRate,
         loanTenureYears: account.loanTenureYears,
-              isOutsideOutlet: account.isOutsideOutlet,
+        isOutsideOutlet: account.isOutsideOutlet,
         allAccountId: account.id,
-        sourceTable: account.sourceTable
+        sourceTable: account.sourceTable,
+
+        // Outlet Account Details
+        accountSchemeCode: account.accountSchemeCode,
+        accountHolderName: account.accountHolderName,
+        presentAddress: account.presentAddress,
+        permanentAddress: account.permanentAddress,
+        sameAddress: account.sameAddress,
+        openingDate: account.openingDate
       });
     });
 
