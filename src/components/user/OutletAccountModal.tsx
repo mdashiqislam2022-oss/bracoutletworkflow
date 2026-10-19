@@ -442,17 +442,7 @@ export const OutletAccountModal: React.FC<Props> = ({
             </div>
           </div>
 
-          {/* Opening Date */}
-          <div className="border-t border-slate-500/15 pt-5">
-            <CustomDatePicker
-              value={form.openingDate}
-              onChange={date => update('openingDate', date)}
-              label={isBn ? 'অ্যাকাউন্ট খোলার তারিখ' : 'Account Opening Date'}
-              isDark={isDark}
-              required
-            />
-          </div>
-
+          
         </form>
 
         {/* Footer */}
