@@ -213,8 +213,11 @@ export const mapDbToAllAccount = (row: any): AllAccountRecord => {
     accountHolderName: row.account_holder_name || undefined,
     presentAddress: row.present_address || undefined,
     permanentAddress: row.permanent_address || undefined,
-    sameAddress: row.same_address ?? false,
+       sameAddress: row.same_address ?? false,
     openingDate: row.opening_date || undefined,
+
+    // Signature Storage Path
+    signaturePath: row.signature_path || undefined,
 
     createdAt: row.created_at || new Date().toISOString(),
     updatedAt: row.updated_at || new Date().toISOString()
