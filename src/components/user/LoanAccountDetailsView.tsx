@@ -1173,10 +1173,29 @@ onKeyDown={(e) => {
                   label: isBn ? 'মোবাইল নম্বর' : 'Mobile Number',
                   value: selectedOutletAccount.mobileNumber
                 },
-                {
+                                {
                   label: isBn ? 'অ্যাকাউন্টের ধরন' : 'Account Type',
-                  value: selectedOutletAccount.accountSchemeCode ||
-                    selectedOutletAccount.category
+                  value: (() => {
+                    const schemeNames: Record<string, string> = {
+                      SBA: 'Savings Bank Account',
+                      CAA: 'Current Account - Agent/Individual',
+                      SPPRB: 'Savings Probashi Poribar Remittance Beneficiary',
+                      ABSAD: 'Agent Banking Savings Account - Digital',
+                      ABSDN: 'Agent Banking Savings Deposit Normal',
+                      SRPPT: 'Savings Remittance Probashi Poribar TARA',
+                      SRTHM: 'Savings Remittance TARA Homemaker',
+                      CSTUG: 'Current Account - SME TARA Uddokta Group',
+                      SRPPR: 'Savings Remittance Probashi Poribar Receiver'
+                    };
+
+                    const code =
+                      selectedOutletAccount.accountSchemeCode ||
+                      selectedOutletAccount.category;
+
+                    return schemeNames[code]
+                      ? `${code} — ${schemeNames[code]}`
+                      : code;
+                  })()
                 },
                 {
                   label: isBn ? 'অ্যাকাউন্টধারীর নাম' : 'Account Holder Name',
