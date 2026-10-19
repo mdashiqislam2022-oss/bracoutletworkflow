@@ -506,12 +506,14 @@ export const OutletAccountModal: React.FC<Props> = ({
               </div>
 
               <div>
-                <label className={labelClass}>
-                  {isBn ? 'স্থায়ী ঠিকানা' : 'Permanent Address'} *
+                                <label className={labelClass}>
+                  {isBn ? 'স্থায়ী ঠিকানা' : 'Permanent Address'}
+                  <span className="ml-2 text-[10px] font-medium text-slate-400">
+                    ({isBn ? 'ঐচ্ছিক' : 'Optional'})
+                  </span>
                 </label>
 
                 <textarea
-                  required
                   rows={3}
                   disabled={form.sameAddress}
                   className={`${inputClass} resize-none ${
