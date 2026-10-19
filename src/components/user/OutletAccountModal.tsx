@@ -202,27 +202,133 @@ export const OutletAccountModal: React.FC<Props> = ({
               </div>
             ))}
 
-            <div>
+                        <div className="relative">
               <label className={labelClass}>
                 {isBn ? 'অ্যাকাউন্টের ধরন' : 'Account Type'} *
               </label>
 
-              <select
-                required
-                className={inputClass}
-                value={form.accountType}
-                onChange={e => update('accountType', e.target.value)}
+              <button
+                type="button"
+                onClick={() => setIsSchemeDropdownOpen(prev => !prev)}
+                aria-expanded={isSchemeDropdownOpen}
+                aria-haspopup="listbox"
+                className={`w-full min-h-[42px] flex items-center justify-between gap-2 px-3 py-2 rounded-xl border text-left text-sm transition-all ${
+                  isSchemeDropdownOpen
+                    ? 'border-emerald-500 ring-2 ring-emerald-500/15'
+                    : isDark
+                      ? 'border-slate-700'
+                      : 'border-slate-200'
+                } ${
+                  isDark
+                    ? 'bg-slate-800 text-white'
+                    : 'bg-slate-50 text-slate-900'
+                }`}
               >
-                <option value="">
-                  {isBn ? 'ধরন নির্বাচন করুন' : 'Select account type'}
-                </option>
+                <span className="flex-1 min-w-0 truncate">
+                  {form.accountType ? (
+                    <>
+                      <span className="font-black text-emerald-500">
+                        {form.accountType}
+                      </span>
+                      <span className="mx-1.5 text-slate-400">—</span>
+                      <span>
+                        {SCHEMES.find(
+                          ([code]) => code === form.accountType
+                        )?.[1]}
+                      </span>
+                    </>
+                  ) : (
+                    <span className="text-slate-400">
+                      {isBn
+                        ? 'অ্যাকাউন্টের ধরন নির্বাচন করুন'
+                        : 'Select account type'}
+                    </span>
+                  )}
+                </span>
 
-                {SCHEMES.map(([code, name]) => (
-                  <option key={code} value={code}>
-                    {code} — {name}
-                  </option>
-                ))}
-              </select>
+                <ChevronDown
+                  size={17}
+                  className={`shrink-0 text-slate-400 transition-transform ${
+                    isSchemeDropdownOpen ? 'rotate-180' : ''
+                  }`}
+                />
+              </button>
+
+              <input
+                type="text"
+                required
+                value={form.accountType}
+                onChange={() => {}}
+                tabIndex={-1}
+                aria-label="Selected account type"
+                className="absolute w-px h-px opacity-0 pointer-events-none"
+              />
+
+              {isSchemeDropdownOpen && (
+                <>
+                  <button
+                    type="button"
+                    aria-label="Close account type dropdown"
+                    onClick={() => setIsSchemeDropdownOpen(false)}
+                    className="fixed inset-0 z-[115] cursor-default"
+                  />
+
+                  <div
+                    role="listbox"
+                    aria-label={isBn ? 'অ্যাকাউন্টের ধরন' : 'Account Type'}
+                    className={`absolute left-0 right-0 top-full mt-2 z-[116] max-h-64 overflow-y-auto rounded-2xl border shadow-2xl p-1.5 ${
+                      isDark
+                        ? 'bg-slate-800 border-slate-700'
+                        : 'bg-white border-slate-200'
+                    }`}
+                  >
+                    {SCHEMES.map(([code, name]) => {
+                      const selected = form.accountType === code;
+
+                      return (
+                        <button
+                          key={code}
+                          type="button"
+                          role="option"
+                          aria-selected={selected}
+                          onClick={() => {
+                            update('accountType', code);
+                            setIsSchemeDropdownOpen(false);
+                          }}
+                          className={`w-full flex items-center gap-3 p-2.5 rounded-xl text-left transition-colors ${
+                            selected
+                              ? 'bg-emerald-500/15'
+                              : isDark
+                                ? 'hover:bg-slate-700'
+                                : 'hover:bg-emerald-50'
+                          }`}
+                        >
+                          <span
+                            className={`shrink-0 min-w-[55px] px-2 py-1.5 rounded-lg text-center text-[10px] font-black ${
+                              selected
+                                ? 'bg-emerald-500 text-white'
+                                : 'bg-emerald-500/10 text-emerald-600'
+                            }`}
+                          >
+                            {code}
+                          </span>
+
+                          <span className="flex-1 min-w-0 text-xs font-semibold leading-relaxed">
+                            {name}
+                          </span>
+
+                          {selected && (
+                            <Check
+                              size={16}
+                              className="shrink-0 text-emerald-500"
+                            />
+                          )}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </>
+              )}
             </div>
 
             <div className="sm:col-span-2">
