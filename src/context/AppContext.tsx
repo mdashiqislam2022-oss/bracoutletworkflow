@@ -1007,7 +1007,7 @@ if (cloudData.rules && cloudData.rules.length) setRules(cloudData.rules);
   };
 
   // User Credential Login (Username / Gmail and Password)
-    const loginUserWithCredentials = async (usernameOrEmail: string, password?: string) => {
+    const isValid = await SupabaseService.verifyUserPassword(rawIdentifier, password);
      const rawIdentifier = (usernameOrEmail || '').trim(); const cleanIdentifier = rawIdentifier.toLowerCase();
     if (!cleanIdentifier) {
       return { success: false, message: 'Please enter your username or Gmail address.' };
