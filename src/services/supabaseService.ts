@@ -792,6 +792,70 @@ export const mapDbToOutlet = (row: any): BRACBankOutlet => {
 export const SupabaseService = {
   // Check availability
   isAvailable: () => isSupabaseConfigured && !!supabase,
+
+  // Upload an account signature to private Supabase Storage
+  async uploadAccountSignature(
+    signatureDataUrl: string,
+    accountId: string
+  ): Promise<string | null> {
+    if (!this.isAvailable() || !supabase) {
+      console.error('Supabase is not available.');
+      return null;
+    }
+
+    try {
+      // Accept JPG/JPEG data URLs only
+      if (!/^data:image\/jpeg;base64,/.test(signatureDataUrl)) {
+        console.error('Invalid signature format. JPG required.');
+        return null;
+      }
+
+      const response = await fetch(signatureDataUrl);
+      const blob = await response.blob();
+
+      if (blob.type !== 'image/jpeg' || blob.size > 2 * 1024 * 1024) {
+        console.error('Invalid signature file type or size.');
+        return null;
+      }
+
+      // Verify exact signature dimensions
+      const bitmap = await createImageBitmap(blob);
+
+      const validDimensions =
+        bitmap.width === 300 && bitmap.height === 100;
+
+      bitmap.close();
+
+      if (!validDimensions) {
+        console.error('Signature must be 300 x 100 pixels.');
+        return null;
+      }
+
+      // Generate a unique file path
+      const fileName = `${crypto.randomUUID()}.jpg`;
+      const filePath = `${accountId}/${fileName}`;
+
+      const { error } = await supabase.storage
+        .from('account-signatures')
+        .upload(filePath, blob, {
+          contentType: 'image/jpeg',
+          cacheControl: '3600',
+          upsert: false
+        });
+
+      if (error) {
+        console.error('Signature upload failed:', error.message);
+        return null;
+      }
+
+      // Return private storage path, not public URL
+      return filePath;
+
+    } catch (error) {
+      console.error('Signature upload error:', error);
+      return null;
+    }
+  },
     // Upload a profile picture to Supabase Storage and return its public URL
   async uploadAvatar(file: File, ownerId: string): Promise<string | null> {
     if (!this.isAvailable() || !supabase) return null;
