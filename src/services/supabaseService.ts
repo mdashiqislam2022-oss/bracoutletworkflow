@@ -273,9 +273,11 @@ export const mapAllAccountToDb = (record: AllAccountRecord) => {
     account_holder_name: record.accountHolderName || null,
     present_address: record.presentAddress || null,
     permanent_address: record.permanentAddress || null,
-    same_address: record.sameAddress ?? false,
+        same_address: record.sameAddress ?? false,
     opening_date: record.openingDate || null,
 
+    // Signature Storage Path
+    signature_path: record.signaturePath || null,
     created_at: record.createdAt,
     updated_at: record.updatedAt || new Date().toISOString()
   };
