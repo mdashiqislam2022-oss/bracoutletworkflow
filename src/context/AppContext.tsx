@@ -129,8 +129,21 @@ export interface AppContextType {
   deleteLoanRecord: (id: string) => void;
 
     // Denomination Segregation Module
-  customerAccounts: CustomerAccountRecord[];
+    customerAccounts: CustomerAccountRecord[];
   allAccounts: AllAccountRecord[];
+
+  addOutletAccount: (data: {
+    accountTitle: string;
+    accountNumber: string;
+    mobileNumber: string;
+    accountType: string;
+    accountHolderName: string;
+    presentAddress: string;
+    permanentAddress: string;
+    sameAddress: boolean;
+    openingDate: string;
+  }) => void;
+
   segregationRecords: DenominationSegregationRecord[];
   addCustomerAccount: (data: {
     accountNumber: string;
@@ -3081,6 +3094,78 @@ if (sessionStatus.isActive) {
   };
 
   // Loan Account CRUD Operations
+    // Add a new Outlet Account
+  const addOutletAccount = (data: {
+    accountTitle: string;
+    accountNumber: string;
+    mobileNumber: string;
+    accountType: string;
+    accountHolderName: string;
+    presentAddress: string;
+    permanentAddress: string;
+    sameAddress: boolean;
+    openingDate: string;
+  }) => {
+    if (!currentUser) {
+      showToast({
+        message: 'Please log in to add an account.',
+        type: 'error'
+      });
+      return;
+    }
+
+    const now = new Date().toISOString();
+
+    const accountCategory =
+      data.accountType === 'CAA' || data.accountType === 'CSTUG'
+        ? 'CURRENT'
+        : 'SAVINGS';
+
+    const newAccount: AllAccountRecord = {
+      id: createUniqueId('ALL-OUTLET'),
+
+      accountType: accountCategory,
+      accountNumber: data.accountNumber.trim(),
+      accountTitle: data.accountTitle.trim(),
+      customerName: data.accountHolderName.trim(),
+      mobileNumber: data.mobileNumber.trim(),
+
+      category: data.accountType,
+      accountSchemeCode: data.accountType,
+      accountHolderName: data.accountHolderName.trim(),
+
+      presentAddress: data.presentAddress.trim(),
+      permanentAddress: data.sameAddress
+        ? data.presentAddress.trim()
+        : data.permanentAddress.trim(),
+
+      sameAddress: data.sameAddress,
+      openingDate: data.openingDate,
+
+      status: 'ACTIVE',
+
+      outletId: currentUser.outletId,
+      outletName: currentUser.outletName,
+      userId: currentUser.id,
+      userName: currentUser.fullName,
+
+      isOutsideOutlet: false,
+
+      sourceTable: 'manual_outlet_account',
+
+      createdAt: now,
+      updatedAt: now
+    };
+
+    setAllAccounts(prev => [newAccount, ...prev]);
+
+    SupabaseService.saveAllAccount(newAccount);
+
+    showToast({
+      message: 'Outlet Account added successfully.',
+      type: 'success'
+    });
+  };
   const addLoanRecord = (data: {
     accountTitle: string;
     customerName: string;
@@ -3962,6 +4047,7 @@ if (sessionStatus.isActive) {
                 // Denomination Segregation Module
         customerAccounts,
         allAccounts,
+        addOutletAccount,
         segregationRecords,
         addCustomerAccount,
         addSegregationRecord,
