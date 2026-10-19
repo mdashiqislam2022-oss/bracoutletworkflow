@@ -488,12 +488,14 @@ export const OutletAccountModal: React.FC<Props> = ({
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
 
               <div>
-                <label className={labelClass}>
-                  {isBn ? 'বর্তমান ঠিকানা' : 'Present Address'} *
+                              <label className={labelClass}>
+                  {isBn ? 'বর্তমান ঠিকানা' : 'Present Address'}
+                  <span className="ml-2 text-[10px] font-medium text-slate-400">
+                    ({isBn ? 'ঐচ্ছিক' : 'Optional'})
+                  </span>
                 </label>
 
                 <textarea
-                  required
                   rows={3}
                   className={`${inputClass} resize-none`}
                   value={form.presentAddress}
