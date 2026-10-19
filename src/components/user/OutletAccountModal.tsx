@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { X, Landmark, Save, ChevronDown, Check, Search } from 'lucide-react';
-import { CustomDatePicker } from '../common/CustomDatePicker';
+
 
 export interface OutletAccountFormData {
   accountTitle: string;
