@@ -55,7 +55,8 @@ type UnifiedAccount = {
   loanTenureYears?: number;
   loanRecord?: LoanAccountRecord;
   isOutsideOutlet?: boolean;
-  allAccountId?: string;
+   allAccountId?: string;
+  sourceTable?: string;
 };
 
 export const LoanAccountDetailsView: React.FC = () => {
@@ -129,8 +130,9 @@ const [isOutletModalOpen, setIsOutletModalOpen] = useState(false);
         disbursementDate: account.disbursementDate,
         interestRate: account.interestRate,
         loanTenureYears: account.loanTenureYears,
-        isOutsideOutlet: account.isOutsideOutlet,
-        allAccountId: account.id
+              isOutsideOutlet: account.isOutsideOutlet,
+        allAccountId: account.id,
+        sourceTable: account.sourceTable
       });
     });
 
@@ -957,8 +959,20 @@ onKeyDown={(e) => {
                               : 'bg-emerald-500/10 text-emerald-600 border-emerald-500/30'
                           }`}
                         >
-                          {account.category}
+                        {account.category}
                         </span>
+
+                        <div className="mt-1.5">
+                          {account.sourceTable === 'manual_outlet_account' ? (
+                            <span className="inline-flex items-center px-2 py-0.5 rounded-md bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-[10px] font-bold">
+                              {isBn ? 'আউটলেট অ্যাকাউন্ট' : 'Outlet Account'}
+                            </span>
+                          ) : account.source === 'LOAN' ? (
+                            <span className="inline-flex items-center px-2 py-0.5 rounded-md bg-amber-500/10 text-amber-600 dark:text-amber-400 text-[10px] font-bold">
+                              {isBn ? 'এসএমই লোন অ্যাকাউন্ট' : 'SME Loan Account'}
+                            </span>
+                          ) : null}
+                        </div>
                       </td>
 
                       {/* Mobile */}
