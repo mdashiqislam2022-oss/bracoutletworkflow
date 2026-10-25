@@ -158,11 +158,22 @@ const [isOutletModalOpen, setIsOutletModalOpen] = useState(false);
         outletId: account.outletId,
         outletName: account.outletName,
         createdAt: account.createdAt,
-        loanAmount: account.loanAmount,
+                loanAmount: account.loanAmount,
         monthlyInstallment: account.monthlyInstallment,
         disbursementDate: account.disbursementDate,
         interestRate: account.interestRate,
         loanTenureYears: account.loanTenureYears,
+
+        loanRecord:
+          account.accountType === 'LOAN'
+            ? loanRecords.find(
+                (loan) =>
+                  loan.accountNumber.trim().toLowerCase() ===
+                    account.accountNumber.trim().toLowerCase() &&
+                  loan.outletId === account.outletId
+              )
+            : undefined,
+
         isOutsideOutlet: account.isOutsideOutlet,
         allAccountId: account.id,
         sourceTable: account.sourceTable,
@@ -208,7 +219,7 @@ const [isOutletModalOpen, setIsOutletModalOpen] = useState(false);
       new Date(b.createdAt).getTime() -
       new Date(a.createdAt).getTime()
   );
-}, [allAccounts, currentUser]);
+}, [allAccounts, currentUser, loanRecords]);
   const outletLoanRecords = useMemo(
   () =>
     loanRecords.filter(
