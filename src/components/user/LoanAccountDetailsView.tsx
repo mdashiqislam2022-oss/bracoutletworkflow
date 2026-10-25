@@ -98,8 +98,30 @@ const [isOutletModalOpen, setIsOutletModalOpen] = useState(false);
   const [deletingRecord, setDeletingRecord] = useState<LoanAccountRecord | null>(null);
    const [copiedId, setCopiedId] = useState<string | null>(null);
 
-  const [selectedOutletAccount, setSelectedOutletAccount] =
+   const [selectedOutletAccount, setSelectedOutletAccount] =
     useState<UnifiedAccount | null>(null);
+
+  // Find cheque and card records for the selected account
+  const selectedAccountChequeCardRecords = useMemo(() => {
+    if (!selectedOutletAccount) return [];
+
+    const accountNumber = selectedOutletAccount.accountNumber
+      .trim()
+      .toLowerCase();
+
+    if (!accountNumber) return [];
+
+    return chequeCardEntries.filter((entry) => {
+      const entryAccountNumber = entry.accountNumber
+        .trim()
+        .toLowerCase();
+
+      return (
+        entryAccountNumber === accountNumber &&
+        entry.outletId === selectedOutletAccount.outletId
+      );
+    });
+  }, [selectedOutletAccount, chequeCardEntries]);
 
   // Overview Counts & Financial Math
     const unifiedAccounts = useMemo<UnifiedAccount[]>(() => {
