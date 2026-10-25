@@ -1115,8 +1115,10 @@ onKeyDown={(e) => {
                         ) : (
                           <span className="text-[10px] font-semibold text-slate-400">
                             {isBn ? 'শুধু দেখুন' : 'View only'}
-                          </span>
+                                                    </span>
                         )}
+
+                        </div>
                       </td>
                     </tr>
                   );
