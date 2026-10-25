@@ -1244,10 +1244,50 @@ onKeyDown={(e) => {
                   label: isBn ? 'অ্যাকাউন্ট খোলার তারিখ' : 'Opening Date',
                   value: selectedOutletAccount.openingDate
                 },
-                {
+                                {
                   label: isBn ? 'আউটলেট' : 'Outlet',
                   value: selectedOutletAccount.outletName
                 },
+
+                ...(selectedOutletAccount.source === 'LOAN'
+                  ? [
+                      {
+                        label: isBn ? 'লোনের পরিমাণ' : 'Loan Amount',
+                        value:
+                          selectedOutletAccount.loanAmount != null
+                            ? `৳${selectedOutletAccount.loanAmount.toLocaleString()}`
+                            : '—'
+                      },
+                      {
+                        label: isBn ? 'মাসিক কিস্তি (EMI)' : 'Monthly EMI',
+                        value:
+                          selectedOutletAccount.monthlyInstallment != null
+                            ? `৳${selectedOutletAccount.monthlyInstallment.toLocaleString()}`
+                            : '—'
+                      },
+                      {
+                        label: isBn ? 'সুদের হার' : 'Interest Rate',
+                        value:
+                          selectedOutletAccount.interestRate != null
+                            ? `${selectedOutletAccount.interestRate}%`
+                            : '—'
+                      },
+                      {
+                        label: isBn ? 'লোনের মেয়াদ' : 'Loan Tenure',
+                        value:
+                          selectedOutletAccount.loanTenureYears != null
+                            ? `${selectedOutletAccount.loanTenureYears} ${
+                                isBn ? 'বছর' : 'Years'
+                              }`
+                            : '—'
+                      },
+                      {
+                        label: isBn ? 'বিতরণের তারিখ' : 'Disbursement Date',
+                        value: selectedOutletAccount.disbursementDate || '—'
+                      }
+                    ]
+                  : []),
+
                 {
                   label: isBn ? 'অ্যাকাউন্টের অবস্থা' : 'Account Status',
                   value: selectedOutletAccount.status
