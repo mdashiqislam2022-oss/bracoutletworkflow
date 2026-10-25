@@ -24,7 +24,8 @@ import {
   FileSpreadsheet,
   Layers,
   ChevronDown,
-  ArrowRightLeft
+  ArrowRightLeft,
+  Eye
 } from 'lucide-react';
 import { LoanAccountRecord, LoanStatus } from '../../types';
 import { LoanAccountModal } from './LoanAccountModal';
