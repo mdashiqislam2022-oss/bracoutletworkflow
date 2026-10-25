@@ -1155,16 +1155,18 @@ onKeyDown={(e) => {
             <div className="sticky top-0 z-10 flex items-center justify-between p-6 border-b border-slate-500/15 bg-inherit">
 
               <div>
-                <h2 className="text-lg font-black">
-                  {isBn
-                    ? 'আউটলেট অ্যাকাউন্টের বিস্তারিত'
-                    : 'Outlet Account Details'}
+                                <h2 className="text-lg font-black">
+                  {selectedOutletAccount.source === 'LOAN'
+                    ? (isBn ? 'এসএমই লোন অ্যাকাউন্টের বিস্তারিত' : 'SME Loan Account Details')
+                    : selectedOutletAccount.sourceTable === 'manual_outlet_account'
+                    ? (isBn ? 'রিটেইল অ্যাকাউন্টের বিস্তারিত' : 'Retail Account Details')
+                    : (isBn ? 'অ্যাকাউন্টের সম্পূর্ণ বিস্তারিত' : 'Complete Account Details')}
                 </h2>
 
                 <p className="text-xs text-slate-500 mt-1">
                   {isBn
-                    ? 'সংরক্ষিত অ্যাকাউন্টের তথ্য'
-                    : 'Saved account information'}
+                    ? 'নির্বাচিত অ্যাকাউন্টের সংরক্ষিত তথ্য'
+                    : 'Saved information for the selected account'}
                 </p>
               </div>
 
