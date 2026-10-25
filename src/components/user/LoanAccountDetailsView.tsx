@@ -1325,11 +1325,136 @@ onKeyDown={(e) => {
                     {item.label}
                   </span>
 
-                  <span className="text-sm font-bold break-words sm:text-right">
+                                    <span className="text-sm font-bold break-words sm:text-right">
                     {item.value || '—'}
                   </span>
                 </div>
               ))}
+
+              {/* Cheque & Card Details */}
+              <div className="pt-4 border-t border-slate-500/20">
+                <h3 className="text-base font-black mb-4 flex items-center gap-2">
+                  <Layers size={18} className="text-sky-500" />
+                  {isBn
+                    ? 'চেক, কার্ড ও ডেলিভারি তথ্য'
+                    : 'Cheque, Card & Delivery Details'}
+                </h3>
+
+                {selectedAccountChequeCardRecords.length === 0 ? (
+                  <div
+                    className={`p-4 rounded-xl text-center text-xs ${
+                      isDark
+                        ? 'bg-slate-800 text-slate-400'
+                        : 'bg-slate-50 text-slate-500'
+                    }`}
+                  >
+                    {isBn
+                      ? 'এই অ্যাকাউন্টের কোনো চেক বা কার্ডের তথ্য পাওয়া যায়নি।'
+                      : 'No cheque or card records found for this account.'}
+                  </div>
+                ) : (
+                  <div className="space-y-3">
+                    {selectedAccountChequeCardRecords.map((entry) => (
+                      <div
+                        key={`${entry.type}-${entry.id}`}
+                        className={`p-4 rounded-2xl border ${
+                          isDark
+                            ? 'bg-slate-800/70 border-slate-700'
+                            : 'bg-slate-50 border-slate-200'
+                        }`}
+                      >
+                        <div className="flex items-center justify-between gap-2 mb-3">
+                          <span
+                            className={`px-3 py-1 rounded-lg text-xs font-black ${
+                              entry.type === 'CHEQUE'
+                                ? 'bg-blue-500/10 text-blue-500'
+                                : 'bg-purple-500/10 text-purple-500'
+                            }`}
+                          >
+                            {entry.type === 'CHEQUE'
+                              ? (isBn ? 'চেক বই' : 'Cheque Book')
+                              : (isBn ? 'ডেবিট কার্ড' : 'Debit Card')}
+                          </span>
+
+                          <span className="text-[11px] font-bold text-emerald-500">
+                            {entry.status}
+                          </span>
+                        </div>
+
+                        {[
+                          {
+                            label: isBn ? 'অ্যাকাউন্ট নম্বর' : 'Account Number',
+                            value: entry.accountNumber
+                          },
+                          {
+                            label: isBn ? 'মোবাইল নম্বর' : 'Mobile Number',
+                            value: entry.mobileNumber
+                          },
+                          {
+                            label: isBn ? 'গ্রহণের তারিখ' : 'Received Date',
+                            value: entry.receivedDate
+                          },
+                          ...(entry.type === 'CHEQUE'
+                            ? [
+                                {
+                                  label: isBn ? 'চেক পাতার সংখ্যা' : 'Cheque Leaves',
+                                  value: String(entry.leafCount)
+                                },
+                                {
+                                  label: isBn ? 'প্রথম চেক নম্বর' : 'Start Cheque Number',
+                                  value: entry.startCchNumber
+                                },
+                                {
+                                  label: isBn ? 'শেষ চেক নম্বর' : 'End Cheque Number',
+                                  value: entry.endCchNumber
+                                }
+                              ]
+                            : [
+                                {
+                                  label: isBn ? 'কার্ডের নাম' : 'Card Name',
+                                  value: entry.cardName
+                                },
+                                {
+                                  label: isBn ? 'কার্ডের ধরন' : 'Card Type',
+                                  value: entry.cardType || '—'
+                                }
+                              ]),
+                          {
+                            label: isBn ? 'ডেলিভারি স্ট্যাটাস' : 'Delivery Status',
+                            value:
+                              entry.status === 'DELIVERED_TO_CUSTOMER'
+                                ? (isBn ? 'গ্রাহককে প্রদান করা হয়েছে' : 'Delivered to Customer')
+                                : entry.status === 'RECEIVED'
+                                ? (isBn ? 'আউটলেটে গ্রহণ করা হয়েছে' : 'Received at Outlet')
+                                : entry.status
+                          },
+                          {
+                            label: isBn ? 'ডেলিভারির তারিখ' : 'Delivery Date',
+                            value: entry.deliveredAt || '—'
+                          },
+                          {
+                            label: isBn ? 'মন্তব্য' : 'Notes',
+                            value: entry.notes || '—'
+                          }
+                        ].map((detail, index) => (
+                          <div
+                            key={index}
+                            className="flex flex-col sm:flex-row sm:justify-between gap-1 py-2 border-b border-slate-500/10 last:border-0"
+                          >
+                            <span className="text-xs text-slate-500">
+                              {detail.label}
+                            </span>
+
+                            <span className="text-xs font-bold break-words sm:text-right">
+                              {detail.value || '—'}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
 
             </div>
 
