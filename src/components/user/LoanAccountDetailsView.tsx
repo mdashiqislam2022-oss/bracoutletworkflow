@@ -981,15 +981,17 @@ onKeyDown={(e) => {
                         </span>
 
                         <div className="mt-1.5">
-                          {account.sourceTable === 'manual_outlet_account' ? (
-                            <span className="inline-flex items-center px-2 py-0.5 rounded-md bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-[10px] font-bold">
-                              {isBn ? 'আউটলেট অ্যাকাউন্ট' : 'Outlet Account'}
-                            </span>
-                          ) : account.source === 'LOAN' ? (
-                            <span className="inline-flex items-center px-2 py-0.5 rounded-md bg-amber-500/10 text-amber-600 dark:text-amber-400 text-[10px] font-bold">
-                              {isBn ? 'এসএমই লোন অ্যাকাউন্ট' : 'SME Loan Account'}
-                            </span>
-                          ) : null}
+                          {account.source === 'LOAN' ? (
+  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-amber-500/10 border border-amber-500/20 text-amber-600 dark:text-amber-400 text-[10px] font-black">
+    <Landmark size={11} />
+    {isBn ? 'এসএমই লোন' : 'SME Loan'}
+  </span>
+) : account.sourceTable === 'manual_outlet_account' ? (
+  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-[10px] font-black">
+    <Landmark size={11} />
+    {isBn ? 'রিটেইল অ্যাকাউন্ট' : 'Retail Account'}
+  </span>
+) : null}
                         </div>
                       </td>
 
