@@ -1029,8 +1029,25 @@ onKeyDown={(e) => {
                         )}
                       </td>
 
-                      {/* Actions */}
+                                           {/* Actions */}
                       <td className="py-3 px-4 text-right">
+                        <div className="flex items-center justify-end gap-2">
+
+                          {/* View Account Details */}
+                          <button
+                            type="button"
+                            onClick={() => setSelectedOutletAccount(account)}
+                            title={isBn ? 'অ্যাকাউন্টের বিস্তারিত দেখুন' : 'View Account Details'}
+                            aria-label={isBn ? 'অ্যাকাউন্টের বিস্তারিত দেখুন' : 'View Account Details'}
+                            className={`inline-flex items-center justify-center w-8 h-8 rounded-lg border transition-all cursor-pointer ${
+                              isDark
+                                ? 'bg-sky-500/10 hover:bg-sky-500/20 border-sky-500/30 text-sky-400'
+                                : 'bg-sky-50 hover:bg-sky-100 border-sky-200 text-sky-600'
+                            }`}
+                          >
+                            <Eye size={16} />
+                          </button>
+
                         {isLoan && loan ? (
                           <div className="flex items-center justify-end gap-1.5">
                             <button
