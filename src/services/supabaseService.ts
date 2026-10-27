@@ -1224,17 +1224,25 @@ export const SupabaseService = {
     }
   },
     // Save/Upsert Independent All Account Record
-  async saveAllAccount(record: AllAccountRecord) {
-    if (!this.isAvailable() || !supabase) return;
+    async saveAllAccount(record: AllAccountRecord): Promise<void> {
+    if (!this.isAvailable() || !supabase) {
+      throw new Error('Supabase connection is not available.');
+    }
 
     try {
       const dbRow = mapAllAccountToDb(record);
 
-      await supabase
+      const { error } = await supabase
         .from('all_accounts')
         .upsert(dbRow);
+
+      if (error) {
+        throw error;
+      }
+
     } catch (err) {
-      console.warn('Error saving all account to Supabase:', err);
+      console.error('Error saving All Account to Supabase:', err);
+      throw err;
     }
   },
 
