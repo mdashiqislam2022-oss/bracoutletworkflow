@@ -3177,11 +3177,86 @@ if (sessionStatus.isActive) {
 
     SupabaseService.saveAllAccount(newAccount);
 
-    showToast({
+        showToast({
       message: 'Outlet Account added successfully.',
       type: 'success'
     });
   };
+
+  // Update Existing Retail Account
+  const updateOutletAccount = (
+    accountId: string,
+    data: {
+      accountTitle: string;
+      accountNumber: string;
+      mobileNumber: string;
+      accountType: string;
+      accountHolderName: string;
+      presentAddress: string;
+      permanentAddress: string;
+      sameAddress: boolean;
+      openingDate: string;
+    }
+  ) => {
+    const existingAccount = allAccounts.find(
+      (account) =>
+        account.id === accountId &&
+        account.sourceTable === 'manual_outlet_account'
+    );
+
+    if (!existingAccount) {
+      showToast({
+        message: 'Retail Account not found.',
+        type: 'error'
+      });
+      return;
+    }
+
+    const accountCategory =
+      data.accountType === 'CAA' || data.accountType === 'CSTUG'
+        ? 'CURRENT'
+        : 'SAVINGS';
+
+    const updatedAccount: AllAccountRecord = {
+      ...existingAccount,
+
+      accountType: accountCategory,
+      accountNumber: data.accountNumber.trim(),
+      accountTitle: data.accountTitle.trim(),
+      customerName: data.accountHolderName.trim(),
+      mobileNumber: data.mobileNumber.trim(),
+
+      category: data.accountType,
+      accountSchemeCode: data.accountType,
+      accountHolderName: data.accountHolderName.trim(),
+
+      presentAddress: data.presentAddress.trim(),
+      permanentAddress: data.sameAddress
+        ? data.presentAddress.trim()
+        : data.permanentAddress.trim(),
+
+      sameAddress: data.sameAddress,
+      openingDate: data.openingDate,
+
+      updatedAt: new Date().toISOString()
+    };
+
+    // Update existing account without creating a duplicate
+    setAllAccounts((prev) =>
+      prev.map((account) =>
+        account.id === accountId ? updatedAccount : account
+      )
+    );
+
+    // Save using the existing Account ID
+    SupabaseService.saveAllAccount(updatedAccount);
+
+    showToast({
+      message: 'Retail Account updated successfully.',
+      type: 'success'
+    });
+  };
+
   const addLoanRecord = (data: {
     accountTitle: string;
     customerName: string;
