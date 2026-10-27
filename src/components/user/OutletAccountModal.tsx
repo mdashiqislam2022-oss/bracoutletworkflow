@@ -435,33 +435,14 @@ export const OutletAccountModal: React.FC<Props> = ({
               />
             </div>
 
-            {/* Account Opening Date */}
+                        {/* Account Opening Date */}
             <div className="min-w-0">
-              <label className={labelClass}>
-                {isBn ? 'অ্যাকাউন্ট খোলার তারিখ' : 'Account Opening Date'} *
-              </label>
-
-              <input
-                required
-                type="date"
+              <CustomDatePicker
+                label={isBn ? 'অ্যাকাউন্ট খোলার তারিখ' : 'Account Opening Date'}
                 value={form.openingDate}
-                onChange={e => update('openingDate', e.target.value)}
-                onClick={e => {
-                  const input = e.currentTarget;
-
-                  if (typeof input.showPicker === 'function') {
-                    try {
-                      input.showPicker();
-                    } catch {
-                      // Browser's default date picker remains available.
-                    }
-                  }
-                }}
-                className={`w-full min-w-0 h-[42px] px-3 rounded-xl border outline-none text-sm cursor-pointer transition-all focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/15 ${
-                  isDark
-                    ? 'bg-slate-800 border-slate-700 text-white [color-scheme:dark]'
-                    : 'bg-slate-50 border-slate-200 text-slate-900 [color-scheme:light]'
-                }`}
+                onChange={(date) => update('openingDate', date)}
+                required
+                isDark={isDark}
               />
             </div>
           </div>
