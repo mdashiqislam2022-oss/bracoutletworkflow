@@ -53,19 +53,29 @@ const emptyForm = (): OutletAccountFormData => ({
   sameAddress: false,
   openingDate: today()
 });
-
 export const OutletAccountModal: React.FC<Props> = ({
   isOpen,
   onClose,
   onSubmit,
   isDark,
-  isBn
+  isBn,
+  initialData
 }) => {
-   const [form, setForm] = useState<OutletAccountFormData>(emptyForm);
-   const [isSchemeDropdownOpen, setIsSchemeDropdownOpen] = useState(false);
+  const [form, setForm] = useState<OutletAccountFormData>(emptyForm);
+  const [isSchemeDropdownOpen, setIsSchemeDropdownOpen] = useState(false);
 
   const [signaturePreview, setSignaturePreview] = useState<string | null>(null);
   const [signatureError, setSignatureError] = useState('');
+
+  // Load existing account data when editing
+  useEffect(() => {
+    if (!isOpen) return;
+
+    setForm(initialData ? { ...initialData } : emptyForm());
+    setSignaturePreview(initialData?.signatureDataUrl || null);
+    setSignatureError('');
+    setIsSchemeDropdownOpen(false);
+  }, [isOpen, initialData]);
 
   if (!isOpen) return null;
 
