@@ -416,24 +416,14 @@ export const LoanAccountModal: React.FC<LoanAccountModalProps> = ({
           {/* Row 4: Disbursement Date, Interest Rate (%) & Tenure (Years) */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div>
-              <label className="block text-xs font-bold uppercase tracking-wider mb-1 text-slate-700 dark:text-slate-300">
-                6) {isBn ? 'লোন গ্রহণের তারিখ' : 'Loan Date'} <span className="text-rose-500">*</span>
-              </label>
-              <div className="relative">
-                <input
-                  type="date"
-                  required
-                  value={disbursementDate}
-                  onChange={(e) => setDisbursementDate(e.target.value)}
-                  className={`w-full text-xs font-semibold px-3 py-2.5 rounded-xl border font-mono transition-colors focus:outline-none ${
-                    errors.disbursementDate
-                      ? 'border-rose-500 ring-1 ring-rose-500'
-                      : isDark
-                      ? 'bg-slate-800/80 border-slate-700 focus:border-amber-500 text-white'
-                      : 'bg-slate-50 border-slate-200 focus:border-amber-500 focus:bg-white text-slate-800'
-                  }`}
-                />
-              </div>
+                           <CustomDatePicker
+                label={isBn ? '৬) লোন গ্রহণের তারিখ' : '6) Loan Date'}
+                value={disbursementDate}
+                onChange={setDisbursementDate}
+                required
+                isDark={isDark}
+                error={errors.disbursementDate}
+              />
               {errors.disbursementDate && (
                 <p className="text-[10px] text-rose-500 font-medium mt-1">{errors.disbursementDate}</p>
               )}
