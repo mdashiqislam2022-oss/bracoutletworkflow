@@ -98,9 +98,12 @@ const [isOutletModalOpen, setIsOutletModalOpen] = useState(false);
   const [deletingRecord, setDeletingRecord] = useState<LoanAccountRecord | null>(null);
    const [copiedId, setCopiedId] = useState<string | null>(null);
 
-   const [selectedOutletAccount, setSelectedOutletAccount] =
-    useState<UnifiedAccount | null>(null);
+      const [selectedOutletAccount, setSelectedOutletAccount] =
+     useState<UnifiedAccount | null>(null);
 
+   // Account Edit Confirmation
+   const [accountPendingEdit, setAccountPendingEdit] =
+     useState<UnifiedAccount | null>(null);
   // Find cheque and card records for the selected account
   const selectedAccountChequeCardRecords = useMemo(() => {
     if (!selectedOutletAccount) return [];
