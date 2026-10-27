@@ -654,8 +654,10 @@ export const OutletAccountModal: React.FC<Props> = ({
             form="outlet-account-form"
             className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-emerald-500 text-white text-sm font-bold hover:bg-emerald-600"
           >
-            <Save size={16} />
-            {isBn ? 'অ্যাকাউন্ট সংরক্ষণ করুন' : 'Save Account'}
+                        <Save size={16} />
+            {initialData
+              ? (isBn ? 'অ্যাকাউন্ট আপডেট করুন' : 'Update Account')
+              : (isBn ? 'অ্যাকাউন্ট সংরক্ষণ করুন' : 'Save Account')}
           </button>
 
         </div>
