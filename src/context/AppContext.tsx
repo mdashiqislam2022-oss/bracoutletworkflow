@@ -145,8 +145,8 @@ export interface AppContextType {
     signatureDataUrl?: string;
   }) => void;
 
-  // Update an existing Retail Account
-    updateOutletAccount: (
+    // Update an existing Retail Account
+  updateOutletAccount: (
     accountId: string,
     data: {
       accountTitle: string;
@@ -158,8 +158,9 @@ export interface AppContextType {
       permanentAddress: string;
       sameAddress: boolean;
       openingDate: string;
+      signatureDataUrl?: string;
     }
-  ): Promise<boolean>;
+  ) => Promise<boolean>;
   segregationRecords: DenominationSegregationRecord[];
   addCustomerAccount: (data: {
     accountNumber: string;
