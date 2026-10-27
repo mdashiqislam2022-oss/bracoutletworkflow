@@ -90,7 +90,7 @@ export const OutletAccountModal: React.FC<Props> = ({
   const numberOnly = (value: string) =>
     value.replace(/\D/g, '');
 
-  // Signature JPG Upload: 300 x 100 pixels
+    // Signature JPG, JPEG or PNG Upload: 300 x 100 pixels
   const handleSignatureUpload = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -100,14 +100,19 @@ export const OutletAccountModal: React.FC<Props> = ({
 
     setSignatureError('');
 
-    if (
-      file.type !== 'image/jpeg' ||
-      !/\.jpe?g$/i.test(file.name)
-    ) {
+    const validJpg =
+      file.type === 'image/jpeg' &&
+      /\.jpe?g$/i.test(file.name);
+
+    const validPng =
+      file.type === 'image/png' &&
+      /\.png$/i.test(file.name);
+
+    if (!validJpg && !validPng) {
       setSignatureError(
         isBn
-          ? 'শুধু JPG/JPEG ছবি আপলোড করুন।'
-          : 'Only JPG/JPEG images are allowed.'
+          ? 'শুধু JPG, JPEG অথবা PNG ছবি আপলোড করুন।'
+          : 'Only JPG, JPEG or PNG images are allowed.'
       );
 
       event.target.value = '';
@@ -525,9 +530,9 @@ export const OutletAccountModal: React.FC<Props> = ({
                 </label>
 
                 <p className="text-xs text-slate-500 mt-1">
-                  {isBn
-                    ? 'ঐচ্ছিক • JPG ছবি • 300 × 100 pixels'
-                    : 'Optional • JPG image • 300 × 100 pixels'}
+                      {isBn
+                    ? 'ঐচ্ছিক • JPG / JPEG / PNG ছবি • 300 × 100 pixels'
+                    : 'Optional • JPG / JPEG / PNG image • 300 × 100 pixels'}
                 </p>
               </div>
 
@@ -539,7 +544,7 @@ export const OutletAccountModal: React.FC<Props> = ({
             <input
               id="outlet-signature-upload"
               type="file"
-              accept=".jpg,.jpeg,image/jpeg"
+              accept=".jpg,.jpeg,.png,image/jpeg,image/png"
               onChange={handleSignatureUpload}
               className="hidden"
             />
@@ -597,9 +602,9 @@ export const OutletAccountModal: React.FC<Props> = ({
                     </p>
 
                     <p className="text-xs text-slate-500 mt-1">
-                      {isBn
-                        ? 'ডিভাইস থেকে JPG ছবি নির্বাচন করতে ক্লিক করুন'
-                        : 'Click to browse a JPG image from your device'}
+                                            {isBn
+                        ? 'ডিভাইস থেকে JPG, JPEG অথবা PNG ছবি নির্বাচন করুন'
+                        : 'Click to browse a JPG, JPEG or PNG image from your device'}
                     </p>
                   </div>
                 </>
