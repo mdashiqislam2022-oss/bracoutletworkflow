@@ -4136,9 +4136,10 @@ if (sessionStatus.isActive) {
         deleteLoanRecord,
 
                 // Denomination Segregation Module
-        customerAccounts,
+               customerAccounts,
         allAccounts,
         addOutletAccount,
+        updateOutletAccount,
         segregationRecords,
         addCustomerAccount,
         addSegregationRecord,
