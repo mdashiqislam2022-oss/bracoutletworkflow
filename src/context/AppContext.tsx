@@ -3182,8 +3182,8 @@ if (sessionStatus.isActive) {
     });
   };
 
-  // Update Existing Retail Account
-  const updateOutletAccount = (
+    // Update Existing Retail Account
+  const updateOutletAccount = async (
     accountId: string,
     data: {
       accountTitle: string;
@@ -3196,7 +3196,7 @@ if (sessionStatus.isActive) {
       sameAddress: boolean;
       openingDate: string;
     }
-  ) => {
+  ): Promise<boolean> => {
     const existingAccount = allAccounts.find(
       (account) =>
         account.id === accountId &&
@@ -3208,7 +3208,7 @@ if (sessionStatus.isActive) {
         message: 'Retail Account not found.',
         type: 'error'
       });
-      return;
+      return false;
     }
 
     const accountCategory =
@@ -3218,28 +3218,49 @@ if (sessionStatus.isActive) {
 
     const updatedAccount: AllAccountRecord = {
       ...existingAccount,
-
       accountType: accountCategory,
       accountNumber: data.accountNumber.trim(),
       accountTitle: data.accountTitle.trim(),
       customerName: data.accountHolderName.trim(),
       mobileNumber: data.mobileNumber.trim(),
-
       category: data.accountType,
       accountSchemeCode: data.accountType,
       accountHolderName: data.accountHolderName.trim(),
-
       presentAddress: data.presentAddress.trim(),
       permanentAddress: data.sameAddress
         ? data.presentAddress.trim()
         : data.permanentAddress.trim(),
-
       sameAddress: data.sameAddress,
       openingDate: data.openingDate,
-
       updatedAt: new Date().toISOString()
     };
 
+    try {
+      await SupabaseService.saveAllAccount(updatedAccount);
+
+      setAllAccounts((prev) =>
+        prev.map((account) =>
+          account.id === accountId ? updatedAccount : account
+        )
+      );
+
+      showToast({
+        message: 'Retail Account updated successfully.',
+        type: 'success'
+      });
+
+      return true;
+    } catch (error) {
+      console.error('Retail Account update failed:', error);
+
+      showToast({
+        message: 'Account update failed. Please try again.',
+        type: 'error'
+      });
+
+      return false;
+    }
+  };
     // Update existing account without creating a duplicate
     setAllAccounts((prev) =>
       prev.map((account) =>
