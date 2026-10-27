@@ -1220,14 +1220,17 @@ onKeyDown={(e) => {
                   if (account.source === 'LOAN' && account.loanRecord) {
                     setEditingRecord(account.loanRecord);
                     setIsAddModalOpen(true);
-                  } else {
-                    setToast({
-                      message: isBn
-                        ? 'এই অ্যাকাউন্টের এডিট ফর্ম পরবর্তী ধাপে যুক্ত হবে।'
-                        : 'The edit form for this account will be added in the next step.',
-                      type: 'info'
-                    });
-                  }
+                           } else if (account.sourceTable === 'manual_outlet_account') {
+            setEditingRetailAccount(account);
+            setIsOutletModalOpen(true);
+          } else {
+            setToast({
+              message: isBn
+                ? 'এই অ্যাকাউন্টের এডিট ফর্ম এখনো উপলব্ধ নয়।'
+                : 'The edit form for this account is not available yet.',
+              type: 'info'
+            });
+          }
                 }}
                 className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-black transition-colors"
               >
