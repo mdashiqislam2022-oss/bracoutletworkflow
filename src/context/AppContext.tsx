@@ -3156,8 +3156,9 @@ if (sessionStatus.isActive) {
         ? data.presentAddress.trim()
         : data.permanentAddress.trim(),
 
-      sameAddress: data.sameAddress,
+            sameAddress: data.sameAddress,
       openingDate: data.openingDate,
+      signatureDataUrl: data.signatureDataUrl,
 
       status: 'ACTIVE',
 
