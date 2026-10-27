@@ -64,8 +64,9 @@ type UnifiedAccount = {
   accountHolderName?: string;
   presentAddress?: string;
   permanentAddress?: string;
-  sameAddress?: boolean;
+    sameAddress?: boolean;
   openingDate?: string;
+  signatureDataUrl?: string;
 };
 export const LoanAccountDetailsView: React.FC = () => {
   const {
@@ -191,8 +192,11 @@ const [isOutletModalOpen, setIsOutletModalOpen] = useState(false);
         accountHolderName: account.accountHolderName,
         presentAddress: account.presentAddress,
         permanentAddress: account.permanentAddress,
-        sameAddress: account.sameAddress,
-        openingDate: account.openingDate
+               sameAddress: account.sameAddress,
+        openingDate: account.openingDate,
+        signatureDataUrl: (
+          account as typeof account & { signatureDataUrl?: string }
+        ).signatureDataUrl
       });
     });
 
