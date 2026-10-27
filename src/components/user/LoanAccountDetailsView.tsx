@@ -953,15 +953,55 @@ onKeyDown={(e) => {
                         {index + 1}
                       </td>
 
-                      {/* Account & Customer */}
+                                           {/* Account & Customer */}
                       <td className="py-3 px-4 min-w-[220px]">
+
+                        {/* Account Title */}
                         <div className="font-bold text-slate-900 dark:text-white">
                           {account.accountTitle}
                         </div>
 
-                        <div className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">
-                          {account.customerName}
-                        </div>
+                        {/* Account Holder Name - Hide duplicate */}
+                        {(() => {
+                          const holderName = (
+                            account.accountHolderName ||
+                            account.customerName ||
+                            ''
+                          ).trim();
+
+                          const accountTitle = (
+                            account.accountTitle || ''
+                          ).trim();
+
+                          if (
+                            !holderName ||
+                            holderName.toLowerCase() === accountTitle.toLowerCase()
+                          ) {
+                            return null;
+                          }
+
+                          return (
+                            <div className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">
+                              {holderName}
+                            </div>
+                          );
+                        })()}
+
+                        {/* Account Type */}
+                        {account.source === 'LOAN' ? (
+                          <div className="mt-1">
+                            <span className="inline-flex items-center px-2 py-0.5 rounded-md bg-amber-500/10 text-amber-600 dark:text-amber-400 text-[10px] font-bold">
+                              {isBn ? 'এসএমই লোন অ্যাকাউন্ট' : 'SME Loan Account'}
+                            </span>
+                          </div>
+                        ) : account.sourceTable === 'manual_outlet_account' ? (
+                          <div className="mt-1">
+                            <span className="inline-flex items-center px-2 py-0.5 rounded-md bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-[10px] font-bold">
+                              {isBn ? 'রিটেইল অ্যাকাউন্ট' : 'Retail Account'}
+                            </span>
+                          </div>
+                        ) : null}
+
                       </td>
 
                       {/* Account Number */}
