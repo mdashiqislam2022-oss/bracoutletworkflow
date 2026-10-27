@@ -94,7 +94,11 @@ export const LoanAccountDetailsView: React.FC = () => {
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
  const [showAccountTypePopup, setShowAccountTypePopup] = useState(false);
 const [isOutletModalOpen, setIsOutletModalOpen] = useState(false);
-  const [editingRecord, setEditingRecord] = useState<LoanAccountRecord | null>(null);
+   const [editingRecord, setEditingRecord] = useState<LoanAccountRecord | null>(null);
+
+  // Retail Account Edit
+  const [editingRetailAccount, setEditingRetailAccount] =
+    useState<UnifiedAccount | null>(null);
   const [deletingRecord, setDeletingRecord] = useState<LoanAccountRecord | null>(null);
    const [copiedId, setCopiedId] = useState<string | null>(null);
 
