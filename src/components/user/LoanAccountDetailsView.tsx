@@ -1127,11 +1127,8 @@ onKeyDown={(e) => {
                           {/* Edit Account */}
                           <button
                             type="button"
-                            onClick={() => {
-                              if (isLoan && loan) {
-                                setEditingRecord(loan);
-                                setIsAddModalOpen(true);
-                              }
+                                                       onClick={() => {
+                              setAccountPendingEdit(account);
                             }}
                             title={isBn ? 'অ্যাকাউন্ট এডিট করুন' : 'Edit Account'}
                             aria-label={isBn ? 'অ্যাকাউন্ট এডিট করুন' : 'Edit Account'}
