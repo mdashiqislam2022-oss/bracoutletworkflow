@@ -1268,15 +1268,23 @@ onKeyDown={(e) => {
               }
             : null
         }
-                      onSubmit={(data) => {
+                 onSubmit={async (data) => {
           if (editingRetailAccount) {
-            updateOutletAccount(editingRetailAccount.id, data);
-          } else {
-            addOutletAccount(data);
+            const success = await updateOutletAccount(
+              editingRetailAccount.id,
+              data
+            );
+
+            if (success) {
+              setIsOutletModalOpen(false);
+              setEditingRetailAccount(null);
+            }
+
+            return;
           }
 
+          addOutletAccount(data);
           setIsOutletModalOpen(false);
-          setEditingRetailAccount(null);
         }}
         isDark={isDark}
         isBn={isBn}
