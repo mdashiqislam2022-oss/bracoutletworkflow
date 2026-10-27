@@ -3234,8 +3234,10 @@ if (sessionStatus.isActive) {
       permanentAddress: data.sameAddress
         ? data.presentAddress.trim()
         : data.permanentAddress.trim(),
-      sameAddress: data.sameAddress,
+            sameAddress: data.sameAddress,
       openingDate: data.openingDate,
+      signatureDataUrl:
+        data.signatureDataUrl ?? existingAccount.signatureDataUrl,
       updatedAt: new Date().toISOString()
     };
 
