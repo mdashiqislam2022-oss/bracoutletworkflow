@@ -1240,9 +1240,30 @@ onKeyDown={(e) => {
       )}
 
       {/* Outlet Account Entry Modal */}
-      <OutletAccountModal
+            <OutletAccountModal
         isOpen={isOutletModalOpen}
-        onClose={() => setIsOutletModalOpen(false)}
+        onClose={() => {
+          setIsOutletModalOpen(false);
+          setEditingRetailAccount(null);
+        }}
+        initialData={
+          editingRetailAccount
+            ? {
+                accountTitle: editingRetailAccount.accountTitle || '',
+                accountNumber: editingRetailAccount.accountNumber || '',
+                mobileNumber: editingRetailAccount.mobileNumber || '',
+                accountType: editingRetailAccount.accountSchemeCode || '',
+                accountHolderName:
+                  editingRetailAccount.accountHolderName ||
+                  editingRetailAccount.customerName ||
+                  '',
+                presentAddress: editingRetailAccount.presentAddress || '',
+                permanentAddress: editingRetailAccount.permanentAddress || '',
+                sameAddress: editingRetailAccount.sameAddress || false,
+                openingDate: editingRetailAccount.openingDate || ''
+              }
+            : null
+        }
                 onSubmit={(data) => {
           addOutletAccount(data);
           setIsOutletModalOpen(false);
