@@ -1102,7 +1102,7 @@ onKeyDown={(e) => {
                         )}
                       </td>
 
-                                           {/* Actions */}
+                                            {/* Actions */}
                       <td className="py-3 px-4 text-right">
                         <div className="flex items-center justify-end gap-2">
 
@@ -1121,75 +1121,25 @@ onKeyDown={(e) => {
                             <Eye size={16} />
                           </button>
 
-                        {isLoan && loan ? (
-                          <div className="flex items-center justify-end gap-1.5">
-                            <button
-                              onClick={() =>
-                                handleQuickStatusChange(
-                                  loan,
-                                  isActive ? 'CLOSED' : 'ACTIVE'
-                                )
-                              }
-                              title={
-                                isActive
-                                  ? 'Mark as Closed / Settled'
-                                  : 'Reactivate Loan'
-                              }
-                              className={`px-2 py-1 rounded-lg border text-[10px] font-black transition-all cursor-pointer flex items-center gap-1 ${
-                                isActive
-                                  ? 'bg-indigo-500/10 hover:bg-indigo-500/20 text-indigo-600 dark:text-indigo-400 border-indigo-500/30'
-                                  : 'bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border-emerald-500/30'
-                              }`}
-                            >
-                              <ArrowRightLeft className="w-3 h-3" />
-                              <span>
-                                {isActive
-                                  ? isBn
-                                    ? 'ক্লোজ'
-                                    : 'Close'
-                                  : isBn
-                                  ? 'এক্টিভ'
-                                  : 'Active'}
-                              </span>
-                            </button>
-
-                            <button
-                              onClick={() => {
-                                setEditingRecord(loan);
-                                setIsAddModalOpen(true);
-                              }}
-                              title="Edit loan file"
-                              className={`p-1.5 rounded-lg border transition-colors cursor-pointer ${
-                                isDark
-                                  ? 'bg-slate-800 hover:bg-slate-700 border-slate-700 text-slate-300'
-                                  : 'bg-slate-100 hover:bg-slate-200 border-slate-200 text-slate-700'
-                              }`}
-                            >
-                              <Edit3 className="w-3.5 h-3.5" />
-                            </button>
-
-                            <button
-                              onClick={() => setDeletingRecord(loan)}
-                              title="Delete loan file"
-                              className="p-1.5 rounded-lg border border-rose-500/30 bg-rose-500/10 hover:bg-rose-500/20 text-rose-600 transition-colors cursor-pointer"
-                            >
-                              <Trash2 className="w-3.5 h-3.5" />
-                            </button>
-                          </div>
-                                                ) : account.sourceTable === 'manual_outlet_account' ? (
+                          {/* Edit Account */}
                           <button
                             type="button"
-                            onClick={() => setSelectedOutletAccount(account)}
-                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 text-emerald-600 dark:text-emerald-400 text-[11px] font-black transition-colors"
+                            onClick={() => {
+                              if (isLoan && loan) {
+                                setEditingRecord(loan);
+                                setIsAddModalOpen(true);
+                              }
+                            }}
+                            title={isBn ? 'অ্যাকাউন্ট এডিট করুন' : 'Edit Account'}
+                            aria-label={isBn ? 'অ্যাকাউন্ট এডিট করুন' : 'Edit Account'}
+                            className={`inline-flex items-center justify-center w-8 h-8 rounded-lg border transition-all cursor-pointer ${
+                              isDark
+                                ? 'bg-amber-500/10 hover:bg-amber-500/20 border-amber-500/30 text-amber-400'
+                                : 'bg-amber-50 hover:bg-amber-100 border-amber-200 text-amber-600'
+                            }`}
                           >
-                            <Search size={13} />
-                            {isBn ? 'বিস্তারিত' : 'Details'}
+                            <Edit3 size={16} />
                           </button>
-                        ) : (
-                          <span className="text-[10px] font-semibold text-slate-400">
-                            {isBn ? 'শুধু দেখুন' : 'View only'}
-                                                    </span>
-                        )}
 
                         </div>
                       </td>
