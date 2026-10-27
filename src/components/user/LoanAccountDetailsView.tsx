@@ -73,7 +73,8 @@ export const LoanAccountDetailsView: React.FC = () => {
     chequeCardEntries,
     customerAccounts,
         allAccounts,
-    addOutletAccount,
+        addOutletAccount,
+    updateOutletAccount,
     addLoanRecord,
     updateLoanRecord,
     deleteLoanRecord,
@@ -1267,9 +1268,15 @@ onKeyDown={(e) => {
               }
             : null
         }
-                onSubmit={(data) => {
-          addOutletAccount(data);
+                      onSubmit={(data) => {
+          if (editingRetailAccount) {
+            updateOutletAccount(editingRetailAccount.id, data);
+          } else {
+            addOutletAccount(data);
+          }
+
           setIsOutletModalOpen(false);
+          setEditingRetailAccount(null);
         }}
         isDark={isDark}
         isBn={isBn}
