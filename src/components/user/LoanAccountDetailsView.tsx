@@ -1151,7 +1151,91 @@ onKeyDown={(e) => {
           </table>
         </div>
       </div>
-            {/* Outlet Account Entry Modal */}
+            {/* Account Edit Confirmation Popup */}
+      {accountPendingEdit && (
+        <div className="fixed inset-0 z-[150] flex items-center justify-center bg-slate-950/70 backdrop-blur-sm p-4">
+          <div
+            role="alertdialog"
+            aria-modal="true"
+            aria-labelledby="account-edit-confirm-title"
+            className={`w-full max-w-md rounded-3xl border p-6 shadow-2xl ${
+              isDark
+                ? 'bg-slate-900 border-slate-700 text-white'
+                : 'bg-white border-slate-200 text-slate-900'
+            }`}
+          >
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-12 h-12 rounded-2xl bg-amber-500/15 flex items-center justify-center text-amber-500">
+                <Edit3 size={22} />
+              </div>
+
+              <div>
+                <h2
+                  id="account-edit-confirm-title"
+                  className="text-lg font-black"
+                >
+                  {isBn ? 'অ্যাকাউন্ট এডিট নিশ্চিত করুন' : 'Confirm Account Edit'}
+                </h2>
+
+                <p className="text-xs text-slate-500 mt-1">
+                  {accountPendingEdit.accountNumber}
+                </p>
+              </div>
+            </div>
+
+            <p className="text-sm font-medium mb-2">
+              {isBn
+                ? 'আপনি কি নিশ্চিত যে এই অ্যাকাউন্টটি এডিট করতে চান?'
+                : 'Are you sure you want to edit this account?'}
+            </p>
+
+            <p className="text-sm font-bold text-amber-600 dark:text-amber-400 mb-6 break-words">
+              {accountPendingEdit.accountTitle}
+            </p>
+
+            <div className="flex items-center justify-end gap-3">
+              <button
+                type="button"
+                onClick={() => setAccountPendingEdit(null)}
+                className={`px-5 py-2.5 rounded-xl border text-xs font-bold transition-colors ${
+                  isDark
+                    ? 'border-slate-700 bg-slate-800 hover:bg-slate-700 text-slate-200'
+                    : 'border-slate-200 bg-slate-100 hover:bg-slate-200 text-slate-700'
+                }`}
+              >
+                {isBn ? 'বাতিল' : 'Cancel'}
+              </button>
+
+              <button
+                type="button"
+                onClick={() => {
+                  const account = accountPendingEdit;
+
+                  setAccountPendingEdit(null);
+
+                  if (account.source === 'LOAN' && account.loanRecord) {
+                    setEditingRecord(account.loanRecord);
+                    setIsAddModalOpen(true);
+                  } else {
+                    setToast({
+                      message: isBn
+                        ? 'এই অ্যাকাউন্টের এডিট ফর্ম পরবর্তী ধাপে যুক্ত হবে।'
+                        : 'The edit form for this account will be added in the next step.',
+                      type: 'info'
+                    });
+                  }
+                }}
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-black transition-colors"
+              >
+                <Edit3 size={15} />
+                {isBn ? 'হ্যাঁ, এডিট করুন' : 'Yes, Edit'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Outlet Account Entry Modal */}
       <OutletAccountModal
         isOpen={isOutletModalOpen}
         onClose={() => setIsOutletModalOpen(false)}
