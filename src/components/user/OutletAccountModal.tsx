@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { CustomDatePicker } from '../common/CustomDatePicker';
 import { X, Landmark, Save, ChevronDown, Check, Search } from 'lucide-react';
 
@@ -22,6 +22,7 @@ interface Props {
   onSubmit: (data: OutletAccountFormData) => void;
   isDark: boolean;
   isBn: boolean;
+  initialData?: OutletAccountFormData | null;
 }
 
 const SCHEMES = [
