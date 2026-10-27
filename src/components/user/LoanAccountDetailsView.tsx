@@ -1331,8 +1331,8 @@ onKeyDown={(e) => {
 
             </div>
 
-            {/* Account Information */}
-            <div className="p-6 space-y-4">
+                       {/* Account Information */}
+            <div className="p-4 grid grid-cols-1 sm:grid-cols-2 gap-3">
 
               {[
                 {
