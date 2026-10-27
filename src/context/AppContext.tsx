@@ -156,9 +156,8 @@ export interface AppContextType {
       accountHolderName: string;
       presentAddress: string;
       permanentAddress: string;
-            sameAddress: boolean;
+      sameAddress: boolean;
       openingDate: string;
-      signatureDataUrl?: string;
     }
   ): Promise<boolean>;
   segregationRecords: DenominationSegregationRecord[];
