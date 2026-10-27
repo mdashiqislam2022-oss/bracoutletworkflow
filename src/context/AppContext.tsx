@@ -132,7 +132,7 @@ export interface AppContextType {
     customerAccounts: CustomerAccountRecord[];
   allAccounts: AllAccountRecord[];
 
-  addOutletAccount: (data: {
+   addOutletAccount: (data: {
     accountTitle: string;
     accountNumber: string;
     mobileNumber: string;
@@ -143,6 +143,22 @@ export interface AppContextType {
     sameAddress: boolean;
     openingDate: string;
   }) => void;
+
+  // Update an existing Retail Account
+  updateOutletAccount: (
+    accountId: string,
+    data: {
+      accountTitle: string;
+      accountNumber: string;
+      mobileNumber: string;
+      accountType: string;
+      accountHolderName: string;
+      presentAddress: string;
+      permanentAddress: string;
+      sameAddress: boolean;
+      openingDate: string;
+    }
+  ) => void;
 
   segregationRecords: DenominationSegregationRecord[];
   addCustomerAccount: (data: {
