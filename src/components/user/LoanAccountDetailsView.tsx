@@ -1463,6 +1463,45 @@ onKeyDown={(e) => {
                 </div>
               ))}
 
+                           {/* Signature Preview & Download */}
+              {selectedOutletAccount.signatureDataUrl && (
+                <div
+                  className={`p-4 rounded-xl border ${
+                    isDark
+                      ? 'bg-slate-800/70 border-slate-700'
+                      : 'bg-slate-50 border-slate-200'
+                  }`}
+                >
+                  <div className="flex items-center justify-between gap-3 mb-3">
+                    <span className="text-sm font-bold">
+                      {isBn ? 'স্বাক্ষর' : 'Signature'}
+                    </span>
+
+                    <a
+                      href={selectedOutletAccount.signatureDataUrl}
+                      download={`Signature_${selectedOutletAccount.accountNumber || 'Account'}.jpg`}
+                      title={isBn ? 'স্বাক্ষর ডাউনলোড করুন' : 'Download Signature'}
+                      aria-label={isBn ? 'স্বাক্ষর ডাউনলোড করুন' : 'Download Signature'}
+                      className={`p-2 rounded-lg transition-colors ${
+                        isDark
+                          ? 'bg-slate-700 hover:bg-slate-600 text-white'
+                          : 'bg-white hover:bg-slate-200 text-slate-700'
+                      }`}
+                    >
+                      <Download size={16} />
+                    </a>
+                  </div>
+
+                  <div className="flex items-center justify-center min-h-[80px] p-3 rounded-lg bg-white border border-slate-200">
+                    <img
+                      src={selectedOutletAccount.signatureDataUrl}
+                      alt="Account holder signature"
+                      className="max-w-full max-h-[100px] object-contain"
+                    />
+                  </div>
+                </div>
+              )}
+
               {/* Cheque & Card Details */}
               <div className="pt-4 border-t border-slate-500/20">
                 <h3 className="text-base font-black mb-4 flex items-center gap-2">
