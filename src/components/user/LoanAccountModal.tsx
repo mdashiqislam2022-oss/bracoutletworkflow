@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { X, Landmark, DollarSign, Calendar, Clock, User, Phone, FileText, CheckCircle2, Percent, AlertCircle } from 'lucide-react';
+import { CustomDatePicker } from '../common/CustomDatePicker';
 import { LoanAccountRecord, LoanStatus } from '../../types';
 
 interface LoanAccountModalProps {
