@@ -3112,7 +3112,7 @@ if (sessionStatus.isActive) {
 
   // Loan Account CRUD Operations
     // Add a new Outlet Account
-  const addOutletAccount = (data: {
+    const addOutletAccount = (data: {
     accountTitle: string;
     accountNumber: string;
     mobileNumber: string;
@@ -3122,6 +3122,7 @@ if (sessionStatus.isActive) {
     permanentAddress: string;
     sameAddress: boolean;
     openingDate: string;
+    signatureDataUrl?: string;
   }) => {
     if (!currentUser) {
       showToast({
