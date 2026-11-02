@@ -1247,48 +1247,71 @@ export const SupabaseService = {
       console.warn('Error saving customer account to Supabase:', err);
     }
   },
-    // Save/Upsert Independent All Account Record
-        async saveAllAccount(record: AllAccountRecord): Promise<void> {
-    if (!this.isAvailable() || !supabase) {
-      throw new Error('Supabase connection is not available.');
-    }
+    // Save All Account and its Signature
+async saveAllAccount(record: AllAccountRecord): Promise<void> {
+  if (!this.isAvailable() || !supabase) {
+    throw new Error('Supabase connection is not available.');
+  }
 
-    try {
-      if (
-        record.sourceTable === 'manual_outlet_account' &&
-        (record as AllAccountRecord & { signatureDataUrl?: string }).signatureDataUrl
-      ) {
-        const signatureDataUrl = (
-          record as AllAccountRecord & { signatureDataUrl?: string }
-        ).signatureDataUrl!;
+  try {
+    if (
+      record.sourceTable === 'manual_outlet_account' &&
+      (record as AllAccountRecord & { signatureDataUrl?: string }).signatureDataUrl
+    ) {
+      const signatureDataUrl = (
+        record as AllAccountRecord & { signatureDataUrl?: string }
+      ).signatureDataUrl!;
 
-        const uploadedPath = await this.uploadAccountSignature(
-          signatureDataUrl,
-          record.id
-        );
+      const uploadedPath = await this.uploadAccountSignature(
+        signatureDataUrl,
+        record.id
+      );
 
-        if (!uploadedPath) {
-          throw new Error('Signature upload failed.');
-        }
-
-        record.signaturePath = uploadedPath;
+      if (!uploadedPath) {
+        throw new Error('Signature upload failed.');
       }
 
-      const dbRow = mapAllAccountToDb(record);
-
-      const { error } = await supabase
-        .from('all_accounts')
-        .upsert(dbRow);
-
-      if (error) {
-        throw error;
-      }
-
-    } catch (err) {
-      console.error('Error saving All Account to Supabase:', err);
-      throw err;
+      record.signaturePath = uploadedPath;
     }
-  },
+
+    // Save account record
+    const dbRow = mapAllAccountToDb(record);
+
+    const { error: accountError } = await supabase
+      .from('all_accounts')
+      .upsert(dbRow);
+
+    if (accountError) {
+      throw accountError;
+    }
+
+    // Save signature information in separate table
+    if (
+      record.sourceTable === 'manual_outlet_account' &&
+      record.signaturePath
+    ) {
+      const { error: signatureError } = await supabase
+        .from('account_signatures')
+        .upsert({
+          account_id: record.id,
+          storage_path: record.signaturePath,
+          file_name: record.signaturePath.split('/').pop() || null,
+          mime_type: record.signaturePath.toLowerCase().endsWith('.png')
+            ? 'image/png'
+            : 'image/jpeg',
+          updated_at: new Date().toISOString()
+        });
+
+      if (signatureError) {
+        throw signatureError;
+      }
+    }
+
+  } catch (err) {
+    console.error('Error saving All Account or signature:', err);
+    throw err;
+  }
+},
 
   // Delete Customer Account
   async deleteCustomerAccount(id: string) {
