@@ -856,6 +856,30 @@ export const SupabaseService = {
       return null;
     }
   },
+    // Get temporary URL for a private account signature
+  async getAccountSignatureUrl(
+    signaturePath: string
+  ): Promise<string | null> {
+    if (!this.isAvailable() || !supabase || !signaturePath) {
+      return null;
+    }
+
+    try {
+      const { data, error } = await supabase.storage
+        .from('account-signatures')
+        .createSignedUrl(signaturePath, 3600);
+
+      if (error) {
+        console.error('Signature URL error:', error.message);
+        return null;
+      }
+
+      return data?.signedUrl || null;
+    } catch (error) {
+      console.error('Signature URL generation failed:', error);
+      return null;
+    }
+  },
     // Upload a profile picture to Supabase Storage and return its public URL
   async uploadAvatar(file: File, ownerId: string): Promise<string | null> {
     if (!this.isAvailable() || !supabase) return null;
