@@ -689,9 +689,17 @@ if (cloudData.rules && cloudData.rules.length) setRules(cloudData.rules);
           setLoanRecords((prev) => prev.filter((r) => r.id !== payload.old.id));
         }
       },
-            onAllAccountChange: (payload) => {
+                 onAllAccountChange: async (payload) => {
         if (payload.eventType === 'INSERT' && payload.new) {
           const account = mapDbToAllAccount(payload.new);
+
+          if (account.signaturePath) {
+            const signatureUrl =
+              await SupabaseService.getAccountSignatureUrl(
+                account.signaturePath
+              );
+            account.signatureDataUrl = signatureUrl || undefined;
+          }
 
           setAllAccounts((prev) => [
             account,
@@ -699,6 +707,14 @@ if (cloudData.rules && cloudData.rules.length) setRules(cloudData.rules);
           ]);
         } else if (payload.eventType === 'UPDATE' && payload.new) {
           const account = mapDbToAllAccount(payload.new);
+
+          if (account.signaturePath) {
+            const signatureUrl =
+              await SupabaseService.getAccountSignatureUrl(
+                account.signaturePath
+              );
+            account.signatureDataUrl = signatureUrl || undefined;
+          }
 
           setAllAccounts((prev) =>
             prev.map((a) => (a.id === account.id ? account : a))
