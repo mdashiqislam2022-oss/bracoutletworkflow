@@ -1224,12 +1224,32 @@ export const SupabaseService = {
     }
   },
     // Save/Upsert Independent All Account Record
-    async saveAllAccount(record: AllAccountRecord): Promise<void> {
+        async saveAllAccount(record: AllAccountRecord): Promise<void> {
     if (!this.isAvailable() || !supabase) {
       throw new Error('Supabase connection is not available.');
     }
 
     try {
+      if (
+        record.sourceTable === 'manual_outlet_account' &&
+        (record as AllAccountRecord & { signatureDataUrl?: string }).signatureDataUrl
+      ) {
+        const signatureDataUrl = (
+          record as AllAccountRecord & { signatureDataUrl?: string }
+        ).signatureDataUrl!;
+
+        const uploadedPath = await this.uploadAccountSignature(
+          signatureDataUrl,
+          record.id
+        );
+
+        if (!uploadedPath) {
+          throw new Error('Signature upload failed.');
+        }
+
+        record.signaturePath = uploadedPath;
+      }
+
       const dbRow = mapAllAccountToDb(record);
 
       const { error } = await supabase
