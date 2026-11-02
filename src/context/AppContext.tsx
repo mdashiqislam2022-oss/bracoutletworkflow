@@ -602,8 +602,28 @@ if (cloudData.rules && cloudData.rules.length) setRules(cloudData.rules);
             if (cloudData.submissions) setSubmissions(cloudData.submissions);
             if (cloudData.chequeCardEntries) setChequeCardEntries(cloudData.chequeCardEntries);
             if (cloudData.loanRecords) setLoanRecords(cloudData.loanRecords);
-            if (cloudData.customerAccounts) setCustomerAccounts(cloudData.customerAccounts);
-            if (cloudData.allAccounts) setAllAccounts(cloudData.allAccounts);
+                        if (cloudData.customerAccounts) setCustomerAccounts(cloudData.customerAccounts);
+
+            if (cloudData.allAccounts) {
+              const accountsWithSignatures = await Promise.all(
+                cloudData.allAccounts.map(async (account) => {
+                  if (!account.signaturePath) return account;
+
+                  const signatureUrl =
+                    await SupabaseService.getAccountSignatureUrl(
+                      account.signaturePath
+                    );
+
+                  return {
+                    ...account,
+                    signatureDataUrl: signatureUrl || undefined
+                  };
+                })
+              );
+
+              setAllAccounts(accountsWithSignatures);
+            }
+
             if (cloudData.segregationRecords) setSegregationRecords(cloudData.segregationRecords);
             if (cloudData.motherAmounts) setMotherAmounts(cloudData.motherAmounts);
             if (cloudData.supportingRecords) setSupportingRecords(cloudData.supportingRecords);
